@@ -30,7 +30,7 @@ export function LoginHero() {
 
                     <form action="." className="flex flex-col items-center gap-8">
 
-                        <div className="space-y-3 md:space-y-4 w-full">
+                        <div className="space-y-4 w-full">
                             <Input type="email" placeholder="Email" />
                             <PasswordInput />
 
@@ -40,7 +40,7 @@ export function LoginHero() {
                                     <input type="checkbox" name="remember" className="accent-primary" />
                                     <span className="text-xs md:text-sm"> Remember me </span>
                                 </label>
-                                <Link to={'/password-rest'} className="min-w-max w-fit"> <p className="text-2xs md:text-xs hover:text-primary px-1 hover:underline active:underline"> Forgot your password ? </p>  </Link>
+                                <Link to={'/password-rest'} className="min-w-max w-fit"> <p className="text-2xs md:text-xs hover:text-primary px-1 underline"> Forgot your password ? </p>  </Link>
                             </div>
                         </div>
 

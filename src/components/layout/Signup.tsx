@@ -32,7 +32,7 @@ export function SignupHero(){
 
                     <form action="." className="flex flex-col items-center gap-8">
 
-                        <div className="space-y-3 md:space-y-4 w-full">
+                        <div className="space-y-4 w-full">
                             <div className="flex max-xs:flex-col md:flex-col lg:flex-row gap-3 md:gap-4">
                                 <Input type="text" placeholder="First name" />
                                 <Input type="text" placeholder="Last name" />
