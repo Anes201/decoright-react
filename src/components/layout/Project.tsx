@@ -64,7 +64,7 @@ export function ProjectHero(){
                         <Gallery images={imgs} objectFit="cover" className="w-full h-full rounded-xl aspect-video overflow-hidden" />
                     </div>
 
-                    <div className="flex flex-col gap-4 w-full border border-red-400">
+                    <div className="flex flex-col gap-4 w-full">
                         {/* Context */}
 
                         <h2 className="font-medium text-lg md:text-xl leading-6"> Amet consectetur adipisicing elit Nemo mollitia dolorem delectus Nemo mollitia dolorem delectus.</h2>
@@ -96,11 +96,11 @@ export function ProjectHero(){
                                     <p className="font-medium text-2xs md:text-xs text-muted/75 after:content-['•'] after:mx-1 last:after:content-none"> 5,805 views </p>
                                     <p className="font-medium text-2xs md:text-xs text-muted/75"> 6 months ago </p>
                                 </div>
-                                <span className="font-medium text-2xs md:text-xs text-muted/75 cursor-pointer" onClick={() => setDescOpen(!descOpen)}> {descOpen ? 'Read More' : 'Read Less'} </span>
+                                <span className="font-medium text-2xs md:text-xs text-muted/75 cursor-pointer" onClick={() => setDescOpen(!descOpen)}> {descOpen ? 'Read Less' : 'Read More'} </span>
                             </div>
                             <div>
                                 <h4 className="font-medium text-xs"> Description </h4>
-                                <p className={`text-2xs md:text-xs text-muted ${descOpen && 'text-ellipsis-2line' } `}> Lorem ipsum dolor sit amet consectetur, Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus quaerat cumque placeat vel harum iure quisquam officiis adipisci ipsa non, asperiores doloremque voluptate? Explicabo, nemo tempora aperiam aut maxime quae!
+                                <p className={`text-2xs md:text-xs text-muted ${!descOpen && 'text-ellipsis-2line' } `}> Lorem ipsum dolor sit amet consectetur, Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus quaerat cumque placeat vel harum iure quisquam officiis adipisci ipsa non, asperiores doloremque voluptate? Explicabo, nemo tempora aperiam aut maxime quae!
                                 Deserunt totam est temporibus pariatur aliquid eum, iusto sunt eaque error dignissimos id veritatis consequuntur? Ea accusantium modi corrupti dignissimos quia eaque necessitatibus quibusdam repellendus, alias numquam maxime quis cupiditate.
                                 Nihil accusantium tempora temporibus sit officia facere libero neque similique accusamus illo quasi repellat eos excepturi, mollitia doloremque inventore esse nesciunt hic est totam nobis? Ut id ea reprehenderit sint!
                                 Deserunt fugiat, odit ea harum voluptate, recusandae nulla facilis Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus ad eaque iure amet cum accusamus, ducimus vel eligendi iste, beatae voluptate dolorem. Sapiente facere numquam sunt, expedita quos modi molestias. ipsa assumenda consectetur debitis, totam suscipit ab corporis temporibus consequuntur animi non. Reiciendis quaerat dolore sunt fugit. Corrupti blanditiis quasi commodi?
