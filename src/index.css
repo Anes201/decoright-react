@@ -28,7 +28,7 @@
     --acme-secondary: oklch(0.35 0 0);
     --acme-success:   oklch(0.7211 0.1577 151.54);
     --acme-warning: oklch(0.8226 0.2491 84.05);
-    --acme-danger:    oklch(0.4 0.25 30);
+    --acme-danger:    oklch(52% 0.19265 29.223);
 }
 
 @theme inline {
@@ -130,11 +130,11 @@
     }
 
     .min-h-hero {
-        @apply min-h-max h-[calc(100vh-1rem+4.5rem)] md:h-[calc(100vh+2rem-5rem)];
+        @apply min-h-max h-[calc(100svh-1rem+4.5rem)] md:h-[calc(100svh+2rem-5rem)];
     }
 
     .h-hero {
-        @apply h-[calc(100vh-1rem)] md:h-[calc(100vh-2rem)];
+        @apply h-[calc(100svh-1rem)] md:h-[calc(100svh-2rem)];
     }
 
     /* Scroll Mimimal Style */
@@ -193,19 +193,19 @@
 
     /* Chat */
 
-    .message__meta--me {
+    .message__meta--send {
         @apply text-right;
     }
 
-    .message--me {
+    .message--send {
         @apply justify-self-end;
     }
 
-    .message--text--them {
+    .message--text--received {
         @apply bg-emphasis ring-1 ring-muted/10;
     }
 
-    .message--text--me {
+    .message--text--send {
         @apply text-white bg-primary;
     }
 

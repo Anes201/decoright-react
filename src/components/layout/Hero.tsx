@@ -28,7 +28,7 @@ export function HeroContent () {
         <div className="flex flex-col justify-center gap-8 h-full">
             <div className="flex flex-col gap-2">
                 <h3 className="font-medium text-xs md:text-sm"> Space & Decoration </h3>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold "> Interior <span className="text-primary"> Design </span> That Elevates Everyday Living </h1>
+                <h1 className="font-semibold text-4xl md:text-5xl lg:text-6xl xl:text-7xl"> Interior <span className="text-primary"> Design </span> That Elevates Everyday Living </h1>
             </div>
             <p className="text-2xs lg:text-xs text-muted/75 max-w-lg">
                 Welcome to Deco Right, your trusted partner for exquisite interior design and decor solutions. We bring your vision to life with creativity and style.

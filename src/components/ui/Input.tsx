@@ -1,50 +1,85 @@
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 
 import { ICONS } from "../../icons";
 
-export function Input({className='', ...props}:any) {
+export function Input({className, children, ...props}:any) {
     return (
-        <>
-            <input className={`text-sm h-10 w-full px-2 py-1.5 md:py-2 border border-muted/15 outline-0 bg-emphasis rounded-lg focus:border-primary/45 ${className}`} {...props} />
-        </>
+    <div className="relative flex flex-col mb-2 w-full">
+      <div className="relative flex items-center">
+        <input className={`${className} text-sm h-10 w-full px-2 py-1.5 md:py-2 border ${ props.value && props.error ? 'border-danger' : 'border-muted/15'} outline-0 bg-emphasis rounded-lg focus:border-primary/45 `} {...props} />
+        { children }
+      </div>
+      {props.value && props.error && <span title={props.error} aria-label="error" className="absolute flex items-center top-full text-xs text-danger/75 px-1"> {props.error} </span>}
+    </div>
     )
 }
 
 export function EmailInput({ id = 'email_field', label = 'Email', ...props }) {
   return (
-    <div className="relative flex items-center">
-      <Input id={id} type={'email'} placeholder="email@example.com" className="px-9 sm:px-10 md:pr-12" {...props} />
-
+    <Input id={id} type={'email'} placeholder="email@example.com" className="px-9 sm:px-10 md:pr-12" {...props}>
       {/* Password Icon Placeholder */}
       <span className="absolute px-2 left-1 sm:left-1.5"> {ICONS.envelope({className:'size-4 text-muted/75'})} </span>
-
-    </div>
+    </Input>
   );
 }
 
 export function PasswordInput({ id = 'password_field', label = 'Password', ...props }) {
   const [show, setShow] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [error, setError] = useState('Invalid Password');
+
+  const handleChange = (event:any) => {
+    setInputValue(event.target.value);
+  };
 
   return (
-    <div className="relative flex items-center">
-      <Input id={id} type={show ? 'text' : 'password'} placeholder={label} className="px-9 sm:px-10 md:pr-12" {...props} />
 
-      {/* Password Icon Placeholder */}
-      <span className="absolute px-2 left-1 sm:left-1.5"> {ICONS.key({className:'size-4 text-muted/75'})} </span>
+        <Input id={id} type={show ? 'text' : 'password'} placeholder={label} className="px-9 sm:px-10 md:pr-12" error={error} value={inputValue} onChange={handleChange} {...props} >
+          {/* Password Icon Placeholder */}
+          <span className="absolute px-2 left-1 sm:left-1.5"> {ICONS.key({className:'size-4 text-muted/75'})} </span>
 
-      {/* Show/Hide Icon Placeholder */}
-      <button type="button" onClick={() => setShow(s => !s)}
-        aria-pressed={show} aria-label={show ? 'Hide password' : 'Show password'}
-        className="absolute px-2 right-1 sm:right-1.5 border-l border-muted/15"
-      >
-        {show ? ICONS.eyeSlash({className:'size-5 text-muted/75'}) : ICONS.eye({className:'size-5 text-muted/75'})}
-      </button>
-    </div>
+          {/* Show/Hide Icon Placeholder */}
+          <button type="button" onClick={() => setShow(s => !s)}
+            aria-pressed={show} aria-label={show ? 'Hide password' : 'Show password'}
+            className="absolute px-2 right-1 sm:right-1.5 border-l border-muted/15"
+          >
+            {show ? ICONS.eyeSlash({className:'size-5 text-muted/75'}) : ICONS.eye({className:'size-5 text-muted/75'})}
+          </button>
+        </Input>
+
   );
 }
 
-type Props = {
+export function EmailOrPhoneInput ({ id = 'email_or_phone_field', label = 'Email Or Phone', ...props }) {
+  const [inputValue, setInputValue] = useState('');
+  const [error, setError] = useState('Invalid contact data');
+
+  const handleChange = (event:any) => {
+    setInputValue(event.target.value);
+  };
+
+  const getIcon = (inputValue:string) => {
+    // Simple check for numbers or a '+' at the start for Phone
+    const phonePattern = /^\+?[0-9]*$/;
+    // Basic check for '@' for Email
+    const isEmail = inputValue.includes('@');
+    const iconProps = {className:'size-4 text-muted/75'};
+
+    if (isEmail) return ICONS.envelope(iconProps);
+    if (inputValue.length > 0 && phonePattern.test(inputValue)) return ICONS.phone(iconProps);
+    return ICONS.user(iconProps);
+
+  }
+
+  return (
+    <Input id={id} type="text" placeholder="Enter email or phone" value={inputValue} onChange={handleChange} className="px-9 sm:px-10 md:pr-12" error={error} {...props}>
+      <span className="absolute px-2 left-1 sm:left-1.5"> {getIcon(inputValue)} </span>
+    </Input>
+  );
+};
+
+type AutoResizeTextareaProps = {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder?: string;
@@ -61,7 +96,7 @@ export function AutoResizeTextarea({
   className = "",
   minRows = 1,
   maxRows = 5,
-}: Props) {
+}: AutoResizeTextareaProps) {
   const taRef = useRef<HTMLTextAreaElement | null>(null);
 
   // Resize function: set height based on scrollHeight but cap to maxRows

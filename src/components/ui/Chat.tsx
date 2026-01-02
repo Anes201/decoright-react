@@ -3,7 +3,7 @@
 /** ---- Types ---- */
 export type BaseMessage = {
   id: string;
-  from: "me" | "them";
+  uid: number;
   time: string; // ISO or human string
 };
 
@@ -27,14 +27,19 @@ export type FileMsg = BaseMessage & {
 
 export type Message = TextMsg | VoiceMsg | FileMsg;
 
+const currentUserId = 1; // !!! Change this based on the user auth
+
 /** ---- Text message component ---- */
 export function TextMessage({ message, ...props }: { message: TextMsg, props:any }) {
+
+  const messageFrom = message.uid === currentUserId ? 'send' : 'received'
+
   return (
-    <div className={`message message--${message.from} flex flex-col gap-0.5 max-w-10/12`} data-kind="text" data-id={message.id} {...props}>
+    <div className={`message message--${messageFrom} flex flex-col gap-0.5 max-w-10/12`} data-kind="text" data-id={message.id} {...props}>
       <div className="message__bubble">
-        <div className={`message__text message--text--${message.from} w-fit px-3 py-2 text-sm rounded-lg`}>{message.text}</div>
+        <div className={`message__text message--text--${messageFrom} w-fit px-3 py-2 text-sm rounded-lg`}>{message.text}</div>
       </div>
-      <div className={`message__meta--${message.from} text-3xs md:text-2xs text-muted px-1`}>{message.time}</div>
+      <div className={`message__meta--${messageFrom} text-3xs md:text-2xs text-muted px-1`}>{message.time}</div>
     </div>
   );
 }
@@ -43,8 +48,11 @@ export function TextMessage({ message, ...props }: { message: TextMsg, props:any
  *  Using a native <audio> control keeps it tiny and functional.
  */
 export function VoiceMessage({ message, ...props }: { message: VoiceMsg, props:any }) {
+
+  const messageFrom = message.uid === currentUserId ? 'send' : 'received'
+
   return (
-    <div className={`message message--${message.from}`} data-kind="voice" data-id={message.id} {...props}>
+    <div className={`message message--${messageFrom}`} data-kind="voice" data-id={message.id} {...props}>
       <div className="message__bubble">
         {/* native audio controls — you can replace with custom UI later */}
         <audio controls src={message.url}>
@@ -56,7 +64,7 @@ export function VoiceMessage({ message, ...props }: { message: VoiceMsg, props:a
           <div className="message__duration text-2xs md:text-xs text-muted">{Math.round(message.duration)}s</div>
         )}*/}
       </div>
-      <div className={`message__meta--${message.from} text-3xs md:text-2xs text-muted px-1`}>{message.time}</div>
+      <div className={`message__meta--${messageFrom} text-3xs md:text-2xs text-muted px-1`}>{message.time}</div>
     </div>
   );
 }
@@ -70,6 +78,7 @@ function isImageFile(filename: string) {
 /** ---- File / upload message component ---- */
 export function FileMessage({ message }: { message: FileMsg }) {
   const { url, filename, size } = message;
+  const messageFrom = message.uid === currentUserId ? 'send' : 'received'
 
   const humanSize = (n?: number) =>
     !n ? '' : n > 1_000_000 ? `${Math.round(n / 1_000_000)} MB` : `${Math.round(n / 1000)} KB`;
@@ -77,7 +86,7 @@ export function FileMessage({ message }: { message: FileMsg }) {
   if (isImageFile(filename)) {
     // Image preview
     return (
-      <div className={`message message--${message.from}`} data-kind="file" data-id={message.id}>
+      <div className={`message message--${messageFrom}`} data-kind="file" data-id={message.id}>
         <div className="message__bubble">
           <img
             src={url}
@@ -86,14 +95,14 @@ export function FileMessage({ message }: { message: FileMsg }) {
             className="block max-w-80 rounded-xl"
           />
         </div>
-        <div className={`message__meta--${message.from} text-3xs md:text-2xs text-muted px-1`}>{humanSize(size)} • {message.time}</div>
+        <div className={`message__meta--${messageFrom} text-3xs md:text-2xs text-muted px-1`}>{humanSize(size)} • {message.time}</div>
       </div>
     );
   }
 
   // Non-image file fallback
   return (
-    <div className={`message message--${message.from}`} data-kind="file" data-id={message.id}>
+    <div className={`message message--${messageFrom}`} data-kind="file" data-id={message.id}>
       <div className="message__bubble">
         <a href={url} target="_blank" rel="noopener noreferrer">
           <div>{filename}</div>

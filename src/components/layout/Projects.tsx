@@ -64,7 +64,7 @@ export function ProjectCardList () {
 
 export function ProjectsHero () {
     return (
-        <section className="content-container flex flex-col gap-6 w-full my-18 px-3 sm:px-6 md:px-8">
+        <section className="content-container relative flex flex-col gap-6 w-full px-3 sm:px-6 md:px-8">
             {/* Section Header */}
             <SectionHeader
                 name='Portfolio & Projects Gallery'

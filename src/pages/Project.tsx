@@ -3,11 +3,10 @@ import { ProjectHero } from "../components/layout/Project"
 
 export function ProjectPage() {
     return (
-        <>
-            <main>
-                <ProjectHero/>
-            </main>
 
-        </>
+        <main>
+            <ProjectHero/>
+        </main>
+
     )
 }

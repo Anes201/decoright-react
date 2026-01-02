@@ -1,10 +1,10 @@
 
-import { ChatInboxLayout, ChatMessageLayout } from "../components/layout/Chat"
+import { ChatContactLayout, ChatMessageLayout } from "../components/layout/Chat"
 
 export function ChatInboxPage() {
     return (
         <main>
-            <ChatInboxLayout/>
+            <ChatContactLayout/>
         </main>
     )
 }

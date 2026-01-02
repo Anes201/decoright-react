@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom"
 
 import { HeroSection } from "../ui/HeroSection"
-import { EmailInput, Input, PasswordInput } from "../ui/Input"
+import { EmailInput, EmailOrPhoneInput, Input, PasswordInput } from "../ui/Input"
 
 import { images } from "../../constants"
 import { LegalLinks } from "../../constants"
@@ -17,7 +17,9 @@ export function SignupHero(){
             <div className="max-md:hidden absolute top-0 left-0 w-full h-full md:p-2 rounded-4xl -z-10 md:mask-r-to-transparent">
                 <div className="w-full h-full bg-surface rounded-3xl"></div>
             </div>
-            <div className="max-md:hidden absolute top-0 left-0 w-full h-full bg-primary/15 rounded-4xl -z-10 mask-l-to-transparent mask-l-to-30%"></div>
+
+            {/* Bg style */}
+            {/* <div className="max-md:hidden absolute top-0 left-0 w-full h-full bg-primary/15 rounded-4xl -z-10 mask-l-to-transparent mask-l-to-30%"></div> */}
 
             {/* login form side  */}
             <div className="flex justify-center items-center w-full">
@@ -32,12 +34,12 @@ export function SignupHero(){
 
                     <form action="." className="flex flex-col items-center gap-8">
 
-                        <div className="space-y-4 w-full">
-                            <div className="flex max-xs:flex-col md:flex-col lg:flex-row gap-3 md:gap-4">
+                        <div className="flex flex-col gap-4 w-full">
+                            <div className="flex max-xs:flex-col md:flex-col lg:flex-row gap-3 md:gap-4 w-full">
                                 <Input type="text" placeholder="First name" />
                                 <Input type="text" placeholder="Last name" />
                             </div>
-                            <EmailInput />
+                            <EmailOrPhoneInput />
                             <PasswordInput />
                         </div>
 

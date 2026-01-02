@@ -9,6 +9,7 @@ import { userIsAuthenticated } from "../../constants"
 
 import { navItems } from "../../constants"
 import { MenuCard } from "../ui/MenuCard"
+import { PCTALink, SCTALink } from "../ui/CTA"
 
 
 export function NavLogo () {
@@ -65,14 +66,10 @@ export function AnonymousUserActins(){
     return (
         <>
             {/* Login */}
-            <Link to='/login' title="Login" className="max-md:hidden text-center font-medium text-sm text-muted h-fit min-w-max px-3 py-1.5 border-2 border-primary rounded-full">
-                Login
-            </Link>
+            <SCTALink to='/login' title="Login" className="max-md:hidden"> Login </SCTALink>
 
             {/* Sign Up */}
-            <Link to='/signup' title="Sign Up" className="text-center font-medium text-xs md:text-sm text-white/95 h-fit min-w-max px-2.5 py-1 md:px-3 md:py-1.5 border-2 border-primary bg-primary rounded-full">
-                Sign Up
-            </Link>
+            <PCTALink to='/signup' title="Sign Up"> Sign Up </PCTALink>
 
         </>
     )

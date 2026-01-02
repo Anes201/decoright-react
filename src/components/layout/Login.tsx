@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom"
 
 import { HeroSection } from "../ui/HeroSection"
-import { EmailInput, Input, PasswordInput } from "../ui/Input"
+import { EmailOrPhoneInput, PasswordInput } from "../ui/Input"
 
 import { images } from "../../constants"
 import { LegalLinks } from "../../constants"
@@ -15,7 +15,9 @@ export function LoginHero() {
             <div className="max-md:hidden absolute top-0 left-0 w-full h-full md:p-2 rounded-4xl -z-10 md:mask-r-to-transparent">
                 <div className="w-full h-full bg-surface rounded-3xl"></div>
             </div>
-            <div className="max-md:hidden absolute top-0 left-0 w-full h-full bg-primary/15 rounded-4xl -z-10 mask-l-to-transparent mask-l-to-30%"></div>
+
+            {/* Bg style */}
+            {/* <div className="max-md:hidden absolute top-0 left-0 w-full h-full bg-primary/15 rounded-4xl -z-10 mask-l-to-transparent mask-l-to-30%"></div> */}
 
             {/* login form side  */}
             <div className="flex justify-center items-center w-full">
@@ -30,8 +32,8 @@ export function LoginHero() {
 
                     <form action="." className="flex flex-col items-center gap-8">
 
-                        <div className="space-y-4 w-full">
-                            <EmailInput />
+                        <div className="flex flex-col gap-4 w-full">
+                            <EmailOrPhoneInput />
                             <PasswordInput />
 
                             <div className="flex justify-between items-center w-full h-fit px-1">
@@ -65,7 +67,7 @@ export function LoginHero() {
 
             {/* visual contact side */}
             <div className="max-md:hidden flex justify-center w-2/3 xl:w-full">
-                <img src={images.imgRoom1} alt="" className="w-2/3" />
+                <img src={images[6]} alt="" className="w-2/3" />
             </div>
 
         </HeroSection>
