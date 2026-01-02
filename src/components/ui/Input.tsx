@@ -31,6 +31,7 @@ export function PasswordInput({ id = 'password_field', label = 'Password', ...pr
 
   const handleChange = (event:any) => {
     setInputValue(event.target.value);
+    setError
   };
 
   return (
@@ -57,6 +58,7 @@ export function EmailOrPhoneInput ({ id = 'email_or_phone_field', label = 'Email
 
   const handleChange = (event:any) => {
     setInputValue(event.target.value);
+    setError
   };
 
   const getIcon = (inputValue:string) => {

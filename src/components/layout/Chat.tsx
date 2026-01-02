@@ -134,11 +134,11 @@ export function ChatMessageForm () {
 
   const [text, setText] = useState('');
 
-  const sendMessage = async(e:any) => {
-    e.preventDefault()
+  // const sendMessage = async(e:any) => {
+  //   e.preventDefault()
 
-    // add data to db
-  }
+  //   // add data to db
+  // }
 
   return (
 

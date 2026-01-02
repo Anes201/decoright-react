@@ -1,5 +1,4 @@
 
-import { Link } from "react-router-dom";
 import { ICONS } from "../icons";
 import { supportMailAddress, phoneNumber, googleMapLocationUrl } from "../constants/company";
 

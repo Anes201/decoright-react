@@ -1,8 +1,6 @@
 
 import { Link } from "react-router-dom"
 
-import { HeroSection } from "../ui/HeroSection"
-
 import HeroImgSrc from "/public/hero-image.jpg"
 import { ICONS } from "../../icons"
 

@@ -1,7 +1,6 @@
 
 import { ProjectCardList } from "../components/layout/Projects"
 import { PCTALink } from "../components/ui/CTA"
-import { SectionHeader } from "../components/ui/SectionHeader"
 
 export function ProjectsPage() {
     return (

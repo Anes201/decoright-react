@@ -2,7 +2,6 @@
 import { ICONS } from '../../icons';
 import { categories } from "../../constants"
 import { SectionHeader } from '../ui/SectionHeader';
-import { Link } from 'react-router-dom';
 import { PCTALink, SCTALink } from '../ui/CTA';
 
 

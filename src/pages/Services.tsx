@@ -1,6 +1,5 @@
 
 import { ServiceCardList } from "../components/layout/Services"
-import { CategoryList } from "../components/layout/Categories"
 
 import { PCTALink } from "../components/ui/CTA"
 import { SectionHeader } from "../components/ui/SectionHeader"

@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom"
 
 import { HeroSection } from "../ui/HeroSection"
-import { EmailInput, EmailOrPhoneInput, Input, PasswordInput } from "../ui/Input"
+import { EmailOrPhoneInput, Input, PasswordInput } from "../ui/Input"
 
 import { images } from "../../constants"
 import { LegalLinks } from "../../constants"
