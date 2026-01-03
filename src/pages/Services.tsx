@@ -21,7 +21,7 @@ export function Services () {
 
                         {/* CTA */}
                         <div className="flex gap-2">
-                            <PCTALink to="/request-project"> Request a Project </PCTALink>
+                            <PCTALink to="/request-service"> Request a Project </PCTALink>
                         </div>
 
                     </div>
