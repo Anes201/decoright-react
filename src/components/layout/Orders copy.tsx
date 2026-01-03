@@ -32,7 +32,7 @@ export function CustomerOrderList(){
 
 
             <tbody>
-                {orders.map((order, index) => (
+                {orders.map((order) => (
                     <CustomerOrderItem order={order} />
                 ))}
             </tbody>

@@ -1,5 +1,4 @@
 
-import { Link } from "react-router-dom";
 import { images } from "../../constants";
 import { ICONS } from "../../icons";
 import { EmailInput, Input, PhoneInput } from "../ui/Input";
