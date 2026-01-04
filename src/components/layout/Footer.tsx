@@ -8,7 +8,7 @@ import Logo from "/public/vite.svg"
 export function Footer() {
   return (
     <div className="content-container">
-        <div className="flex max-md:flex-col items-center md:justify-between ">
+        <div className="flex max-md:flex-col items-center md:justify-between gap-8">
 
             <div className="flex max-sm:flex-col max-sm:items-center gap-4 md:gap-8 mb-6 md:mb-0">
 
@@ -56,7 +56,7 @@ export function Footer() {
                 </ul>
 
                 {/* Navigation Link List */}
-                <ul className="flex flex-row gap-4 md:gap-8">
+                <ul className="flex flex-wrap max-md:justify-center justify-end gap-4 md:gap-6">
                     {navItems.map((item, index) => (
                         <li key={index}>
                             <Link to={item.path} className="text-xs hover:underline"> {item.label} </Link>

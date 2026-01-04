@@ -206,8 +206,24 @@
 
     /* react select lib */
 
-    .react-select-container {
-        @apply bg-red-500 rounded-xl;
+    .react-select__control {
+        @apply text-sm text-muted/75 px-3 border border-muted/25 focus-within:border-primary/45 rounded-xl bg-emphasis/75;
+    }
+
+    .react-select__value-container {
+        @apply text-sm placeholder:text-muted/75;
+    }
+
+    .react-select__menu {
+        @apply space-y-4 border border-muted/25 mt-2 rounded-xl bg-surface overflow-hidden;
+    }
+
+    .react-select__menu-list {
+        @apply max-h-60 overflow-y-auto;
+    }
+
+    .react-select__option {
+        @apply p-2 border-b border-muted/10 hover:bg-primary/15 overflow-y-auto;
     }
 }
 

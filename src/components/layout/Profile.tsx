@@ -9,8 +9,8 @@ export function Profile(){
 
             <div className="absolute right-full w-full h-[calc(100svh-24rem)] md:h-[calc(100svh-22rem)] border border-muted/20 rounded-4xl mask-l-to-transparent mask-l-to-30% overflow-hidden"></div>
 
-            <div className="relative w-full h-full px-4 py-4 md:px-8 md:py-8">
-                <div className="absolute top-0 left-0 w-full h-full border border-muted/15 rounded-3xl -z-10 mask-b-to-transparent mask-b-to-100%"></div>
+            <div className="relative w-full h-full px-4 py-4 md:px-8 md:py-8 ">
+                <div className="absolute top-0 left-0 w-full h-full border border-muted/15 rounded-4xl bg-surface/75 -z-10 mask-b-to-transparent mask-b-to-100%"></div>
                 <div className="absolute top-20 md:top-35 left-0 w-full border-b border-b-muted/15 -z-10"></div>
 
                 <div className="flex flex-col gap-8 max-md:flex-col">
@@ -39,8 +39,8 @@ export function Profile(){
                         <ul className="flex flex-col gap-8 w-full">
 
                             <li className="flex w-full gap-4">
-                                <div className="h-full aspect-square p-2 border border-muted/15 rounded-lg">
-                                    {ICONS.envelope({className:'size-6'})}
+                                <div className="h-full aspect-square p-2 border border-muted/15 bg-surface rounded-lg">
+                                    <ICONS.envelope className="size-6"/>
                                 </div>
 
                                 <div className="flex flex-col">
@@ -50,8 +50,8 @@ export function Profile(){
                             </li>
 
                             <li className="flex w-full gap-4">
-                                <div className="h-full aspect-square p-2 border border-muted/15 rounded-lg">
-                                    {ICONS.phone({className:'size-6'})}
+                                <div className="h-full aspect-square p-2 border border-muted/15 bg-surface rounded-lg">
+                                    <ICONS.phone className="size-6"/>
                                 </div>
 
                                 <div className="flex flex-col">
@@ -61,8 +61,8 @@ export function Profile(){
                             </li>
 
                             <li className="flex w-full gap-4">
-                                <div className="h-full aspect-square p-2 border border-muted/15 rounded-lg">
-                                    {ICONS.userCircle({className:'size-6'})}
+                                <div className="h-full aspect-square p-2 border border-muted/15 bg-surface rounded-lg">
+                                    <ICONS.userCircle className="size-6"/>
                                 </div>
 
                                 <div className="flex flex-col">

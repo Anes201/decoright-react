@@ -92,6 +92,12 @@ export const serviceTypes = [
     {label: 'Color Consultation', value: 'color-consultation', imgSrc: image4},
     {label: 'Project Management', value: 'project-management', imgSrc: image5},
     {label: 'Redesign', value: 'redesign', imgSrc: image6},
+    {label: 'Interior Design', value: 'interior-design', imgSrc: image1},
+    {label: 'Space Planning', value: 'space-planning', imgSrc: image2},
+    {label: 'Furniture Selection', value: 'furniture-selection', imgSrc: image3},
+    {label: 'Color Consultation', value: 'color-consultation', imgSrc: image4},
+    {label: 'Project Management', value: 'project-management', imgSrc: image5},
+    {label: 'Redesign', value: 'redesign', imgSrc: image6},
 ]
 
 export const LegalLinks = [

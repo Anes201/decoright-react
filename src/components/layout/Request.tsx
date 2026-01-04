@@ -3,6 +3,7 @@ import Select from 'react-select'
 import { serviceTypes } from '../../constants'
 import { PButton } from '../ui/Button'
 import { SCTALink } from '../ui/CTA'
+import { ICONS } from '../../icons'
 
 export function RequestService(){
     return (
@@ -25,20 +26,28 @@ export function RequestService(){
                     <div className="flex flex-col gap-2">
                         <label htmlFor="select-project-type" className="font-medium text-xs text-muted px-1"> Project Type </label>
                     {/* TODO: Style this select element, to fit website styling | Make ur own */}
-                        <Select options={serviceTypes} placeholder="Select a Project Type..." classNamePrefix="react-select" id="select-project-type"
-                        className="react-select-container placeholder:text-xs" />
+                        <Select options={serviceTypes} placeholder="Select a Project Type" classNamePrefix="react-select" id="select-project-type"
+                        className="react-select-container placeholder:text-xs" unstyled
+                        classNames={{
+                            menuList: () => "min-scrollbar"
+                        }} />
+
                     </div>
 
                     <div className="flex flex-col gap-2">
                         <label htmlFor="request-service-description" className="font-medium text-xs text-muted px-1"> Description </label>
-                        <textarea name="description" id="request-service-description" rows={5} placeholder='Write a description about the request...'
+                        <textarea name="description" id="request-service-description" rows={5} placeholder='Write a description...'
                         className="w-full p-3 text-sm bg-emphasis/75 rounded-xl outline-1 outline-muted/15 hover:outline-muted/35 focus:outline-primary/45">
                         </textarea>
                     </div>
 
                     <div className='w-full'>
                         <label htmlFor="filesToUpload" className='flex items-center justify-between gap-4 w-full h-full p-2 border border-muted/25 bg-emphasis/75 rounded-xl cursor-pointer'>
-                            <span className='font-medium text-sm text-muted px-2'> Upload Files Here </span>
+
+                            <div className="flex items-center px-2">
+                                <span> <ICONS.documentArrowUp className='size-5 text-muted'/> </span>
+                                <span className='text-sm text-muted px-2'> Attach Files </span>
+                            </div>
                             <span className="font-semibold text-sm text-center min-w-max px-2 md:px-3 py-1.5 text-white/96 bg-primary rounded-lg"> Upload </span>
                         </label>
                         <input type="file" name="filesToUpload" id="filesToUpload" className="hidden" multiple />
