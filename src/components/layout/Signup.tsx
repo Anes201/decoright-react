@@ -1,28 +1,20 @@
 
 import { Link } from "react-router-dom"
 
-import { HeroSection } from "../ui/HeroSection"
-import { EmailOrPhoneInput, Input, PasswordInput } from "../ui/Input"
+import { EmailInput, EmailOrPhoneInput, Input, PasswordInput } from "../ui/Input"
 
-import { images } from "../../constants"
 import { LegalLinks } from "../../constants"
 
 
 export function SignupHero(){
     return (
 
-        <HeroSection>
+        <section className="h-hero min-h-hero max-w-180 mx-auto relative flex flex-col items-center justify-center w-full md:mt-8 ">
 
-            {/* Section Styling */}
-            <div className="max-md:hidden absolute top-0 left-0 w-full h-full md:p-2 rounded-4xl -z-10 md:mask-r-to-transparent">
-                <div className="w-full h-full bg-surface rounded-3xl"></div>
-            </div>
+            <div className="absolute right-full w-full h-[calc(100svh-24rem)] md:h-[calc(100svh-22rem)] border border-muted/20 rounded-4xl mask-l-to-transparent mask-l-to-30% overflow-hidden"></div>
 
-            {/* Bg style */}
-            {/* <div className="max-md:hidden absolute top-0 left-0 w-full h-full bg-primary/15 rounded-4xl -z-10 mask-l-to-transparent mask-l-to-30%"></div> */}
-
-            {/* login form side  */}
-            <div className="flex justify-center items-center w-full">
+            <div className="relative flex justify-center items-center w-full h-full px-4 py-4 md:py-8 ">
+                <div className="absolute max-md:hidden top-0 left-0 w-full h-full border border-muted/15 rounded-4xl bg-surface/45 -z-10 mask-b-to-transparent mask-b-to-100%"></div>
 
                 <div className="relative flex flex-col gap-8 w-full md:w-4/5 p-2 md:p-4 lg:p-8">
 
@@ -39,7 +31,7 @@ export function SignupHero(){
                                 <Input type="text" placeholder="First name" />
                                 <Input type="text" placeholder="Last name" />
                             </div>
-                            <EmailOrPhoneInput />
+                            <EmailInput />
                             <PasswordInput />
                         </div>
 
@@ -62,12 +54,8 @@ export function SignupHero(){
 
             </div>
 
-            {/* visual contact side */}
-            <div className="max-md:hidden flex justify-center w-2/3 xl:w-full">
-                <img src={images[6]} alt="" className="w-2/3" />
-            </div>
-
-        </HeroSection>
+            <div className="absolute left-full w-full h-[calc(100svh-24rem)] md:h-[calc(100svh-22rem)] border border-muted/20 rounded-4xl mask-r-to-transparent mask-r-to-30% overflow-hidden"></div>
+        </section>
 
     )
 }

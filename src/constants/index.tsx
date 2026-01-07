@@ -7,6 +7,7 @@ import image5 from "/public/s5.jpg"
 import image6 from "/public/s6.jpg"
 import imgRoom1 from "/public/r1.svg"
 import user from "/user.png"
+import { PATHS } from "@/routers/Paths"
 
 export const images = [
     image1,
@@ -21,18 +22,29 @@ export const images = [
 
 export const userIsAuthenticated = true;
 
-export const navItems = [
-    {label: 'Home', path: '/'},
-    {label: 'Projects', path: '/projects'},
-    {label: 'Services', path: '/services'},
-    {label: 'Contact', path: '/contact'},
+export const clientNavItems = [
+    {label: 'Home', path: PATHS.CLIENT.ROOT},
 
-    {label: 'My Requests', path: '/request-service-list'},
-    {label: 'Gallery', path: '/gallery'},
+    {label: 'Chats', path: PATHS.CLIENT.CHAT},
 
-    {label: 'Login', path: '/login'},
-    {label: 'Sign Up', path: '/signup'},
+    {label: 'Request a Service', path: PATHS.CLIENT.SERVICE_REQUEST_LIST},
+    {label: 'My Requests', path: PATHS.CLIENT.SERVICE_REQUEST},
+    {label: 'Gallery', path: PATHS.CLIENT.GALLERY},
 
+    {label: 'Projects', path: PATHS.PROJECT_LIST},
+    {label: 'Services', path: PATHS.SERVICE_LIST},
+    {label: 'Contact', path: PATHS.CONTACT},
+]
+
+export const publicNavItems = [
+    {label: 'Home', path: PATHS.LANDING},
+
+    {label: 'Projects', path: PATHS.PROJECT_LIST},
+    {label: 'Services', path: PATHS.SERVICE_LIST},
+    {label: 'Contact', path: PATHS.CONTACT},
+
+    {label: 'Login', path: PATHS.LOGIN},
+    {label: 'Sign Up', path: PATHS.SIGNUP},
 ]
 
 export const galleries = [
@@ -45,7 +57,11 @@ export const galleries = [
             'Selection of furniture and decor',
             'Comprehensive project management',
         ],
-        project_url: '/project'
+        project: {
+            id: '1',
+            badge: 'Top seller',
+            rating: '4.8'
+        }
     },
     {
         label: 'Commercial', value: 'commercial',
@@ -56,7 +72,11 @@ export const galleries = [
             'Selection of furniture and decor',
             'Comprehensive project management',
         ],
-        project_url: '/project'
+        project: {
+            id: '2',
+            badge: 'Best sales',
+            rating: '4.2'
+        }
     },
     {
         label: 'Office', value: 'office',
@@ -65,7 +85,11 @@ export const galleries = [
             'Customized interior design solutions',
             'Selection of furniture and decor',
         ],
-        project_url: '/project'
+        project: {
+            id: '3',
+            badge: 'Classic Style',
+            rating: '3.4'
+        }
     },
     {
         label: 'Hospitality', value: 'hospitality',
@@ -75,7 +99,11 @@ export const galleries = [
             'Expert space planning and layout optimization',
             'Comprehensive project management',
         ],
-        project_url: '/project'
+        project: {
+            id: '1',
+            badge: 'Fast Made',
+            rating: '2.8'
+        }
     },
     // { label: 'Retail', value: 'retail', icon: 'retail' },
     // { label: 'Residential', value: 'residential', icon: 'residential' },
@@ -85,6 +113,7 @@ export const galleries = [
     // { label: 'Retail', value: 'retail', icon: 'retail' },
 ]
 
+
 export const serviceTypes = [
     {label: 'Interior Design', value: 'interior-design', imgSrc: image1},
     {label: 'Space Planning', value: 'space-planning', imgSrc: image2},
@@ -92,12 +121,29 @@ export const serviceTypes = [
     {label: 'Color Consultation', value: 'color-consultation', imgSrc: image4},
     {label: 'Project Management', value: 'project-management', imgSrc: image5},
     {label: 'Redesign', value: 'redesign', imgSrc: image6},
-    {label: 'Interior Design', value: 'interior-design', imgSrc: image1},
-    {label: 'Space Planning', value: 'space-planning', imgSrc: image2},
-    {label: 'Furniture Selection', value: 'furniture-selection', imgSrc: image3},
-    {label: 'Color Consultation', value: 'color-consultation', imgSrc: image4},
-    {label: 'Project Management', value: 'project-management', imgSrc: image5},
-    {label: 'Redesign', value: 'redesign', imgSrc: image6},
+]
+
+
+export const serviceSpaceTypes = [
+    {label: 'Interior Design', value: 'interior-design'},
+    {label: 'Space Planning', value: 'space-planning'},
+    {label: 'Furniture Selection', value: 'furniture-selection'},
+    {label: 'Color Consultation', value: 'color-consultation'},
+    {label: 'Project Management', value: 'project-management'},
+    {label: 'Redesign', value: 'redesign'},
+    {label: 'Interior Design', value: 'interior-design'},
+    {label: 'Space Planning', value: 'space-planning'},
+    {label: 'Furniture Selection', value: 'furniture-selection'},
+    {label: 'Color Consultation', value: 'color-consultation'},
+    {label: 'Project Management', value: 'project-management'},
+    {label: 'Redesign', value: 'redesign'},
+]
+
+export const serviceDesignStyle = [
+    {label: 'Modern', value: 'modern'},
+    {label: 'Classic', value: 'classic'},
+    {label: 'Rustic', value: 'rustic'},
+    {label: 'Industrial', value: 'industrial'},
 ]
 
 export const LegalLinks = [
@@ -155,36 +201,4 @@ export const projects = [
         },
 
     ];
-
-
-export const chatList = [
-    {fullName: 'John Salem', lastMessageDate:'15:43', lastMessage: 'Hello world sounds like a start for something great!', url: '/customer/chats/chatId'},
-    {fullName: 'Somdelo Lorem', lastMessageDate:'22:06', lastMessage: 'How about this one ?', url: '/customer/chats/chatId'},
-    {fullName: 'John Salem', lastMessageDate:'15:43', lastMessage: 'Hello world sounds like a start for something great!', url: '/customer/chats/chatId'},
-    {fullName: 'Somdelo Lorem', lastMessageDate:'22:06', lastMessage: 'How about this one ?', url: '/customer/chats/chatId'},
-    {fullName: 'John Salem', lastMessageDate:'15:43', lastMessage: 'Hello world sounds like a start for something great!', url: '/customer/chats/chatId'},
-    {fullName: 'Somdelo Lorem', lastMessageDate:'22:06', lastMessage: 'How about this one ?', url: '/customer/chats/chatId'},
-    {fullName: 'John Salem', lastMessageDate:'15:43', lastMessage: 'Hello world sounds like a start for something great!', url: '/customer/chats/chatId'},
-    {fullName: 'Somdelo Lorem', lastMessageDate:'22:06', lastMessage: 'How about this one ?', url: '/customer/chats/chatId'},
-    {fullName: 'John Salem', lastMessageDate:'15:43', lastMessage: 'Hello world sounds like a start for something great!', url: '/customer/chats/chatId'},
-    {fullName: 'Somdelo Lorem', lastMessageDate:'22:06', lastMessage: 'How about this one ?', url: '/customer/chats/chatId'},
-    {fullName: 'John Salem', lastMessageDate:'15:43', lastMessage: 'Hello world sounds like a start for something great!', url: '/customer/chats/chatId'},
-    {fullName: 'Somdelo Lorem', lastMessageDate:'22:06', lastMessage: 'How about this one ?', url: '/customer/chats/chatId'},
-    {fullName: 'John Salem', lastMessageDate:'15:43', lastMessage: 'Hello world sounds like a start for something great!', url: '/customer/chats/chatId'},
-    {fullName: 'Somdelo Lorem', lastMessageDate:'22:06', lastMessage: 'How about this one ?', url: '/customer/chats/chatId'},
-    {fullName: 'John Salem', lastMessageDate:'15:43', lastMessage: 'Hello world sounds like a start for something great!', url: '/customer/chats/chatId'},
-    {fullName: 'Somdelo Lorem', lastMessageDate:'22:06', lastMessage: 'How about this one ?', url: '/customer/chats/chatId'},
-    {fullName: 'John Salem', lastMessageDate:'15:43', lastMessage: 'Hello world sounds like a start for something great!', url: '/customer/chats/chatId'},
-    {fullName: 'Somdelo Lorem', lastMessageDate:'22:06', lastMessage: 'How about this one ?', url: '/customer/chats/chatId'},
-
-
-];
-
-export const orders = [
-    {id:'DO146', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'pending', status_label:'Pending', chat_url:'/customer/chats/chatId',},
-    {id:'DO147', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'in_progress', status_label:'In Progress', chat_url:'/customer/chats/chatId'},
-    {id:'DO159', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'canceled', status_label:'Canceled', chat_url:'/customer/chats/chatId'},
-    {id:'DO447', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'complete', status_label:'Complete', chat_url:'/customer/chats/chatId'},
-    {id:'DO447', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'rejected', status_label:'Rejected', chat_url:'/customer/chats/chatId'},
-];
 

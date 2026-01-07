@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom";
 
-import { navItems } from "../../constants";
+import { publicNavItems } from "../../constants";
 import Logo from "/public/vite.svg"
 
 
@@ -57,7 +57,7 @@ export function Footer() {
 
                 {/* Navigation Link List */}
                 <ul className="flex flex-wrap max-md:justify-center justify-end gap-4 md:gap-6">
-                    {navItems.map((item, index) => (
+                    {publicNavItems.map((item, index) => (
                         <li key={index}>
                             <Link to={item.path} className="text-xs hover:underline"> {item.label} </Link>
                         </li>

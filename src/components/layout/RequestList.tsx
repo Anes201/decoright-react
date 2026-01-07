@@ -1,7 +1,7 @@
 
 
 import { Link } from "react-router-dom"
-import { orders } from "../../constants"
+import { requests } from "../../constants"
 import { ICONS } from "../../icons"
 
 export function RequestItem({order}:any){
@@ -36,8 +36,8 @@ export function RequestItem({order}:any){
 export function RequestList(){
     return (
         <ol id="orders-table" role="table" aria-label="Your orders" className="flex flex-col gap-2 md:gap-4">
-            {orders.map((order) => (
-                <RequestItem key={order.id} order={order} />
+            {requests.map((request) => (
+                <RequestItem key={request.id} request={request} />
             ))}
         </ol>
     )

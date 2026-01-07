@@ -54,7 +54,7 @@ export function ProjectHero(){
 
     return (
         <section className="content-container relative w-full h-full">
-            <div className="flex max-sm:flex-col gap-3 md:gap-4 h-full">
+            <div className="flex max-md:flex-col gap-3 md:gap-4 h-full mb-18">
 
                 {/* Main Project Content */}
                 <div className="space-y-2 w-full">
@@ -67,7 +67,7 @@ export function ProjectHero(){
                     <div className="flex flex-col gap-4 w-full">
                         {/* Context */}
 
-                        <h2 className="font-medium text-lg md:text-xl leading-6"> Amet consectetur adipisicing elit Nemo mollitia dolorem delectus Nemo mollitia dolorem delectus.</h2>
+                        <h2 className="font-medium text-xs md:text-sm leading-5 md:leading-6"> Amet consectetur adipisicing elit Nemo mollitia dolorem delectus Nemo mollitia dolorem delectus.</h2>
 
                         {/* CTA & View, Likes */}
                         <div className="flex flex-wrap w-full gap-4">
@@ -112,7 +112,7 @@ export function ProjectHero(){
                 </div>
 
                 {/* More & Similar Projects Container */}
-                <div className="w-full sm:w-1/4 h-full rounded-xl p-2 border border-muted/25 overflow-clip">
+                <div className="md:w-3/5 lg:w-1/3 w-full h-full rounded-xl p-2 border border-muted/25 overflow-clip">
                     <ProjectCardList />
                 </div>
 

@@ -10,26 +10,13 @@
     --acme-foreground: oklch(0.00 0 0); /* <-- primary readable text */
     --acme-muted:      oklch(0.40 0 0); /* light-mode subtle text/borders */
 
-    --acme-primary:   oklch(0.5579 0.2171 266.29);
+    --acme-primary:   oklch(0.5294 0.293075 293.6103);
     --acme-secondary: oklch(1.00 0 0);
     --acme-success:   oklch(0.7211 0.1577 151.54);
     --acme-warning: oklch(0.7226 0.2491 84.05);
     --acme-danger:    oklch(0.4 0.25 30);
 }
 
-[data-theme="dark"] {
-    --acme-background: oklch(0.24 0 0); /* very dark gray background */
-    --acme-surface:    oklch(0.29 0 0); /* slightly lighter gray panel */
-    --acme-emphasis:   oklch(0.35 0 0); /* bright accent (like ~87% white for emphasis) */
-    --acme-foreground: oklch(0.99 0 0); /*  primary readable text */
-    --acme-muted:      oklch(0.65 0 0); /* medium gray for less-important text */
-
-    --acme-primary:   oklch(0.5879 0.2171 266.29);
-    --acme-secondary: oklch(0.35 0 0);
-    --acme-success:   oklch(0.7211 0.1577 151.54);
-    --acme-warning: oklch(0.8226 0.2491 84.05);
-    --acme-danger:    oklch(52% 0.19265 29.223);
-}
 
 @theme inline {
     --color-background: var(--acme-background);
@@ -168,12 +155,22 @@
         @apply bg-secondary text-black font-medium py-3 px-6 rounded-lg shadow-md hover:bg-secondary/90 active:scale-95;
     }
 
+    .text-ellipsis-1line {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1; /* Limits the text to a maximum of 2 lines */
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis; /* Adds the ellipsis (...) at the end of the truncated text */
+        word-break: break-all;
+    }
+
     .text-ellipsis-2line {
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 2; /* Limits the text to a maximum of 2 lines */
         -webkit-box-orient: vertical;
         text-overflow: ellipsis; /* Adds the ellipsis (...) at the end of the truncated text */
+        word-break: break-all;
     }
 
     .text-ellipsis-3line {
@@ -207,15 +204,15 @@
     /* react select lib */
 
     .react-select__control {
-        @apply text-sm text-muted/75 px-3 border border-muted/25 focus-within:border-primary/45 rounded-xl bg-emphasis/75;
+        @apply text-sm text-muted px-3 border border-muted/25 hover:border-muted/45 focus-within:border-primary/45 rounded-xl bg-emphasis/75;
     }
 
     .react-select__value-container {
-        @apply text-sm placeholder:text-muted/75;
+        @apply text-sm;
     }
 
     .react-select__menu {
-        @apply space-y-4 border border-muted/25 mt-2 rounded-xl bg-surface overflow-hidden;
+        @apply space-y-4 border border-muted/25 mt-2 py-2 rounded-xl bg-surface overflow-hidden;
     }
 
     .react-select__menu-list {

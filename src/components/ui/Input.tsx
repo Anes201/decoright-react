@@ -7,10 +7,10 @@ export function Input({className, children, ...props}:any) {
     return (
     <div className="relative flex flex-col mb-2 w-full">
       <div className="relative flex items-center">
-        <input className={`${className} text-sm h-10 w-full px-2 py-1.5 md:py-2 ${ props.value && props.error ? 'border-danger' : 'border-muted/15'} outline-1 outline-muted/15 bg-emphasis rounded-lg focus:outline-muted/45 `} {...props} />
+        <input className={`${className} text-sm h-10 w-full px-2 py-1.5 md:py-2 border border-muted/15 ${ props.value && props.error ? 'outline-danger/45' : 'outline-muted/15'} bg-emphasis rounded-lg outline-0  focus:outline-1 `} {...props} />
         { children }
       </div>
-      {props.value && props.error && <span title={props.error} aria-label="error" className="absolute flex items-center top-full text-xs text-danger/75 px-1"> {props.error} </span>}
+      {props.value && props.error && <span title={props.error} aria-label="error" className="absolute flex items-center top-full text-xs text-danger/75 px-0.5"> {props.error} </span>}
     </div>
     )
 }
@@ -152,4 +152,16 @@ export function AutoResizeTextarea({
       aria-label={placeholder ?? "input"}
     />
   );
+}
+
+export function DateInput({...props}) {
+  // Function to get today's date in 'YYYY-MM-DD' format
+  const getTodayDateString = () => {
+    const today = new Date();
+    return today.toLocaleDateString('en-CA');
+  };
+
+  return (
+    <input type="date" defaultValue={getTodayDateString()} {...props} />
+  )
 }

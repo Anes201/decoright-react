@@ -11,8 +11,8 @@ export function ServiceCardList () {
                 <li key={index} className="relative p-4">
                     <div className="absolute top-0 right-0 w-full h-full bg-primary/10 mask-t-to-transparent -z-10 rounded-2xl"></div>
                     <div className="absolute top-0 right-0 w-full h-full border border-muted/10 mask-b-to-transparent -z-10 rounded-2xl"></div>
-                    <div className="w-full aspect-4/3 mb-4 overflow-hidden">
-                        <img src={service.imgSrc} alt="" className="object-cover h-full w-full rounded-xl" />
+                    <div className="w-full aspect-4/3 mb-4 overflow-hidden shadow-sm rounded-xl">
+                        <img src={service.imgSrc} alt="" className="object-cover h-full w-full " />
                     </div>
 
                     <h3 className="text-lg font-medium mb-1"> {service.label} </h3>
@@ -24,7 +24,7 @@ export function ServiceCardList () {
     )
 }
 
-export function ServicesHero () {
+export function ServiceListLayout () {
     return (
         <section className="relative my-8 py-12 px-3 sm:px-6 md:px-8">
 

@@ -62,7 +62,7 @@ export function ProjectCardList () {
     )
 }
 
-export function ProjectsHero () {
+export function ProjectListLayout () {
     return (
         <section className="content-container relative flex flex-col gap-6 w-full px-3 sm:px-6 md:px-8">
             {/* Section Header */}

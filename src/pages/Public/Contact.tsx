@@ -1,6 +1,6 @@
 
-import { ICONS } from "../icons";
-import { supportMailAddress, phoneNumber, googleMapLocationUrl } from "../constants/company";
+import { ICONS } from "@/icons";
+import { supportMailAddress, phoneNumber, googleMapLocationUrl } from "@/constants/company";
 
 export function ContactCard({children}:any) {
     return (
@@ -63,7 +63,7 @@ export function ContactCardList() {
     )
 }
 
-export function Contact () {
+export default function Contact () {
     return (
         <main>
             <section className="h-hero min-h-hero content-container relative flex flex-col items-center justify-center max-sm:my-18 space-y-16">

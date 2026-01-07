@@ -48,7 +48,7 @@ export function FAQList () {
                         </div>
 
                         <div id={`faq-answer-${index}`} className={`overflow-hidden ${isOpen ? 'h-full' : 'h-0'}`}>
-                            <p className="text-sm text-muted/75"> {faq.answer} </p>
+                            <p className="text-sm text-foreground"> {faq.answer} </p>
                         </div>
                     </li>
                 )

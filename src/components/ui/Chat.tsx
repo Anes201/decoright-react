@@ -1,33 +1,8 @@
 
 
-/** ---- Types ---- */
-export type BaseMessage = {
-  id: string;
-  uid: number;
-  time: string; // ISO or human string
-};
+import type { TextMsg, VoiceMsg, FileMsg } from "@/types/chat";
 
-export type TextMsg = BaseMessage & {
-  kind: "text";
-  text: string;
-};
-
-export type VoiceMsg = BaseMessage & {
-  kind: "voice";
-  url: string;       // audio file URL
-  duration?: number; // seconds (optional)
-};
-
-export type FileMsg = BaseMessage & {
-  kind: "file";
-  url: string;       // file URL
-  filename: string;
-  size?: number;     // bytes (optional)
-};
-
-export type Message = TextMsg | VoiceMsg | FileMsg;
-
-const currentUserId = 1; // !!! Change this based on the user auth
+export const currentUserId = 1; // !!! Change this based on the user auth
 
 /** ---- Text message component ---- */
 export function TextMessage({ message, ...props }: { message: TextMsg, props:any }) {
@@ -39,7 +14,7 @@ export function TextMessage({ message, ...props }: { message: TextMsg, props:any
       <div className="message__bubble">
         <div className={`message__text message--text--${messageFrom} w-fit px-3 py-2 text-sm rounded-lg`}>{message.text}</div>
       </div>
-      <div className={`message__meta--${messageFrom} text-3xs md:text-2xs text-muted px-1`}>{message.time}</div>
+      <div className={`message__meta--${messageFrom} text-3xs md:text-2xs text-muted px-1`}>{message.timestamp}</div>
     </div>
   );
 }
@@ -64,7 +39,7 @@ export function VoiceMessage({ message, ...props }: { message: VoiceMsg, props:a
           <div className="message__duration text-2xs md:text-xs text-muted">{Math.round(message.duration)}s</div>
         )}*/}
       </div>
-      <div className={`message__meta--${messageFrom} text-3xs md:text-2xs text-muted px-1`}>{message.time}</div>
+      <div className={`message__meta--${messageFrom} text-3xs md:text-2xs text-muted px-1`}>{message.timestamp}</div>
     </div>
   );
 }
@@ -95,7 +70,7 @@ export function FileMessage({ message }: { message: FileMsg }) {
             className="block max-w-80 rounded-xl"
           />
         </div>
-        <div className={`message__meta--${messageFrom} text-3xs md:text-2xs text-muted px-1`}>{humanSize(size)} • {message.time}</div>
+        <div className={`message__meta--${messageFrom} text-3xs md:text-2xs text-muted px-1`}>{humanSize(size)} • {message.timestamp}</div>
       </div>
     );
   }
@@ -109,7 +84,7 @@ export function FileMessage({ message }: { message: FileMsg }) {
           <div>{humanSize(size)}</div>
         </a>
       </div>
-      <div className="message__meta">{message.time}</div>
+      <div className="message__meta">{message.timestamp}</div>
     </div>
   );
 }
