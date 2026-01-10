@@ -3,15 +3,17 @@ import { Link } from "react-router-dom"
 
 import HeroImgSrc from "/public/hero-image.jpg"
 import { ICONS } from "../../icons"
+import { useAuth } from "@/contexts/AuthProvider"
+import { PATHS } from "@/routers/Paths"
 
 
-export function HeroContentCheckListItem({content}:{content:string}) {
+export function HeroContentCheckListItem({ content }: { content: string }) {
     return (
         <li className="text-2xs lg:text-xs text-muted/75 px-1 py-0.5 lg:px-2 lg:py-1 w-fit bg-surface/75 rounded-full"> ✓ {content} </li>
     )
 }
 
-export function HeroContentCheckList () {
+export function HeroContentCheckList() {
     return (
         <ul className="flex flex-wrap gap-2 w-full">
             <HeroContentCheckListItem content={'Personalized Design Consultations'} />
@@ -21,7 +23,7 @@ export function HeroContentCheckList () {
     )
 }
 
-export function HeroContent () {
+export function HeroContent() {
     return (
         <div className="flex flex-col justify-center gap-8 h-full">
             <div className="flex flex-col gap-2">
@@ -33,23 +35,26 @@ export function HeroContent () {
             </p>
 
             {/* Hero Check List */}
-            <HeroContentCheckList/>
+            <HeroContentCheckList />
         </div>
     )
 }
 
-export function HeroCTA () {
+export function HeroCTA() {
+    const { user } = useAuth();
+    const requestPath = user ? PATHS.CLIENT.SERVICE_REQUEST : PATHS.SIGNUP;
+
     return (
         <div className="flex max-md:flex-col gap-4">
-            <Link to={'/'} className="content-center text-center font-medium text-sm text-emphasis md:w-fit px-4 py-2 bg-primary rounded-xl"> Services </Link>
-            <Link to={'/'} className="flex gap-2 items-center justify-center text-center font-medium text-sm text-foreground md:w-fit px-4 py-2 border-2 border-emphasis rounded-xl"> Catalog & Categories
-                {ICONS.chevronRight({className:'size-4 text-foreground'})}
+            <Link to={requestPath} className="content-center text-center font-medium text-sm text-emphasis md:w-fit px-4 py-2 bg-primary rounded-xl"> Request Service </Link>
+            <Link to={PATHS.PROJECT_LIST} className="flex gap-2 items-center justify-center text-center font-medium text-sm text-foreground md:w-fit px-4 py-2 border-2 border-emphasis rounded-xl"> Catalog & Categories
+                {ICONS.chevronRight({ className: 'size-4 text-foreground' })}
             </Link>
         </div>
     )
 }
 
-export function HeroMetrics () {
+export function HeroMetrics() {
     return (
         <div className="relative flex justify-center items-center gap-4 md:gap-6 w-full p-4">
             <div className="absolute top-0 left-0 w-full h-full border-2 border-emphasis/75 rounded-2xl -z-10 mask-r-to-transparent mask-r-to-95%"></div>
@@ -70,7 +75,7 @@ export function HeroMetrics () {
 }
 
 
-export function HeroImg () {
+export function HeroImg() {
     return (
         <div className="max-md:hidden w-full overflow-hidden">
             <img src={HeroImgSrc} alt="Hero Image" className="object-cover w-full h-full" />
@@ -78,7 +83,7 @@ export function HeroImg () {
     )
 }
 
-export function Hero () {
+export function Hero() {
     return (
 
         <section className="content-container relative flex items-center w-full">
@@ -106,7 +111,7 @@ export function Hero () {
                     </div>
 
                     {/* Hero Image */}
-                    <HeroImg/>
+                    <HeroImg />
 
                 </div>
             </div>

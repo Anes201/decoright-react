@@ -20,31 +20,28 @@ export const images = [
     user,
 ]
 
-export const userIsAuthenticated = true;
+
 
 export const clientNavItems = [
-    {label: 'Home', path: PATHS.CLIENT.ROOT},
+    { label: 'Home', path: PATHS.CLIENT.ROOT },
 
-    {label: 'Chats', path: PATHS.CLIENT.CHAT},
+    { label: 'Chats', path: PATHS.CLIENT.CHAT },
 
-    {label: 'Request a Service', path: PATHS.CLIENT.SERVICE_REQUEST_LIST},
-    {label: 'My Requests', path: PATHS.CLIENT.SERVICE_REQUEST},
-    {label: 'Gallery', path: PATHS.CLIENT.GALLERY},
+    { label: 'Request a Service', path: PATHS.CLIENT.SERVICE_REQUEST_LIST },
+    { label: 'My Requests', path: PATHS.CLIENT.SERVICE_REQUEST },
+    { label: 'Gallery', path: PATHS.CLIENT.GALLERY },
 
-    {label: 'Projects', path: PATHS.PROJECT_LIST},
-    {label: 'Services', path: PATHS.SERVICE_LIST},
-    {label: 'Contact', path: PATHS.CONTACT},
+    { label: 'Projects', path: PATHS.PROJECT_LIST },
+    { label: 'Services', path: PATHS.SERVICE_LIST },
+    { label: 'Contact', path: PATHS.CONTACT },
 ]
 
 export const publicNavItems = [
-    {label: 'Home', path: PATHS.LANDING},
+    { label: 'Home', path: PATHS.LANDING },
 
-    {label: 'Projects', path: PATHS.PROJECT_LIST},
-    {label: 'Services', path: PATHS.SERVICE_LIST},
-    {label: 'Contact', path: PATHS.CONTACT},
-
-    {label: 'Login', path: PATHS.LOGIN},
-    {label: 'Sign Up', path: PATHS.SIGNUP},
+    { label: 'Projects', path: PATHS.PROJECT_LIST },
+    { label: 'Services', path: PATHS.SERVICE_LIST },
+    { label: 'Contact', path: PATHS.CONTACT },
 ]
 
 export const galleries = [
@@ -115,90 +112,84 @@ export const galleries = [
 
 
 export const serviceTypes = [
-    {label: 'Interior Design', value: 'interior-design', imgSrc: image1},
-    {label: 'Space Planning', value: 'space-planning', imgSrc: image2},
-    {label: 'Furniture Selection', value: 'furniture-selection', imgSrc: image3},
-    {label: 'Color Consultation', value: 'color-consultation', imgSrc: image4},
-    {label: 'Project Management', value: 'project-management', imgSrc: image5},
-    {label: 'Redesign', value: 'redesign', imgSrc: image6},
+    { label: 'Interior Design', value: 'interior-design', imgSrc: image1 },
+    { label: 'Space Planning', value: 'space-planning', imgSrc: image2 },
+    { label: 'Furniture Selection', value: 'furniture-selection', imgSrc: image3 },
+    { label: 'Color Consultation', value: 'color-consultation', imgSrc: image4 },
+    { label: 'Project Management', value: 'project-management', imgSrc: image5 },
+    { label: 'Redesign', value: 'redesign', imgSrc: image6 },
 ]
 
 
 export const serviceSpaceTypes = [
-    {label: 'Interior Design', value: 'interior-design'},
-    {label: 'Space Planning', value: 'space-planning'},
-    {label: 'Furniture Selection', value: 'furniture-selection'},
-    {label: 'Color Consultation', value: 'color-consultation'},
-    {label: 'Project Management', value: 'project-management'},
-    {label: 'Redesign', value: 'redesign'},
-    {label: 'Interior Design', value: 'interior-design'},
-    {label: 'Space Planning', value: 'space-planning'},
-    {label: 'Furniture Selection', value: 'furniture-selection'},
-    {label: 'Color Consultation', value: 'color-consultation'},
-    {label: 'Project Management', value: 'project-management'},
-    {label: 'Redesign', value: 'redesign'},
+    { label: 'Houses and Rooms', value: 'HOUSES_AND_ROOMS' },
+    { label: 'Commercial Shops', value: 'COMMERCIAL_SHOPS' },
+    { label: 'Schools and Nurseries', value: 'SCHOOLS_AND_NURSERIES' },
+    { label: 'Offices Reception', value: 'OFFICES_RECEPTION' },
+    { label: 'Dormitory Lodgings', value: 'DORMITORY_LODGINGS' },
 ]
 
 export const serviceDesignStyle = [
-    {label: 'Modern', value: 'modern'},
-    {label: 'Classic', value: 'classic'},
-    {label: 'Rustic', value: 'rustic'},
-    {label: 'Industrial', value: 'industrial'},
+    { label: 'Interior Design', value: 'INTERIOR_DESIGN' },
+    { label: 'Fixed Design', value: 'FIXED_DESIGN' },
+    { label: 'Decor Consultation', value: 'DECOR_CONSULTATION' },
+    { label: 'Furniture Request', value: 'FURNITURE_REQUEST' },
+    { label: 'Renovation', value: 'BUILDING_RENOVATION' },
 ]
 
 export const LegalLinks = [
-    {label: 'Terms & Conditions', path:'/terms'},
-    {label: 'Privacy Policy', path:'/privacy-policy'},
+    { label: 'Terms & Conditions', path: '/terms' },
+    { label: 'Privacy Policy', path: '/privacy-policy' },
 ]
 
 export const projects = [
-        {
-            title: 'Interior Design Furniture Selection & Project Management Decr Furniture Selection & Project Management Decr',
-            date: '6 months ago',
-            imgSrc: images[0]
-        },
+    {
+        title: 'Interior Design Furniture Selection & Project Management Decr Furniture Selection & Project Management Decr',
+        date: '6 months ago',
+        imgSrc: images[0]
+    },
 
-        {
-            title: 'Furniture Selection Interior Design',
-            date: '2 months ago',
-            imgSrc: images[2]
-        },
+    {
+        title: 'Furniture Selection Interior Design',
+        date: '2 months ago',
+        imgSrc: images[2]
+    },
 
-        {
-            title: 'Interior Redesign & Color Consultation',
-            date: '18 days ago',
-            imgSrc: images[3]
-        },
+    {
+        title: 'Interior Redesign & Color Consultation',
+        date: '18 days ago',
+        imgSrc: images[3]
+    },
 
-        {
-            title: 'Space Planning & Color Consultation',
-            date: '3 years ago',
-            imgSrc: images[4]
-        },
+    {
+        title: 'Space Planning & Color Consultation',
+        date: '3 years ago',
+        imgSrc: images[4]
+    },
 
-        {
-            title: 'Project Management & Space Planning',
-            date: '11 months ago',
-            imgSrc: images[5]
-        },
+    {
+        title: 'Project Management & Space Planning',
+        date: '11 months ago',
+        imgSrc: images[5]
+    },
 
-        {
-            title: 'Redesign & Interior Design',
-            date: '4 years ago',
-            imgSrc: images[6]
-        },
+    {
+        title: 'Redesign & Interior Design',
+        date: '4 years ago',
+        imgSrc: images[6]
+    },
 
-        {
-            title: 'Furniture Selection & Redesign',
-            date: '3 weeks ago',
-            imgSrc: images[0]
-        },
+    {
+        title: 'Furniture Selection & Redesign',
+        date: '3 weeks ago',
+        imgSrc: images[0]
+    },
 
-        {
-            title: 'Color Consultation & Interior Design',
-            date: '9 weeks ago',
-            imgSrc: images[1]
-        },
+    {
+        title: 'Color Consultation & Interior Design',
+        date: '9 weeks ago',
+        imgSrc: images[1]
+    },
 
-    ];
+];
 

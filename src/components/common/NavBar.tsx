@@ -5,15 +5,16 @@ import { useState } from "react"
 
 import Logo from "/public/vite.svg"
 import { ICONS } from "../../icons"
-import { userIsAuthenticated } from "../../constants"
+
 
 import { publicNavItems, clientNavItems } from "../../constants"
 import { MenuCard } from "../ui/MenuCard"
 import { PCTALink, SCTALink } from "../ui/CTA"
 import { PATHS } from "@/routers/Paths"
+import { useAuth } from "@/contexts/AuthProvider"
 
 
-export function NavLogo () {
+export function NavLogo() {
     return (
         <div className="flex items-center gap-2 md:gap-4 min-w-max">
             <div className="content-center w-8 md:w-10 aspect-square">
@@ -29,7 +30,7 @@ export function NavLogo () {
     )
 }
 
-export function NavLinks () {
+export function NavLinks() {
     return (
         <ul className="hidden md:flex justify-center gap-4 w-full">
             {publicNavItems.map((item, index) => (
@@ -42,7 +43,7 @@ export function NavLinks () {
     )
 }
 
-export function AuthenticatedUserActins(){
+export function AuthenticatedUserActins() {
     return (
         <>
 
@@ -53,7 +54,7 @@ export function AuthenticatedUserActins(){
 
             {/* Chat Nav Page */}
             <Link to={PATHS.CLIENT.CHAT} title="Chats" className="relative content-center p-2 border border-primary/45 bg-primary/10 border-muted/16 bg-surface/10 rounded-full">
-                { ICONS.chat({className:'size-5 md:size-6'}) }
+                {ICONS.chat({ className: 'size-5 md:size-6' })}
                 <span className="absolute flex size-3 top-0 left-0">
                     <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
                     <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
@@ -62,14 +63,14 @@ export function AuthenticatedUserActins(){
 
             {/* User Profile Nav Page */}
             <Link to={PATHS.CLIENT.PROFILE} title="My Profile" className="max-md:hidden content-center p-2 border border-muted/15 bg-surface/10 rounded-full">
-                { ICONS.user({className:'size-5 md:size-6'}) }
+                {ICONS.user({ className: 'size-5 md:size-6' })}
             </Link>
 
         </>
     )
 }
 
-export function AnonymousUserActins(){
+export function AnonymousUserActins() {
     return (
         <>
             {/* Login */}
@@ -84,72 +85,74 @@ export function AnonymousUserActins(){
 
 
 
-export function PublicNavMenuItems () {
+export function PublicNavMenuItems() {
     return (
         <>
-        {publicNavItems.map((item, index) => (
-            <li key={index} className="w-full">
-                <Link to={item.path} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15">
-                    <div className="flex content-center gap-2">
-                        {/* Icon */}
-                        {/* { ICONS.informationCircle({}) } */}
-                        {/* Label */}
-                        <h3 className="font-medium text-sm"> {item.label} </h3>
-                    </div>
+            {publicNavItems.map((item, index) => (
+                <li key={index} className="w-full">
+                    <Link to={item.path} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15">
+                        <div className="flex content-center gap-2">
+                            {/* Icon */}
+                            {/* { ICONS.informationCircle({}) } */}
+                            {/* Label */}
+                            <h3 className="font-medium text-sm"> {item.label} </h3>
+                        </div>
 
-                    {/* Context */}
-                    <div className="w-full">
-                        <p className="text-2xs text-muted"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus culpa  </p>
-                    </div>
-                </Link>
-            </li>
-        ))}
+                        {/* Context */}
+                        <div className="w-full">
+                            <p className="text-2xs text-muted"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus culpa  </p>
+                        </div>
+                    </Link>
+                </li>
+            ))}
         </>
 
     )
 }
 
-export function ClientNavMenuItems () {
+export function ClientNavMenuItems() {
     return (
 
         <>
-        {clientNavItems.map((item, index) => (
-            <li key={index} className="w-full">
-                <Link to={item.path} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15">
-                    <div className="flex content-center gap-2">
-                        {/* Icon */}
-                        {/* { ICONS.informationCircle({}) } */}
-                        {/* Label */}
-                        <h3 className="font-medium text-sm"> {item.label} </h3>
-                    </div>
+            {clientNavItems.map((item, index) => (
+                <li key={index} className="w-full">
+                    <Link to={item.path} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15">
+                        <div className="flex content-center gap-2">
+                            {/* Icon */}
+                            {/* { ICONS.informationCircle({}) } */}
+                            {/* Label */}
+                            <h3 className="font-medium text-sm"> {item.label} </h3>
+                        </div>
 
-                    {/* Context */}
-                    <div className="w-full">
-                        <p className="text-2xs text-muted"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus culpa  </p>
-                    </div>
-                </Link>
-            </li>
-        ))}
+                        {/* Context */}
+                        <div className="w-full">
+                            <p className="text-2xs text-muted"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus culpa  </p>
+                        </div>
+                    </Link>
+                </li>
+            ))}
         </>
     )
 }
 
-export function NavActions () {
-
-    const [navMenuOpen, setNavMenuOpen] = useState(false);
+export function NavActions() {
+    const { user } = useAuth();
+    const navMenuOpenState = useState(false);
+    const navMenuOpen = navMenuOpenState[0];
+    const setNavMenuOpen = navMenuOpenState[1];
 
     return (
 
         <>
             <div className="flex items-center gap-2 md:gap-4">
 
-                {userIsAuthenticated
-                ? <AuthenticatedUserActins/>
-                : <AnonymousUserActins/>}
+                {user
+                    ? <AuthenticatedUserActins />
+                    : <AnonymousUserActins />}
 
                 {/* Menu Trigger */}
                 <button type="button" title="Menu" className="content-center p-2 border border-muted/15 bg-surface/10 rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>
-                    { ICONS.menu({className:'size-6'}) }
+                    {ICONS.menu({ className: 'size-6' })}
                 </button>
             </div>
 
@@ -161,9 +164,9 @@ export function NavActions () {
                     {/* Mobile Nav Menu */}
 
                     <ul className="flex flex-col w-full h-full gap-2 border border-muted/15 p-2 rounded-lg overflow-auto">
-                        {userIsAuthenticated
-                        ? <ClientNavMenuItems/>
-                        : <PublicNavMenuItems/>
+                        {user
+                            ? <ClientNavMenuItems />
+                            : <PublicNavMenuItems />
                         }
                     </ul>
 
@@ -174,15 +177,16 @@ export function NavActions () {
     )
 }
 
-export function NavBar () {
+export function NavBar() {
+    const { user } = useAuth();
 
     return (
 
         <div className="navbar-height absolute flex justify-between gap-2 md:gap-4 w-full px-3 sm:px-6 md:px-9">
-            <NavLogo/>
+            <NavLogo />
             <nav className="flex items-center w-fit">
-                { !userIsAuthenticated && <NavLinks/> }
-                <NavActions/>
+                {!user && <NavLinks />}
+                <NavActions />
             </nav>
         </div>
 

@@ -1,5 +1,5 @@
 
-import React from "react";
+
 
 export default function FileIcon({ mime, name }: { mime: string; name: string }) {
   const ext = name.split(".").pop()?.toLowerCase() ?? "";

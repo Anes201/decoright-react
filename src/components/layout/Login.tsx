@@ -1,9 +1,39 @@
-
-import { Link } from "react-router-dom"
+import { useState } from "react"
+import { supabase } from "@/lib/supabase"
+import { useNavigate, Link } from "react-router-dom"
 import { EmailInput, PasswordInput } from "../ui/Input"
 import { LegalLinks } from "../../constants"
 
 export function LoginHero() {
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const navigate = useNavigate()
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setLoading(true)
+        setError(null)
+
+        try {
+            const { error: loginError } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            })
+
+            if (loginError) throw loginError
+
+            // Redirect will be handled by AuthProvider/AppRouter usually, 
+            // but we can force it here if needed.
+            navigate("/")
+        } catch (err: any) {
+            setError(err.message || "Failed to login")
+        } finally {
+            setLoading(false)
+        }
+    }
+
     return (
 
         <section className="h-hero min-h-hero max-w-180 mx-auto relative flex flex-col items-center justify-center w-full md:mt-8 ">
@@ -19,14 +49,16 @@ export function LoginHero() {
                     {/* Form Header */}
                     <div className="space-y-2 md:space-y-3">
                         <h1 className="font-semibold text-2xl md:text-3xl"> Login to <span className="text-transparent bg-linear-to-br from-foreground to-primary to-65% bg-clip-text">DecoRight</span> </h1>
-                        <p className="text-ellipsis-2line text-2xs md:text-xs text-muted">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab dignissimos incidunt atque velit eos iusto deserunt sunt cupiditate quis illo facere nihil aliquid, magnam </p>
+                        <p className="text-ellipsis-2line text-2xs md:text-xs text-muted">Enter your credentials to access your account and manage your design requests.</p>
                     </div>
 
-                    <form action="." className="flex flex-col items-center gap-8">
+                    <form onSubmit={handleLogin} className="flex flex-col items-center gap-8">
 
                         <div className="flex flex-col gap-4 w-full">
-                            <EmailInput />
-                            <PasswordInput />
+                            <EmailInput value={email} onChange={(e: any) => setEmail(e.target.value)} required />
+                            <PasswordInput value={password} onChange={(e: any) => setPassword(e.target.value)} required />
+
+                            {error && <p className="text-xs text-danger text-center"> {error} </p>}
 
                             <div className="flex justify-between items-center w-full h-fit px-1">
                                 {/* Save Log Info */}
@@ -38,7 +70,13 @@ export function LoginHero() {
                             </div>
                         </div>
 
-                        <button type="submit" className="font-semibold text-white/95 w-full px-4 p-2 bg-primary rounded-xl" > Login </button>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="font-semibold text-white/95 w-full px-4 p-2 bg-primary rounded-xl disabled:opacity-50"
+                        >
+                            {loading ? "Logging in..." : "Login"}
+                        </button>
                     </form>
 
                     <div className="flex flex-col items-center w-full">

@@ -15,6 +15,7 @@ const Project = lazy(() => import('@/pages/Public/Project'));
 
 const Signup = lazy(() => import('@/pages/Public/Signup'));
 const Login = lazy(() => import('@/pages/Public/Login'));
+const Verify = lazy(() => import('@/pages/Public/VerifyOtpPage'));
 
 const ClientHome = lazy(() => import('@/pages/Client/Gallery'));
 const ClientChat = lazy(() => import('@/pages/Client/Chat'));
@@ -36,21 +37,22 @@ export default function AppRoutes() {
         {/* public routes */}
         <Route element={<PublicLayout />}>
           <Route path={PATHS.LANDING} element={<Landing />} />
-          <Route path={PATHS.ABOUT} element={<About/>} />
-          <Route path={PATHS.CONTACT} element={<Contact/>} />
-          <Route path={PATHS.SERVICE_LIST} element={<ServiceList/>} />
-          <Route path={PATHS.PROJECT_LIST} element={<ProjectList/>} />
-          <Route path={PATHS.PROJECT_DETAIL} element={<Project/>} />
+          <Route path={PATHS.ABOUT} element={<About />} />
+          <Route path={PATHS.CONTACT} element={<Contact />} />
+          <Route path={PATHS.SERVICE_LIST} element={<ServiceList />} />
+          <Route path={PATHS.PROJECT_LIST} element={<ProjectList />} />
+          <Route path={PATHS.PROJECT_DETAIL} element={<Project />} />
 
-          <Route path={PATHS.LOGIN} element={<Login/>} />
-          <Route path={PATHS.SIGNUP} element={<Signup/>} />
+          <Route path={PATHS.LOGIN} element={<Login />} />
+          <Route path={PATHS.SIGNUP} element={<Signup />} />
+          <Route path={PATHS.VERIFY_OTP} element={<Verify />} />
         </Route>
 
         {/* client routes */}
         <Route element={<ClientLayout />}>
           <Route element={<ClientHome />} path={PATHS.CLIENT.ROOT} />
-          <Route element={<ClientRequestList />} path={PATHS.CLIENT.SERVICE_REQUEST_LIST}/>
-          <Route element={<ClientRequest />} path={PATHS.CLIENT.SERVICE_REQUEST}/>
+          <Route element={<ClientRequestList />} path={PATHS.CLIENT.SERVICE_REQUEST_LIST} />
+          <Route element={<ClientRequest />} path={PATHS.CLIENT.SERVICE_REQUEST} />
           <Route element={<ClientGallery />} path={PATHS.CLIENT.GALLERY} />
           <Route element={<ClientChat />} path={PATHS.CLIENT.CHAT} />
           <Route element={<ClientChatRoom />} path={PATHS.CLIENT.CHAT_ROOM} />

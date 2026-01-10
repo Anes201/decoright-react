@@ -1,5 +1,5 @@
 
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase"; // your initialized client
 import type { AuthContextType, AuthUser } from "@/types/auth";
 
@@ -27,12 +27,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .from("profiles")
         .select("role")
         .eq("id", session.user.id)
-        .single();
+        .maybeSingle();
+
+      const rawRole = profile?.role || 'customer';
+      // Normalize role: DB uses 'customer'/'admin' but app expects 'client'/'admin'
+      const role = rawRole.toLowerCase() === 'customer' ? 'client' : rawRole.toLowerCase() as any;
 
       setUser({
         id: session.user.id,
         email: session.user.email!,
-        role: profile.role,
+        role: role,
       });
 
       setLoading(false);
@@ -54,3 +58,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}
