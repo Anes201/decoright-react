@@ -23,7 +23,7 @@ export function ProjectCard ({project, index}: {project: {title: string; date: s
                 </div>
                 <div className="h-fit">
                     <div className="flex gap-2">
-                        <h3 className="font-medium text-xs md:text-sm"> {project.title} </h3>
+                        <h3 className="font-medium text-xs"> {project.title} </h3>
                         <div className="flex h-fit gap-1 text-muted ml-auto px-1">
                             {/* Placeholder for future icons or actions */}
                             <div className="flex items-center gap-0.5 pt-0.5">
@@ -59,22 +59,5 @@ export function ProjectCardList () {
             ))}
 
         </ul>
-    )
-}
-
-export function ProjectListLayout () {
-    return (
-        <section className="content-container relative flex flex-col gap-6 w-full px-3 sm:px-6 md:px-8">
-            {/* Section Header */}
-            <SectionHeader
-                name='Portfolio & Projects Gallery'
-                title='Browse our previous projects from our showcase'
-                desc='A curated selection of our finest interior design projects, highlighting our commitment to quality, creativity, and client satisfaction. Explore the diverse styles and innovative solutions that define our work.'
-            />
-
-            {/* Project Cards */}
-            <ProjectCardList/>
-
-        </section>
     )
 }

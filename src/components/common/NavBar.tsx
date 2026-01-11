@@ -4,13 +4,14 @@ import { Link } from "react-router-dom"
 import { useState } from "react"
 
 import Logo from "/public/vite.svg"
-import { ICONS } from "../../icons"
-import { userIsAuthenticated } from "../../constants"
+import { ICONS } from "@/icons"
+import { userIsAuthenticated, userIsStaff } from "@/constants"
 
-import { publicNavItems, clientNavItems } from "../../constants"
-import { MenuCard } from "../ui/MenuCard"
-import { PCTALink, SCTALink } from "../ui/CTA"
+import { publicNavItems, clientNavItems } from "@/constants"
+import { MenuCard } from "@components/ui/MenuCard"
+import { PCTALink, SCTALink } from "@components/ui/CTA"
 import { PATHS } from "@/routers/Paths"
+import LogoutButton from "@components/common/Confirm"
 
 
 export function NavLogo () {
@@ -45,15 +46,30 @@ export function NavLinks () {
 export function AuthenticatedUserActins(){
     return (
         <>
+            { userIsStaff
+            ?
+                <>
+                {/* Request Project */}
+                <Link to={PATHS.ADMIN.CREATE_PROJECT} title="Create Project" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
+                    Create a Project
+                </Link>
 
-            {/* Request Project */}
-            <Link to={PATHS.CLIENT.SERVICE_REQUEST} title="Request Service" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-primary/45 bg-surface/10 rounded-full">
-                Request Service
-            </Link>
+                <Link to={PATHS.ADMIN.DASHBOARD} title="Dashboard Panel" className="content-center p-2 border border-muted/15 bg-surface/75 rounded-full">
+                    <ICONS.presentationChartLine className="size-5 md:size-6" />
+                </Link>
+                </>
 
+            :
+                <>
+                {/* Request Project */}
+                <Link to={PATHS.CLIENT.SERVICE_REQUEST} title="Request Service" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-primary/45 bg-surface/75 rounded-full">
+                    Request Service
+                </Link>
+                </>
+            }
             {/* Chat Nav Page */}
-            <Link to={PATHS.CLIENT.CHAT} title="Chats" className="relative content-center p-2 border border-primary/45 bg-primary/10 border-muted/16 bg-surface/10 rounded-full">
-                { ICONS.chat({className:'size-5 md:size-6'}) }
+            <Link to={PATHS.ADMIN.CHAT} title="Chats" className="relative content-center p-2 border border-primary/45 border-muted/16 bg-surface/75 rounded-full">
+                <ICONS.chat className="size-5 md:size-6" />
                 <span className="absolute flex size-3 top-0 left-0">
                     <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
                     <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
@@ -61,10 +77,9 @@ export function AuthenticatedUserActins(){
             </Link>
 
             {/* User Profile Nav Page */}
-            <Link to={PATHS.CLIENT.PROFILE} title="My Profile" className="max-md:hidden content-center p-2 border border-muted/15 bg-surface/10 rounded-full">
-                { ICONS.user({className:'size-5 md:size-6'}) }
+            <Link to={PATHS.CLIENT.PROFILE} title="My Profile" className="max-md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full">
+                <ICONS.user className="size-5 md:size-6" />
             </Link>
-
         </>
     )
 }
@@ -81,7 +96,6 @@ export function AnonymousUserActins(){
         </>
     )
 }
-
 
 
 export function PublicNavMenuItems () {
@@ -110,9 +124,29 @@ export function PublicNavMenuItems () {
 }
 
 export function ClientNavMenuItems () {
+
+
     return (
 
         <>
+        {userIsStaff &&
+            <li id="admin-dashboard-nav-menu-item" className="w-full">
+                <Link to={PATHS.ADMIN.DASHBOARD} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15">
+                    <div className="flex content-center gap-2">
+                        {/* Icon */}
+                        <ICONS.presentationChartLine/>
+                        {/* Label */}
+                        <span className="font-medium text-sm"> Dashboard </span>
+                    </div>
+
+                    {/* Context */}
+                    <div className="w-full">
+                        <p className="text-2xs text-muted"> Admin dashboard & control panel  </p>
+                    </div>
+                </Link>
+            </li>
+        }
+
         {clientNavItems.map((item, index) => (
             <li key={index} className="w-full">
                 <Link to={item.path} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15">
@@ -120,7 +154,7 @@ export function ClientNavMenuItems () {
                         {/* Icon */}
                         {/* { ICONS.informationCircle({}) } */}
                         {/* Label */}
-                        <h3 className="font-medium text-sm"> {item.label} </h3>
+                        <span className="font-medium text-sm"> {item.label} </span>
                     </div>
 
                     {/* Context */}
@@ -130,6 +164,17 @@ export function ClientNavMenuItems () {
                 </Link>
             </li>
         ))}
+
+        <li id="logout-nav-menu-item">
+            <LogoutButton className="flex flex-col gap-1 w-full h-full px-2 py-4 border-b border-muted/15">
+                <div className="flex content-center gap-2">
+                    {/* Icon */}
+                    <ICONS.arrowRightStartOnRectangle />
+                    {/* Label */}
+                    <span className="font-medium text-sm"> Logout </span>
+                </div>
+            </LogoutButton>
+        </li>
         </>
     )
 }
@@ -148,7 +193,7 @@ export function NavActions () {
                 : <AnonymousUserActins/>}
 
                 {/* Menu Trigger */}
-                <button type="button" title="Menu" className="content-center p-2 border border-muted/15 bg-surface/10 rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>
+                <button type="button" title="Menu" className="content-center p-2 border border-muted/15 bg-surface/75 rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>
                     { ICONS.menu({className:'size-6'}) }
                 </button>
             </div>
@@ -178,12 +223,21 @@ export function NavBar () {
 
     return (
 
-        <div className="navbar-height absolute flex justify-between gap-2 md:gap-4 w-full px-3 sm:px-6 md:px-9">
+        <div className="navbar-height absolute flex justify-between gap-2 md:gap-4 w-full px-3 sm:px-6 md:px-9 z-30">
             <NavLogo/>
-            <nav className="flex items-center w-fit">
-                { !userIsAuthenticated && <NavLinks/> }
-                <NavActions/>
-            </nav>
+
+            { userIsAuthenticated
+            ?
+                <nav className="flex items-center justify-end w-full">
+                    <NavActions/>
+                </nav>
+            :
+                <nav className="flex items-center w-fit">
+                    <NavLinks/>
+                    <NavActions/>
+                </nav>
+            }
+
         </div>
 
 

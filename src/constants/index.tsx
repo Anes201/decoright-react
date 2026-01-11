@@ -9,6 +9,12 @@ import imgRoom1 from "/public/r1.svg"
 import user from "/user.png"
 import { PATHS } from "@/routers/Paths"
 
+import SpacesPlaning from "/public/services/IMG_3766.jpg";
+import ColorConsultation from "/public/services/IMG_3767.jpg";
+import ExteriorDesign from "/public/services/IMG_3768.jpg";
+import ProjectManaging from "/public/services/IMG_3771.jpg";
+import RestructuringRedesign from "/public/services/IMG_3765.jpg";
+
 export const images = [
     image1,
     image2,
@@ -21,14 +27,26 @@ export const images = [
 ]
 
 export const userIsAuthenticated = true;
+export const userIsStaff = true;
+export const userPhoneIsVerified = false;
+
+export const adminNavItems = [
+    {label: 'Dashboard', path: PATHS.ADMIN.DASHBOARD},
+
+    {label: 'Chats', path: PATHS.ADMIN.CHAT},
+
+    {label: 'Users', path: PATHS.ADMIN.USERS},
+    {label: 'Service Requests', path: PATHS.ADMIN.SERVICE_REQUEST_LIST},
+    {label: 'Create a Project', path: PATHS.ADMIN.CREATE_PROJECT},
+]
 
 export const clientNavItems = [
     {label: 'Home', path: PATHS.CLIENT.ROOT},
 
     {label: 'Chats', path: PATHS.CLIENT.CHAT},
 
-    {label: 'Request a Service', path: PATHS.CLIENT.SERVICE_REQUEST_LIST},
-    {label: 'My Requests', path: PATHS.CLIENT.SERVICE_REQUEST},
+    {label: 'Request a Service', path: PATHS.CLIENT.SERVICE_REQUEST},
+    {label: 'My Requests', path: PATHS.CLIENT.SERVICE_REQUEST_LIST},
     {label: 'Gallery', path: PATHS.CLIENT.GALLERY},
 
     {label: 'Projects', path: PATHS.PROJECT_LIST},
@@ -113,16 +131,13 @@ export const galleries = [
     // { label: 'Retail', value: 'retail', icon: 'retail' },
 ]
 
-
 export const serviceTypes = [
-    {label: 'Interior Design', value: 'interior-design', imgSrc: image1},
-    {label: 'Space Planning', value: 'space-planning', imgSrc: image2},
-    {label: 'Furniture Selection', value: 'furniture-selection', imgSrc: image3},
-    {label: 'Color Consultation', value: 'color-consultation', imgSrc: image4},
-    {label: 'Project Management', value: 'project-management', imgSrc: image5},
-    {label: 'Redesign', value: 'redesign', imgSrc: image6},
+    {label: 'Space Planning', value: 'space-planning', src: SpacesPlaning, description: 'Practical layouts and furniture plans that boost usability and circulation while matching your style.'},
+    {label: 'Exterior Design', value: 'furniture-selection', src: ExteriorDesign, description: 'Make your home stand out — façades, landscaping, and outdoor lighting that look great and work well.'},
+    {label: 'Color Consultation', value: 'color-consultation', src: ColorConsultation, description: 'Get tailored palettes and finish advice (with sample testing) to set the perfect mood for each room.'},
+    {label: 'Project Management', value: 'project-management', src: ProjectManaging, description: 'We’ll coordinate contractors, schedules, and budgets so your project runs smoothly from start to finish.'},
+    {label: 'Restructuring Redesign', value: 'redesign', src: RestructuringRedesign, description: 'Reconfigure layouts and structure to improve flow, safety, and comfort — smart changes that refresh your space.'},
 ]
-
 
 export const serviceSpaceTypes = [
     {label: 'Interior Design', value: 'interior-design'},
@@ -139,11 +154,10 @@ export const serviceSpaceTypes = [
     {label: 'Redesign', value: 'redesign'},
 ]
 
-export const serviceDesignStyle = [
-    {label: 'Modern', value: 'modern'},
-    {label: 'Classic', value: 'classic'},
-    {label: 'Rustic', value: 'rustic'},
-    {label: 'Industrial', value: 'industrial'},
+export const projectVisibility = [
+    {label: 'Public', value: 'public'},
+    {label: 'Private Clients Only', value: 'authenticated_only'},
+    {label: 'Hidden', value: 'hidden'},
 ]
 
 export const LegalLinks = [
@@ -203,9 +217,9 @@ export const projects = [
     ];
 
 export const requests = [
-    {id:'DO146', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'pending', status_label:'Pending', chat_url:'/customer/chats/chatId',},
-    {id:'DO147', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'in_progress', status_label:'In Progress', chat_url:'/customer/chats/chatId'},
-    {id:'DO159', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'canceled', status_label:'Canceled', chat_url:'/customer/chats/chatId'},
-    {id:'DO447', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'complete', status_label:'Complete', chat_url:'/customer/chats/chatId'},
-    {id:'DO447', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'rejected', status_label:'Rejected', chat_url:'/customer/chats/chatId'},
+    {id:'DO146', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'pending', status_label:'Pending', chat_url:'/chats/chatId',},
+    {id:'DO137', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'in_progress', status_label:'In Progress', chat_url:'/chats/chatId'},
+    {id:'DO159', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'canceled', status_label:'Canceled', chat_url:'/chats/chatId'},
+    {id:'DO467', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'complete', status_label:'Complete', chat_url:'/chats/chatId'},
+    {id:'DO417', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'rejected', status_label:'Rejected', chat_url:'/chats/chatId'},
 ];

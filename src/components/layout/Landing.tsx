@@ -3,6 +3,8 @@ import { Link } from "react-router-dom"
 
 import HeroImgSrc from "/public/hero-image.jpg"
 import { ICONS } from "../../icons"
+import { PATHS } from "@/routers/Paths"
+import { PCTALink, SCTALink } from "../ui/CTA"
 
 
 export function HeroContentCheckListItem({content}:{content:string}) {
@@ -41,10 +43,8 @@ export function HeroContent () {
 export function HeroCTA () {
     return (
         <div className="flex max-md:flex-col gap-4">
-            <Link to={'/'} className="content-center text-center font-medium text-sm text-emphasis md:w-fit px-4 py-2 bg-primary rounded-xl"> Services </Link>
-            <Link to={'/'} className="flex gap-2 items-center justify-center text-center font-medium text-sm text-foreground md:w-fit px-4 py-2 border-2 border-emphasis rounded-xl"> Catalog & Categories
-                {ICONS.chevronRight({className:'size-4 text-foreground'})}
-            </Link>
+            <PCTALink to={PATHS.SERVICE_LIST}> Services </PCTALink>
+            <SCTALink to={PATHS.PROJECT_LIST} className="flex items-center gap-2"> Projects & Categories {ICONS.chevronRight({className:'size-4 text-foreground'})}</SCTALink>
         </div>
     )
 }

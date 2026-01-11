@@ -1,12 +1,13 @@
 
 @import "tailwindcss";
+@plugin "tailwind-scrollbar-hide";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 :root {
-    --acme-background: oklch(0.94 0 0); /* light-mode background */
-    --acme-surface:    oklch(0.984 0 0); /* light-mode card */
-    --acme-emphasis:   oklch(1.00 0 0); /* light-mode highlights */
+    --acme-background: oklch(0.90 0 0); /* light-mode background */
+    --acme-surface:    oklch(0.96 0 0); /* light-mode card */
+    --acme-emphasis:   oklch(0.996 0 0); /* light-mode highlights */
     --acme-foreground: oklch(0.00 0 0); /* <-- primary readable text */
     --acme-muted:      oklch(0.40 0 0); /* light-mode subtle text/borders */
 
@@ -57,7 +58,6 @@
 
 @layer base {
 
-
     *{
         scroll-behavior: smooth;
         margin: 0;
@@ -75,13 +75,14 @@
         @apply flex flex-col items-center overflow-x-hidden;
     }
 
+    .navbar-height {
+        @apply h-20 md:h-22;
+    }
+
     main section {
         @apply pt-22 md:pt-24;
     }
 
-    .navbar-height {
-        @apply h-20 md:h-22;
-    }
 
     section {
         @apply px-3 sm:px-6 md:px-9;
@@ -142,7 +143,7 @@
     }
 
     .active {
-        @apply bg-emphasis
+        @apply bg-emphasis/50;
     }
 }
 
@@ -204,7 +205,7 @@
     /* react select lib */
 
     .react-select__control {
-        @apply text-sm text-muted px-3 border border-muted/25 hover:border-muted/45 focus-within:border-primary/45 rounded-xl bg-emphasis/75;
+        @apply text-sm text-muted px-3 border border-muted/25 hover:border-muted/45 focus-within:border-primary/45 rounded-lg bg-emphasis/75;
     }
 
     .react-select__value-container {
@@ -212,15 +213,25 @@
     }
 
     .react-select__menu {
-        @apply space-y-4 border border-muted/25 mt-2 py-2 rounded-xl bg-surface overflow-hidden;
+        @apply space-y-4 border border-muted/25 mt-2 rounded-lg bg-surface overflow-hidden;
     }
 
     .react-select__menu-list {
-        @apply max-h-60 overflow-y-auto;
+        @apply max-h-60 overflow-y-auto py-2;
     }
 
     .react-select__option {
-        @apply p-2 border-b border-muted/10 hover:bg-primary/15 overflow-y-auto;
+        @apply p-2 border-b border-muted/10 hover:bg-emphasis overflow-y-auto cursor-pointer;
+    }
+
+    /* confirm popup */
+
+    .confirm-dialog-overlay {
+        @apply absolute top-0 left-0 flex items-center justify-center w-full h-full z-100 bg-muted/45;
+    }
+
+    .confirm-dialog {
+        @apply p-8 bg-background;
     }
 }
 

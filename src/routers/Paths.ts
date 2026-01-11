@@ -21,14 +21,21 @@ export const PATHS = {
         SERVICE_REQUEST_LIST: "/service-request-list",
         SERVICE_REQUEST: "/service-request", // helper for dynamic links
         CHAT: "/chats",
-        CHAT_ROOM: "/chat/:id",
+        CHAT_ROOM: "/chats/:id",
         chatRoom: (id: string) => `/chat/${encodeURIComponent(id)}`,
 
         GALLERY: "/gallery",
+
+        VERIFY_PHONE: "/",
     },
 
     ADMIN: {
         ROOT: "/admin/dashboard",
+        DASHBOARD: "/admin/dashboard",
+        CHAT: "/admin/chats",
+        CHAT_ROOM: "/admin/chats/:id",
         USERS: "/admin/users",
+        SERVICE_REQUEST_LIST: "/admin/service-request-list",
+        CREATE_PROJECT: "/admin/create-project",
     },
 } as const;

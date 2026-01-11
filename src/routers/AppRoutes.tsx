@@ -25,9 +25,12 @@ const ClientRequest = lazy(() => import('@/pages/Client/Request'));
 const ClientProfile = lazy(() => import('@/pages/Client/Profile'));
 const ClientProfileEdit = lazy(() => import('@/pages/Client/ProfileEdit'));
 
-
 const AdminDashboard = lazy(() => import('@/pages/Admin/Dashboard'));
-const AdminUsers = lazy(() => import('@/pages/Admin/UserList'));
+const AdminChat = lazy(() => import('@/pages/Admin/Chat'));
+const AdminChatRoom = lazy(() => import('@/pages/Admin/Chat'));
+const AdminUsers = lazy(() => import('@/pages/Admin/Users'));
+const AdminServiceRequests = lazy(() => import('@/pages/Admin/ServiceRequests'));
+const AdminProjectCreate = lazy(() => import('@/pages/Admin/ProjectCreate'));
 
 export default function AppRoutes() {
   return (
@@ -61,7 +64,11 @@ export default function AppRoutes() {
         {/* admin routes */}
         <Route element={<AdminLayout />}>
           <Route element={<AdminDashboard />} path={PATHS.ADMIN.ROOT} />
+          <Route element={<AdminChat />} path={PATHS.ADMIN.CHAT} />
+          <Route element={<AdminChatRoom />} path={PATHS.ADMIN.CHAT_ROOM} />
           <Route element={<AdminUsers />} path={PATHS.ADMIN.USERS} />
+          <Route element={<AdminServiceRequests />} path={PATHS.ADMIN.SERVICE_REQUEST_LIST} />
+          <Route element={<AdminProjectCreate />} path={PATHS.ADMIN.CREATE_PROJECT} />
         </Route>
 
         {/* fallback for unknown routes */}

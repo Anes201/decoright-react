@@ -2,13 +2,16 @@
 import { BrowserRouter } from "react-router-dom";
 // import { AuthProvider } from "@/contexts/AuthProvider";
 import AppRoutes from "@/routers/AppRoutes";
+import ConfirmProvider from "@components/confirm/ConfirmProvider";
 
 function App() {
   return (
     <BrowserRouter>
       {/* <AuthProvider>
       </AuthProvider> */}
-      <AppRoutes />
+      <ConfirmProvider>
+        <AppRoutes />
+      </ConfirmProvider>
     </BrowserRouter>
   );
 }

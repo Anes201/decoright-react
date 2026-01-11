@@ -56,20 +56,3 @@ export function FAQList () {
         </ul>
     )
 }
-
-export function FAQ () {
-    return (
-        <section className="content-container flex flex-col gap-16 w-full my-12 px-4 sm:px-6 md:px-8">
-
-            {/* Section Header */}
-            <SectionHeader
-                title="Most frequently asked questions by our users"
-                desc="A curated selection of our finest interior design projects, highlighting our commitment to quality, creativity, and client satisfaction. Explore the diverse styles and innovative solutions that define our work."
-            />
-
-            {/* FAQ List */}
-            <FAQList/>
-
-        </section>
-    )
-}

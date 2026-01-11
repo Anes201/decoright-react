@@ -22,7 +22,7 @@ export default function FileRow({
   };
 
   return (
-    <li className="flex gap-2 w-full h-full p-2 bg-surface rounded-xl" role="listitem" data-id={file.id}>
+    <li className="flex gap-2 w-full h-full p-2 bg-surface rounded-lg" role="listitem" data-id={file.id}>
       <div className="flex items-center justify-center w-1/3 md:w-1/7 aspect-square border border-muted/15 rounded-lg">
         <FileIcon mime={file.mime} name={file.name} />
       </div>

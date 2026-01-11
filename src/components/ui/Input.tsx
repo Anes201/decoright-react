@@ -1,7 +1,7 @@
 
 import React, { useLayoutEffect, useRef, useState } from "react";
 
-import { ICONS } from "../../icons";
+import { ICONS } from "@/icons";
 
 export function Input({className, children, ...props}:any) {
     return (

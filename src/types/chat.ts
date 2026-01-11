@@ -26,8 +26,13 @@ export type FileMsg = BaseMessage & {
 
 export type Message = TextMsg | VoiceMsg | FileMsg;
 
-export type ClientContact = {
+export type ClientContact = any;
+
+export type Contact = {
     id: string,
+    name?:string,
+    avatar?:string,
+    status_label?:string,
     type: string,
     style: string,
     status: string,
@@ -35,4 +40,4 @@ export type ClientContact = {
     lastMessageTime: string,
     isRead: boolean,
     isOnline: boolean,
-}
+};
