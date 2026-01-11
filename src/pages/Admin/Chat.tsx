@@ -35,6 +35,7 @@ export default function AdminChatPage() {
     <main>
       <ChatView {...commonProps} contacts={requests} isAdmin renderRightHeaderActions={({selectedContact}) => (
         <div className="flex gap-2">
+          {selectedContact} {/* not useable for now */}
           <button onClick={() => {/* open tooling */}}>Inspect</button>
           <button onClick={() => {/* escalate */}}>Escalate</button>
         </div>

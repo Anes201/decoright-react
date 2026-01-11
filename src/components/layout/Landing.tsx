@@ -1,8 +1,6 @@
 
-import { Link } from "react-router-dom"
-
 import HeroImgSrc from "/public/hero-image.jpg"
-import { ICONS } from "../../icons"
+import { ICONS } from "@/icons"
 import { PATHS } from "@/routers/Paths"
 import { PCTALink, SCTALink } from "../ui/CTA"
 

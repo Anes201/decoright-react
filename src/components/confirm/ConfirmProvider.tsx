@@ -30,6 +30,7 @@ export default function ConfirmProvider({ children }: { children: ReactNode }) {
   const confirm = useCallback((opts: ConfirmOptions = {}) => {
     const id = nextId.current++;
     return new Promise<ConfirmResult>((resolve) => {
+      waiting // not useable for now
       // store resolve callback
       setWaiting((prev) => ({ ...prev, [id]: resolve }));
       setDialog({ ...opts, open: true, _id: id });

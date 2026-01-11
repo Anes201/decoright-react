@@ -1,8 +1,7 @@
 
 import { adminNavItems } from "@/constants"
 import Logo from "/public/vite.svg"
-import { Link, NavLink } from "react-router-dom"
-import { PATHS } from "@/routers/Paths"
+import { NavLink } from "react-router-dom"
 import { ICONS } from "@/icons"
 import LogoutButton from "./Confirm"
 

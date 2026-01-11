@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import { SectionHeader } from '../ui/SectionHeader';
 
 export function FAQList () {
     const faqData = [

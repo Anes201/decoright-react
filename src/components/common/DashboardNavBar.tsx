@@ -8,11 +8,9 @@ import { useState } from "react"
 
 import Logo from "/public/vite.svg"
 import { ICONS } from "@/icons"
-import { adminNavItems, userIsAuthenticated } from "@/constants"
+import { adminNavItems } from "@/constants"
 
-import { publicNavItems, clientNavItems } from "@/constants"
 import { MenuCard } from "@components/ui/MenuCard"
-import { PCTALink, SCTALink } from "@components/ui/CTA"
 import { PATHS } from "@/routers/Paths"
 
 

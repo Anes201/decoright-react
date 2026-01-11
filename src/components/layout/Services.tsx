@@ -1,7 +1,5 @@
 
-import { serviceTypes } from "../../constants/index"
-import { SectionHeader } from '../ui/SectionHeader';
-import ZoomImage from "../ui/ZoomImage";
+import { serviceTypes } from "@/constants/index"
 
 export function ServiceCardList () {
     return (

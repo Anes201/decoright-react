@@ -2,8 +2,6 @@
 
 import { Link } from "react-router-dom"
 
-import { SectionHeader } from "../ui/SectionHeader";
-
 import { projects } from "../../constants";
 import { ICONS } from "../../icons";
 
