@@ -1,15 +1,17 @@
 
 export const PATHS = {
-    LANDING: "/",
+    ROOT: "/",
     ABOUT: "/about-us",
 
     SERVICE_LIST: "/service-list",
 
     PROJECT_LIST: "/project-list",
-    PROJECT_DETAIL: "/client/projects/:slug",   // pattern for router
-    projectDetail: (slug: string) => `/client/projects/${encodeURIComponent(slug)}`, // generator for links
+    PROJECT_DETAIL: "/projects/:slug",   // pattern for router
+    projectDetail: (slug: string) => `/projects/${encodeURIComponent(slug)}`, // generator for links
+    projectType: (slug: string) => `/projects/${encodeURIComponent(slug)}`, // generator for links
 
     CONTACT: "/contact",
+    GALLERY: "/gallery",
 
     LOGIN: "/login",
     SIGNUP: "/signup",
@@ -17,25 +19,25 @@ export const PATHS = {
     CLIENT: {
         ROOT: "/",
         PROFILE: "/profile",
-        PROFILE_EDIT: "/profile-edit",
-        SERVICE_REQUEST_LIST: "/service-request-list",
-        SERVICE_REQUEST: "/service-request", // helper for dynamic links
+        PROFILE_EDIT: "/profile/edit",
+        REQUEST_SERVICE_LIST: "/request-service/list",
+        REQUEST_SERVICE: "/request-service/create", // helper for dynamic links
         CHAT: "/chats",
         CHAT_ROOM: "/chats/:id",
         chatRoom: (id: string) => `/chat/${encodeURIComponent(id)}`,
 
-        GALLERY: "/gallery",
 
         VERIFY_PHONE: "/",
     },
 
     ADMIN: {
-        ROOT: "/admin/dashboard",
+        ROOT: "/admin",
         DASHBOARD: "/admin/dashboard",
         CHAT: "/admin/chats",
         CHAT_ROOM: "/admin/chats/:id",
         USERS: "/admin/users",
-        SERVICE_REQUEST_LIST: "/admin/service-request-list",
-        CREATE_PROJECT: "/admin/create-project",
+        REQUEST_SERVICE_LIST: "/admin/request-service-list",
+        PROJECT_CREATE: "/admin/project/create",
+        SETTINGS: "/admin/settings",
     },
 } as const;

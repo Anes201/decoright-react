@@ -41,7 +41,7 @@ function NavActionList() {
         <ul className="flex flex-col gap-2 w-full h-fit p-2">
             <li key={'action-item-logout'}>
                 <LogoutButton className="flex justify-between font-medium text-sm p-2 w-full border border-muted/15 hover:bg-surface/75 rounded-lg">
-                    <span className="px-2">Logout</span>
+                    <span className="px-2"> Logout </span>
                     <ICONS.arrowRightStartOnRectangle/>
                 </LogoutButton>
             </li>

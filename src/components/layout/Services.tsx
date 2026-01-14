@@ -14,8 +14,8 @@ export function ServiceCardList () {
                         <img src={service.src} alt="Service Image"/>
                     </div>
 
-                    <h3 className="text-lg font-medium mb-1"> {service.label} </h3>
-                    <p className="text-2xs text-muted/75"> {service.description} </p>
+                    <h3 className="text-lg font-medium mb-0.5"> {service.label} </h3>
+                    <p className="text-2xs md:text-xs text-muted/75"> {service.description} </p>
                 </li>
             ))}
 

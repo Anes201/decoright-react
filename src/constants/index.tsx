@@ -31,13 +31,14 @@ export const userIsStaff = true;
 export const userPhoneIsVerified = false;
 
 export const adminNavItems = [
-    {label: 'Dashboard', path: PATHS.ADMIN.DASHBOARD},
+    {label: 'Analytics', path: PATHS.ADMIN.ROOT},
 
     {label: 'Chats', path: PATHS.ADMIN.CHAT},
 
     {label: 'Users', path: PATHS.ADMIN.USERS},
-    {label: 'Service Requests', path: PATHS.ADMIN.SERVICE_REQUEST_LIST},
-    {label: 'Create a Project', path: PATHS.ADMIN.CREATE_PROJECT},
+    {label: 'Service Requests', path: PATHS.ADMIN.REQUEST_SERVICE_LIST},
+    {label: 'Create a Project', path: PATHS.ADMIN.PROJECT_CREATE},
+    {label: 'Settings & Policies', path: PATHS.ADMIN.SETTINGS},
 ]
 
 export const clientNavItems = [
@@ -45,9 +46,9 @@ export const clientNavItems = [
 
     {label: 'Chats', path: PATHS.CLIENT.CHAT},
 
-    {label: 'Request a Service', path: PATHS.CLIENT.SERVICE_REQUEST},
-    {label: 'My Requests', path: PATHS.CLIENT.SERVICE_REQUEST_LIST},
-    {label: 'Gallery', path: PATHS.CLIENT.GALLERY},
+    {label: 'Request a Service', path: PATHS.CLIENT.REQUEST_SERVICE},
+    {label: 'My Requests', path: PATHS.CLIENT.REQUEST_SERVICE_LIST},
+    {label: 'Gallery', path: PATHS.GALLERY},
 
     {label: 'Projects', path: PATHS.PROJECT_LIST},
     {label: 'Services', path: PATHS.SERVICE_LIST},
@@ -55,7 +56,7 @@ export const clientNavItems = [
 ]
 
 export const publicNavItems = [
-    {label: 'Home', path: PATHS.LANDING},
+    {label: 'Home', path: PATHS.ROOT},
 
     {label: 'Projects', path: PATHS.PROJECT_LIST},
     {label: 'Services', path: PATHS.SERVICE_LIST},
@@ -169,49 +170,57 @@ export const projects = [
         {
             title: 'Interior Design Furniture Selection & Project Management Decr Furniture Selection & Project Management Decr',
             date: '6 months ago',
-            imgSrc: images[0]
+            src: images[0],
+            alt: "Interior Design"
         },
 
         {
             title: 'Furniture Selection Interior Design',
             date: '2 months ago',
-            imgSrc: images[2]
+            src: images[2],
+            alt: "Interior Design"
         },
 
         {
             title: 'Interior Redesign & Color Consultation',
             date: '18 days ago',
-            imgSrc: images[3]
+            src: images[3],
+            alt: "Interior Design"
         },
 
         {
             title: 'Space Planning & Color Consultation',
             date: '3 years ago',
-            imgSrc: images[4]
+            src: images[4],
+            alt: "Interior Design"
         },
 
         {
             title: 'Project Management & Space Planning',
             date: '11 months ago',
-            imgSrc: images[5]
+            src: images[5],
+            alt: "Interior Design"
         },
 
         {
             title: 'Redesign & Interior Design',
             date: '4 years ago',
-            imgSrc: images[6]
+            src: images[6],
+            alt: "Interior Design"
         },
 
         {
             title: 'Furniture Selection & Redesign',
             date: '3 weeks ago',
-            imgSrc: images[0]
+            src: images[0],
+            alt: "Interior Design"
         },
 
         {
             title: 'Color Consultation & Interior Design',
             date: '9 weeks ago',
-            imgSrc: images[1]
+            src: images[1],
+            alt: "Interior Design"
         },
 
     ];
@@ -223,3 +232,230 @@ export const requests = [
     {id:'DO467', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'complete', status_label:'Complete', chat_url:'/chats/chatId'},
     {id:'DO417', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'rejected', status_label:'Rejected', chat_url:'/chats/chatId'},
 ];
+
+import Children from "/public/showcases/IMG_3756.jpg"
+import Clinics from "/public/showcases/IMG_3759.jpg"
+import Shops from "/public/showcases/IMG_37554.jpg"
+import Reception from "/public/showcases/IMG_3758.jpg"
+import Offices from "/public/showcases/IMG_3760.jpg"
+import Houses from "/public/showcases/IMG_3762.jpg"
+import Cafes from "/public/showcases/IMG_3761.jpg"
+import Schools from "/public/showcases/IMG_3754.jpg"
+import { Activity } from "react"
+import { ICONS } from "@/icons"
+
+export const showcases = [
+    {id:'1', title:"Children's rooms", alt: "children's rooms", src:Children, budget:"Popular"},
+    {id:'2', title:"Clinics", alt: "clinics", src:Clinics},
+    {id:'3', title:"Shops", alt: "shops", src:Shops},
+    {id:'4', title:"Reception and waiting rooms", alt: "reception and waiting rooms", src:Reception},
+    {id:'5', title:"Offices", alt: "offices", src:Offices, budget:"Top Rated"},
+    {id:'7', title:"Houses", alt: "houses", src:Houses},
+    {id:'8', title:"Cafes and small businesses", alt: "cafes and small businesses", src:Cafes},
+    {id:'6', title:"Private schools and nurseries", alt: "private schools and nurseries", src:Schools},
+]
+
+export const topKPICards = [
+    {id: '1', label:'Site visitors', data_value:'4250', value:'4,250'},
+    {id: '2', label:'Total requests', data_value:'120', value:'120'},
+    {id: '3', label:'Total completed requests', data_value:'108', value:'108'},
+    {id: '4', label:'Total unique clients', data_value:'95', value:'95'},
+    {id: '5', label:'Completion rate', data_value:'0.9', value:'90.0%'},
+]
+
+export const additionalKPICards = [
+    {id: '1', label:'Requests per client', data_value:'1.27', value:'1.27'},
+    {id: '2', label:'Daily avg requests', data_value:'10.4', value:'10.4 / day'},
+    {id: '3', label:'Avg completion time', data_value:'4.2', value:'4.2 days'},
+    {id: '4', label:'Request cancelation rate', data_value:'0.109', value:'10.9%'},
+]
+
+export const usersActivityLogs = [
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab eum, quas amet iure iste rerum ex vero hic voluptates',
+        date: 'Jan 13, 11:43',
+    },
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'quas amet iure iste rerum ex vero hic voluptates',
+        date: 'Jan 13, 11:43',
+    },
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'Created a new request',
+        date: 'Jan 13, 11:43',
+    },
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'quas amet iure iste rerum ex vero hic voluptates',
+        date: 'Jan 13, 11:43',
+    },
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'quas amet iure iste rerum ex vero hic voluptates',
+        date: 'Jan 13, 11:43',
+    },
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'quas amet iure iste rerum ex vero hic voluptates',
+        date: 'Jan 13, 11:43',
+    },
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'quas amet iure iste rerum ex vero hic voluptates',
+        date: 'Jan 13, 11:43',
+    },
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'quas amet iure iste rerum ex vero hic voluptates',
+        date: 'Jan 13, 11:43',
+    },
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'quas amet iure iste rerum ex vero hic voluptates',
+        date: 'Jan 13, 11:43',
+    },
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'quas amet iure iste rerum ex vero hic voluptates',
+        date: 'Jan 13, 11:43',
+    },
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'quas amet iure iste rerum ex vero hic voluptates',
+        date: 'Jan 13, 11:43',
+    },
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'quas amet iure iste rerum ex vero hic voluptates',
+        date: 'Jan 13, 11:43',
+    },
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'quas amet iure iste rerum ex vero hic voluptates',
+        date: 'Jan 13, 11:43',
+    },
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'quas amet iure iste rerum ex vero hic voluptates',
+        date: 'Jan 13, 11:43',
+    },
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'quas amet iure iste rerum ex vero hic voluptates',
+        date: 'Jan 13, 11:43',
+    },
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'quas amet iure iste rerum ex vero hic voluptates',
+        date: 'Jan 13, 11:43',
+    },
+    {
+        id:'1',
+        user:{
+            full_name: 'Michael Pearson',
+            img: images[7],
+            role: 'Client'
+        },
+        content: 'quas amet iure iste rerum ex vero hic voluptates',
+        date: 'Jan 13, 11:43',
+    },
+]
+
+// Sort by value in descending order
+export const topServicesByRequest = [
+    {id:'1', service_type:'Exterior Design', value:'98'},
+    {id:'2', service_type:'Project Managing', value:'72'},
+    {id:'3', service_type:'Restructuring Redesign', value:'65'},
+    {id:'4', service_type:'Color Consultation', value:'45'},
+    {id:'5', service_type:'Spaces Planning', value:'32'},
+]
+
+export const SocialMediaFields = [
+    {id:'1', label: 'Facebook', placeholder: 'https://facebook.com/example/', icon: <ICONS.informationCircle/> },
+    {id:'2', label: 'Facebook', placeholder: 'https://facebook.com/example/', icon: <ICONS.informationCircle/> },
+    {id:'3', label: 'Facebook', placeholder: 'https://facebook.com/example/', icon: <ICONS.informationCircle/> },
+    {id:'4', label: 'Facebook', placeholder: 'https://facebook.com/example/', icon: <ICONS.informationCircle/> },
+    {id:'5', label: 'Facebook', placeholder: 'https://facebook.com/example/', icon: <ICONS.informationCircle/> },
+]

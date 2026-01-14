@@ -50,7 +50,7 @@ export function AuthenticatedUserActins(){
             ?
                 <>
                 {/* Request Project */}
-                <Link to={PATHS.ADMIN.CREATE_PROJECT} title="Create Project" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
+                <Link to={PATHS.ADMIN.PROJECT_CREATE} title="Create Project" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
                     Create a Project
                 </Link>
 
@@ -62,7 +62,7 @@ export function AuthenticatedUserActins(){
             :
                 <>
                 {/* Request Project */}
-                <Link to={PATHS.CLIENT.SERVICE_REQUEST} title="Request Service" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-primary/45 bg-surface/75 rounded-full">
+                <Link to={PATHS.CLIENT.REQUEST_SERVICE} title="Request Service" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-primary/45 bg-surface/75 rounded-full">
                     Request Service
                 </Link>
                 </>

@@ -4,9 +4,10 @@ import { Link } from "react-router-dom"
 
 import { projects } from "../../constants";
 import { ICONS } from "../../icons";
+import { PATHS } from "@/routers/Paths";
 
 
-export function ProjectCard ({project, index}: {project: {title: string; date: string; imgSrc: string}, index: number}) {
+export function ProjectCard ({project, index}: {project: {title: string; date: string; src: string}, index: number}) {
 
     // const [liked, setLiked] = useState(false);
 
@@ -15,9 +16,9 @@ export function ProjectCard ({project, index}: {project: {title: string; date: s
 
         <li key={index} >
 
-            <Link to={'/project'} className="flex flex-col h-fit gap-1">
+            <Link to={PATHS.projectDetail('slug')} className="flex flex-col h-fit gap-1">
                 <div className="w-full aspect-video mb-2 overflow-hidden">
-                    <img src={project.imgSrc} alt="" className="object-cover h-full w-full rounded-xl" />
+                    <img src={project.src} alt="" className="object-cover h-full w-full rounded-xl" />
                 </div>
                 <div className="h-fit">
                     <div className="flex gap-2">

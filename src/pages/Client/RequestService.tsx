@@ -1,5 +1,5 @@
 
-import { RequestService } from "@components/layout/Request"
+import { RequestService } from "@components/layout/RequestServic"
 
 export default function RequestServicePage () {
     return (

@@ -1,11 +1,11 @@
 
-import { ProjectHero } from "@components/layout/Project"
+import { ProjectDetail } from "@/components/layout/ProjectDetail"
 
 export default function ProjectPage() {
     return (
 
         <main>
-            <ProjectHero/>
+            <ProjectDetail/>
         </main>
 
     )

@@ -70,7 +70,7 @@ export function HeroMetrics () {
 
 export function HeroImg () {
     return (
-        <div className="max-md:hidden w-full overflow-hidden">
+        <div className="max-md:hidden overflow-hidden">
             <img src={HeroImgSrc} alt="Hero Image" className="object-cover w-full h-full" />
         </div>
     )
@@ -99,7 +99,7 @@ export function Hero () {
                         </div>
 
                         {/* Metrics data & Ratings */}
-                        <HeroMetrics />
+                        {/* <HeroMetrics /> */}
 
                     </div>
 

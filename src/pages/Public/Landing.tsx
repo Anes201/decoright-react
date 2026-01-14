@@ -4,6 +4,7 @@ import { ServiceCardList } from "@components/layout/Services"
 import { ProjectCardList } from "@/components/layout/ProjectList"
 import { FAQList } from "@components/layout/FAQ"
 import { SectionHeader } from "@/components/ui/SectionHeader"
+import { ShowcaseCardList } from "@/components/layout/Showcase"
 
 export default function Landing () {
     return (
@@ -35,7 +36,7 @@ export default function Landing () {
                 />
 
                 {/* Project Cards */}
-                <ProjectCardList/>
+                <ShowcaseCardList />
 
             </section>
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import ZoomImage from "./ZoomImage";
 
 export type GalleryImage = { id: string; src: string; alt?: string; srcSet?: string };
 
@@ -23,7 +24,7 @@ export default function Gallery({
     return (
       <div className={`${className} select-none overflow-hidden`}>
         <div className="relative w-full h-full">
-          <img
+          <ZoomImage
             src={images[0].src}
             alt={images[0].alt ?? ""}
             className={`w-full h-full ${objectFit === "cover" ? "object-cover" : "object-contain"}`}
