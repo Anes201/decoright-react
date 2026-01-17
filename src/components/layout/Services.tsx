@@ -1,5 +1,6 @@
 
 import { serviceTypes } from "@/constants/index"
+import ZoomImage from "../ui/ZoomImage"
 
 export function ServiceCardList () {
     return (
@@ -11,7 +12,7 @@ export function ServiceCardList () {
                     <div className="absolute top-0 right-0 w-full h-full bg-surface/45 shadow-xs mask-t-to-transparent -z-10 rounded-2xl"></div>
                     <div className="absolute top-0 right-0 w-full h-full border border-muted/10 mask-b-to-transparent -z-10 rounded-2xl"></div>
                     <div className="w-full aspect-4/3 mb-4 overflow-hidden shadow-sm rounded-xl">
-                        <img src={service.src} alt="Service Image"/>
+                        <ZoomImage src={service.src} alt="Service Image"/>
                     </div>
 
                     <h3 className="text-lg font-medium mb-0.5"> {service.label} </h3>
@@ -19,7 +20,8 @@ export function ServiceCardList () {
                 </li>
             ))}
 
-            <li className="max-md:hidden relative p-4 w-full">
+            {/* Blank Card for Grid Alignment */}
+            {/* <li className="max-md:hidden relative p-4 w-full">
                 <div className="absolute top-0 right-0 w-full h-full bg-surface/45 shadow-xs mask-t-to-transparent -z-10 rounded-2xl"></div>
                 <div className="absolute top-0 right-0 w-full h-full border border-muted/10 mask-b-to-transparent -z-10 rounded-2xl"></div>
                 <div className="w-full aspect-4/3 mb-4 ring-1 ring-muted/10 overflow-hidden rounded-xl"></div>
@@ -29,7 +31,7 @@ export function ServiceCardList () {
                     <span className="p-3 w-1/3 bg-emphasis/15 mb-1 ring-1 ring-muted/5 rounded"> </span>
                     <span className="p-2 w-full bg-emphasis/10 ring-1 ring-muted/5 rounded"> </span>
                 </div>
-            </li>
+            </li> */}
 
         </ul>
     )

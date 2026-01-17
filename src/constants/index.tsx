@@ -1,16 +1,14 @@
 
-import image1 from "/public/s1.jpg"
 import image2 from "/public/s2.jpg"
 import image3 from "/public/s3.jpg"
 import image4 from "/public/s4.jpg"
-import image5 from "/public/s5.jpg"
 import image6 from "/public/s6.jpg"
-import imgRoom1 from "/public/r1.svg"
 import user from "/user.png"
 import { PATHS } from "@/routers/Paths"
 
 import SpacesPlaning from "/public/services/IMG_3766.jpg";
 import ColorConsultation from "/public/services/IMG_3767.jpg";
+import InteriorDesign from "/public/services/IMG_20260116_230617.jpg";
 import ExteriorDesign from "/public/services/IMG_3768.jpg";
 import ProjectManaging from "/public/services/IMG_3771.jpg";
 import RestructuringRedesign from "/public/services/IMG_3765.jpg";
@@ -143,6 +141,7 @@ export const galleries = [
 
 export const serviceTypes = [
     {label: 'Space Planning', value: 'space-planning', src: SpacesPlaning, description: 'Practical layouts and furniture plans that boost usability and circulation while matching your style.'},
+    {label: 'Interior Design', value: 'redesign', src: InteriorDesign, description: 'Transform your interiors with cohesive themes, furniture, lighting, and decor that reflect your taste.'},
     {label: 'Exterior Design', value: 'furniture-selection', src: ExteriorDesign, description: 'Make your home stand out — façades, landscaping, and outdoor lighting that look great and work well.'},
     {label: 'Color Consultation', value: 'color-consultation', src: ColorConsultation, description: 'Get tailored palettes and finish advice (with sample testing) to set the perfect mood for each room.'},
     {label: 'Project Management', value: 'project-management', src: ProjectManaging, description: 'We’ll coordinate contractors, schedules, and budgets so your project runs smoothly from start to finish.'},
