@@ -40,7 +40,7 @@ const router = createBrowserRouter([
   // Public Layout
   {
     path: PATHS.ROOT,
-    element: <PublicLayout/>,
+    element: <PublicLayout />,
     children: [
       {
         index: true,
@@ -89,7 +89,7 @@ const router = createBrowserRouter([
   // AUTH CLIENT ROUTES
   {
     path: PATHS.CLIENT.ROOT,
-    element: (<RequireAuth><ClientLayout/></RequireAuth>),
+    element: (<RequireAuth><ClientLayout /></RequireAuth>),
     children: [
       {
         index: true,
@@ -121,7 +121,7 @@ const router = createBrowserRouter([
   // ADMIN ROUTES
   {
     path: PATHS.ADMIN.ROOT,
-    element: (<RequireAuth><AdminLayout/></RequireAuth>),
+    element: (<RequireAuth><AdminLayout /></RequireAuth>),
     children: [
       {
         index: true,
@@ -134,7 +134,7 @@ const router = createBrowserRouter([
       {
         path: PATHS.ADMIN.CHAT,
         element: <AdminChat />,
-        children:[
+        children: [
           {
             path: PATHS.ADMIN.CHAT_ROOM,
           }
@@ -160,10 +160,10 @@ const router = createBrowserRouter([
   }
 ]);
 
-export default function AppRoutes(){
+export default function AppRoutes() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center w-full h-hero"><Spinner className="w-8 h-8"/></div>}>
-      <RouterProvider router={router}/>
+    <Suspense fallback={<div className="flex items-center justify-center w-full h-hero"><Spinner className="w-8 h-8" /></div>}>
+      <RouterProvider router={router} />
     </Suspense>
   )
 }

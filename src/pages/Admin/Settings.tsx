@@ -3,102 +3,154 @@ import { EmailInput, Input, PhoneInput } from "@/components/ui/Input";
 import { images, SocialMediaPhoneFields, SocialMediaUrlFields } from "@/constants";
 import { companyNameTitle } from "@/constants/company";
 import { ICONS } from "@/icons";
-import { useState } from "react";
+import { AdminService } from "@/services/admin.service";
+import { useEffect, useState, useCallback } from "react";
+import debounce from "lodash/debounce";
 
-
-export default function Settings () {
-
+export default function Settings() {
     const [dataSaved, setDataSaved] = useState(false);
     const [loading, setLoading] = useState(false);
-    // TODO: Browser alert the user from leaving the page when loading status is true.
+    const [settings, setSettings] = useState<Record<string, string>>({});
+    const [initializing, setInitializing] = useState(true);
+
+    useEffect(() => {
+        async function loadSettings() {
+            try {
+                const data = await AdminService.getSettings();
+                setSettings(data);
+            } catch (error) {
+                console.error("Failed to load settings:", error);
+            } finally {
+                setInitializing(false);
+            }
+        }
+        loadSettings();
+    }, []);
+
+    const debouncedSave = useCallback(
+        debounce(async (key: string, value: string) => {
+            setLoading(true);
+            try {
+                await AdminService.updateSetting(key, value);
+                setDataSaved(true);
+                setTimeout(() => setDataSaved(false), 2000);
+            } catch (error) {
+                console.error("Failed to save setting:", error);
+            } finally {
+                setLoading(false);
+            }
+        }, 1000),
+        []
+    );
+
+    const handleChange = (key: string, value: string) => {
+        setSettings(prev => ({ ...prev, [key]: value }));
+        debouncedSave(key, value);
+    };
+
+    if (initializing) {
+        return <div className="p-10 text-center text-muted">Loading settings...</div>;
+    }
 
     return (
         <main>
-            <section className="content-container relative flex flex-col w-full h-full gap-6">
-                <div className="flex flex-col gap-8 md:gap-12 w-full h-full max-md:flex-col max-md:py-6 md:px-4">
-                    <div className="flex flex-col max-md:items-center gap-8 w-full">
-                        <div className="absolute top-45 md:top-50 left-0 w-full border-b border-b-muted/15 -z-10"></div>
+            <section className="h-hero min-h-hero content-container relative w-full">
+                <div className="flex max-md:flex-col md:justify-between md:items-end gap-2 w-full h-fit mb-4">
+                    <h1 className="font-semibold text-lg md:text-2xl"> Settings & Contacts </h1>
 
-                        {/* {loading
-                        ? <span className="font-medium text-xs text-foreground/75"> Saving Data... </span>
+                    {loading
+                        ? <span className="font-medium text-xs text-foreground/75 animate-pulse"> Saving Data... </span>
                         :
-                            dataSaved
-                            ? <span className="font-medium text-xs text-success"> ✓ Data-Saved </span>
-                            : <span className="font-medium text-xs text-muted/75"> Auto-Save </span>
-                        } */}
-                        <form encType="multipart/form-data" className="flex max-md:flex-col items-center gap-4">
+                        dataSaved
+                            ? <span className="font-medium text-xs text-success pulse"> ✓ Data-Saved </span>
+                            : <span className="font-medium text-xs text-muted/75"> Auto-Save enabled </span>
+                    }
+                </div>
 
-                            <div className="group/item relative w-fit h-30 md:h-35 p-1 md:p-2 aspect-square border border-muted/15 rounded-full bg-background overflow-hidden">
-                                <label htmlFor="fileToUpload" className="absolute hidden group-hover/item:flex group-active/item:flex items-center justify-center top-0 left-0 w-full h-full bg-muted/35 cursor-pointer">
-                                <ICONS.arrowUpTray className="text-white size-8" />
-                                </label>
-                                <input type="file" name="fileToUpload" id="fileToUpload" className="hidden" />
-                                <img src={images[7]} alt="Avatar" className="w-full h-full object-cover rounded-full" />
-                            </div>
-
-                            <div className="flex flex-col max-md:items-center max-md:text-center gap-0.5 md:gap-1">
-                                <h4 className="font-semibold text-lg md:text-2xl"> {companyNameTitle} </h4>
-                                <p className="text-2xs md:text-xs"> Company Logo </p>
-                            </div>
-
-                        </form>
-
-                        <div className="flex flex-col gap-4 w-full">
-                            <p className="text-xs text-muted"> Manage your company's contact information and social media links. </p>
-                        </div>
-
-
-                    </div>
-                    <div className="flex flex-col gap-8 max-md:w-full w-3/5">
-                        <div className="flex flex-col gap-2 md:gap-4 w-full h-full  rounded-xl">
-                            <h2 className="font-medium text-sm"> Contact Information </h2>
-                            <form className="flex flex-col gap-4">
-
-
-                                <div className="flex flex-col gap-4 h-full rounded-xl">
-
-                                    <div className="flex flex-col gap-2">
-                                        <label htmlFor="email-fields-container" className="text-xs text-muted sr-only"> Email Address</label>
-                                        <div id="email-fields-container" className="flex flex-col gap-2">
-                                            <EmailInput id="email" placeholder="hello@example.com" />
-                                        </div>
-                                    </div>
-
-                                    <div className="flex flex-col gap-2">
-                                        <label htmlFor="email-fields-container" className="text-xs text-muted sr-only"> Phone number </label>
-                                        <div id="phone-fields-container" className="flex flex-col gap-2">
-                                            <PhoneInput id="primary-phone" placeholder="+213123456789" />
-                                        </div>
-                                    </div>
-
+                <div className="flex max-md:flex-col gap-4 w-full">
+                    <div className="flex flex-col gap-2 md:gap-4 w-full h-full md:p-4 md:bg-surface rounded-xl">
+                        <form className="flex flex-col gap-4">
+                            <div className="flex flex-col items-center gap-2 w-full max-md:p-4 max-md:bg-surface rounded-xl">
+                                <div className="group/item relative w-fit h-25 md:h-40 p-1 md:p-2 aspect-square border border-muted/15 rounded-full bg-background overflow-hidden text-center content-center">
+                                    {/* Image upload logic could be added here */}
+                                    <img src={images[7]} alt="Avatar" className="w-full h-full object-cover rounded-full" />
                                 </div>
-                            </form>
-                        </div>
+                                <div className="flex flex-col gap-2">
+                                    <span className="font-semibold text-foreground"> {settings['company_name'] || companyNameTitle} </span>
+                                </div>
+                            </div>
 
-                        <div className="flex flex-col gap-2 md:gap-4 w-full rounded-xl">
-                            <h2 className="font-medium text-sm"> Social Media </h2>
-
-                            <form action="." method="POST" className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-4 h-full md:bg-surface rounded-xl">
+                                <div className="flex flex-col gap-2">
+                                    <label className="font-medium text-xs text-muted mx-1"> Email Addresses </label>
+                                    <div className="flex flex-col gap-2">
+                                        <EmailInput
+                                            id="primary_email"
+                                            placeholder="hello@example.com"
+                                            value={settings['primary_email'] || ''}
+                                            onChange={(e) => handleChange('primary_email', e.target.value)}
+                                        />
+                                        <EmailInput
+                                            id="admin_email"
+                                            placeholder="admin@example.com"
+                                            value={settings['admin_email'] || ''}
+                                            onChange={(e) => handleChange('admin_email', e.target.value)}
+                                        />
+                                    </div>
+                                </div>
 
                                 <div className="flex flex-col gap-2">
-                                    {SocialMediaUrlFields.map((social)=>(
-                                        <Input id={social.id} type="url" placeholder={social.placeholder} className="content-center pl-10">
-                                            <span className="absolute px-1.5 left-0.5 md:left-1"> {social.icon} </span>
-                                        </Input>
-                                    ))}
-
-                                    {SocialMediaPhoneFields.map((social)=>(
-                                        <Input id={social.id} type="tel" placeholder={social.placeholder} className="content-center pl-10">
-                                            <span className="absolute px-1.5 left-0.5 md:left-1"> {social.icon} </span>
-                                        </Input>
-                                    ))}
+                                    <label className="font-medium text-xs text-muted mx-1"> Phone numbers </label>
+                                    <div className="flex flex-col gap-2">
+                                        <PhoneInput
+                                            id="primary_phone"
+                                            placeholder="+213123456789"
+                                            value={settings['primary_phone'] || ''}
+                                            onChange={(e) => handleChange('primary_phone', e.target.value)}
+                                        />
+                                    </div>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
-            </section>
-        </main>
+                <div className="flex flex-col gap-2 md:gap-4 w-full md:p-4 md:bg-surface rounded-xl">
+                    <h2 className="font-medium text-sm"> Social Media </h2>
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-2">
+                            {SocialMediaUrlFields.map((social) => (
+                                <Input
+                                    key={social.id}
+                                    id={social.id}
+                                    type="url"
+                                    placeholder={social.placeholder}
+                                    className="content-center pl-10"
+                                    value={settings[social.label.toLowerCase()] || ''}
+                                    onChange={(e) => handleChange(social.label.toLowerCase(), e.target.value)}
+                                >
+                                    <span className="absolute px-1.5 left-0.5 md:left-1"> {social.icon} </span>
+                                </Input>
+                            ))}
+
+                            {SocialMediaPhoneFields.map((social) => (
+                                <Input
+                                    key={social.id}
+                                    id={social.id}
+                                    type="tel"
+                                    placeholder={social.placeholder}
+                                    className="content-center pl-10"
+                                    value={settings[social.label.toLowerCase()] || ''}
+                                    onChange={(e) => handleChange(social.label.toLowerCase(), e.target.value)}
+                                >
+                                    <span className="absolute px-1.5 left-0.5 md:left-1"> {social.icon} </span>
+                                </Input>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        </main >
     )
 }

@@ -36,6 +36,7 @@ export function SignupLayout() {
 
             navigate(PATHS.VERIFY_OTP, { state: { email } })
         } catch (err: any) {
+            console.error("Signup error details:", err)
             setError(err.message || "Failed to sign up")
         } finally {
             setLoading(false)
