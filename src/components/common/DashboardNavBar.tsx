@@ -1,14 +1,11 @@
 
-
-
-
 import { Link } from "react-router-dom"
 
 import { useState } from "react"
 
 import Logo from "/public/vite.svg"
 import { ICONS } from "@/icons"
-import { adminNavItems } from "@/constants"
+import { adminMenuNav } from "@/constants"
 
 import { MenuCard } from "@components/ui/MenuCard"
 import { PATHS } from "@/routers/Paths"
@@ -37,7 +34,7 @@ export function NavMenuItems () {
     return (
 
         <>
-        {adminNavItems.map((item, index) => (
+        {adminMenuNav.map((item, index) => (
             <li key={index} className="w-full">
                 <Link to={item.path} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15">
                     <div className="flex content-center gap-2">

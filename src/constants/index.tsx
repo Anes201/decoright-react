@@ -34,43 +34,77 @@ export const images = [
     user,
 ]
 
-export const userIsAuthenticated = true;
-export const userIsStaff = true;
+export const UserRoles = {
+    ADMIN: 'admin',
+    CLIENT: 'client',
+}
+
 export const userPhoneIsVerified = false;
 
-export const adminNavItems = [
-    {label: 'Analytics', path: PATHS.ADMIN.ANALYTICS},
+// Admin navigation item list for menu
+export const adminMenuNav = [
+    { id: '1', label: 'Dashboard', path: PATHS.ADMIN.ANALYTICS, icon: null, description: 'Overview metrics, KPIs and site analytics' },
+    { id: '2', label: 'Chats & Requests', path: PATHS.ADMIN.CHAT, icon: null, description: 'Manage conversations and incoming service requests' },
+    { id: '3', label: 'Users & Activity', path: PATHS.ADMIN.USERS, icon: null, description: 'View and manage user accounts, roles and activity logs' },
+    { id: '4', label: 'Service Requests', path: PATHS.ADMIN.REQUEST_SERVICE_LIST, icon: null, description: 'Browse, filter and update service requests' },
+    { id: '5', label: 'Service List', path: PATHS.ADMIN.SERVICE_LIST, icon: null, description: 'Manage published services and their details' },
+    { id: '6', label: 'Create Service', path: PATHS.ADMIN.SERVICE_CREATE, icon: null, description: 'Add a new service offering with images and pricing' },
+    { id: '7', label: 'Projects Create', path: PATHS.ADMIN.PROJECT_CREATE, icon: null, description: 'Create new projects and configure project settings' },
+    { id: '8', label: 'Gallery List', path: PATHS.ADMIN.GALLERY_LIST, icon: null, description: 'Manage gallery entries and categories' },
+    { id: '9', label: 'Create Gallery', path: PATHS.ADMIN.GALLERY_CREATE, icon: null, description: 'Upload and organize new gallery items' },
+    { id: '10', label: 'Settings', path: PATHS.ADMIN.SETTINGS, icon: null, description: 'Application settings, preferences and integrations' },
+]
 
-    {label: 'Chats', path: PATHS.ADMIN.CHAT},
+// Admin Navigation Data (with support for nested items)
+export const adminSideMenuNav = [
+    { id: '1', label: 'Dashboard', path: PATHS.ADMIN.ANALYTICS, icon: null, description: 'Overview metrics, KPIs and site analytics' },
 
-    {label: 'Users', path: PATHS.ADMIN.USERS},
-    {label: 'Service Requests', path: PATHS.ADMIN.REQUEST_SERVICE_LIST},
-    {label: 'Create a Project', path: PATHS.ADMIN.PROJECT_CREATE},
-    {label: 'Settings', path: PATHS.ADMIN.SETTINGS},
+    { id: '2', label: 'Chat & Requests', path: PATHS.ADMIN.CHAT, icon: null, description: 'Manage conversations and incoming service requests' },
+
+    { id: '3', label: 'Users & Activity', path: PATHS.ADMIN.USERS, icon: null, description: 'View and manage user accounts, roles and activity logs' },
+
+    { id: '4', label: 'Service Request', icon: null, children: [
+        { id: '4.1', label: 'Request List', path: PATHS.ADMIN.REQUEST_SERVICE_LIST, icon: null, description: 'Browse, filter and update service requests' },
+    ], description: '' },
+
+    { id: '5', label: 'Services', icon: null, children: [
+        { id: '5.1', label: 'Service List', path: PATHS.ADMIN.SERVICE_LIST, icon: null, description: 'Manage published services and their details' },
+        { id: '5.2', label: 'Create a Service', path: PATHS.ADMIN.SERVICE_CREATE, icon: null, description: 'Add a new service offering with images and pricing' },
+    ], description: '' },
+
+    { id: '6', label: 'Projects', icon: null, children:[
+        { id: '6.1', label: 'Project List', path: PATHS.ADMIN.PROJECT_LIST, icon: null, description: 'View and manage all your projects.' },
+        { id: '6.2', label: 'Create a Project', path: PATHS.ADMIN.PROJECT_CREATE, icon: null, description: 'Create new projects and configure project settings' },
+    ], description: '' },
+
+    { id: '7', label: 'Gallery', icon: null, children:[
+        { id: '7.1', label: 'Gallery List', path: PATHS.ADMIN.GALLERY_LIST, icon: null, description: 'Manage gallery entries and categories' },
+        { id: '7.2', label: 'Create a Gallery', path: PATHS.ADMIN.GALLERY_CREATE, icon: null, description: 'Upload and organize new gallery items' },
+    ], description: '' },
+
+    { id: '8', label: 'Settings', path: PATHS.ADMIN.SETTINGS, icon: null, description: 'Application settings, preferences and integrations' },
 ]
 
 
 export const clientNavItems = [
-    { label: 'Home', path: PATHS.CLIENT.ROOT },
+    { label: 'Home', path: PATHS.CLIENT.ROOT, icon: null, description: 'Return to the homepage' },
 
-    { label: 'Chats', path: PATHS.CLIENT.CHAT },
+    { label: 'Messages', path: PATHS.CLIENT.CHAT, icon: null, description: 'View and continue your conversations' },
 
+    { label: 'Request Service', path: PATHS.CLIENT.REQUEST_SERVICE, icon: null, description: 'Start a new service request' },
+    { label: 'Your Requests', path: PATHS.CLIENT.REQUEST_SERVICE_LIST, icon: null, description: 'See the status of your service requests' },
+    { label: 'Portfolio', path: PATHS.GALLERY, icon: null, description: 'Browse our gallery and past work' },
 
-    {label: 'Request a Service', path: PATHS.CLIENT.REQUEST_SERVICE},
-    {label: 'My Requests', path: PATHS.CLIENT.REQUEST_SERVICE_LIST},
-    {label: 'Gallery', path: PATHS.GALLERY},
-
-    { label: 'Projects', path: PATHS.PROJECT_LIST },
-    { label: 'Services', path: PATHS.SERVICE_LIST },
-    { label: 'Contact', path: PATHS.CONTACT },
+    { label: 'Projects', path: PATHS.PROJECT_LIST, icon: null, description: 'Explore completed projects and case studies' },
+    { label: 'Services', path: PATHS.SERVICE_LIST, icon: null, description: 'Explore services we offer' },
+    { label: 'Contact Us', path: PATHS.CONTACT, icon: null, description: 'Get in touch with our team' },
 ]
 
 export const publicNavItems = [
-
-    { label: 'Home', path: PATHS.ROOT },
-    { label: 'Projects', path: PATHS.PROJECT_LIST },
-    { label: 'Services', path: PATHS.SERVICE_LIST },
-    { label: 'Contact', path: PATHS.CONTACT },
+    { label: 'Home', path: PATHS.ROOT, icon: null, description: 'Landing page and highlights' },
+    { label: 'Projects', path: PATHS.PROJECT_LIST, icon: null, description: 'View public projects and case studies' },
+    { label: 'Services', path: PATHS.SERVICE_LIST, icon: null, description: 'Learn about available services' },
+    { label: 'Contact Us', path: PATHS.CONTACT, icon: null, description: 'Contact information and form' },
 ]
 
 export const galleries = [

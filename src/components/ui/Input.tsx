@@ -67,7 +67,7 @@ export function PasswordInput({ id = 'password_field', label = 'Password', value
         aria-pressed={show} aria-label={show ? 'Hide password' : 'Show password'}
         className="absolute px-2 right-1 sm:right-1.5 border-l border-muted/15"
       >
-        {show ? <ICONS.eyeSlash className='size-5 text-muted/75'/> : <ICONS.eye className='size-5 text-muted/75'/>}
+        {!show ? <ICONS.eyeSlash className='size-5 text-muted/75'/> : <ICONS.eye className='size-5 text-muted/75'/>}
       </button>
     </Input>
   );

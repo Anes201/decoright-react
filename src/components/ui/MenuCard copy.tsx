@@ -1,0 +1,83 @@
+import React, { useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
+// ...existing code...
+export function MenuCard({title, children, open, setOpen}: {title: string, children:any, open:boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>}) {
+
+    const wrapperRef = useRef<HTMLDivElement | null>(null);
+    const listenersAddedRef = useRef(false);
+
+    // keep a mutable ref of the current `open` so nav-effect can read latest value
+    const openRef = useRef(open);
+    useEffect(() => { openRef.current = open; }, [open]);
+    // ignore the very first navigation effect run (initial mount)
+    const navMountedRef = useRef(false);
+
+    // Close when clicking outside
+    useEffect(() => {
+        if (!open) return;
+
+        function onPointerDown(e: PointerEvent) {
+            const target = e.target as Node;
+            if (wrapperRef.current && wrapperRef.current.contains(target)) return;
+            setOpen(false);
+        }
+
+        function onKey(e: KeyboardEvent) {
+            if (e.key === 'Escape') setOpen(false);
+        }
+
+        // attach listeners on the next tick to avoid reacting to the same opening click
+        const t = window.setTimeout(() => {
+            document.addEventListener('pointerdown', onPointerDown);
+            document.addEventListener('keydown', onKey);
+            listenersAddedRef.current = true;
+        }, 0);
+
+        return () => {
+            clearTimeout(t);
+            if (listenersAddedRef.current) {
+                document.removeEventListener('pointerdown', onPointerDown);
+                document.removeEventListener('keydown', onKey);
+                listenersAddedRef.current = false;
+            }
+        };
+    }, [open, setOpen]);
+
+    // Close menu when navigation occurs (only after mount, and only if menu is open)
+    const location = useLocation();
+    useEffect(() => {
+      if (!navMountedRef.current) {
+        navMountedRef.current = true;
+        return;
+      }
+      if (openRef.current) setOpen(false);
+      // only depend on pathname so this runs only on actual navigations
+    }, [location.pathname]);
+
+    if (!open) return null;
+
+    return (
+        <>
+            <div ref={wrapperRef} className="fixed flex justify-center top-0 right-0 w-full md:w-w-[22rem] lg:w-1/3 xl:w-1/4 h-full">
+                <div className="absolute w-full h-full z-10 bg-muted/45 md:mask-l-to-transparent md:mask-l-from-0"></div>
+                <div className="relative p-2 space-y-4 w-full z-20">
+                    <div className="flex flex-col gap-2 w-full h-full p-2 border border-muted/25 bg-surface rounded-lg">
+                        {/* Card Header */}
+                        <div className="flex justify-between w-full h-fit border border-muted/15 p-2 rounded-lg">
+                            <h2 className="text-sm font-semibold">{ title }</h2>
+                            <button type="button" title="Exit Menu" onClick={() => setOpen(!open)}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        {/* Card Content */}
+                        { children }
+
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}

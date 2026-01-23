@@ -1,19 +1,18 @@
 
+import useAuth from "@/hooks/useAuth";
+import FileUploadPanel from '@components/ui/FileUploadPanel'
+import Spinner from '@/components/common/Spinner'
 import { useState, useEffect } from 'react'
 import { serviceSpaceTypes, serviceTypes, userPhoneIsVerified } from '../../constants'
 import { PButton } from '@components/ui/Button'
 import { SCTALink } from '@components/ui/CTA'
 import { SelectMenu } from '@components/ui/Select'
 import { DateInput, Input } from '@components/ui/Input'
-import FileUploadPanel from '@components/ui/FileUploadPanel'
-
 import { ICONS } from '@/icons'
 import { Link } from 'react-router-dom'
 import { RequestService as ReqSvc } from '@/services/request.service'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '@/contexts/AuthProvider'
 import { PATHS } from '@/routers/Paths'
-import Spinner from '@components/ui/Spinner'
 
 
 export function RequestService() {
@@ -86,7 +85,11 @@ export function RequestService() {
 
                     {/* CTA */}
                     <div className="hidden md:flex max-xs:flex-col md:flex-row gap-3 md:gap-4 w-fit">
-                        <PButton type="submit" className="w-fit h-fit" disabled={loading}>
+                        <PButton type="submit" form="service-request-form"
+                        disabled={loading || !userPhoneIsVerified}
+                        title={!userPhoneIsVerified ? 'Verify your phone to enable submission' : 'Submit request'}
+                        className="w-fit h-fit"
+                        >
                             <Spinner status={loading}> Submit Request </Spinner>
                         </PButton>
                     </div>
@@ -183,7 +186,11 @@ export function RequestService() {
 
                             {/* CTA */}
                             <div className="flex max-xs:flex-col md:flex-row gap-3 md:gap-4 w-full md:w-fit mt-4">
-                                <PButton type="submit" className="w-full" disabled={loading}>
+                                <PButton type="submit" form="service-request-form"
+                                className="w-full h-fit"
+                                disabled={loading || !userPhoneIsVerified}
+                                title={!userPhoneIsVerified ? 'Verify your phone to enable submission' : 'Submit request'}
+                                >
                                     <Spinner status={loading}> Submit Request </Spinner>
                                 </PButton>
                                 <SCTALink to={-1} className="w-full"> Cancel </SCTALink>

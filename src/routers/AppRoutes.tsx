@@ -6,7 +6,8 @@ import PublicLayout from '@/layouts/PublicLayout';
 import ClientLayout from '@/layouts/ClientLayout';
 import AdminLayout from '@/layouts/AdminLayout';
 import RequireAuth from '@/components/auth/RequireAuth';
-import Spinner from '@/components/ui/Spinner';
+import Spinner from '@/components/common/Spinner';
+import RequireAdmin from '@/components/auth/RequireAdmin';
 
 const Landing = lazy(() => import('@/pages/Public/Landing'));
 const About = lazy(() => import('@/pages/Public/About'));
@@ -18,6 +19,9 @@ const ProjectDetail = lazy(() => import('@/pages/Public/Project'));
 const Signup = lazy(() => import('@/pages/Public/Signup'));
 const Login = lazy(() => import('@/pages/Public/Login'));
 const VerifyOTP = lazy(() => import('@/pages/VerifyOtp'));
+const PasswordReset = lazy(() => import('@/pages/PasswordReset'));
+const PasswordSent = lazy(() => import('@/pages/PasswordSent'));
+
 const ChatRoom = lazy(() => import('@components/chat/ChatRoom'));
 
 const ClientHome = lazy(() => import('@/pages/Client/Gallery'));
@@ -27,12 +31,23 @@ const ClientRequestList = lazy(() => import('@/pages/Client/RequestServiceList')
 const ClientRequestService = lazy(() => import('@/pages/Client/RequestService'));
 const ClientProfile = lazy(() => import('@/pages/Client/Profile'));
 const ClientProfileEdit = lazy(() => import('@/pages/Client/ProfileEdit'));
+const ClientPasswordChange = lazy(() => import('@/pages/Client/PasswordChange'));
+const ClientPasswordSet = lazy(() => import('@/pages/Client/PasswordSet'));
+const ClientPasswordDone = lazy(() => import('@/pages/Client/PasswordDone'));
 
 const AdminDashboard = lazy(() => import('@/pages/Admin/Dashboard'));
 const AdminChat = lazy(() => import('@/pages/Admin/Chat'));
 const AdminUsers = lazy(() => import('@/pages/Admin/Users'));
-const AdminServiceRequests = lazy(() => import('@/pages/Admin/RequestServiceList'));
-const AdminProjectCreate = lazy(() => import('@/pages/Admin/ProjectCreate'));
+const AdminServiceRequests = lazy(() => import('@/pages/Admin/requests/RequestServiceList'));
+const AdminServiceRequest = lazy(() => import('@/pages/Admin/requests/RequestService'));
+const AdminServiceList = lazy(() => import('@/pages/Admin/services/ServiceList'));
+const AdminServiceCreate = lazy(() => import('@/pages/Admin/services/ServiceCreate'));
+const AdminServiceEdit = lazy(() => import('@/pages/Admin/services/ServiceEdit'));
+const AdminProjectCreate = lazy(() => import('@/pages/Admin/projects/ProjectCreate'));
+const AdminProjectList = lazy(() => import('@/pages/Admin/projects/ProjectList'));
+const AdminGalleryList = lazy(() => import('@/pages/Admin/gallery/GalleryList'));
+const AdminGalleryCreate = lazy(() => import('@/pages/Admin/gallery/GalleryCreate'));
+const AdminGalleryEdit = lazy(() => import('@/pages/Admin/gallery/GalleryEdit'));
 const AdminSettings = lazy(() => import('@/pages/Admin/Settings'));
 
 const router = createBrowserRouter([
@@ -40,7 +55,7 @@ const router = createBrowserRouter([
   // Public Layout
   {
     path: PATHS.ROOT,
-    element: <PublicLayout/>,
+    element: <PublicLayout />,
     children: [
       {
         index: true,
@@ -83,13 +98,22 @@ const router = createBrowserRouter([
         element: <VerifyOTP />,
       },
 
+      {
+        path: PATHS.PASSWORD_RESET,
+        element: <PasswordReset />,
+      },
+      {
+        path: PATHS.PASSWORD_SENT,
+        element: <PasswordSent />,
+      },
     ]
   },
 
   // AUTH CLIENT ROUTES
   {
     path: PATHS.CLIENT.ROOT,
-    element: (<RequireAuth><ClientLayout/></RequireAuth>),
+    element: (<RequireAuth><ClientLayout /></RequireAuth>),
+
     children: [
       {
         index: true,
@@ -120,14 +144,30 @@ const router = createBrowserRouter([
       {
         path: PATHS.CLIENT.PROFILE_EDIT,
         element: <ClientProfileEdit />,
-      }
+      },
+
+      // Password
+      {
+        path: PATHS.CLIENT.PASSWORD_SET,
+        element: <ClientPasswordSet />,
+      },
+      {
+        path: PATHS.CLIENT.PASSWORD_CHANGE,
+        element: <ClientPasswordChange />,
+      },
+      {
+        path: PATHS.CLIENT.PASSWORD_DONE,
+        element: <ClientPasswordDone />,
+      },
     ]
   },
 
-  // ADMIN ROUTES
+
+  // * ADMIN ROUTES
   {
     path: PATHS.ADMIN.ROOT,
-    element: (<RequireAuth><AdminLayout/></RequireAuth>),
+    element: (<RequireAdmin><AdminLayout /></RequireAdmin>),
+
     children: [
       {
         index: true,
@@ -140,24 +180,68 @@ const router = createBrowserRouter([
       {
         path: PATHS.ADMIN.CHAT,
         element: <AdminChat />,
-        children:[
+        children: [
           {
             path: PATHS.ADMIN.CHAT_ROOM,
           }
         ]
       },
+
+      // Users
       {
         path: PATHS.ADMIN.USERS,
         element: <AdminUsers />,
       },
+
+      // Request Services
       {
         path: PATHS.ADMIN.REQUEST_SERVICE_LIST,
         element: <AdminServiceRequests />,
       },
       {
+        path: PATHS.ADMIN.REQUEST_SERVICE_DETAIL, // Request Overview
+        element: <AdminServiceRequest />,
+      },
+
+      // Services
+      {
+        path: PATHS.ADMIN.SERVICE_LIST,
+        element: <AdminServiceList />,
+      },
+      {
+        path: PATHS.ADMIN.SERVICE_CREATE,
+        element: <AdminServiceCreate />,
+      },
+      {
+        path: PATHS.ADMIN.SERVICE_EDIT,
+        element: <AdminServiceEdit />,
+      },
+
+      // Projects
+      {
+        path: PATHS.ADMIN.PROJECT_LIST,
+        element: <AdminProjectList />,
+      },
+      {
         path: PATHS.ADMIN.PROJECT_CREATE,
         element: <AdminProjectCreate />,
       },
+
+      // Gallery
+      {
+        path: PATHS.ADMIN.GALLERY_LIST,
+        element: <AdminGalleryList />,
+      },
+      {
+        path: PATHS.ADMIN.GALLERY_CREATE,
+        element: <AdminGalleryCreate />,
+      },
+      {
+        path: PATHS.ADMIN.GALLERY_EDIT,
+        element: <AdminGalleryEdit />,
+      },
+
+      // Settings
       {
         path: PATHS.ADMIN.SETTINGS,
         element: <AdminSettings />,
@@ -166,11 +250,11 @@ const router = createBrowserRouter([
   }
 ]);
 
-export default function AppRoutes(){
+export default function AppRoutes() {
   return (
     <Suspense fallback={
       <div className="flex items-center justify-center w-full h-hero">
-        <Spinner className="w-8 h-8"/>
+        <Spinner size="lg"/>
       </div>
     }>
       <RouterProvider router={router}/>

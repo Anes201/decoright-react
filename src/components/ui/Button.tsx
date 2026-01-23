@@ -8,7 +8,7 @@ export function Button({type, children, className, ...props}:any) {
 // Primary CTA Link (Primary-CTA-Link)
 export function PButton({type, children, className, ...props}:any){
     return (
-        <Button type={type} className={`text-white bg-primary disabled:bg-primary/15 disabled:cursor-progress ${className}`} {...props}>{children}</Button>
+        <Button type={type} className={`text-white bg-primary disabled:bg-primary/15 ${className}`} {...props}>{children}</Button>
     )
 }
 

@@ -2,7 +2,7 @@
 /** ---- Types ---- */
 export type BaseMessage = {
   id: string;
-  uid: number;
+  uid: string;
   timestamp: string; // ISO or human string
 };
 
@@ -15,6 +15,7 @@ export type VoiceMsg = BaseMessage & {
   kind: "voice";
   url: string;       // audio file URL
   duration?: number; // seconds
+  filename: string;
 };
 
 export type FileMsg = BaseMessage & {
@@ -26,18 +27,4 @@ export type FileMsg = BaseMessage & {
 
 export type Message = TextMsg | VoiceMsg | FileMsg;
 
-export type ClientContact = any;
-
-export type Contact = {
-    id: string,
-    name?:string,
-    avatar?:string,
-    status_label?:string,
-    type: string,
-    style: string,
-    status: string,
-    lastMessage: string,
-    lastMessageTime: string,
-    isRead: boolean,
-    isOnline: boolean,
-};
+export type Contact = any;

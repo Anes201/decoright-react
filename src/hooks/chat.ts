@@ -3,14 +3,13 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import type { ClientContact as Contact, Message } from '@/types/chat';
 
-export function useChat(opts?: { initialContacts?: Contact[], currentUserId?: number }) {
-  const { initialContacts = [], currentUserId = 1 } = opts || {};
+export function useChat(opts?: {initialContacts?: Contact[], currentUserId?: number}) {
+  const {initialContacts = [], currentUserId = 1} = opts || {};
   const [contacts] = useState<Contact[]>(initialContacts);
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);

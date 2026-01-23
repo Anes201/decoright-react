@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export function CTALink({to, children, className, ...props}:any) {
     return (
-        <Link to={to} className={`font-semibold text-sm text-center min-w-max px-3 py-2 rounded-lg shadow-xs ${className}`} {...props}> {children} </Link>
+        <Link to={to} className={`font-semibold text-xs md:text-sm text-center min-w-max px-3 py-2 rounded-lg shadow-xs ${className}`} {...props}> {children} </Link>
     )
 }
 

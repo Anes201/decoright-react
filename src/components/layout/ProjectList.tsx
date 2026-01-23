@@ -1,18 +1,13 @@
 
 
 import { Link } from "react-router-dom"
-
-import { projects } from "../../constants";
-import { ICONS } from "../../icons";
+import { projects } from "@/constants";
+import { ICONS } from "@/icons";
 import { PATHS } from "@/routers/Paths";
-
 
 export function ProjectCard ({project, index}: {project: {title: string; date: string; src: string}, index: number}) {
 
-    // const [liked, setLiked] = useState(false);
-
     return (
-
 
         <li key={index} >
 
@@ -29,13 +24,6 @@ export function ProjectCard ({project, index}: {project: {title: string; date: s
                                 {ICONS.eye({className:'size-4'})}
                                 <span className="text-2xs"> {/* statistic count goes here */} 220 </span>
                             </div>
-
-                            {/* <div className="flex items-center gap-0.5 pt-0.5">
-                                <button type="button" onClick={() => setLiked(!liked)}>
-                                    {ICONS.heart({className:`size-4 ${liked ? 'fill-red-500 text-red-500' : ''}`})}
-                                </button>
-                                <span className="text-2xs"> {liked ? 69 + 1: 69} </span>
-                            </div> */}
 
                         </div>
                     </div>

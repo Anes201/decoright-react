@@ -1,7 +1,13 @@
 import Table from "@/components/ui/DataTable";
+import { PATHS } from "@/routers/Paths";
+import { Link } from "react-router-dom";
 
 const columns = [
-    { key: 'id', title: 'ID', searchable: true },
+    { key: 'id', title: 'ID', searchable: true, render:(row:any)=> (
+        <Link to={PATHS.ADMIN.requestService(row.id)} className="font-medium hover:underline">
+            {row.id}
+        </Link>
+    ) },
     { key: 'full_name', title: 'Client', searchable: true },
     { key: 'serviceType', title: 'Service Type' },
     { key: 'spaceType', title: 'Space Type' },

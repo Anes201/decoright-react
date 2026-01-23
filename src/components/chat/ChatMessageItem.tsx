@@ -4,7 +4,7 @@ import type { Message } from '@/types/chat';
 
 
 export default memo(function MessageItem({ message, currentUserId = 1 }:
-{ message: Message; currentUserId?: number }) {
+{ message: Message; currentUserId?: any }) {
 const isMe = message.uid === currentUserId;
 
 

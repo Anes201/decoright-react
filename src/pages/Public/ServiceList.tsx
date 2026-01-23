@@ -4,6 +4,7 @@ import { ServiceCardList } from "@components/layout/Services"
 import { PCTALink } from "@components/ui/CTA"
 import { SectionHeader } from "@components/ui/SectionHeader"
 import { FAQList } from "@components/layout/FAQ"
+import { PATHS } from "@/routers/Paths"
 
 export default function ServiceList () {
     return (
@@ -18,10 +19,9 @@ export default function ServiceList () {
                             <p className="text-3xs sm:text-2xs md:text-xs"> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam corrupti vero a enim harum molestias facilis, optio pariatur voluptate itaque nam obcaecati quas omnis reprehenderit doloribus perspiciatis. dolores enim harum molestias facilis, optio pariatur voluptate itaque nam obcaecati quas omnis reprehenderit doloribus perspiciatis. Qui, ex. </p>
                         </div>
 
-
                         {/* CTA */}
                         <div className="flex gap-2">
-                            <PCTALink to="/request-service"> Request a Project </PCTALink>
+                            <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE}> Request a Project </PCTALink>
                         </div>
 
                     </div>

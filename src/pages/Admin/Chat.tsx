@@ -1,47 +1,17 @@
 
-import { ChatLayout } from "@components/layout/Chat"
+import ChatLayout  from "@components/chat/ChatLayout";
 
-export  function ChatPage() {
+export default function AdminChatPage() {
     return (
         <main>
-            <ChatLayout/>
+            <section className="h-hero min-h-hero relative flex flex-col w-full md:pt-8">
+              <div className="relative flex flex-col gap-8 h-full">
+                <h1 className="font-semibold text-lg md:text-2xl"> Admin Chat </h1>
+                <ChatLayout/>
+              </div>
+            </section>
         </main>
     )
 }
 
-// pages/client/ChatPage.tsx
-import ChatView from '@components/chat/ChatView';
-import { useChat } from '@/hooks/chat';
-import { requests } from "@/constants";
 
-// pages/admin/ChatPage.tsx
-export default function AdminChatPage() {
-  // initialize chat state for admin (replace initialContacts with ADMIN_CONTACTS if available)
-  const chat = useChat({ initialContacts: [], currentUserId: 1 });
-
-  const commonProps = {
-    contacts: chat.contacts,
-    selectedContact: chat.selectedContact,
-    messages: chat.messages,
-    messageText: chat.message,
-    onMessageChange: chat.setMessage,
-    onSend: chat.sendMessage,
-    onSelectContact: chat.selectContact,
-    messagesEndRef: chat.messagesEndRef as React.RefObject<HTMLDivElement>,
-  };
-
-  return (
-
-    <main>
-      <ChatView {...commonProps} contacts={requests} isAdmin renderRightHeaderActions={({selectedContact}) => (
-        <div className="flex gap-2">
-          {selectedContact} {/* not useable for now */}
-          <button onClick={() => {/* open tooling */}}>Inspect</button>
-          <button onClick={() => {/* escalate */}}>Escalate</button>
-        </div>
-      )}
-      />
-    </main>
-
-  );
-}

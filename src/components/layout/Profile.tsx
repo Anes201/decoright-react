@@ -1,16 +1,16 @@
+import useAuth from "@/hooks/useAuth";
+import Spinner from "@/components/common/Spinner";
+import type { Database } from "@/types/database.types";
 import { Link, Navigate } from "react-router-dom";
 import { images } from "@/constants";
 import { ICONS } from "@/icons";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/contexts/AuthProvider";
 import { supabase } from "@/lib/supabase";
-import type { Database } from "@/types/database.types";
 import { PATHS } from "@/routers/Paths";
-import Spinner from "@components/ui/Spinner";
 
 type ProfileData = Database['public']['Tables']['profiles']['Row'];
 
-export function Profile() {
+export default function ProfileLayout() {
     const { user, loading: authLoading } = useAuth();
     const [profile, setProfile] = useState<ProfileData | null>(null);
     const [loading, setLoading] = useState(false);
@@ -57,78 +57,67 @@ export function Profile() {
         : 'N/A';
 
     return (
-        <section className="h-hero min-h-hero max-w-180 mx-auto relative flex flex-col items-center justify-center w-full mt-8">
 
-            <div className="absolute right-full w-full h-[calc(100svh-24rem)] md:h-[calc(100svh-22rem)] border border-muted/20 rounded-4xl mask-l-to-transparent mask-l-to-30% overflow-hidden"></div>
+        <div className="flex flex-col gap-8 max-md:flex-col">
 
-            <div className="relative w-full h-full px-4 py-4 md:px-8 md:py-8">
-                <div className="absolute top-0 left-0 w-full h-full border border-muted/15 rounded-4xl bg-surface/75 -z-10 mask-b-to-transparent mask-b-to-100%"></div>
-                <div className="absolute top-20 md:top-35 left-0 w-full border-b border-b-muted/15 -z-10"></div>
-
-                <div className="flex flex-col gap-8 max-md:flex-col">
-
-                    <div className="flex flex-col items-center gap-2">
-                        {/* Profile Image */}
-                        <div className="w-fit h-25 md:h-40 p-1 md:p-2 aspect-square border border-muted/15 rounded-full bg-background overflow-hidden">
-                            <img src={images[7]} alt="Avatar" className="w-full h-full object-cover rounded-full" />
-                        </div>
-
-                        <div className="flex flex-col text-center">
-                            <h4 className="font-semibold text-lg"> {profile?.full_name || 'Anonymous'} </h4>
-                            <p className="text-2xs md:text-xs"> Joined at {joinDate} </p>
-                        </div>
-                    </div>
-
-                    {/* User Information */}
-
-                    <div className="space-y-8">
-
-                        <div className="flex items-center gap-4">
-                            <h3 className="font-semibold text-2xs md:text-xs text-foreground/75 min-w-max"> Personal Information </h3>
-                            <hr className="w-full border-0 border-b border-muted/15" />
-                            <Link to={PATHS.CLIENT.PROFILE_EDIT} className="p-2 border border-muted/15 bg-surface/75 rounded-lg"> <ICONS.pencilSquare/> </Link>
-                        </div>
-                        <ul className="flex flex-col gap-6 w-full">
-
-                            <li className="flex items-center w-full gap-4 p-3 border border-muted/15 bg-surface rounded-xl">
-                                <div className="h-full aspect-square p-2 border border-muted/25 bg-surface rounded-lg">
-                                    <ICONS.envelope className="size-6"/>
-                                </div>
-
-                                <div className="flex flex-col">
-                                    <label htmlFor="phone-info" className="font-medium text-xs"> Email Address </label>
-                                    <p id="phone-info" className="font-medium text-xs text-foreground"> {user.email } </p>
-                                </div>
-                            </li>
-                            <li className="flex items-center w-full gap-4 p-3 border border-muted/15 bg-surface rounded-xl">
-                                <div className="h-full aspect-square p-2 border border-muted/25 bg-surface rounded-lg">
-                                    <ICONS.phone className="size-6"/>
-                                </div>
-
-                                <div className="flex flex-col">
-                                    <label htmlFor="phone-info" className="font-medium text-xs"> Phone Number </label>
-                                    <p id="phone-info" className="font-medium text-xs text-foreground"> {profile?.phone || 'Not provided'} </p>
-                                </div>
-                            </li>
-                            <li className="flex items-center w-full gap-4 p-3 border border-muted/15 bg-surface rounded-xl">
-                                <div className="h-full aspect-square p-2 border border-muted/25 bg-surface rounded-lg">
-                                    <ICONS.userCircle className="size-6"/>
-                                </div>
-
-                                <div className="flex flex-col">
-                                    <label htmlFor="phone-info" className="font-medium text-xs"> Role </label>
-                                    <p id="phone-info" className="font-medium text-xs text-foreground"> {profile?.role || 'Client'} </p>
-                                </div>
-                            </li>
-
-                        </ul>
-                    </div>
-
+            <div className="flex flex-col items-center gap-2">
+                {/* Profile Image */}
+                <div className="w-fit h-25 md:h-40 p-1 md:p-2 aspect-square border border-muted/15 rounded-full bg-background overflow-hidden">
+                    <img src={images[7]} alt="Avatar" className="w-full h-full object-cover rounded-full" />
                 </div>
 
+                <div className="flex flex-col text-center">
+                    <h4 className="font-semibold text-lg"> {profile?.full_name || 'Anonymous'} </h4>
+                    <p className="text-2xs md:text-xs"> Joined at {joinDate} </p>
+                </div>
             </div>
 
-            <div className="absolute left-full w-full h-[calc(100svh-24rem)] md:h-[calc(100svh-22rem)] border border-muted/20 rounded-4xl mask-r-to-transparent mask-r-to-30% overflow-hidden"></div>
-        </section>
+            {/* User Information */}
+
+            <div className="space-y-8">
+
+                <div className="flex items-center gap-4">
+                    <h3 className="font-semibold text-2xs md:text-xs text-foreground/75 min-w-max"> Personal Information </h3>
+                    <hr className="w-full border-0 border-b border-muted/15" />
+                    <Link to={PATHS.CLIENT.PROFILE_EDIT} className="p-2 border border-muted/15 bg-surface/75 rounded-lg"> <ICONS.pencilSquare/> </Link>
+                </div>
+                <ul className="flex flex-col gap-6 w-full">
+
+                    <li className="flex items-center w-full gap-4 p-3 border border-muted/15 bg-surface rounded-xl">
+                        <div className="h-full aspect-square p-2 border border-muted/25 bg-surface rounded-lg">
+                            <ICONS.envelope className="size-6"/>
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label htmlFor="phone-info" className="font-medium text-xs"> Email Address </label>
+                            <p id="phone-info" className="font-medium text-xs text-foreground"> {user.email } </p>
+                        </div>
+                    </li>
+                    <li className="flex items-center w-full gap-4 p-3 border border-muted/15 bg-surface rounded-xl">
+                        <div className="h-full aspect-square p-2 border border-muted/25 bg-surface rounded-lg">
+                            <ICONS.phone className="size-6"/>
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label htmlFor="phone-info" className="font-medium text-xs"> Phone Number </label>
+                            <p id="phone-info" className="font-medium text-xs text-foreground"> {profile?.phone || 'Not provided'} </p>
+                        </div>
+                    </li>
+                    <li className="flex items-center w-full gap-4 p-3 border border-muted/15 bg-surface rounded-xl">
+                        <div className="h-full aspect-square p-2 border border-muted/25 bg-surface rounded-lg">
+                            <ICONS.userCircle className="size-6"/>
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label htmlFor="phone-info" className="font-medium text-xs"> Role </label>
+                            <p id="phone-info" className="font-medium text-xs text-foreground"> {profile?.role || 'Client'} </p>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+
     );
 }

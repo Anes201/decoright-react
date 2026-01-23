@@ -1,17 +1,19 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase"; // your initialized client
-import type { AuthContextType, AuthUser } from "@/types/auth";
+import { createContext, useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabase';
+import { UserRoles } from '@/constants';
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+type AuthContextValue = {
+  user: { id: string; email?: string; role?: string } | null;
+  loading: boolean;
+  isAdmin: boolean;
+  // ...other fields if present...
+};
+
+export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const signOut = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-  };
 
   useEffect(() => {
     const loadUser = async () => {
@@ -25,45 +27,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", session.user.id)
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('role,phone')
+        .eq('id', session.user.id)
         .maybeSingle();
 
+      if (error) {
+        console.error('Failed to load profile:', error);
+      }
+
       const rawRole = profile?.role || 'customer';
-      // Normalize role: DB uses 'customer'/'admin' but app expects 'client'/'admin'
-      const role = rawRole.toLowerCase() === 'customer' ? 'client' : rawRole.toLowerCase() as any;
+      const role = rawRole.toLowerCase() === 'customer' ? 'client' : rawRole.toLowerCase();
 
       setUser({
         id: session.user.id,
-        email: session.user.email!,
-        role: role,
+        email: session.user.email ?? undefined,
+        role,
+        // phoneVerified: Boolean(profile?.phone && profile?.phone_verified),
       });
 
       setLoading(false);
     };
 
     loadUser();
-
     const { data: listener } = supabase.auth.onAuthStateChange(() => {
       loadUser();
     });
-
-    return () => listener.subscription.unsubscribe();
+    return () => listener?.subscription?.unsubscribe?.();
   }, []);
 
-  return (
-    <AuthContext.Provider value={{ user, loading, signOut }}>
-      {children}
-    </AuthContext.Provider>
-  );
-}
+  const value: AuthContextValue = {
+    user,
+    loading,
+    isAdmin: user?.role === UserRoles.ADMIN,
+  };
 
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

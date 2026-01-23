@@ -1,26 +1,26 @@
-
-import { images } from "../../constants";
-import { ICONS } from "../../icons";
+import useAuth from "@/hooks/useAuth";
+import Spinner from "@components/common/Spinner";
+import type { Database } from "@/types/database.types";
+import { images } from "@/constants";
 import { EmailInput, Input, PhoneInput } from "../ui/Input";
 import { PButton, SButton } from "../ui/Button";
-import { SCTALink } from "../ui/CTA";
 import { useEffect, useState } from "react";
-import type { Database } from "@/types/database.types";
 import { supabase } from "@/lib/supabase";
-import { useAuth } from "@/contexts/AuthProvider";
 import { PATHS } from "@/routers/Paths";
 import { Navigate, useNavigate } from "react-router-dom";
-import Spinner from "../ui/Spinner";
+import { RequestService } from "@/services/request.service";
 
 type ProfileData = Database['public']['Tables']['profiles']['Row'];
 
 export function ProfileEdit(){
     const { user, loading: authLoading } = useAuth()
+    const navigate = useNavigate() // moved to top-level hook call
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [phone, setPhone] = useState("")
     const [profile, setProfile] = useState<ProfileData | null>(null);
     const [loading, setLoading] = useState(false);
+    const [loadingSubmit, setLoadingSubmit] = useState(false);
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
@@ -28,8 +28,6 @@ export function ProfileEdit(){
             if (!user) return;
             setLoading(true);
             setError(null);
-
-            console.log("Fetching profile for user:", user.id);
 
             try {
                 const { data, error } = await supabase
@@ -41,15 +39,16 @@ export function ProfileEdit(){
                 if (error) throw error;
                 setProfile(data);
 
-                // populate form fields with profile defaults
-                const fullName = profile?.full_name ?? '';
+                // populate form fields with fetched data (use `data`, not `profile` state)
+                const fullName = data?.full_name ?? '';
                 const [first = '', ...rest] = fullName.split(' ');
                 setFirstName(first);
                 setLastName(rest.join(' '));
-                setPhone(profile?.phone ?? '');
+                setPhone(data?.phone ?? '');
 
-            } catch (err) {
+            } catch (err: any) {
                 console.error("Error fetching profile:", err);
+                setError(err?.message ?? String(err));
             } finally {
                 setLoading(false);
             }
@@ -58,12 +57,13 @@ export function ProfileEdit(){
         if (!authLoading) {
             fetchProfile();
         }
-    }, [user, authLoading, profile?.full_name, profile?.phone]);
+    }, [user, authLoading]);
 
-    if (authLoading || loading) {
+    if (authLoading) {
         return (
-            <div className="flex items-center justify-center h-hero">
-                <Spinner />
+            <div className="flex flex-col items-center justify-center gap-4 h-hero">
+                <Spinner status={authLoading} />
+                <span className="text-xs"> Verifying… </span>
             </div>
         );
     }
@@ -76,10 +76,44 @@ export function ProfileEdit(){
             setError("First and Last name are required.")
             return
         }
+
+        setLoadingSubmit(true)
+        setError(null)
+
+        try {
+            // checking for active requests with specific status
+            const CHECK_STATUS = 'in_progress';
+
+            // check if user has any request with that status to prevent phone update
+            const requests = await RequestService.getMyRequests();
+            const activeReq = requests?.find((req: any) => req.status === CHECK_STATUS);
+
+            if (activeReq) {
+                setError(`You have an active request with status "${CHECK_STATUS}". Cannot update phone while that request is active.`);
+                setLoadingSubmit(false);
+                return;
+            }
+
+            const fullName = `${firstName} ${lastName}`.trim();
+            const { error } = await supabase
+                .from('profiles')
+                .update({ full_name: fullName, phone })
+                .eq('id', user?.id);
+
+            if (error) throw error;
+
+            // optional: navigate back to profile on success
+            navigate(PATHS.CLIENT.PROFILE);
+
+        } catch (err: any) {
+            console.error("Error updating profile:", err);
+            setError(err?.message ?? String(err));
+        } finally {
+            setLoadingSubmit(false);
+        }
     }
 
     const handleCancel = () => {
-        const navigate = useNavigate()
         navigate(PATHS.CLIENT.PROFILE);
     }
 
@@ -92,11 +126,18 @@ export function ProfileEdit(){
                 <div className="absolute top-0 left-0 w-full h-full border border-muted/15 rounded-4xl bg-surface/75 -z-10 mask-b-to-transparent mask-b-to-100%"></div>
                 <div className="absolute top-20 md:top-35 left-0 w-full border-b border-b-muted/15 -z-10"></div>
 
+                {loading
+                ?
+                <div className="flex flex-col items-center justify-center gap-4 h-full">
+                    <Spinner status={loading} />
+                    <span className="text-xs"> Loading profile... </span>
+                </div>
+                :
                 <form onSubmit={handleSubmit} className="flex flex-col items-center gap-8 max-md:flex-col" encType="multipart/form-data">
 
                     {/* Profile Image */}
                     <div className="group/item relative w-fit h-25 md:h-40 p-1 md:p-2 aspect-square border border-muted/15 rounded-full bg-background overflow-hidden">
-                        {/* <label htmlFor="fileToUpload" className="absolute hidden group-hover/item:flex group-active/item:flex items-center justify-center top-0 left-0 w-full h-full bg-muted/35 cursor-pointer"> {ICONS.arrowUpTray({className:'text-white size-8'})} </label>
+                        {/* <label htmlFor="fileToUpload" className="absolute hidden group-hover:item:flex group-active:item:flex items-center justify-center top-0 left-0 w-full h-full bg-muted/35 cursor-pointer"> {ICONS.arrowUpTray({className:'text-white size-8'})} </label>
                         <input type="file" name="fileToUpload" id="fileToUpload" className="hidden" /> */}
                         <img src={images[7]} alt="Avatar" className="w-full h-full object-cover rounded-full" />
                     </div>
@@ -115,7 +156,10 @@ export function ProfileEdit(){
 
                         {/* CTA */}
                         <div className="flex max-xs:flex-col md:flex-row gap-4 w-full md:w-fit mt-4">
-                            <PButton type="submit" className="w-full"> Save Changes </PButton>
+
+                            <PButton type="submit" className="w-full" disabled={loadingSubmit}>
+                                <Spinner status={loadingSubmit} size="sm"> Save Changes </Spinner>
+                            </PButton>
                             <SButton type="button" onClick={handleCancel} className="w-full"> Cancel </SButton>
                         </div>
 
@@ -124,6 +168,7 @@ export function ProfileEdit(){
 
 
                 </form>
+                }
 
             </div>
 

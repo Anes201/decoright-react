@@ -204,7 +204,7 @@
     }
 
     .active {
-        @apply bg-emphasis/50;
+        @apply bg-emphasis;
     }
 }
 

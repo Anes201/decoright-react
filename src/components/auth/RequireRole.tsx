@@ -15,7 +15,7 @@ export default function RequireRole({
 
   if (!user) return null; // RequireAuth should handle this
 
-  if (!roles.includes(user.role)) {
+  if (!roles.includes(user.role as Role)) {
     return <Navigate to="/unauthorized" replace />;
   }
 

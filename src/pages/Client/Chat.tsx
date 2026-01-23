@@ -1,27 +1,16 @@
 
 
 // pages/client/ChatPage.tsx
-import ChatView from '@components/chat/ChatView';
-import { useChat } from '@/hooks/chat';
+import ChatLayout from '@components/chat/ChatLayout';
 
 export default function ChatPage() {
     return (
         <main>
-            <ChatView
-                // Initialize chat with empty contacts and current user ID 1
-                // {...useChat({ initialContacts: [], currentUserId: 1 })}
-                />
-
+            <section className="h-hero content-container w-full px-3 sm:px-6 md:px-8">
+                <div className="content-container w-full h-full">
+                    <ChatLayout />
+                </div>
+            </section>
         </main>
     );
 }
-
-// import { ChatLayout } from "@components/layout/Chat"
-
-// export function ClientChatPage() {
-//     return (
-//         <main>
-//             <ChatLayout/>
-//         </main>
-//     )
-// }

@@ -1,19 +1,16 @@
 
-import { Link } from "react-router-dom"
-
-import { useState } from "react"
-
+import LogoutButton from "@components/common/Confirm"
+import useAuth from "@/hooks/useAuth"
 import Logo from "/public/vite.svg"
 
-import { ICONS } from "@/icons"
-import { userIsStaff } from "@/constants"
+import { Link } from "react-router-dom"
+import { useState } from "react"
 
+import { ICONS } from "@/icons"
 import { publicNavItems, clientNavItems } from "@/constants"
 import { MenuCard } from "@components/ui/MenuCard"
 import { PCTALink, SCTALink } from "@components/ui/CTA"
 import { PATHS } from "@/routers/Paths"
-import LogoutButton from "@components/common/Confirm"
-import { useAuth } from "@/contexts/AuthProvider"
 
 
 
@@ -47,9 +44,11 @@ export function NavLinks() {
 }
 
 export function AuthenticatedUserActins() {
+
+    const { isAdmin } = useAuth()
     return (
         <>
-            { userIsStaff
+            { isAdmin
             ?
                 <>
                     {/* Request Project */}
@@ -116,9 +115,9 @@ export function PublicNavMenuItems () {
                             <h3 className="font-medium text-sm"> {item.label} </h3>
                         </div>
 
-                        {/* Context */}
+                        {/* Description & Helper */}
                         <div className="w-full">
-                            <p className="text-2xs text-muted"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus culpa  </p>
+                            <p className="text-2xs text-muted"> {item.description} </p>
                         </div>
                     </Link>
                 </li>
@@ -162,10 +161,12 @@ export function PublicNavMenuItems () {
 
 export function ClientNavMenuItems () {
 
+    const { isAdmin } = useAuth()
+
     return (
 
         <>
-        {userIsStaff &&
+        {isAdmin &&
             <li id="admin-dashboard-nav-menu-item" className="w-full">
                 <Link to={PATHS.ADMIN.ROOT} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15">
                     <div className="flex content-center gap-2">
