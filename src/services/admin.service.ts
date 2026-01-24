@@ -83,7 +83,7 @@ export const AdminService = {
             })
 
             return {
-                date: `${month} ${currentYear.toString().slice(-2)}`,
+                date: `${month} ${currentYear}`,
                 Requests: monthRequests.length,
                 Complete: monthRequests.filter(req => req.status === 'Completed').length
             }

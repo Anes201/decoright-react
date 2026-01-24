@@ -12,6 +12,15 @@ export default function Dashboard() {
     const [activities, setActivities] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const COLORS = {
+        primary: 'bg-primary',
+        secondary: 'bg-secondary',
+        success: 'bg-emerald-500',
+        warning: 'bg-amber-500',
+        info: 'bg-blue-500',
+        accent: 'bg-purple-500'
+    };
+
     useEffect(() => {
         async function loadDashboardData() {
             try {
@@ -37,10 +46,10 @@ export default function Dashboard() {
     }, []);
 
     const topKPICards = [
-        { id: '1', label: 'Total requests', value: stats?.totalRequests ?? '...' },
-        { id: '2', label: 'Total completed', value: stats?.completedRequests ?? '...' },
-        { id: '3', label: 'Total unique clients', value: stats?.totalUsers ?? '...' },
-        { id: '4', label: 'Completion rate', value: stats?.completionRate ?? '...' },
+        { id: '1', label: 'Total requests', value: stats?.totalRequests ?? '...', icon: ICONS.rectangleStack, color: 'from-blue-600 to-indigo-600', trend: '+12%' },
+        { id: '2', label: 'Total completed', value: stats?.completedRequests ?? '...', icon: ICONS.check, color: 'from-emerald-500 to-teal-500', trend: '+5%' },
+        { id: '3', label: 'Total unique clients', value: stats?.totalUsers ?? '...', icon: ICONS.userCircle, color: 'from-amber-500 to-orange-500', trend: '+8%' },
+        { id: '4', label: 'Completion rate', value: stats?.completionRate ?? '...', icon: ICONS.chartBar, color: 'from-purple-500 to-pink-500', trend: '+3%' },
     ];
 
     if (loading) {
@@ -78,46 +87,93 @@ export default function Dashboard() {
 
                         {/* KPI cards */}
                         <div className="flex flex-col">
-                            <h3 className="font-medium mx-1 my-2"> Overall performance </h3>
-                            <div className="grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] gap-4 w-full">
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="font-bold text-lg text-heading"> Overall Performance </h3>
+                                <span className="text-xs text-muted bg-emphasis/50 px-2 py-1 rounded-full border border-muted/10"> Last 30 days </span>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
                                 {topKPICards.map((data) => (
-                                    <div key={data.id} className="flex flex-col justify-between min-h-20 p-3 border border-muted/15 shadow-xs bg-surface rounded-xl">
-                                        <h4 className="font-medium text-sm text-muted"> {data.label} </h4>
-                                        <span className="font-medium text-foreground"> {data.value} </span>
+                                    <div key={data.id} className="relative group overflow-hidden flex flex-col justify-between p-5 border border-muted/10 shadow-sm bg-surface rounded-2xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                                        <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 bg-gradient-to-br ${data.color} opacity-10 rounded-full blur-2xl group-hover:opacity-20 transition-opacity`}></div>
+                                        <div className="flex items-start justify-between mb-4">
+                                            <div className={`p-2.5 rounded-xl bg-gradient-to-br ${data.color} shadow-lg shadow-indigo-500/20`}>
+                                                <data.icon className="size-5 text-white" />
+                                            </div>
+                                            <span className="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-1.5 py-0.5 rounded-md">
+                                                {data.trend}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h4 className="font-medium text-xs text-muted uppercase tracking-wider mb-1"> {data.label} </h4>
+                                            <span className="text-2xl font-bold text-heading"> {data.value} </span>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
 
-                        {/* Chart */}
-                        <div className="flex max-lg:flex-col gap-4 h-full">
-                            <div className="w-full border border-muted/15 shadow-xs bg-surface rounded-xl">
-                                <div className="p-3 md:p-4">
-                                    <h3 className="font-medium">
-                                        Created & Completed Requests Over Time
-                                    </h3>
+                        {/* Chart Section */}
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
+                            <div className="lg:col-span-2 border border-muted/10 shadow-sm bg-surface rounded-2xl overflow-hidden flex flex-col">
+                                <div className="p-6 border-b border-muted/5 flex items-center justify-between">
+                                    <div>
+                                        <h3 className="font-bold text-heading">
+                                            Requests Volume
+                                        </h3>
+                                        <p className="text-xs text-muted mt-1">Growth of created and completed requests.</p>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/5 border border-blue-500/10 text-[10px] font-bold text-blue-600">
+                                            <span className="size-1.5 rounded-full bg-blue-500" /> Requests
+                                        </div>
+                                        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/5 border border-emerald-500/10 text-[10px] font-bold text-emerald-600">
+                                            <span className="size-1.5 rounded-full bg-emerald-500" /> Completed
+                                        </div>
+                                    </div>
                                 </div>
-                                <AreaChart
-                                    className="py-2 md:py-4 w-full h-100"
-                                    data={chartData}
-                                    index="date"
-                                    categories={["Requests", "Complete"]}
-                                    onValueChange={(v) => console.log(v)}
-                                    allowDecimals={false}
-                                />
+                                <div className="p-4 flex-1 min-h-[400px]">
+                                    <AreaChart
+                                        className="w-full h-full"
+                                        data={chartData}
+                                        index="date"
+                                        categories={["Requests", "Complete"]}
+                                        colors={["blue", "emerald"]}
+                                        showLegend={false}
+                                        showGridLines={true}
+                                        onValueChange={(v) => console.log(v)}
+                                        allowDecimals={false}
+                                        fill="gradient"
+                                    />
+                                </div>
                             </div>
-                            {/* additional metrics */}
-                            <div className="flex flex-col gap-4 w-full lg:w-2/3 xl:w-2/5 h-full">
-                                <div className="flex flex-col gap-4 w-full p-3 border-muted/15 shadow-xs bg-surface rounded-xl">
-                                    <h5 className="font-medium text-sm"> Top Services By Request </h5>
-                                    <ol className="flex flex-col gap-4">
-                                        {topServices.map((service, index) => (
-                                            <li key={index} className="flex justify-between text-xs pb-4 last:pb-2 border-b border-muted/25 last:border-0">
-                                                {service.service_type}
-                                                <span className="font-bold mx-2"> {service.value} </span>
-                                            </li>
-                                        ))}
-                                    </ol>
+
+                            {/* Additional Metrics */}
+                            <div className="flex flex-col gap-6 h-full">
+                                <div className="flex flex-col border border-muted/10 shadow-sm bg-surface rounded-2xl overflow-hidden h-full">
+                                    <div className="p-6 border-b border-muted/5">
+                                        <h3 className="font-bold text-heading text-sm"> Popular Services </h3>
+                                        <p className="text-xs text-muted mt-1">Distribution by importance.</p>
+                                    </div>
+                                    <div className="p-6 flex flex-col gap-4 overflow-y-auto max-h-[400px]">
+                                        {topServices.length > 0 ? (
+                                            topServices.map((service, index) => (
+                                                <div key={index} className="group flex flex-col gap-2">
+                                                    <div className="flex justify-between items-center text-xs font-semibold">
+                                                        <span className="text-heading truncate max-w-[150px]">{service.service_type}</span>
+                                                        <span className="text-primary bg-primary/5 px-2 py-0.5 rounded-full">{service.value}</span>
+                                                    </div>
+                                                    <div className="h-2 w-full bg-muted/10 rounded-full overflow-hidden">
+                                                        <div
+                                                            className={`h-full bg-gradient-to-r from-primary to-primary/60 rounded-full transition-all duration-1000 ease-out`}
+                                                            style={{ width: `${(service.value / Math.max(...topServices.map(s => s.value))) * 100}%` }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div className="py-10 text-center text-muted text-xs">No service data available.</div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -126,36 +182,50 @@ export default function Dashboard() {
                 </section>
             </main>
 
-            <section className="w-full h-fit mt-4 mb-40">
-                <div className="flex flex-col gap-4 w-full h-full p-4 bg-surface rounded-xl">
-                    <h2 className="font-medium text-2xl w-full pb-4 mb-2 border-b border-muted/25" > Admin Activity </h2>
-
+            <section className="w-full h-fit mt-12 mb-40">
+                <div className="flex flex-col gap-4 w-full h-full p-6 border border-muted/10 shadow-sm bg-surface rounded-2xl">
+                    <div className="flex items-center justify-between pb-6 mb-2 border-b border-muted/5">
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                                <ICONS.presentationChartLine className="size-5" />
+                            </div>
+                            <h2 className="font-bold text-xl text-heading"> Admin Activity </h2>
+                        </div>
+                        <button className="text-xs font-semibold text-primary hover:underline">View All Logs</button>
+                    </div>
                     {/* Activity List */}
-                    <ul className="flex flex-col gap-4 overscroll-y-auto">
+                    <ul className="flex flex-col gap-6">
                         {activities.map((activity) => (
-                            <li key={activity.id} className="flex gap-3 w-full pb-4 last:pb-2 border-b border-muted/20 last:border-0">
-                                <div className="flex flex-col gap-1 w-full">
+                            <li key={activity.id} className="group flex gap-4 w-full">
+                                <div className="flex-shrink-0 size-10 rounded-full bg-surface-tertiary flex items-center justify-center text-primary group-hover:bg-primary/10 transition-colors border border-muted/5">
+                                    <ICONS.user className="size-5" />
+                                </div>
+                                <div className="flex flex-col gap-1.5 w-full">
                                     <div className="flex justify-between items-center">
-                                        <p className="font-bold text-xs">
+                                        <p className="font-bold text-sm text-heading flex items-center gap-2">
                                             {activity.profiles?.full_name || 'System'}
-                                            <span className="font-medium text-2xs text-muted before:content-['•'] ml-1">
+                                            <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emphasis text-muted uppercase tracking-wider">
                                                 {activity.action}
                                             </span>
                                         </p>
-                                        <span className="text-xs text-muted">
+                                        <span className="text-xs text-muted flex items-center gap-1">
+                                            <ICONS.calendar className="size-3" />
                                             {new Date(activity.created_at).toLocaleDateString()}
                                         </span>
                                     </div>
-                                    <span className="text-xs"> {activity.details} </span>
+                                    <span className="text-xs text-body/80 leading-relaxed"> {activity.details} </span>
                                 </div>
                             </li>
                         ))}
                         {activities.length === 0 && (
-                            <li className="text-sm text-muted py-4"> No recent activities found. </li>
+                            <li className="text-sm text-center text-muted py-12 flex flex-col items-center gap-2">
+                                <ICONS.rectangleStack className="size-8 opacity-20" />
+                                <span>No recent activities found in the system.</span>
+                            </li>
                         )}
                     </ul>
-                </div>
-            </section>
+                </div >
+            </section >
         </>
     )
 }
