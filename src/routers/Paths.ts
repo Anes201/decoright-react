@@ -26,14 +26,14 @@ export const PATHS = {
     CLIENT: {
         ROOT: "/",
 
-        PROFILE: "/profile",
-        PROFILE_EDIT: "/profile/edit",
+        ACCOUNT_PROFILE: "/profile",
+        ACCOUNT_SETTINGS: "/settings",
 
         REQUEST_SERVICE_LIST: "/request-service/list",
         REQUEST_SERVICE: "/request-service", // helper for dynamic links
 
         CHAT: "/client/chat/",
-        CHAT_ROOM: "/client/chat/:chatId/",
+        CHAT_ROOM: "/client/chat/:id/",
         chatRoom: (id: string) => `/client/chat/${encodeURIComponent(id)}/`,
 
         VERIFY_PHONE: "/",
@@ -64,7 +64,7 @@ export const PATHS = {
         requestServiceDetail: (id: string) => `/admin/service-request/${encodeURIComponent(id)}/`,
 
         GALLERY_LIST: "/admin/gallery/list",
-        GALLERY_CREATE: "/admin/gallery/:requestId",
+        GALLERY_CREATE: "/admin/gallery/:id",
         GALLERY_EDIT: "/admin/gallery/:slug/edit",
         galleryEdit: (id: string) => `/admin/gallery/${encodeURIComponent(id)}/edit`,
 

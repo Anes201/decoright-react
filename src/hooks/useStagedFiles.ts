@@ -64,6 +64,27 @@ export function useStagedFiles() {
     newStaged.forEach((s) => startUpload(s.id));
   }
 
+  function addSingleFile(file: FileList | null) {
+    if (!file) return;
+
+    const arr = Array.from(file);
+    const newStaged: StagedFile [] = arr.map((f) => ({
+      id: `local-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      name: f.name,
+      size: f.size,
+      mime: f.type || "application/octet-stream",
+      file: f,
+      progress: 0,
+      status: "idle",
+    }));
+
+    // prepend new files so newest appear at top (choose your UX)
+    setFiles(newStaged);
+
+    // start upload immediately (optimistic). If you don't want this, remove this loop.
+    startUpload(newStaged[0].id);
+  }
+
   function removeFile(id: string) {
     // cancel ongoing upload if any
     if (cancelers.current[id]) {
@@ -123,6 +144,7 @@ export function useStagedFiles() {
   return {
     files,
     addFiles,
+    addSingleFile,
     removeFile,
     retryFile,
     startUpload, // exported if you want manual control

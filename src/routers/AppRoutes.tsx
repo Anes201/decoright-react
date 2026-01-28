@@ -29,8 +29,8 @@ const ClientChat = lazy(() => import('@/pages/Client/Chat'));
 const ClientGallery = lazy(() => import('@/pages/Client/Gallery'));
 const ClientRequestList = lazy(() => import('@/pages/Client/RequestServiceList'));
 const ClientRequestService = lazy(() => import('@/pages/Client/RequestService'));
-const ClientProfile = lazy(() => import('@/pages/Client/Profile'));
-const ClientProfileEdit = lazy(() => import('@/pages/Client/ProfileEdit'));
+const ClientAccountProfile = lazy(() => import('@/pages/Client/AccountProfile'));
+const ClientAccountSettings = lazy(() => import('@/pages/Client/AccountSettings'));
 const ClientPasswordChange = lazy(() => import('@/pages/Client/PasswordChange'));
 const ClientPasswordSet = lazy(() => import('@/pages/Client/PasswordSet'));
 const ClientPasswordDone = lazy(() => import('@/pages/Client/PasswordDone'));
@@ -138,12 +138,12 @@ const router = createBrowserRouter([
         ]
       },
       {
-        path: PATHS.CLIENT.PROFILE,
-        element: <ClientProfile />,
+        path: PATHS.CLIENT.ACCOUNT_PROFILE,
+        element: <ClientAccountProfile />,
       },
       {
-        path: PATHS.CLIENT.PROFILE_EDIT,
-        element: <ClientProfileEdit />,
+        path: PATHS.CLIENT.ACCOUNT_SETTINGS,
+        element: <ClientAccountSettings />,
       },
 
       // Password

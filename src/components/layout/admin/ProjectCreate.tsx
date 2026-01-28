@@ -1,14 +1,15 @@
+import Spinner from "@/components/common/Spinner";
 import { PButton } from "@/components/ui/Button";
 import { SCTALink } from "@/components/ui/CTA";
 import FileUploadPanel from "@/components/ui/FileUploadPanel";
-import { DateInput } from "@/components/ui/Input";
+import { DateInput, Input } from "@/components/ui/Input";
 import { SelectMenu } from "@/components/ui/Select";
 import { projectVisibility, serviceSpaceTypes, serviceTypes } from "@/constants";
 import { AdminService } from "@/services/admin.service";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function CreateProjectForm() {
+export default function ProjectCreateLayout() {
     const [loading, setLoading] = useState(false);
     const [serviceType, setServiceType] = useState<string>("");
     const [spaceType, setSpaceType] = useState<string>("");
@@ -17,28 +18,27 @@ export default function CreateProjectForm() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         setLoading(true);
 
-        const formData = new FormData(e.currentTarget);
-        const title = formData.get('project-title') as string;
-        const description = formData.get('description') as string;
-        const width = Number(formData.get('project-area-width'));
-        const height = Number(formData.get('project-area-height'));
-        const startDate = formData.get('project-construction-start-date') as string;
-        const endDate = formData.get('project-construction-end-date') as string;
-
         try {
-            await AdminService.createProject({
-                title,
-                description,
+            const formData = new FormData(e.currentTarget);
+            const payload: any = {
+                title: formData.get('project-title') as string,
+                description: formData.get('description') as string,
                 service_type: serviceType as any,
                 space_type: spaceType as any,
-                area_sqm: width * height,
                 visibility: visibility as any,
-                construction_start_date: startDate,
-                construction_end_date: endDate,
-            });
+                construction_start_date: formData.get('project-construction-start-date') as string,
+                construction_end_date: formData.get('project-construction-end-date') as string,
+            }
+
+            const areaSqm = formData.get('area-sqm') as any;
+            if (areaSqm) payload.area_sqm = parseFloat(areaSqm);
+
+            await AdminService.createProject(payload);
             navigate(-1); // Go back after success
+
         } catch (error) {
             console.error("Failed to create project:", error);
             alert("Failed to create project. Check console for details.");
@@ -56,7 +56,7 @@ export default function CreateProjectForm() {
                     <div className="flex flex-col gap-2 h-full">
                         <label htmlFor="project-title" className="font-medium text-xs text-muted px-1"> Title </label>
                         <input type="text" name="project-title" id="project-title" placeholder="Project Title" required
-                            className="w-full p-2.5 text-sm text-muted bg-emphasis/75 rounded-lg cursor-text outline-1 outline-muted/15 hover:outline-muted/35 focus:outline-primary/45" />
+                        className="w-full p-2.5 text-sm text-muted bg-emphasis/75 rounded-lg cursor-text outline-1 outline-muted/15 hover:outline-muted/35 focus:outline-primary/45" />
                     </div>
 
                     <div className="flex flex-col gap-2 h-full">
@@ -89,13 +89,13 @@ export default function CreateProjectForm() {
                     </div>
 
                     <div className="relative flex flex-col gap-2">
-                        <label htmlFor="project-area" className="group/date font-medium text-xs text-muted px-1"> Area in m² </label>
-                        <div id="project-area" className="flex gap-3 md:gap-4">
-                            <input type="number" name="project-area-width" id="project-area-width" placeholder="Width"
-                                className="w-full p-2.5 text-sm text-muted bg-emphasis/75 rounded-lg cursor-text outline-1 outline-muted/15 hover:outline-muted/35 focus:outline-primary/45" />
-                            <input type="number" name="project-area-height" id="project-area-height" placeholder="Height"
-                                className="w-full p-2.5 text-sm text-muted bg-emphasis/75 rounded-lg cursor-text outline-1 outline-muted/15 hover:outline-muted/35 focus:outline-primary/45" />
-                        </div>
+                        <label htmlFor="area-sqm" className="font-medium text-xs text-muted px-1"> Area in m² </label>
+                        <Input
+                            id="area-sqm"
+                            name="area-sqm"
+                            type="number"
+                            placeholder="Area in square meters"
+                        />
                     </div>
 
                     <div className="flex flex-col gap-2">
@@ -130,7 +130,7 @@ export default function CreateProjectForm() {
             {/* CTA & Submit */}
             <div className="flex max-xs:flex-col md:flex-row gap-3 md:gap-4 w-full md:w-fit">
                 <PButton type="submit" className="w-full" disabled={loading}>
-                    {loading ? "Creating..." : "Create Project"}
+                    <Spinner status={loading} size="sm"> Create Project </Spinner>
                 </PButton>
                 <SCTALink to={'/admin'} className="w-full"> Cancel </SCTALink>
             </div>

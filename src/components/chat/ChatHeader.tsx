@@ -2,8 +2,12 @@
 import { Link } from 'react-router-dom';
 import { ICONS } from '@/icons';
 import { PATHS } from '@/routers/Paths';
+import { useChat } from '@/hooks/useChat';
 
-export default function ChatHeader({request}: {request: any}) {
+export default function ChatHeader() {
+
+    const { selectedRoom:contact } = useChat();
+
     return (
         <div className="flex items-center gap-3 w-full p-2 pb-4 border-b border-muted/15">
             <nav className="w-fit h-fit">
@@ -13,15 +17,16 @@ export default function ChatHeader({request}: {request: any}) {
             </nav>
 
             <div className="flex flex-col w-full h-fit">
-                <h3 className="font-medium text-sm"> {request.request_code} </h3>
-                <p className="text-2xs text-muted"> {(request.service_type || 'Unknown').replace(/_/g, ' ')} </p>
-                <span className="text-2xs text-muted"> {new Date(request.created_at).toLocaleDateString()} </span>
+                <h3 className="font-medium text-sm"> {contact?.service_requests.request_code} </h3>
+                <p className="text-2xs text-muted"> {(contact?.service_requests.service_type || 'Unknown').replace(/_/g, ' ')} </p>
+                <span className="text-2xs text-muted"> {contact?.created_at} </span>
+                {/* <span className="text-2xs text-muted"> {new Date(selectedRoom?.created_at).toLocaleDateString()} </span> */}
             </div>
 
             {/* Right actions slot */}
             <div className="flex flex-col items-end gap-1">
-                <span className={`px-2 py-0.5 rounded-full text-xs request-status-${request.status.toLowerCase()}`}>
-                    {request.status}
+                <span className={`px-2 py-0.5 rounded-full text-xs request-status-${contact?.service_requests.status.toLowerCase()}`}>
+                    {contact?.service_requests.status}
                 </span>
             </div>
         </div>

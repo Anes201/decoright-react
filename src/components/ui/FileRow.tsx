@@ -2,7 +2,7 @@
 
 import type { StagedFile } from "@/types/upload";
 import FileIcon from "@/icons/files";
-import ProgressBar from "./ProgressBar";
+import ProgressBar from "@components/ui/ProgressBar";
 import { ICONS } from "@/icons";
 
 export default function FileRow({
@@ -52,8 +52,10 @@ export default function FileRow({
       </div>
 
       <div className="flex flex-col justify-between w-fit">
-        <button type="button" onClick={() => onRemove(file.id)} aria-label={`Remove ${file.name}`}>
-          <ICONS.trash className="size-5 text-muted"/>
+        <button type="button" title="Remove Uploaded File"
+        className="group/trash p-2 rounded-full hover:bg-danger/25 active:bg-danger/25"
+        onClick={() => onRemove(file.id)} aria-label={`Remove ${file.name}`}>
+          <ICONS.trash className="size-5 text-muted group-hover/trash:text-danger group-active/trash:text-danger"/>
         </button>
 
         {/* failed hint + retry */}

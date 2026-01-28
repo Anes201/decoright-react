@@ -58,7 +58,7 @@ export default function ServiceCreateLayout() {
                 <PButton type="submit" className="w-full" disabled={loading}>
                     <Spinner status={loading}> Create Service </Spinner>
                 </PButton>
-                <SCTALink to={'/admin'} className="w-full"> Cancel </SCTALink>
+                <SCTALink to={-1} className="w-full"> Cancel </SCTALink>
             </div>
         </form>
     )

@@ -10,7 +10,7 @@ import { PATHS } from "@/routers/Paths";
 
 type ProfileData = Database['public']['Tables']['profiles']['Row'];
 
-export default function ProfileLayout() {
+export default function AccountProfileLayout() {
     const { user, loading: authLoading } = useAuth();
     const [profile, setProfile] = useState<ProfileData | null>(null);
     const [loading, setLoading] = useState(false);
@@ -79,7 +79,7 @@ export default function ProfileLayout() {
                 <div className="flex items-center gap-4">
                     <h3 className="font-semibold text-2xs md:text-xs text-foreground/75 min-w-max"> Personal Information </h3>
                     <hr className="w-full border-0 border-b border-muted/15" />
-                    <Link to={PATHS.CLIENT.PROFILE_EDIT} className="p-2 border border-muted/15 bg-surface/75 rounded-lg"> <ICONS.pencilSquare/> </Link>
+                    <Link to={PATHS.CLIENT.ACCOUNT_SETTINGS} className="p-2 border border-muted/15 bg-surface/75 rounded-lg"> <ICONS.pencilSquare/> </Link>
                 </div>
                 <ul className="flex flex-col gap-6 w-full">
 

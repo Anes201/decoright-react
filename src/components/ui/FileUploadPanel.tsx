@@ -41,7 +41,8 @@ export default function FileUploadPanel() {
             <input type="file" name="filesToUpload" id="filesToUpload" className="hidden" multiple onChange={onInputChange} />
         </div>
 
-        <div className="flex w-full md:p-2 md:border-x md:border-b border-muted/15 rounded-b-xl md:shadow-xs bg-surface">
+        <div className="relative flex w-full md:p-2 z-5">
+            <div className="absolute top-0 left-0 w-full h-full border-x border-muted/15 bg-surface -z-5 mask-b-to-transparent" />
             <FileList files={files} onRemove={removeFile} onRetry={retryFile} />
         </div>
 

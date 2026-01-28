@@ -72,7 +72,7 @@ export function RequestService() {
 
             <div className="absolute right-full w-full h-[calc(100svh-20rem)] md:h-[calc(100svh-18rem)] border border-muted/20 rounded-4xl bg-surface/25 mask-l-to-transparent mask-l-to-30% overflow-hidden"></div>
 
-            <div className="relative flex flex-col gap-6 w-full h-full p-3 md:p-8">
+            <div className="relative flex flex-col gap-6 w-full h-full p-3 md:p-8 mb-20">
                 <div className="absolute top-0 left-0 w-full h-full border border-muted/15 rounded-3xl bg-surface -z-10 mask-b-to-transparent mask-b-to-100%"></div>
 
                 {/* Header */}
@@ -112,7 +112,7 @@ export function RequestService() {
                     </div>
                 }
 
-                <form action="." method="POST" encType="multipart/form-data" onSubmit={handleSubmit} className="flex flex-col gap-8 w-full h-fit" id="service-request-form">
+                <form onSubmit={handleSubmit} className="flex flex-col gap-8 w-full h-fit" id="service-request-form">
 
                     {error && <p className="text-xs text-danger"> {error} </p>}
                     {/* Input Data */}
@@ -171,17 +171,6 @@ export function RequestService() {
                                     value={areaSqm}
                                     onChange={(e: any) => setAreaSqm(e.target.value)}
                                 />
-                            </div>
-
-                            <div className="relative flex flex-col gap-2">
-                                <label htmlFor="service-request-area" className="group/date font-medium text-xs text-muted px-1"> Area in m² </label>
-
-                                <div id="service-request-area" className="flex max-sm:flex-col gap-3 md:gap-4">
-                                    <input type="number" name="service-request-area-width" id="service-request-area-width" placeholder="Width"
-                                    className="w-full p-2.5 text-sm text-muted bg-emphasis/75 rounded-lg cursor-text outline-1 outline-muted/15 hover:outline-muted/35 focus:outline-primary/45" />
-                                    <input type="number" name="service-request-area-height" id="service-request-area-height" placeholder="Height"
-                                    className="w-full p-2.5 text-sm text-muted bg-emphasis/75 rounded-lg cursor-text outline-1 outline-muted/15 hover:outline-muted/35 focus:outline-primary/45" />
-                                </div>
                             </div>
 
                             {/* CTA */}

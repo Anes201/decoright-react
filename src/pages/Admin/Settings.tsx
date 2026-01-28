@@ -3,7 +3,6 @@ import Spinner from "@/components/common/Spinner";
 import { EmailInput, Input, PhoneInput } from "@/components/ui/Input";
 import { images, SocialMediaPhoneFields, SocialMediaUrlFields } from "@/constants";
 import { companyNameTitle } from "@/constants/company";
-import { ICONS } from "@/icons";
 import { AdminService } from "@/services/admin.service";
 import { useEffect, useState, useCallback } from "react";
 
@@ -43,6 +42,7 @@ export default function Settings() {
                 await AdminService.updateSetting(key, value);
                 setDataSaved(true);
                 setTimeout(() => setDataSaved(false), 2000);
+
             } catch (error) {
                 console.error("Failed to save setting:", error);
             } finally {

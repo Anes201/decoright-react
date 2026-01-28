@@ -499,3 +499,9 @@ export const SocialMediaPhoneFields = [
     { id: '6', label: 'Whatsapp', placeholder: '+213123456789', icon: <ICONS.whatsapp className="size-6" /> },
     { id: '7', label: 'Telegram', placeholder: '+213123456789', icon: <ICONS.telegram className="size-6" /> },
 ]
+
+export const Languages = [
+    {label:'English', value:'en'},
+    {label:'Arabic', value:'ar'},
+    {label:'French', value:'fr'},
+]

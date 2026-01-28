@@ -6,7 +6,7 @@ import { EmailInput } from "@/components/ui/Input"
 import { PATHS } from "@/routers/Paths"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { EMAIL_REGEX } from "@/config/regex"
+import { EMAIL_REGEX } from "@/utils/validators"
 import { supabase } from "@/lib/supabase"
 
 
@@ -89,7 +89,7 @@ export default function PasswordReset () {
                         <div className="flex max-xs:flex-col md:flex-row gap-3 md:gap-4 w-full md:w-fit mt-4">
                             <PButton type="submit" form="password-reset-form"
                             className={`w-full h-fit ${!email && 'cursor-not-allowed'}`}
-                            disabled={ !emailValid }
+                            disabled={ !emailValid || loading }
                             area-label="send email to recover password"
                             title={emailValid ? 'Send email to recover password' : 'Enter a valid email' }
                             >

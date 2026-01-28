@@ -5,33 +5,39 @@ import { Link } from "react-router-dom"
 import { projects } from "@/constants";
 import { ICONS } from "@/icons";
 import { PATHS } from "@/routers/Paths";
+import ZoomImage from "@/components/ui/ZoomImage";
 
 export function ProjectCard ({project, index}: {project: {title: string; date: string; src: string}, index: number}) {
 
     return (
 
-        <li key={index} >
+        <li key={index} className="relative flex p-2 border-b border-muted/25 last:border-0">
+            {/* <div className="absolute bottom-0 left-0 w-full h-full border-b border-muted/25 last:border-0 mask-x-to-transparent mask-x-from-96%"/> */}
 
-            <Link to={PATHS.projectDetail('slug')} className="flex flex-col h-fit gap-1">
-                <div className="w-full aspect-video mb-2 overflow-hidden">
-                    <img src={project.src} alt="" className="object-cover h-full w-full rounded-xl" />
+            <Link to={PATHS.projectDetail('slug')} className="flex gap-4 w-full">
+                <div className="min-w-max h-25 aspect-video overflow-hidden">
+                    <ZoomImage src={project.src} alt="" className="object-cover h-full w-full rounded-lg" />
                 </div>
-                <div className="h-fit">
-                    <div className="flex gap-2">
-                        <h3 className="font-medium text-xs"> {project.title} </h3>
-                        <div className="flex h-fit gap-1 text-muted ml-auto px-1">
-                            {/* Placeholder for future icons or actions */}
-                            <div className="flex items-center gap-0.5 pt-0.5">
-                                {ICONS.eye({className:'size-4'})}
-                                <span className="text-2xs"> {/* statistic count goes here */} 220 </span>
-                            </div>
 
-                        </div>
+                <div className="flex flex-col gap-2 w-full">
+                    <p className="font-medium text-sm"> {project.title} </p>
+
+                    <div className="flex">
+                        <span className="text-2xs after:content-['•'] after:mx-1.5 last:after:content-none">823 Views</span>
+                        <span className="text-2xs">477 Likes</span>
                     </div>
+
                     <span className="leading-0 text-2xs text-muted/75"> {project.date} </span>
+
                 </div>
 
             </Link>
+
+            <div className="content-center w-fit border border-red-400">
+                <button type="button" className="rounded-full hover:bg-emphasis active::bg-emphasis">
+                    <ICONS.ellipsisVertical className="size-6 text-muted"/>
+                </button>
+            </div>
         </li>
 
     )
@@ -40,7 +46,7 @@ export function ProjectCard ({project, index}: {project: {title: string; date: s
 export function ProjectCardList () {
 
     return (
-        <ul className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] gap-8 md:gap-6 w-full">
+        <ul className="flex flex-col w-full border border-muted/15 rounded-xl">
 
             {projects.map((project, index) => (
                 <ProjectCard key={index} project={project} index={index} />

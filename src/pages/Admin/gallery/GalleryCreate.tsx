@@ -1,6 +1,8 @@
 
 // Request page for admin users to overview and manage request
 
+import GalleryCreateLayout from "@/components/layout/admin/GalleryCreate";
+
 export default function GalleryCreate() {
     return (
         <main>
@@ -11,7 +13,7 @@ export default function GalleryCreate() {
 
                     <div className="w-full lg:w-2/3 border border-red-400">
 
-
+                    <GalleryCreateLayout />
 
                     </div>
 

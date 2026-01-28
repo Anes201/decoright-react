@@ -1,4 +1,4 @@
-import LogoutButton from "@/components/common/Confirm";
+import { LogoutButton } from "@/components/common/Confirm";
 import { ICONS } from "@/icons";
 import { PATHS } from "@/routers/Paths";
 import { Link } from "react-router-dom";

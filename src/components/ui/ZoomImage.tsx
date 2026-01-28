@@ -54,11 +54,13 @@ export default function ZoomImage({
     };
   }, [open]);
 
-  function openModal() {
+  function openModal(e:any) {
+    e.preventDefault()
     setOpen(true);
     onOpen?.();
   }
-  function closeModal() {
+  function closeModal(e:any) {
+    e.preventDefault()
     setOpen(false);
     onClose?.();
   }
@@ -78,7 +80,7 @@ export default function ZoomImage({
         >
           <div className="zoom-backdrop absolute inset-0 bg-black/75" />
           <div className="zoom-content relative z-10 flex items-center justify-center max-w-[90vw] md:max-w-3/4 max-md:w-full aspect-auto md:h-full max-h-[80vh]"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {e.stopPropagation(), e.preventDefault()}}
           >
             <img
               src={src}

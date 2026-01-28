@@ -146,7 +146,7 @@
     }
 
     main section {
-        @apply pt-4 md:pt-6;
+        @apply pt-22 md:pt-24;
     }
 
     section {

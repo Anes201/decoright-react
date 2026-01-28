@@ -2,10 +2,11 @@
 import Spinner from "@/components/common/Spinner";
 import { PButton } from "@/components/ui/Button";
 import { SCTALink } from "@/components/ui/CTA";
-import { Input, PasswordInput } from "@/components/ui/Input";
+import { PasswordInput } from "@/components/ui/Input";
 import { PASSWORD_MIN_LENGTH } from "@/config";
-import { PASSWORD_REGEX } from "@/config/regex";
+import { PASSWORD_REGEX } from "@/utils/validators";
 import { ICONS } from "@/icons";
+import { supabase } from "@/lib/supabase";
 import { PATHS } from "@/routers/Paths";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,38 +14,130 @@ import { useNavigate } from "react-router-dom";
 export default function PasswordSet () {
 
     const navigate = useNavigate()
-    const [password, setPassword] = useState('')
-    const [password2, setPassword2] = useState('')
+    const [newPassword, setNewPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
     const [passwordValid, setPasswordValid] = useState(false);
     const [passwordsMatch, setPasswordsMatch] = useState(false);
 
+    const [pageLoading, setPageLoading] = useState(true)
+    const [allowed, setAllowed] = useState(false);
+
+    // Form Loading State
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
+    useEffect(() => {
+        const checkSession = async () => {
+            const {
+            data: { session },
+            } = await supabase.auth.getSession();
+
+            if (!session) {
+            setError("Invalid or expired password reset link.");
+            setPageLoading(false);
+            return;
+            }
+
+            // Recovery session (page refresh safe)
+            if (session.user.recovery_sent_at) {
+            setAllowed(true);
+            setPageLoading(false);
+            return;
+            }
+
+            // Not a normal signed-in user
+            setError("This page is only accessible from a password reset email.");
+            setPageLoading(false);
+        };
+
+        checkSession();
+
+        const { data: listener } = supabase.auth.onAuthStateChange(
+            (event, session) => {
+            if (
+                event === "PASSWORD_RECOVERY" &&
+                session?.user.recovery_sent_at
+            ) {
+                setAllowed(true);
+                setPageLoading(false);
+            }
+            }
+        );
+
+        return () => {
+            listener.subscription.unsubscribe();
+        };
+    }, []);
+
     // Validate length + no whitespace
     useEffect(() => {
-        setPasswordValid(PASSWORD_REGEX.test(password));
-    }, [password]);
+        setPasswordValid(PASSWORD_REGEX.test(newPassword));
+    }, [newPassword]);
 
     // Check password match
     useEffect(() => {
-        setPasswordsMatch(password !== "" && password === password2);
-    }, [password, password2]);
+        setPasswordsMatch(newPassword !== "" && newPassword === confirmPassword);
+    }, [newPassword, confirmPassword]);
+
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
 
-        setLoading(true)
         setError(null)
 
+
+        if(!passwordValid || !passwordsMatch) {
+            setError("Invalid password or passwords does not match")
+            return;
+        }
+
+        // Block if we don't have a verified recovery session
+        if (!allowed) {
+            setError(
+                "This password reset link is invalid or expired. Please request a new password reset link."
+            );
+            return;
+        }
+
+        setLoading(true)
         try {
 
-            navigate(PATHS.VERIFY_OTP)
-        } catch (err: any) {
-            console.error("Password set error details:", err)
-            setError(err.message || "Failed to set the new password")
+            // Re-check session before proceeding
+            const { data: sessionData } = await supabase.auth.getSession();
+            const session = sessionData?.session ?? null;
+            if (!session || !session.user) {
+                setError("Session is invalid. Open the password reset link from your email and try again.");
+                return;
+            }
+
+
+            // All checks passed: perform the password update
+            const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
+
+            if (updateError) {
+                console.error("updateUser error", updateError);
+                // User-friendly message
+                setError("Failed to set password. Try again or open the reset link again.");
+                return;
+            }
+
+            // Success: clear url (defensive)
+            try {
+                history.replaceState(null, "", window.location.pathname);
+            } catch {}
+
+
+            // Success "Password updated. You can now sign in with your new password."
+            setNewPassword("");
+            setConfirmPassword("");
+
+            navigate(PATHS.CLIENT.PASSWORD_DONE)
+
+        } catch (err) {
+            console.error("Unhandled error in set-password", err);
+            setError("Unexpected error. Try again later.");
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     }
 
@@ -69,18 +162,22 @@ export default function PasswordSet () {
                         </div>
                     </div>
 
-                    <form onSubmit={handleSubmit}>
+                    {error && <p className="text-xs text-danger text-center"> {error} </p>}
+
+                    <form onSubmit={handleSubmit} id="password-set-form">
                         <div>
                             <label htmlFor="password"
                             className="font-medium text-xs text-muted"
                             > Password </label>
-                            <PasswordInput id="password" onChange={(e:any) => setPassword(e.target.value)} />
+                            <PasswordInput id="password" disabled={pageLoading}
+                            onChange={(e:React.ChangeEvent<HTMLInputElement>) => setNewPassword(e.target.value)} />
                         </div>
                         <div>
-                            <label htmlFor="password2"
+                            <label htmlFor="confirm-password"
                             className="font-medium text-xs text-muted"
                             > Re-type Password </label>
-                            <PasswordInput id="password2" onChange={(e:any) => setPassword2(e.target.value)} />
+                            <PasswordInput id="confirm-password" disabled={pageLoading}
+                            onChange={(e:React.ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)} />
                         </div>
 
                     <ul className="flex flex-col gap-2 ">
@@ -92,19 +189,19 @@ export default function PasswordSet () {
 
                         <li className="flex items-center gap-2">
                             { passwordsMatch ? <ICONS.checkCircle className="size-4 text-success"/> : <ICONS.informationCircle className="size-4"/> }
-                            <p className="text-xs text-muted"> Passwords must have a match</p>
+                            <p className="text-xs text-muted"> Passwords must have a match.</p>
                         </li>
 
                     </ul>
 
                         {/* CTA */}
                         <div className="flex max-xs:flex-col md:flex-row gap-3 md:gap-4 w-full md:w-fit mt-8">
-                            <PButton type="submit" form="service-request-form"
+                            <PButton type="submit" form="password-set-form"
                             className="w-full h-fit"
-                            disabled={ !passwordValid || !passwordsMatch }
+                            disabled={ !passwordValid || !passwordsMatch || loading || pageLoading }
                             title="Set New Password"
                             >
-                                <Spinner status={loading}> Set Password </Spinner>
+                                <Spinner status={loading} size="sm"> Set Password </Spinner>
                             </PButton>
                             <SCTALink to={-1} className="w-full"> Cancel </SCTALink>
                         </div>

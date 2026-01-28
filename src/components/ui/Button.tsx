@@ -1,7 +1,7 @@
 
 export function Button({type, children, className, ...props}:any) {
     return (
-        <button type={type} className={`font-semibold text-sm text-center min-w-max px-3 py-2 rounded-lg ${className}`} {...props}> {children} </button>
+        <button type={type} className={`font-semibold text-sm text-center min-w-max px-3 py-2 rounded-lg disabled:cursor-not-allowed ${className}`} {...props}> {children} </button>
     )
 }
 

@@ -1,6 +1,6 @@
 
 import type { StagedFile } from "@/types/upload";
-import FileRow from "./FileRow";
+import FileRow from "@components/ui/FileRow";
 
 export default function FileList({
   files,

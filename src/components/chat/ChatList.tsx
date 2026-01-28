@@ -3,23 +3,26 @@ import Spinner from "@components/common/Spinner";
 import { ICONS } from "@/icons";
 import { PATHS } from "@/routers/Paths";
 import { NavLink } from "react-router-dom";
+import { useChat } from "@/hooks/useChat";
 
-export default function ChatList({requests, selectedRequest, RequestsLoading}:any) {
+export default function ChatList() {
+
+  const { rooms, selectedRoom, loadingRooms } = useChat();
 
   return (
     <ul className="space-y-2 overflow-y-auto min-scrollbar">
 
-      {RequestsLoading ? (
+      {loadingRooms ? (
       <li className="flex flex-col gap-2p-4 text-center text-xs">
-        <Spinner size="sm" status={RequestsLoading} />
+        <Spinner size="sm" status={loadingRooms} />
         <span>Loading requests...</span>
       </li>
 
-      ) : requests.length > 0 ? (
-        requests.map((request: any) => (
-          <li key={request.id}
-          className={`w-full rounded-lg hover:bg-surface border border-muted/10 hover:border-muted/15 overflow-hidden ${selectedRequest?.id === request.id ? 'bg-surface ring-1 ring-primary/20' : 'bg-surface/45'}`}>
-            <NavLink to={PATHS.CLIENT.chatRoom(request.id)} className="flex items-center gap-2 w-full h-fit p-2">
+      ) : rooms.length > 0 ? (
+        rooms.map((contact: any) => (
+          <li key={contact.id}
+          className={`w-full rounded-lg hover:bg-surface border border-muted/10 hover:border-muted/15 overflow-hidden ${selectedRoom?.id === contact.id ? 'bg-surface ring-1 ring-primary/20' : 'bg-surface/45'}`}>
+            <NavLink to={PATHS.CLIENT.chatRoom(contact.id)} className="flex items-center gap-2 w-full h-fit p-2">
               {/* Avatar */}
               <div className="h-fit w-12 aspect-square rounded-full border border-muted/45 overflow-hidden bg-emphasis flex items-center justify-center">
                 <ICONS.pencilSquare className="size-6 text-muted" />
@@ -27,16 +30,17 @@ export default function ChatList({requests, selectedRequest, RequestsLoading}:an
 
               {/* Context */}
               <div className="flex flex-col w-full h-fit">
-                <h3 className="font-medium text-sm"> {request.request_code} </h3>
-                <p className="text-2xs text-muted"> {(request.service_type || 'Unknown').replace(/_/g, ' ')} </p>
-                <span className="text-2xs text-muted"> {new Date(request.created_at).toLocaleDateString()} </span>
+                <h3 className="font-medium text-sm"> {contact?.service_requests.request_code} </h3>
+                <p className="text-2xs text-muted"> {(contact?.service_requests.service_type || 'Unknown').replace(/_/g, ' ')} </p>
+                <span className="text-2xs text-muted"> {contact?.created_at} </span>
+                {/* <span className="text-2xs text-muted"> {new Date(selectedRoom?.created_at).toLocaleDateString()} </span> */}
               </div>
 
               <div className="flex flex-col items-end gap-1">
-                <span className={`px-2 py-0.5 rounded-full text-2xs ${request.status === 'Completed' ? 'bg-success/10 text-success' :
-                  request.status === 'Cancelled' ? 'bg-danger/10 text-danger' : 'bg-primary/10 text-primary'
+                <span className={`px-2 py-0.5 rounded-full text-2xs ${contact?.service_requests.status === 'Completed' ? 'bg-success/10 text-success' :
+                  contact?.service_requests.status === 'Cancelled' ? 'bg-danger/10 text-danger' : 'bg-primary/10 text-primary'
                   }`}>
-                  {request.status}
+                  {contact?.service_requests.status}
                 </span>
               </div>
             </NavLink>

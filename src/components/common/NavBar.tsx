@@ -1,17 +1,18 @@
 
-import LogoutButton from "@components/common/Confirm"
 import useAuth from "@/hooks/useAuth"
 import Logo from "/public/vite.svg"
 
 import { Link } from "react-router-dom"
-import { useState } from "react"
+import { createContext, useContext, useState } from "react"
 
+import { LogoutButton} from "@components/common/Confirm"
 import { ICONS } from "@/icons"
 import { publicNavItems, clientNavItems } from "@/constants"
 import { MenuCard } from "@components/ui/MenuCard"
 import { PCTALink, SCTALink } from "@components/ui/CTA"
 import { PATHS } from "@/routers/Paths"
 
+const UserContext = createContext<any>(null);
 
 
 export function NavLogo() {
@@ -45,7 +46,7 @@ export function NavLinks() {
 
 export function AuthenticatedUserActins() {
 
-    const { isAdmin } = useAuth()
+    const { isAdmin } = useContext(UserContext);
     return (
         <>
             { isAdmin
@@ -81,7 +82,7 @@ export function AuthenticatedUserActins() {
             </Link>
 
             {/* User Profile Nav Page */}
-            <Link to={PATHS.CLIENT.PROFILE} title="My Profile" className="max-md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full">
+            <Link to={PATHS.CLIENT.ACCOUNT_PROFILE} title="My Profile" className="max-md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full">
                 <ICONS.user className="size-5 md:size-6" />
             </Link>
         </>
@@ -100,7 +101,6 @@ export function AnonymousUserActins() {
         </>
     )
 }
-
 
 export function PublicNavMenuItems() {
     return (
@@ -158,10 +158,9 @@ export function PublicNavMenuItems() {
 
     )
 }
-
 export function ClientNavMenuItems() {
 
-    const { isAdmin } = useAuth()
+    const { isAdmin } = useContext(UserContext);
 
     return (
 
@@ -218,7 +217,7 @@ export function ClientNavMenuItems() {
 }
 
 export function NavActions() {
-    const { user } = useAuth();
+    const user = useContext(UserContext);
     const navMenuOpenState = useState(false);
     const navMenuOpen = navMenuOpenState[0];
     const setNavMenuOpen = navMenuOpenState[1];
@@ -271,7 +270,7 @@ export function NavActions() {
 }
 
 export function NavBar() {
-    const { user, loading } = useAuth();
+    const { user, loading: authLoading, isAdmin } = useAuth();
 
     return (
 
@@ -279,21 +278,32 @@ export function NavBar() {
             <NavLogo />
 
             {/* Prevent flicker or showing links prematurely during loading */}
-            {!loading && (
-                <>
-                    {user
-                        ?
-                        <nav className="flex items-center justify-end w-full">
-                            <NavActions />
-                        </nav>
-                        :
-                        <nav className="flex items-center w-fit md:w-full">
-                            <NavLinks />
-                            <NavActions />
-                        </nav>
-                    }
-                </>
-            )}
+            {authLoading
+            ?
+            <div className="flex items-center justify-end gap-4 w-full">
+
+                <span className="w-35 p-5 border border-muted/15 bg-surface rounded-full animate-pulse" />
+                <span className="p-5 border border-muted/15 bg-surface rounded-full animate-pulse" />
+                <span className="p-5 border border-muted/15 bg-surface rounded-full animate-pulse" />
+                <span className="p-5 border border-muted/15 bg-surface rounded-full animate-pulse" />
+
+            </div>
+
+            :
+            <UserContext.Provider value={{user, isAdmin}}>
+                {user
+                    ?
+                    <nav className="flex items-center justify-end w-full">
+                        <NavActions />
+                    </nav>
+                    :
+                    <nav className="flex items-center w-fit md:w-full">
+                        <NavLinks />
+                        <NavActions />
+                    </nav>
+                }
+            </UserContext.Provider>
+            }
 
         </div>
     )

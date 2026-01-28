@@ -100,7 +100,7 @@ type AutoResizeTextareaProps = {
   className?: string;
   minRows?: number; // default 1
   maxRows?: number; // default 5
-  // optional: pass other textarea props via ...rest if you want
+  props?:any
 };
 
 export function AutoResizeTextarea({
@@ -110,7 +110,8 @@ export function AutoResizeTextarea({
   className = "",
   minRows = 1,
   maxRows = 5,
-}: AutoResizeTextareaProps) {
+  ...props
+}:any) {
   const taRef = useRef<HTMLTextAreaElement | null>(null);
 
   // Resize function: set height based on scrollHeight but cap to maxRows
@@ -153,6 +154,7 @@ export function AutoResizeTextarea({
       placeholder={placeholder}
       className={className}
       aria-label={placeholder ?? "input"}
+      {...props}
     />
   );
 }
