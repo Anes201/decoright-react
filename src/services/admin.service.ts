@@ -6,24 +6,50 @@ export type ServiceRequest = Database['public']['Tables']['service_requests']['R
 export type AdminActivity = Database['public']['Tables']['admin_activities']['Row']
 
 export const AdminService = {
+    async getMorningCoffeeStats() {
+        // Active Requests: Submitted, Under Review, Waiting for Client Info, Approved, In Progress
+        const { count: activeRequests } = await supabase
+            .from('service_requests')
+            .select('*', { count: 'exact', head: true })
+            .in('status', ['Submitted', 'Under Review', 'Waiting for Client Info', 'Approved', 'In Progress']);
+
+        // Pending Review: Specifically 'Submitted'
+        const { count: pendingReview } = await supabase
+            .from('service_requests')
+            .select('*', { count: 'exact', head: true })
+            .eq('status', 'Submitted');
+
+        // Unread Messages
+        const { count: msgCount, error: msgError } = await supabase
+            .from('messages')
+            .select('*', { count: 'exact', head: true })
+            .eq('is_read', false);
+
+        if (msgError) {
+            console.error("Error fetching unread messages:", msgError);
+        }
+
+        return {
+            activeRequests: activeRequests || 0,
+            pendingReview: pendingReview || 0,
+            unreadMessages: msgCount || 0,
+        }
+    },
+
     async getDashboardStats() {
-        const { count: totalRequests, error: totalError } = await supabase
+        const { count: totalRequests } = await supabase
             .from('service_requests')
             .select('*', { count: 'exact', head: true })
 
-        const { count: completedRequests, error: completeError } = await supabase
+        const { count: completedRequests } = await supabase
             .from('service_requests')
             .select('*', { count: 'exact', head: true })
             .eq('status', 'Completed')
 
-        const { count: totalUsers, error: usersError } = await supabase
+        const { count: totalUsers } = await supabase
             .from('profiles')
             .select('*', { count: 'exact', head: true })
             .eq('role', 'customer')
-
-        if (totalError || completeError || usersError) {
-            console.error('Error fetching dashboard stats:', { totalError, completeError, usersError })
-        }
 
         const completionRate = totalRequests && totalRequests > 0
             ? Math.round(((completedRequests || 0) / totalRequests) * 100)
@@ -102,13 +128,49 @@ export const AdminService = {
     },
 
     async getAllUsers() {
+        // Fetch profiles with request counts
+        // Note: We use chat_rooms as reference for joins usually, but here we join service_requests directly
         const { data, error } = await supabase
             .from('profiles')
-            .select('*')
+            .select(`
+                *,
+                service_requests (count)
+            `)
             .order('created_at', { ascending: false })
 
         if (error) throw error
-        return data as UserProfile[]
+
+        // Map the count to a top level property for easier consumption if needed,
+        // or just return as is matching the expanded type.
+        // We'll trust the component to handle the nested { count } object or map it here.
+        // Let's map it to keep the UI clean.
+        return data.map((user: any) => ({
+            ...user,
+            total_requests: user.service_requests?.[0]?.count || 0
+        })) as (UserProfile & { total_requests: number })[]
+    },
+
+    async updateUserProfile(id: string, updates: Partial<UserProfile>) {
+        const { data, error } = await supabase
+            .from('profiles')
+            .update(updates)
+            .eq('id', id)
+            .select()
+            .single()
+
+        if (error) throw error
+        return data
+    },
+
+    async getRequestsByUser(userId: string) {
+        const { data, error } = await supabase
+            .from('service_requests')
+            .select('*')
+            .eq('user_id', userId)
+            .order('created_at', { ascending: false })
+
+        if (error) throw error
+        return data as ServiceRequest[]
     },
 
     async getAllServiceRequests() {
@@ -117,7 +179,11 @@ export const AdminService = {
             .select(`
                 *,
                 profiles:user_id (
-                    full_name
+                    full_name,
+                    phone
+                ),
+                chat_room:chat_rooms (
+                    id
                 )
             `)
             .order('created_at', { ascending: false })

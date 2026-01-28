@@ -1,26 +1,26 @@
 
-import image2 from "/public/s2.jpg"
-import image3 from "/public/s3.jpg"
-import image4 from "/public/s4.jpg"
-import image6 from "/public/s6.jpg"
-import user from "/user.png"
+const image2 = "/s2.jpg"
+const image3 = "/s3.jpg"
+const image4 = "/s4.jpg"
+const image6 = "/s6.jpg"
+const user = "/user.png"
 import { PATHS } from "@/routers/Paths"
 
-import SpacesPlaning from "/public/services/IMG_3766.jpg";
-import ColorConsultation from "/public/services/IMG_3767.jpg";
-import InteriorDesign from "/public/services/IMG_20260116_230617.jpg";
-import ExteriorDesign from "/public/services/IMG_3768.jpg";
-import ProjectManaging from "/public/services/IMG_3771.jpg";
-import RestructuringRedesign from "/public/services/IMG_3765.jpg";
+const SpacesPlaning = "/services/IMG_3766.jpg";
+const ColorConsultation = "/services/IMG_3767.jpg";
+const InteriorDesign = "/services/IMG_20260116_230617.jpg";
+const ExteriorDesign = "/services/IMG_3768.jpg";
+const ProjectManaging = "/services/IMG_3771.jpg";
+const RestructuringRedesign = "/services/IMG_3765.jpg";
 
-import Children from "/public/showcases/IMG_3756.jpg"
-import Clinics from "/public/showcases/IMG_3759.jpg"
-import Shops from "/public/showcases/IMG_37554.jpg"
-import Reception from "/public/showcases/IMG_3758.jpg"
-import Offices from "/public/showcases/IMG_3760.jpg"
-import Houses from "/public/showcases/IMG_3762.jpg"
-import Cafes from "/public/showcases/IMG_3761.jpg"
-import Schools from "/public/showcases/IMG_3754.jpg"
+const Children = "/showcases/IMG_3756.jpg"
+const Clinics = "/showcases/IMG_3759.jpg"
+const Shops = "/showcases/IMG_37554.jpg"
+const Reception = "/showcases/IMG_3758.jpg"
+const Offices = "/showcases/IMG_3760.jpg"
+const Houses = "/showcases/IMG_3762.jpg"
+const Cafes = "/showcases/IMG_3761.jpg"
+const Schools = "/showcases/IMG_3754.jpg"
 import { ICONS } from "@/icons"
 
 export const images = [
@@ -174,12 +174,12 @@ export const galleries = [
 ]
 
 export const serviceTypes = [
-    {label: 'Space Planning', value: 'space-planning', src: SpacesPlaning, description: 'Practical layouts and furniture plans that boost usability and circulation while matching your style.'},
-    {label: 'Interior Design', value: 'redesign', src: InteriorDesign, description: 'Transform your interiors with cohesive themes, furniture, lighting, and decor that reflect your taste.'},
-    {label: 'Exterior Design', value: 'furniture-selection', src: ExteriorDesign, description: 'Make your home stand out — façades, landscaping, and outdoor lighting that look great and work well.'},
-    {label: 'Color Consultation', value: 'color-consultation', src: ColorConsultation, description: 'Get tailored palettes and finish advice (with sample testing) to set the perfect mood for each room.'},
-    {label: 'Project Management', value: 'project-management', src: ProjectManaging, description: 'We’ll coordinate contractors, schedules, and budgets so your project runs smoothly from start to finish.'},
-    {label: 'Restructuring Redesign', value: 'redesign', src: RestructuringRedesign, description: 'Reconfigure layouts and structure to improve flow, safety, and comfort — smart changes that refresh your space.'},
+    { label: 'Space Planning', value: 'space-planning', src: SpacesPlaning, description: 'Practical layouts and furniture plans that boost usability and circulation while matching your style.' },
+    { label: 'Interior Design', value: 'redesign', src: InteriorDesign, description: 'Transform your interiors with cohesive themes, furniture, lighting, and decor that reflect your taste.' },
+    { label: 'Exterior Design', value: 'furniture-selection', src: ExteriorDesign, description: 'Make your home stand out — façades, landscaping, and outdoor lighting that look great and work well.' },
+    { label: 'Color Consultation', value: 'color-consultation', src: ColorConsultation, description: 'Get tailored palettes and finish advice (with sample testing) to set the perfect mood for each room.' },
+    { label: 'Project Management', value: 'project-management', src: ProjectManaging, description: 'We’ll coordinate contractors, schedules, and budgets so your project runs smoothly from start to finish.' },
+    { label: 'Restructuring Redesign', value: 'redesign', src: RestructuringRedesign, description: 'Reconfigure layouts and structure to improve flow, safety, and comfort — smart changes that refresh your space.' },
 ]
 
 export const serviceSpaceTypes = [
@@ -192,9 +192,9 @@ export const serviceSpaceTypes = [
 
 
 export const projectVisibility = [
-    {label: 'Public', value: 'public'},
-    {label: 'Private Clients Only', value: 'authenticated_only'},
-    {label: 'Hidden', value: 'hidden'},
+    { label: 'Public', value: 'public' },
+    { label: 'Private Clients Only', value: 'authenticated_only' },
+    { label: 'Hidden', value: 'hidden' },
 ]
 
 export const serviceDesignStyle = [
@@ -212,102 +212,102 @@ export const LegalLinks = [
 ]
 
 export const projects = [
-        {
-            title: 'Interior Design Furniture Selection & Project Management Decr Furniture Selection & Project Management Decr',
-            date: '6 months ago',
-            src: images[0],
-            alt: "Interior Design"
-        },
+    {
+        title: 'Interior Design Furniture Selection & Project Management Decr Furniture Selection & Project Management Decr',
+        date: '6 months ago',
+        src: images[0],
+        alt: "Interior Design"
+    },
 
-        {
-            title: 'Furniture Selection Interior Design',
-            date: '2 months ago',
-            src: images[2],
-            alt: "Interior Design"
-        },
+    {
+        title: 'Furniture Selection Interior Design',
+        date: '2 months ago',
+        src: images[2],
+        alt: "Interior Design"
+    },
 
-        {
-            title: 'Interior Redesign & Color Consultation',
-            date: '18 days ago',
-            src: images[3],
-            alt: "Interior Design"
-        },
+    {
+        title: 'Interior Redesign & Color Consultation',
+        date: '18 days ago',
+        src: images[3],
+        alt: "Interior Design"
+    },
 
-        {
-            title: 'Space Planning & Color Consultation',
-            date: '3 years ago',
-            src: images[4],
-            alt: "Interior Design"
-        },
+    {
+        title: 'Space Planning & Color Consultation',
+        date: '3 years ago',
+        src: images[4],
+        alt: "Interior Design"
+    },
 
-        {
-            title: 'Project Management & Space Planning',
-            date: '11 months ago',
-            src: images[5],
-            alt: "Interior Design"
-        },
+    {
+        title: 'Project Management & Space Planning',
+        date: '11 months ago',
+        src: images[5],
+        alt: "Interior Design"
+    },
 
-        {
-            title: 'Redesign & Interior Design',
-            date: '4 years ago',
-            src: images[6],
-            alt: "Interior Design"
-        },
+    {
+        title: 'Redesign & Interior Design',
+        date: '4 years ago',
+        src: images[6],
+        alt: "Interior Design"
+    },
 
-        {
-            title: 'Furniture Selection & Redesign',
-            date: '3 weeks ago',
-            src: images[0],
-            alt: "Interior Design"
-        },
+    {
+        title: 'Furniture Selection & Redesign',
+        date: '3 weeks ago',
+        src: images[0],
+        alt: "Interior Design"
+    },
 
-        {
-            title: 'Color Consultation & Interior Design',
-            date: '9 weeks ago',
-            src: images[1],
-            alt: "Interior Design"
-        },
+    {
+        title: 'Color Consultation & Interior Design',
+        date: '9 weeks ago',
+        src: images[1],
+        alt: "Interior Design"
+    },
 ];
 
 export const requests = [
-    {id:'DO146', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'pending', status_label:'Pending', chat_url:'/chats/chatId',},
-    {id:'DO137', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'in_progress', status_label:'In Progress', chat_url:'/chats/chatId'},
-    {id:'DO159', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'canceled', status_label:'Canceled', chat_url:'/chats/chatId'},
-    {id:'DO467', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'complete', status_label:'Complete', chat_url:'/chats/chatId'},
-    {id:'DO417', projectType:'Redesign Office', thumbnail:image4, date:'Jan 2, 2026', status:'rejected', status_label:'Rejected', chat_url:'/chats/chatId'},
+    { id: 'DO146', projectType: 'Redesign Office', thumbnail: image4, date: 'Jan 2, 2026', status: 'pending', status_label: 'Pending', chat_url: '/chats/chatId', },
+    { id: 'DO137', projectType: 'Redesign Office', thumbnail: image4, date: 'Jan 2, 2026', status: 'in_progress', status_label: 'In Progress', chat_url: '/chats/chatId' },
+    { id: 'DO159', projectType: 'Redesign Office', thumbnail: image4, date: 'Jan 2, 2026', status: 'canceled', status_label: 'Canceled', chat_url: '/chats/chatId' },
+    { id: 'DO467', projectType: 'Redesign Office', thumbnail: image4, date: 'Jan 2, 2026', status: 'complete', status_label: 'Complete', chat_url: '/chats/chatId' },
+    { id: 'DO417', projectType: 'Redesign Office', thumbnail: image4, date: 'Jan 2, 2026', status: 'rejected', status_label: 'Rejected', chat_url: '/chats/chatId' },
 ];
 
 
 export const showcases = [
-    {id:'1', title:"Children's rooms", alt: "children's rooms", src:Children},
-    {id:'2', title:"Clinics", alt: "clinics", src:Clinics},
-    {id:'3', title:"Shops", alt: "shops", src:Shops},
-    {id:'4', title:"Reception and waiting rooms", alt: "reception and waiting rooms", src:Reception},
-    {id:'5', title:"Offices", alt: "offices", src:Offices},
-    {id:'7', title:"Houses", alt: "houses", src:Houses},
-    {id:'8', title:"Cafes and small businesses", alt: "cafes and small businesses", src:Cafes},
-    {id:'6', title:"Private schools and nurseries", alt: "private schools and nurseries", src:Schools},
+    { id: '1', title: "Children's rooms", alt: "children's rooms", src: Children },
+    { id: '2', title: "Clinics", alt: "clinics", src: Clinics },
+    { id: '3', title: "Shops", alt: "shops", src: Shops },
+    { id: '4', title: "Reception and waiting rooms", alt: "reception and waiting rooms", src: Reception },
+    { id: '5', title: "Offices", alt: "offices", src: Offices },
+    { id: '7', title: "Houses", alt: "houses", src: Houses },
+    { id: '8', title: "Cafes and small businesses", alt: "cafes and small businesses", src: Cafes },
+    { id: '6', title: "Private schools and nurseries", alt: "private schools and nurseries", src: Schools },
 ]
 
 export const topKPICards = [
-    {id: '1', label:'Site visitors', data_value:'4250', value:'4,250'},
-    {id: '2', label:'Total requests', data_value:'120', value:'120'},
-    {id: '3', label:'Total completed requests', data_value:'108', value:'108'},
-    {id: '4', label:'Total unique clients', data_value:'95', value:'95'},
-    {id: '5', label:'Completion rate', data_value:'0.9', value:'90.0%'},
+    { id: '1', label: 'Site visitors', data_value: '4250', value: '4,250' },
+    { id: '2', label: 'Total requests', data_value: '120', value: '120' },
+    { id: '3', label: 'Total completed requests', data_value: '108', value: '108' },
+    { id: '4', label: 'Total unique clients', data_value: '95', value: '95' },
+    { id: '5', label: 'Completion rate', data_value: '0.9', value: '90.0%' },
 ]
 
 export const additionalKPICards = [
-    {id: '1', label:'Requests per client', data_value:'1.27', value:'1.27'},
-    {id: '2', label:'Daily avg requests', data_value:'10.4', value:'10.4 / day'},
-    {id: '3', label:'Avg completion time', data_value:'4.2', value:'4.2 days'},
-    {id: '4', label:'Request cancelation rate', data_value:'0.109', value:'10.9%'},
+    { id: '1', label: 'Requests per client', data_value: '1.27', value: '1.27' },
+    { id: '2', label: 'Daily avg requests', data_value: '10.4', value: '10.4 / day' },
+    { id: '3', label: 'Avg completion time', data_value: '4.2', value: '4.2 days' },
+    { id: '4', label: 'Request cancelation rate', data_value: '0.109', value: '10.9%' },
 ]
 
 export const usersActivityLogs = [
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -316,8 +316,8 @@ export const usersActivityLogs = [
         date: 'Jan 13, 11:43',
     },
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -326,8 +326,8 @@ export const usersActivityLogs = [
         date: 'Jan 13, 11:43',
     },
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -336,8 +336,8 @@ export const usersActivityLogs = [
         date: 'Jan 13, 11:43',
     },
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -346,8 +346,8 @@ export const usersActivityLogs = [
         date: 'Jan 13, 11:43',
     },
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -356,8 +356,8 @@ export const usersActivityLogs = [
         date: 'Jan 13, 11:43',
     },
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -366,8 +366,8 @@ export const usersActivityLogs = [
         date: 'Jan 13, 11:43',
     },
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -376,8 +376,8 @@ export const usersActivityLogs = [
         date: 'Jan 13, 11:43',
     },
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -386,8 +386,8 @@ export const usersActivityLogs = [
         date: 'Jan 13, 11:43',
     },
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -396,8 +396,8 @@ export const usersActivityLogs = [
         date: 'Jan 13, 11:43',
     },
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -406,8 +406,8 @@ export const usersActivityLogs = [
         date: 'Jan 13, 11:43',
     },
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -416,8 +416,8 @@ export const usersActivityLogs = [
         date: 'Jan 13, 11:43',
     },
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -426,8 +426,8 @@ export const usersActivityLogs = [
         date: 'Jan 13, 11:43',
     },
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -436,8 +436,8 @@ export const usersActivityLogs = [
         date: 'Jan 13, 11:43',
     },
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -446,8 +446,8 @@ export const usersActivityLogs = [
         date: 'Jan 13, 11:43',
     },
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -456,8 +456,8 @@ export const usersActivityLogs = [
         date: 'Jan 13, 11:43',
     },
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -466,8 +466,8 @@ export const usersActivityLogs = [
         date: 'Jan 13, 11:43',
     },
     {
-        id:'1',
-        user:{
+        id: '1',
+        user: {
             full_name: 'Michael Pearson',
             img: images[7],
             role: 'Client'
@@ -479,23 +479,23 @@ export const usersActivityLogs = [
 
 // Sort by value in descending order
 export const topServicesByRequest = [
-    {id:'1', service_type:'Exterior Design', value:'98'},
-    {id:'2', service_type:'Project Managing', value:'72'},
-    {id:'3', service_type:'Restructuring Redesign', value:'65'},
-    {id:'4', service_type:'Color Consultation', value:'45'},
-    {id:'5', service_type:'Spaces Planning', value:'32'},
+    { id: '1', service_type: 'Exterior Design', value: '98' },
+    { id: '2', service_type: 'Project Managing', value: '72' },
+    { id: '3', service_type: 'Restructuring Redesign', value: '65' },
+    { id: '4', service_type: 'Color Consultation', value: '45' },
+    { id: '5', service_type: 'Spaces Planning', value: '32' },
 ]
 
 export const SocialMediaUrlFields = [
-    {id:'1', label: 'Facebook', placeholder: 'https://facebook.com/@example/', icon: <ICONS.facebook className="size-6"/> },
-    {id:'2', label: 'Tiktok', placeholder: 'https://tiktok.com/@example/', icon: <ICONS.tiktok className="size-6"/> },
-    {id:'3', label: 'Instagram', placeholder: 'https://instagram.com/example/', icon: <ICONS.instagram className="size-6"/> },
-    {id:'4', label: 'Youtube', placeholder: 'https://youtube.com/@example/', icon: <ICONS.youtube className="size-6"/> },
-    {id:'5', label: 'Pinterest', placeholder: 'https://pinterest.com/example/', icon: <ICONS.pinterest className="size-6"/> },
-    {id:'8', label: 'X (Twitter)', placeholder: 'https://x.com/@example/', icon: <ICONS.xTwitter className="size-6"/> },
+    { id: '1', label: 'Facebook', placeholder: 'https://facebook.com/@example/', icon: <ICONS.facebook className="size-6" /> },
+    { id: '2', label: 'Tiktok', placeholder: 'https://tiktok.com/@example/', icon: <ICONS.tiktok className="size-6" /> },
+    { id: '3', label: 'Instagram', placeholder: 'https://instagram.com/example/', icon: <ICONS.instagram className="size-6" /> },
+    { id: '4', label: 'Youtube', placeholder: 'https://youtube.com/@example/', icon: <ICONS.youtube className="size-6" /> },
+    { id: '5', label: 'Pinterest', placeholder: 'https://pinterest.com/example/', icon: <ICONS.pinterest className="size-6" /> },
+    { id: '8', label: 'X (Twitter)', placeholder: 'https://x.com/@example/', icon: <ICONS.xTwitter className="size-6" /> },
 ]
 
 export const SocialMediaPhoneFields = [
-    {id:'6', label: 'Whatsapp', placeholder: '+213123456789', icon: <ICONS.whatsapp className="size-6"/> },
-    {id:'7', label: 'Telegram', placeholder: '+213123456789', icon: <ICONS.telegram className="size-6"/> },
+    { id: '6', label: 'Whatsapp', placeholder: '+213123456789', icon: <ICONS.whatsapp className="size-6" /> },
+    { id: '7', label: 'Telegram', placeholder: '+213123456789', icon: <ICONS.telegram className="size-6" /> },
 ]

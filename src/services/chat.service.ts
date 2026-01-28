@@ -1,123 +1,137 @@
-
-import { supabase } from "@/lib/supabase";
-import type { Database, Enums } from "@/types/database.types";
-
-type Message = Database['public']['Tables']['messages']['Row'];
+import { supabase } from '@/lib/supabase';
+import type { ChatRoom, Message, MessageType } from '@/types/chat';
 
 export const ChatService = {
-    /**
-     * Send a message
-     */
-    async sendMessage({
-        requestId,
-        content,
-        file,
-        messageType
-    }: {
-        requestId: string,
-        content?: string,
-        file?: File,
-        messageType: Enums<'message_type_enum'>
-    }) {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) throw new Error("Not authenticated");
-
-        // 1. Get or Create Chat Room
-        let { data: room, error: roomError } = await supabase
+    async getChatRooms() {
+        const { data, error } = await supabase
             .from('chat_rooms')
+            .select(`
+                *,
+                service_requests (
+                    id,
+                    request_code,
+                    service_type,
+                    status,
+                    profiles:user_id (
+                        id,
+                        full_name
+                    )
+                )
+            `)
+            .eq('is_active', true)
+            .order('updated_at', { ascending: false });
+
+        if (error) throw error;
+
+        // Fetch unread count and last message for each room
+        const roomsWithMeta = await Promise.all((data as any[]).map(async (room) => {
+            const { data: lastMsg } = await supabase
+                .from('messages')
+                .select('*')
+                .eq('chat_room_id', room.id)
+                .order('created_at', { ascending: false })
+                .limit(1)
+                .maybeSingle();
+
+            const { count } = await supabase
+                .from('messages')
+                .select('*', { count: 'exact', head: true })
+                .eq('chat_room_id', room.id)
+                .eq('is_read', false);
+
+            return {
+                ...room,
+                last_message: lastMsg,
+                unread_count: count || 0
+            };
+        }));
+
+        return roomsWithMeta as ChatRoom[];
+    },
+
+    async getRoomMessages(roomId: string) {
+        const { data, error } = await supabase
+            .from('messages')
             .select('*')
-            .eq('request_id', requestId)
-            .maybeSingle();
+            .eq('chat_room_id', roomId)
+            .order('created_at', { ascending: true });
 
-        if (roomError) throw roomError;
+        if (error) throw error;
+        return data as Message[];
+    },
 
-        if (!room) {
-            const { data: newRoom, error: createError } = await supabase
-                .from('chat_rooms')
-                .insert({ request_id: requestId, is_active: true })
-                .select()
-                .single();
+    async sendMessage(roomId: string, requestId: string, content: string, type: MessageType = 'TEXT', mediaUrl?: string) {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error("Auth required");
 
-            if (createError) throw createError;
-            room = newRoom;
-        }
-
-        let mediaUrl: string | null = null;
-
-        // 2. Upload file if exists
-        if (file) {
-            const fileName = `${requestId}/${Date.now()}_${file.name}`;
-            const { error: uploadError } = await supabase.storage
-                .from('request-attachments')
-                .upload(fileName, file);
-
-            if (uploadError) throw uploadError;
-
-            const { data: publicUrlData } = supabase.storage
-                .from('request-attachments')
-                .getPublicUrl(fileName);
-
-            mediaUrl = publicUrlData.publicUrl;
-        }
-
-        // 3. Insert Message
         const { data, error } = await supabase
             .from('messages')
             .insert({
-                chat_room_id: room!.id,
-                request_id: requestId, // Required by schema
+                request_id: requestId,
+                chat_room_id: roomId,
                 sender_id: user.id,
-                content: content || '',
-                topic: 'chat', // Required by schema, default val
-                extension: 'text', // Required by schema, default val
-                message_type: messageType,
+                content: content,
+                message_type: type,
                 media_url: mediaUrl,
-                // sent_at: new Date().toISOString(), // Removed: not in schema
-                // is_read: false // Removed: not in schema
+                is_read: true // Admin's own messages are "read"
             })
             .select()
             .single();
 
         if (error) throw error;
-        return data;
+
+        // Update chat room's updated_at
+        await supabase
+            .from('chat_rooms')
+            .update({ updated_at: new Date().toISOString() })
+            .eq('id', roomId);
+
+        return data as Message;
     },
 
-    /**
-     * Get messages for a request
-     */
-    async getMessages(requestId: string) {
-        // Step 1: Get room ID
-        const { data: room } = await supabase
-            .from('chat_rooms')
-            .select('id')
-            .eq('request_id', requestId)
-            .maybeSingle();
-
-        if (!room) return [];
-
-        const { data, error } = await supabase
+    async markAsRead(roomId: string) {
+        const { error } = await supabase
             .from('messages')
-            .select('*, profiles(full_name, role)') // Adjusted to match profiles schema
-            .eq('chat_room_id', room.id)
-            .order('created_at', { ascending: true });
+            .update({ is_read: true })
+            .eq('chat_room_id', roomId)
+            .eq('is_read', false);
 
         if (error) throw error;
-        return data;
     },
 
-    /**
-     * Subscribe to new messages
-     */
-    subscribeToRequestChat(requestId: string, onMessage: (msg: Message) => void) {
+    async uploadMedia(file: File | Blob, path: string) {
+        const { data, error } = await supabase.storage
+            .from('request-attachments')
+            .upload(path, file);
+
+        if (error) throw error;
+
+        const { data: { publicUrl } } = supabase.storage
+            .from('request-attachments')
+            .getPublicUrl(data.path);
+
+        return publicUrl;
+    },
+
+    subscribeToRooms(onUpdate: () => void) {
         return supabase
-            .channel(`request-chat-${requestId}`)
-            .on(
-                'postgres_changes',
-                'postgres_changes',
-                { event: 'INSERT', schema: 'public', table: 'messages', filter: `request_id=eq.${requestId}` },
-                (payload) => {
-                    onMessage(payload.new as Message);
-                }
+            .channel('chat_rooms_changes')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'chat_rooms' }, onUpdate)
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, onUpdate)
+            .subscribe();
+    },
+
+    subscribeToMessages(roomId: string, onNewMessage: (msg: Message) => void) {
+        return supabase
+            .channel(`room_${roomId}`)
+            .on('postgres_changes',
+                {
+                    event: 'INSERT',
+                    schema: 'public',
+                    table: 'messages',
+                    filter: `chat_room_id=eq.${roomId}`
+                },
+                (payload) => onNewMessage(payload.new as Message)
             )
             .subscribe();
     }

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 
 import { useState } from "react"
 
-import Logo from "/public/vite.svg"
+const Logo = "/vite.svg";
 import { ICONS } from "@/icons"
 import { adminMenuNav } from "@/constants"
 
@@ -11,7 +11,7 @@ import { MenuCard } from "@components/ui/MenuCard"
 import { PATHS } from "@/routers/Paths"
 
 
-export function NavLogo () {
+export function NavLogo() {
     return (
         <div className="md:hidden max-md:flex items-center gap-2 md:gap-4 min-w-max">
 
@@ -30,7 +30,7 @@ export function NavLogo () {
 }
 
 
-export function NavMenuItems () {
+export function NavMenuItems() {
     return (
 
         <>
@@ -44,18 +44,18 @@ export function NavMenuItems () {
                         <h3 className="font-medium text-sm"> {item.label} </h3>
                     </div>
 
-                    {/* Context */}
-                    <div className="w-full">
-                        <p className="text-2xs text-muted"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus culpa  </p>
-                    </div>
-                </Link>
-            </li>
-        ))}
+                        {/* Context */}
+                        <div className="w-full">
+                            <p className="text-2xs text-muted"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus culpa  </p>
+                        </div>
+                    </Link>
+                </li>
+            ))}
         </>
     )
 }
 
-export function NavActions () {
+export function NavActions() {
 
     const [navMenuOpen, setNavMenuOpen] = useState(false);
 
@@ -71,7 +71,7 @@ export function NavActions () {
 
                 {/* Chat Nav Page */}
                 <Link to={PATHS.ADMIN.CHAT} title="Chats" className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
-                    { ICONS.chat({className:'size-5 md:size-6'}) }
+                    {ICONS.chat({ className: 'size-5 md:size-6' })}
                     <span className="absolute flex size-3 top-0 left-0">
                         <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
                         <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
@@ -80,12 +80,12 @@ export function NavActions () {
 
                 {/* User Profile Nav Page */}
                 <Link to={PATHS.CLIENT.ROOT} title="Client Home Page" className="max-md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full">
-                    { ICONS.home({className:'size-5 md:size-6'}) }
+                    {ICONS.home({ className: 'size-5 md:size-6' })}
                 </Link>
 
                 {/* Menu Trigger */}
                 <button type="button" title="Menu" className="md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>
-                    { ICONS.menu({className:'size-6'}) }
+                    {ICONS.menu({ className: 'size-6' })}
                 </button>
             </div>
 
@@ -97,7 +97,7 @@ export function NavActions () {
                     {/* Mobile Nav Menu */}
 
                     <ul className="flex flex-col w-full h-full gap-2 border border-muted/15 p-2 rounded-lg overflow-auto">
-                        <NavMenuItems/>
+                        <NavMenuItems />
                     </ul>
 
                 </MenuCard>
@@ -107,14 +107,14 @@ export function NavActions () {
     )
 }
 
-export default function DashboardNavBar () {
+export default function DashboardNavBar() {
 
     return (
 
-        <div className="navbar-height absolute flex justify-between gap-2 md:gap-4 w-full px-3 sm:px-6 md:px-9">
-            <NavLogo/>
+        <div className="navbar-height relative z-40 flex justify-between gap-2 md:gap-4 w-full px-3 sm:px-6 md:px-9 bg-background/95 backdrop-blur-sm border-b border-muted/5">
+            <NavLogo />
             <nav className="flex items-center justify-end w-full">
-                <NavActions/>
+                <NavActions />
             </nav>
         </div>
 

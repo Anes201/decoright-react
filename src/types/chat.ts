@@ -1,8 +1,10 @@
 
 /** ---- Types ---- */
-export type BaseMessage = {
+export type MessageType = 'TEXT' | 'IMAGE' | 'AUDIO' | 'SYSTEM';
+
+export type Message = {
   id: string;
-  uid: string;
+  uid: number;
   timestamp: string; // ISO or human string
 };
 
@@ -15,7 +17,6 @@ export type VoiceMsg = BaseMessage & {
   kind: "voice";
   url: string;       // audio file URL
   duration?: number; // seconds
-  filename: string;
 };
 
 export type FileMsg = BaseMessage & {
@@ -27,4 +28,18 @@ export type FileMsg = BaseMessage & {
 
 export type Message = TextMsg | VoiceMsg | FileMsg;
 
-export type Contact = any;
+export type ClientContact = any;
+
+export type Contact = {
+    id: string,
+    name?:string,
+    avatar?:string,
+    status_label?:string,
+    type: string,
+    style: string,
+    status: string,
+    lastMessage: string,
+    lastMessageTime: string,
+    isRead: boolean,
+    isOnline: boolean,
+};

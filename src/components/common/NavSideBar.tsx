@@ -137,7 +137,7 @@ function NavActionList() {
             <li key={'action-item-logout'}>
                 <LogoutButton className="flex justify-between font-medium text-sm p-2 w-full border border-muted/15 hover:bg-emphasis rounded-lg">
                     <span className="px-2"> Logout </span>
-                    <ICONS.arrowRightStartOnRectangle/>
+                    <ICONS.arrowRightStartOnRectangle />
                 </LogoutButton>
             </li>
         </ul>
@@ -152,10 +152,10 @@ export function NavSideBar () {
         <div className="flex flex-col gap-4 w-full h-full px-2 py-4 bg-surface">
             <NavLogo/>
             <nav className="p-2 border-y border-muted/15 h-full overflow-y-auto min-scrollbar">
-                <NavLinkList/>
+                <NavLinkList />
             </nav>
 
-            <NavActionList/>
+            <NavActionList />
 
         </div>
 

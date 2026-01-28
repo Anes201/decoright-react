@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase"
 import { useNavigate, Link } from "react-router-dom"
 import { EmailInput, PasswordInput } from "../ui/Input"
 import { LegalLinks } from "../../constants"
-import Spinner from "../common/Spinner"
+import Spinner from "@components/common/Spinner"
 import { PATHS } from "@/routers/Paths"
 
 export function LoginLayout() {
@@ -28,7 +28,7 @@ export function LoginLayout() {
 
             // Redirect will be handled by AuthProvider/AppRouter usually,
             // but we can force it here if needed.
-            navigate("/")
+            navigate(PATHS.ROOT)
         } catch (err: any) {
             setError(err.message || "Failed to login")
         } finally {

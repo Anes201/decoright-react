@@ -33,6 +33,7 @@ type TableOptions<T = any> = {
   noResults?: React.ReactNode;
   bulkActions?: BulkAction<T>[]; // defaults to empty
   idField?: string;
+  onRowClick?: (row: T) => void;
 };
 
 export default function Table<T extends Record<string, any>>(props: {
@@ -53,6 +54,7 @@ export default function Table<T extends Record<string, any>>(props: {
     noResults,
     bulkActions = [], // defaults to empty
     idField,
+    onRowClick,
   } = options;
 
   // controlled UI state
@@ -215,7 +217,7 @@ export default function Table<T extends Record<string, any>>(props: {
           title="Row actions"
         >
           {/* simple 3-dot icon */}
-          <ICONS.ellipsisHorizontal className="size-5 text-muted"/>
+          <ICONS.ellipsisHorizontal className="size-5 text-muted" />
         </button>
 
         {isOpen && (
@@ -224,11 +226,11 @@ export default function Table<T extends Record<string, any>>(props: {
             onClick={(e) => e.stopPropagation()}
             className="absolute right-0 top-full mt-1 min-w-40 w-max bg-surface border border-muted/15 rounded-lg shadow-md z-30"
           >
-              {renderActions ? (
-                <div className="flex gap-4 p-2">{renderActions(row)}</div>
-              ) : (
-                defaultMenu
-              )}
+            {renderActions ? (
+              <div className="flex gap-4 p-2">{renderActions(row)}</div>
+            ) : (
+              defaultMenu
+            )}
           </div>
         )}
       </div>
@@ -301,8 +303,8 @@ export default function Table<T extends Record<string, any>>(props: {
 
 
   return (
-    <div className={`relative w-full h-full mb-60 border border-muted/25 bg-surface rounded-xl ${className}`}>
-      <div className="p-3 md:p-4 flex items-center justify-between space-x-4">
+    <div className={`relative w-full h-full border border-muted/25 bg-surface rounded-xl flex flex-col overflow-hidden ${className}`}>
+      <div className="p-3 md:p-4 flex items-center justify-between space-x-4 flex-none border-b border-muted/10">
         {/* Search */}
         <div className="flex-1 max-w-2xl">
           <label htmlFor="table-search" className="sr-only">Search</label>
@@ -360,86 +362,92 @@ export default function Table<T extends Record<string, any>>(props: {
         </div>
       </div>
 
-      <table className="w-full h-full py-20 text-sm text-left rtl:text-right text-body">
-        <thead className="text-sm text-body bg-emphasis/75 border-y border-muted/75">
-          <tr>
-            {/* selectable header */}
-            {selectable && (
-              <th scope="col" className="p-4">
-                <div className="flex items-center">
-                  <input
-                    id={`table-checkbox-all`}
-                    ref={headerCheckboxRef}
-                    type="checkbox"
-                    checked={allSelected}
-                    onChange={(e) => toggleSelectAll(e.target.checked)}
-                    className="w-4 h-4 border border-muted/15 rounded-xs"
-                  />
-                  <label htmlFor={`table-checkbox-all`} className="sr-only">
-                    Select all
-                  </label>
-                </div>
-              </th>
-            )}
-
-            {columns.map((col) => (
-              <th
-                key={col.key}
-                scope="col"
-                className={`px-4 py-3 font-medium ${col.className ?? ""}`}
-                style={col.width ? { width: col.width } : undefined}
-              >
-                {col.title}
-              </th>
-            ))}
-
-            {/* Actions / Bulk actions header */}
-            <th scope="col" className="px-4 py-3 font-medium text-end">
-              {selectable && selectionCount > 0 ? (
-                <BulkActionsHeader />
-              ) : (
-                <span className="text-muted">Actions</span>
+      <div className="flex-1 overflow-auto custom-scrollbar">
+        <table className="w-full text-sm text-left rtl:text-right text-body">
+          <thead className="text-sm text-body bg-emphasis/75 border-b border-muted/75 sticky top-0 z-10 shadow-sm">
+            <tr>
+              {/* selectable header */}
+              {selectable && (
+                <th scope="col" className="p-4">
+                  <div className="flex items-center">
+                    <input
+                      id={`table-checkbox-all`}
+                      ref={headerCheckboxRef}
+                      type="checkbox"
+                      checked={allSelected}
+                      onChange={(e) => toggleSelectAll(e.target.checked)}
+                      className="w-4 h-4 border border-muted/15 rounded-xs"
+                    />
+                    <label htmlFor={`table-checkbox-all`} className="sr-only">
+                      Select all
+                    </label>
+                  </div>
+                </th>
               )}
-            </th>
-          </tr>
-        </thead>
 
-        <tbody>
-          {filteredData.length === 0 ? (
-            <tr className="border-b last:border-none">
-              <td colSpan={(columns.length) + (selectable ? 1 : 0) + (ActionOptions ? 1 : 0)}>
-                {noResults ?? <div className="font-medium text-sm text-muted py-6 text-center">No results</div>}
-              </td>
-            </tr>
-          ) : filteredData.map((row, idx) => {
-            // idx relates to filteredData index; we store selection by this index
-            return (
-              <tr key={idx} className="border-b last:border-none border-muted/30 hover:bg-neutral-secondary-medium">
-                {selectable && (
-                  <td className="w-4 p-4">
-                    <div className="flex items-center">
-                      <input id={`table-checkbox-${idx}`} type="checkbox" checked={!!selectedMap[idx]} onChange={(e) => toggleRow(idx, e.target.checked)}
-                        className="w-4 h-4 bg-primary rounded-xl"
-                      />
-                      <label htmlFor={`table-checkbox-${idx}`} className="sr-only">Select row</label>
-                    </div>
-                  </td>
+              {columns.map((col) => (
+                <th
+                  key={col.key}
+                  scope="col"
+                  className={`px-4 py-3 font-medium ${col.className ?? ""}`}
+                  style={col.width ? { width: col.width } : undefined}
+                >
+                  {col.title}
+                </th>
+              ))}
+
+              {/* Actions / Bulk actions header */}
+              <th scope="col" className="px-4 py-3 font-medium text-end">
+                {selectable && selectionCount > 0 ? (
+                  <BulkActionsHeader />
+                ) : (
+                  <span className="text-muted">Actions</span>
                 )}
+              </th>
+            </tr>
+          </thead>
 
-                {columns.map(col => (
-                  <td key={col.key} className={`text-xs px-4 py-3 ${col.className ?? ''}`}  style={col.width ? { width: col.width } : undefined}>
-                    {col.render ? col.render(row) : (row[col.key] ?? '')}
-                  </td>
-                ))}
-
-                <td className="px-4 py-4 text-end">
-                  <RowActions row={row} index={idx} />
+          <tbody>
+            {filteredData.length === 0 ? (
+              <tr className="border-b last:border-none">
+                <td colSpan={(columns.length) + (selectable ? 1 : 0) + (ActionOptions ? 1 : 0)}>
+                  {noResults ?? <div className="font-medium text-sm text-muted py-6 text-center">No results</div>}
                 </td>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            ) : filteredData.map((row, idx) => {
+              // idx relates to filteredData index; we store selection by this index
+              return (
+                <tr
+                  key={idx}
+                  onClick={() => onRowClick?.(row)}
+                  className={`border-b last:border-none border-muted/30 hover:bg-emphasis/30 transition-colors ${onRowClick ? 'cursor-pointer' : ''}`}
+                >
+                  {selectable && (
+                    <td className="w-4 p-4">
+                      <div className="flex items-center">
+                        <input id={`table-checkbox-${idx}`} type="checkbox" checked={!!selectedMap[idx]} onChange={(e) => toggleRow(idx, e.target.checked)}
+                          className="w-4 h-4 bg-primary rounded-xl"
+                        />
+                        <label htmlFor={`table-checkbox-${idx}`} className="sr-only">Select row</label>
+                      </div>
+                    </td>
+                  )}
+
+                  {columns.map(col => (
+                    <td key={col.key} className={`text-xs px-4 py-3 ${col.className ?? ''}`} style={col.width ? { width: col.width } : undefined}>
+                      {col.render ? col.render(row) : (row[col.key] ?? '')}
+                    </td>
+                  ))}
+
+                  <td className="px-4 py-4 text-end">
+                    <RowActions row={row} index={idx} />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

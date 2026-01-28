@@ -117,12 +117,12 @@ export default function ChatBody({ request }:any) {
                     <div role="listitem" key={m.id}>
                         <MessageItem message={m} currentUserId={user?.id} />
                     </div>
-                    ))
-                ) : (
-                    <div className="relative flex flex-col items-center justify-center w-full h-full">
-                        <h4 className="font-semibold text-2xl mb-1">Chat Room</h4>
-                        <p className="text-sm">Send a message to start a chat</p>
-                    </div>
+                ))
+            ) : (
+                <div className="relative flex flex-col items-center justify-center w-full h-full">
+                    <h4 className="font-semibold text-2xl mb-1">Chat Room</h4>
+                    <p className="text-sm">Send a message to start a chat</p>
+                </div>
             )}
 
             {/* anchor for scroll-to-bottom */}

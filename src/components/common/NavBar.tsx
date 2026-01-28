@@ -61,7 +61,7 @@ export function AuthenticatedUserActins() {
                     </Link>
                 </>
 
-            :
+                :
                 <>
                     {/* Request Project */}
                     <Link to={PATHS.CLIENT.REQUEST_SERVICE} title="Request Service" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-primary/45 bg-surface/75 rounded-full">
@@ -102,7 +102,7 @@ export function AnonymousUserActins() {
 }
 
 
-export function PublicNavMenuItems () {
+export function PublicNavMenuItems() {
     return (
         <>
             {publicNavItems.map((item, index) => (
@@ -159,7 +159,7 @@ export function PublicNavMenuItems () {
     )
 }
 
-export function ClientNavMenuItems () {
+export function ClientNavMenuItems() {
 
     const { isAdmin } = useAuth()
 
@@ -176,23 +176,23 @@ export function ClientNavMenuItems () {
                         <span className="font-medium text-sm"> Dashboard </span>
                     </div>
 
-                    {/* Context */}
-                    <div className="w-full">
-                        <p className="text-2xs text-muted"> Admin dashboard & control panel  </p>
-                    </div>
-                </Link>
-            </li>
-        }
+                        {/* Context */}
+                        <div className="w-full">
+                            <p className="text-2xs text-muted"> Admin dashboard & control panel  </p>
+                        </div>
+                    </Link>
+                </li>
+            }
 
-        {clientNavItems.map((item, index) => (
-            <li key={index} className="w-full">
-                <Link to={item.path} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15">
-                    <div className="flex content-center gap-2">
-                        {/* Icon */}
-                        {/* { ICONS.informationCircle({}) } */}
-                        {/* Label */}
-                        <span className="font-medium text-sm"> {item.label} </span>
-                    </div>
+            {clientNavItems.map((item, index) => (
+                <li key={index} className="w-full">
+                    <Link to={item.path} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15">
+                        <div className="flex content-center gap-2">
+                            {/* Icon */}
+                            {/* { ICONS.informationCircle({}) } */}
+                            {/* Label */}
+                            <span className="font-medium text-sm"> {item.label} </span>
+                        </div>
 
                         {/* Context */}
                         <div className="w-full">
@@ -200,18 +200,18 @@ export function ClientNavMenuItems () {
                         </div>
                     </Link>
                 </li>
-        ))}
+            ))}
 
-        <li id="logout-nav-menu-item">
-            <LogoutButton className="flex flex-col gap-1 w-full h-full px-2 py-4 border-b border-muted/15">
-                <div className="flex content-center gap-2">
-                    {/* Icon */}
-                    <ICONS.arrowRightStartOnRectangle />
-                    {/* Label */}
-                    <span className="font-medium text-sm"> Logout </span>
-                </div>
-            </LogoutButton>
-        </li>
+            <li id="logout-nav-menu-item">
+                <LogoutButton className="flex flex-col gap-1 w-full h-full px-2 py-4 border-b border-muted/15">
+                    <div className="flex content-center gap-2">
+                        {/* Icon */}
+                        <ICONS.arrowRightStartOnRectangle />
+                        {/* Label */}
+                        <span className="font-medium text-sm"> Logout </span>
+                    </div>
+                </LogoutButton>
+            </li>
 
         </>
     )
@@ -229,22 +229,22 @@ export function NavActions() {
             <div className="flex items-center gap-2 md:gap-4">
 
                 {user
-                ?
-                <>
-                    <AuthenticatedUserActins />
-                    {/* Menu Trigger */}
-                    <button type="button" title="Menu" className="content-center p-2 border border-muted/15 bg-surface/75 rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>
-                        <ICONS.menu className="size-6"/>
-                    </button>
-                </>
-                :
-                <>
-                    <AnonymousUserActins />
-                    {/* Menu Trigger */}
-                    <button type="button" title="Menu" className="md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>
-                        <ICONS.menu className="size-6"/>
-                    </button>
-                </>
+                    ?
+                    <>
+                        <AuthenticatedUserActins />
+                        {/* Menu Trigger */}
+                        <button type="button" title="Menu" className="content-center p-2 border border-muted/15 bg-surface/75 rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>
+                            <ICONS.menu className="size-6" />
+                        </button>
+                    </>
+                    :
+                    <>
+                        <AnonymousUserActins />
+                        {/* Menu Trigger */}
+                        <button type="button" title="Menu" className="md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>
+                            <ICONS.menu className="size-6" />
+                        </button>
+                    </>
                 }
 
             </div>
@@ -276,20 +276,20 @@ export function NavBar() {
     return (
 
         <div className="navbar-height absolute flex justify-between gap-2 md:gap-4 w-full px-3 sm:px-6 md:px-9 z-30">
-            <NavLogo/>
+            <NavLogo />
 
             {/* Prevent flicker or showing links prematurely during loading */}
             {!loading && (
                 <>
                     {user
-                    ?
+                        ?
                         <nav className="flex items-center justify-end w-full">
-                            <NavActions/>
+                            <NavActions />
                         </nav>
-                    :
+                        :
                         <nav className="flex items-center w-fit md:w-full">
-                            <NavLinks/>
-                            <NavActions/>
+                            <NavLinks />
+                            <NavActions />
                         </nav>
                     }
                 </>

@@ -239,22 +239,31 @@ export type Database = {
                     created_at: string | null
                     full_name: string | null
                     id: string
+                    internal_notes: string | null
+                    is_active: boolean | null
                     phone: string | null
                     role: Database["public"]["Enums"]["user_role"] | null
+                    updated_at: string | null
                 }
                 Insert: {
                     created_at?: string | null
                     full_name?: string | null
                     id: string
+                    internal_notes?: string | null
+                    is_active?: boolean | null
                     phone?: string | null
                     role?: Database["public"]["Enums"]["user_role"] | null
+                    updated_at?: string | null
                 }
                 Update: {
                     created_at?: string | null
                     full_name?: string | null
                     id?: string
+                    internal_notes?: string | null
+                    is_active?: boolean | null
                     phone?: string | null
                     role?: Database["public"]["Enums"]["user_role"] | null
+                    updated_at?: string | null
                 }
                 Relationships: []
             }

@@ -70,28 +70,33 @@ export default function ZoomImage({
   const modal =
     modalRoot && open
       ? createPortal(
-          <div
-            role="dialog"
-            aria-modal="true"
-            className="zoom-modal fixed inset-0 z-100 flex items-center justify-center p-0"
-            onClick={closeModal}
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="zoom-modal fixed inset-0 z-100 flex items-center justify-center p-0"
+          onClick={closeModal}
+        >
+          <div className="zoom-backdrop absolute inset-0 bg-black/75" />
+          <div className="zoom-content relative z-10 flex items-center justify-center max-w-[90vw] md:max-w-3/4 max-md:w-full aspect-auto md:h-full max-h-[80vh]"
+            onClick={(e) => e.stopPropagation()}
           >
-            <div className="zoom-backdrop absolute inset-0 bg-black/75" />
-            <div className="zoom-content relative z-10 flex items-center justify-center max-w-[90vw] md:max-w-3/4 max-md:w-full aspect-auto md:h-full max-h-[80vh]"
-                onClick={(e) => e.stopPropagation()}
+            <img
+              src={src}
+              alt={alt}
+              className="zoomed-image w-full h-full rounded-md object-contain"
+              crossOrigin="anonymous"
+            />
+            <button
+              aria-label="Close"
+              onClick={closeModal}
+              className="font-medium text-sm absolute -top-10 md:top-0 right-0 md:-right-10 border border-muted/75 bg-foreground px-2 py-1 text-white rounded-md"
             >
-              <img src={src} alt={alt} className="zoomed-image w-full h-full rounded-md object-cover" />
-              <button
-                aria-label="Close"
-                onClick={closeModal}
-                className="font-medium text-sm absolute -top-10 md:top-0 right-0 md:-right-10 border border-muted/75 bg-foreground px-2 py-1 text-white rounded-md"
-              >
-                ✕
-              </button>
-            </div>
-          </div>,
-          modalRoot
-        )
+              ✕
+            </button>
+          </div>
+        </div>,
+        modalRoot
+      )
       : null;
 
   return (
