@@ -129,7 +129,7 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
                                         <ICONS.rectangleStack className="size-4" />
                                         <span className="text-3xs uppercase font-bold">Space</span>
                                     </div>
-                                    <p className="text-sm font-medium">{request.space_type}</p>
+                                    <p className="text-sm font-medium">{request.space_types?.display_name_en || request.space_type || 'Unknown'}</p>
                                 </div>
 
                                 <div className="p-4 rounded-xl bg-emphasis/30 border border-muted/10">

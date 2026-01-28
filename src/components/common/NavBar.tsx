@@ -53,7 +53,7 @@ export function AuthenticatedUserActins() {
                 ?
                 <>
                     {/* Request Project */}
-                    <Link to={PATHS.ADMIN.PROJECT_CREATE} title="Create Project" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
+                    <Link to={PATHS.ADMIN.PROJECTS} title="Create Project" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
                         Create a Project
                     </Link>
 

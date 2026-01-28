@@ -68,7 +68,7 @@ export function NavActions() {
             <div className="flex items-center gap-2 md:gap-4">
 
                 {/* Request Project */}
-                <Link to={PATHS.ADMIN.PROJECT_CREATE} title="Request Service" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
+                <Link to={PATHS.ADMIN.PROJECTS} title="Request Service" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
                     Create a Project
                 </Link>
 

@@ -10,7 +10,6 @@ export const ServiceTypesService = {
         const { data, error } = await supabase
             .from('service_types')
             .select('*')
-            .order('sort_order', { ascending: true })
 
         if (error) throw error
         return data as ServiceType[]
@@ -21,7 +20,6 @@ export const ServiceTypesService = {
             .from('service_types')
             .select('*')
             .eq('is_active', true)
-            .order('sort_order', { ascending: true })
 
         if (error) throw error
         return data as ServiceType[]
@@ -69,5 +67,23 @@ export const ServiceTypesService = {
             .eq('id', id)
 
         if (error) throw error
+    },
+
+    async uploadImage(file: File) {
+        const fileExt = file.name.split('.').pop()
+        const fileName = `${Math.random()}.${fileExt}`
+        const filePath = `service-icons/${fileName}`
+
+        const { error: uploadError } = await supabase.storage
+            .from('service-types')
+            .upload(filePath, file)
+
+        if (uploadError) throw uploadError
+
+        const { data: { publicUrl } } = supabase.storage
+            .from('service-types')
+            .getPublicUrl(filePath)
+
+        return publicUrl
     }
 }

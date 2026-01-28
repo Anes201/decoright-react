@@ -62,7 +62,7 @@ export default function DashboardHome() {
             <div className="flex flex-col gap-4">
                 <h2 className="text-xl font-semibold">Quick Actions</h2>
                 <div className="flex flex-wrap gap-4">
-                    <Link to={PATHS.ADMIN.PROJECT_CREATE} className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-colors">
+                    <Link to={PATHS.ADMIN.PROJECTS} className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-colors">
                         <ICONS.plus className="size-5" />
                         Add New Portfolio Item
                     </Link>

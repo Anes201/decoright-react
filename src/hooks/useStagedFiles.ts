@@ -2,39 +2,11 @@
 import { useEffect, useRef, useState } from "react";
 import type { StagedFile } from "@/types/upload";
 
-/**
- * simulateUpload(file, onProgress) => returns cancel function
- * Replace this with real upload call that accepts an onProgress callback.
- */
-
-function simulateUpload(_file: File, onProgress: (p: number) => void): () => void {
-  let percent = 0;
-  const t = setInterval(() => {
-    percent += Math.floor(Math.random() * 12) + 4;
-    if (percent >= 100) {
-      onProgress(100);
-      clearInterval(t);
-    } else {
-      onProgress(Math.min(percent, 99));
-    }
-  }, 150);
-
-  // Randomly fail sometimes so retry UI can be tested
-  const failTimer = setTimeout(() => {
-    if (Math.random() < 0.08) {
-      onProgress(-1); // sentinel for failure in this demo; hook will interpret
-    }
-  }, 800 + Math.random() * 1200);
-
-  return () => {
-    clearInterval(t);
-    clearTimeout(failTimer);
-  };
-}
-
-export function useStagedFiles() {
+export function useStagedFiles(uploadFn?: (file: File) => Promise<string>) {
   const [files, setFiles] = useState<StagedFile[]>([]);
   const cancelers = useRef<Record<string, () => void>>({});
+  const filesRef = useRef<StagedFile[]>(files);
+  filesRef.current = files; // Keep ref in sync
 
   // cleanup cancelers on unmount
   useEffect(() => {
@@ -57,12 +29,19 @@ export function useStagedFiles() {
       status: "idle",
     }));
 
-    // prepend new files so newest appear at top (choose your UX)
-    setFiles((prev) => [...newStaged, ...prev]);
-
-    // start upload immediately (optimistic). If you don't want this, remove this loop.
-    newStaged.forEach((s) => startUpload(s.id));
+    setFiles((prev) => [...prev, ...newStaged]);
   }
+
+  // Auto-start upload when files are added
+  useEffect(() => {
+    if (!uploadFn) return;
+
+    files.forEach(file => {
+      if (file.status === 'idle' && file.file) {
+        startUpload(file.id, file.file);
+      }
+    });
+  }, [files, uploadFn]);
 
   function removeFile(id: string) {
     // cancel ongoing upload if any
@@ -73,44 +52,24 @@ export function useStagedFiles() {
     setFiles((prev) => prev.filter((p) => p.id !== id));
   }
 
-  function startUpload(id: string) {
-    const file = files.find((f) => f.id === id) ?? null;
-    // For safety: refresh the file from current state (there may be a race).
-    const current = files.find((f) => f.id === id);
-    // If file not present (maybe removed before start), look at DOM? Abort.
-    const targetFile = current?.file ?? file?.file;
-    if (!targetFile) return;
+  async function startUpload(id: string, targetFile?: File) {
+    // If targetFile not passed, try to find it from ref
+    if (!targetFile) {
+      const current = filesRef.current.find((f) => f.id === id);
+      targetFile = current?.file || undefined;
+    }
+    if (!targetFile || !uploadFn) return;
 
     // mark uploading
     setFiles((prev) => prev.map((p) => (p.id === id ? { ...p, status: "uploading", progress: 0 } : p)));
 
-    // start simulated upload (replace this with real uploader)
-    const cancel = simulateUpload(
-      targetFile,
-      (progress) => {
-        if (progress === -1) {
-          // failure sentinel used by simulateUpload
-          setFiles((prev) => prev.map((p) => (p.id === id ? { ...p, status: "failed", progress: 0 } : p)));
-          if (cancelers.current[id]) {
-            delete cancelers.current[id];
-          }
-          return;
-        }
-
-        setFiles((prev) =>
-          prev.map((p) => (p.id === id ? { ...p, progress: Math.max(0, Math.min(100, progress)) } : p))
-        );
-
-        if (progress >= 100) {
-          setFiles((prev) => prev.map((p) => (p.id === id ? { ...p, status: "complete", progress: 100 } : p)));
-          if (cancelers.current[id]) {
-            delete cancelers.current[id];
-          }
-        }
-      }
-    );
-
-    cancelers.current[id] = cancel;
+    try {
+      const url = await uploadFn(targetFile);
+      setFiles((prev) => prev.map((p) => (p.id === id ? { ...p, status: "complete", progress: 100, url } : p)));
+    } catch (error) {
+      console.error("Upload failed for file", id, error);
+      setFiles((prev) => prev.map((p) => (p.id === id ? { ...p, status: "failed", progress: 0 } : p)));
+    }
   }
 
   function retryFile(id: string) {
@@ -122,6 +81,7 @@ export function useStagedFiles() {
 
   return {
     files,
+    setFiles,
     addFiles,
     removeFile,
     retryFile,

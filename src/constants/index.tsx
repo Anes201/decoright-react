@@ -47,7 +47,9 @@ export const adminNavItems = [
     { label: 'Users', path: PATHS.ADMIN.USERS },
     { label: 'Service Requests', path: PATHS.ADMIN.REQUEST_SERVICE_LIST },
     { label: 'Service Types', path: PATHS.ADMIN.SERVICE_TYPES },
-    { label: 'Create a Project', path: PATHS.ADMIN.PROJECT_CREATE },
+    { label: 'Space Types', path: PATHS.ADMIN.SPACE_TYPES },
+    { label: 'Projects', path: PATHS.ADMIN.PROJECTS },
+    { label: 'Create a Project', path: PATHS.ADMIN.PROJECTS },
     { label: 'Settings', path: PATHS.ADMIN.SETTINGS },
 ]
 

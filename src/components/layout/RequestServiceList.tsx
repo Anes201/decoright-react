@@ -33,7 +33,11 @@ export function RequestServiceItem({ request }: any) {
                         >
                             #{request.request_code || request.id.slice(0, 8)}
                         </Link>
-                        <div className="col col-project-type capitalize">{(request.service_types?.display_name_en || 'Unknown').replace(/_/g, ' ').toLowerCase()}</div>
+                        <div className="col col-project-type capitalize flex gap-1">
+                            <span>{request.service_types?.display_name_en || 'Unknown'}</span>
+                            <span className="text-muted/50">•</span>
+                            <span>{request.space_types?.display_name_en || 'Unknown'}</span>
+                        </div>
                         <div className="col col-date max-sm:text-xs"><time dateTime={request.created_at}>{date}</time></div>
                     </div>
                     <div className={`col col-status text-xs px-1 py-0.5 xs:px-2 md:px-2.5 xs:py-1 min-w-max h-fit rounded-lg order-status-${request.status.replace(/\s+/g, '-').toLowerCase()}`} data-status={request.status}>

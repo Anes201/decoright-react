@@ -11,8 +11,8 @@ const columns = [
         )
     },
     { key: 'customer_name', title: 'Customer', render: (row: any) => row.profiles?.full_name || 'Unknown' },
-    { key: 'service_type', title: 'Service' },
-    { key: 'space_type', title: 'Space' },
+    { key: 'service_type', title: 'Service', render: (row: any) => row.service_types?.display_name_en || row.service_type || '—' },
+    { key: 'space_type', title: 'Space', render: (row: any) => row.space_types?.display_name_en || row.space_type || '—' },
     { key: 'status', title: 'Status' },
     {
         key: 'chat',

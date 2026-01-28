@@ -41,7 +41,8 @@ export const PATHS = {
         USERS: "/admin/users/",
         REQUEST_SERVICE_LIST: "/admin/request-service/list/",
         SERVICE_TYPES: "/admin/service-types/",
-        PROJECT_CREATE: "/admin/project/create/",
+        SPACE_TYPES: "/admin/space-types/",
+        PROJECTS: "/admin/projects/",
         SETTINGS: "/admin/settings/",
     },
 } as const;

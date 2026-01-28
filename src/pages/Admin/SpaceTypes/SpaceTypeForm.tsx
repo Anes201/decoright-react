@@ -1,69 +1,48 @@
 import { useState, useEffect } from 'react';
-import { ServiceTypesService, type ServiceType, type ServiceTypeInsert, type ServiceTypeUpdate } from '@/services/service-types.service';
+import { SpaceTypesService, type SpaceType, type SpaceTypeInsert, type SpaceTypeUpdate } from '@/services/space-types.service';
 import { ICONS } from '@/icons';
 
-interface ServiceTypeFormProps {
+interface SpaceTypeFormProps {
     isOpen: boolean;
-    serviceType: ServiceType | null;
+    spaceType: SpaceType | null;
     onClose: () => void;
     onSuccess: () => void;
 }
 
-export default function ServiceTypeForm({ isOpen, serviceType, onClose, onSuccess }: ServiceTypeFormProps) {
+export default function SpaceTypeForm({ isOpen, spaceType, onClose, onSuccess }: SpaceTypeFormProps) {
     const [formData, setFormData] = useState({
         name: '',
         display_name_en: '',
         display_name_ar: '',
         display_name_fr: '',
-        image_url: '',
         description: '',
         is_active: true,
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
-    const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
-        if (serviceType) {
+        if (spaceType) {
             setFormData({
-                name: serviceType.name,
-                display_name_en: serviceType.display_name_en,
-                display_name_ar: serviceType.display_name_ar || '',
-                display_name_fr: serviceType.display_name_fr || '',
-                image_url: serviceType.image_url || '',
-                description: serviceType.description || '',
-                is_active: serviceType.is_active,
+                name: spaceType.name,
+                display_name_en: spaceType.display_name_en,
+                display_name_ar: spaceType.display_name_ar || '',
+                display_name_fr: spaceType.display_name_fr || '',
+                description: spaceType.description || '',
+                is_active: spaceType.is_active,
             });
-            setImagePreview(serviceType.image_url || null);
         } else {
             setFormData({
                 name: '',
                 display_name_en: '',
                 display_name_ar: '',
                 display_name_fr: '',
-                image_url: '',
                 description: '',
                 is_active: true,
             });
-            setImagePreview(null);
         }
-        setSelectedFile(null);
         setError(null);
-    }, [serviceType, isOpen]);
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setSelectedFile(file);
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
+    }, [spaceType, isOpen]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -71,45 +50,34 @@ export default function ServiceTypeForm({ isOpen, serviceType, onClose, onSucces
         setLoading(true);
 
         try {
-            let finalImageUrl = formData.image_url;
-
-            if (selectedFile) {
-                setUploading(true);
-                finalImageUrl = await ServiceTypesService.uploadImage(selectedFile);
-                setUploading(false);
-            }
-
-            if (serviceType) {
+            if (spaceType) {
                 // Update existing
-                const updateData: ServiceTypeUpdate = {
+                const updateData: SpaceTypeUpdate = {
                     display_name_en: formData.display_name_en,
                     display_name_ar: formData.display_name_ar || null,
                     display_name_fr: formData.display_name_fr || null,
-                    image_url: finalImageUrl || null,
                     description: formData.description || null,
                     is_active: formData.is_active,
                 };
-                await ServiceTypesService.update(serviceType.id, updateData);
+                await SpaceTypesService.update(spaceType.id, updateData);
             } else {
                 // Create new
-                const insertData: ServiceTypeInsert = {
+                const insertData: SpaceTypeInsert = {
                     name: formData.name,
                     display_name_en: formData.display_name_en,
                     display_name_ar: formData.display_name_ar || null,
                     display_name_fr: formData.display_name_fr || null,
-                    image_url: finalImageUrl || null,
                     description: formData.description || null,
                     is_active: formData.is_active,
                 };
-                await ServiceTypesService.create(insertData);
+                await SpaceTypesService.create(insertData);
             }
             onSuccess();
         } catch (err: any) {
-            console.error('Failed to save service type:', err);
-            setError(err.message || 'Failed to save service type');
+            console.error('Failed to save space type:', err);
+            setError(err.message || 'Failed to save space type');
         } finally {
             setLoading(false);
-            setUploading(false);
         }
     };
 
@@ -121,7 +89,7 @@ export default function ServiceTypeForm({ isOpen, serviceType, onClose, onSucces
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b border-muted/15">
                     <h2 className="text-xl font-bold text-heading">
-                        {serviceType ? 'Edit Service Type' : 'Add Service Type'}
+                        {spaceType ? 'Edit Space Type' : 'Add Space Type'}
                     </h2>
                     <button
                         onClick={onClose}
@@ -148,13 +116,13 @@ export default function ServiceTypeForm({ isOpen, serviceType, onClose, onSucces
                             type="text"
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value.toUpperCase().replace(/[^A-Z_]/g, '') })}
-                            placeholder="INTERIOR_DESIGN"
-                            disabled={!!serviceType}
+                            placeholder="KITCHEN_AND_BATH"
+                            disabled={!!spaceType}
                             required
                             className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:bg-surface/50 disabled:cursor-not-allowed font-mono"
                         />
                         <p className="text-xs text-muted mt-1">
-                            {serviceType ? 'Code cannot be changed after creation' : 'Use SCREAMING_SNAKE_CASE (e.g., INTERIOR_DESIGN)'}
+                            {spaceType ? 'Code cannot be changed after creation' : 'Use SCREAMING_SNAKE_CASE (e.g., KITCHEN_AND_BATH)'}
                         </p>
                     </div>
 
@@ -168,7 +136,7 @@ export default function ServiceTypeForm({ isOpen, serviceType, onClose, onSucces
                                 type="text"
                                 value={formData.display_name_en}
                                 onChange={(e) => setFormData({ ...formData, display_name_en: e.target.value })}
-                                placeholder="Interior Design"
+                                placeholder="Kitchen and Bath"
                                 required
                                 className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
                             />
@@ -183,7 +151,7 @@ export default function ServiceTypeForm({ isOpen, serviceType, onClose, onSucces
                                 type="text"
                                 value={formData.display_name_fr}
                                 onChange={(e) => setFormData({ ...formData, display_name_fr: e.target.value })}
-                                placeholder="Design d'Intérieur"
+                                placeholder="Cuisine et Salle de Bain"
                                 className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
                             />
                         </div>
@@ -198,52 +166,21 @@ export default function ServiceTypeForm({ isOpen, serviceType, onClose, onSucces
                             type="text"
                             value={formData.display_name_ar}
                             onChange={(e) => setFormData({ ...formData, display_name_ar: e.target.value })}
-                            placeholder="تصميم داخلي"
+                            placeholder="المطبخ والحمام"
                             dir="rtl"
                             className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
                         />
                     </div>
 
-                    {/* Image Upload */}
-                    <div>
-                        <label className="block text-sm font-medium text-foreground mb-1">
-                            Service Image
-                        </label>
-                        <div className="mt-1 flex items-center gap-4">
-                            <div className="size-20 rounded-lg border border-muted/30 overflow-hidden bg-surface flex items-center justify-center">
-                                {imagePreview ? (
-                                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                                ) : (
-                                    <ICONS.photo className="size-8 text-muted/30" />
-                                )}
-                            </div>
-                            <div className="flex-1">
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleFileChange}
-                                    className="block w-full text-sm text-muted
-                                        file:mr-4 file:py-2 file:px-4
-                                        file:rounded-lg file:border-0
-                                        file:text-sm file:font-semibold
-                                        file:bg-primary/10 file:text-primary
-                                        hover:file:bg-primary/20 transition-all
-                                        cursor-pointer"
-                                />
-                                <p className="text-xs text-muted mt-1">Recommended size: 800x600px. Max 5MB.</p>
-                            </div>
-                        </div>
-                    </div>
-
                     {/* Description */}
                     <div>
                         <label className="block text-sm font-medium text-foreground mb-1">
-                            Description / Service Info
+                            Description / Space Info
                         </label>
                         <textarea
                             value={formData.description}
                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                            placeholder="Brief description of the service..."
+                            placeholder="Brief description of the space type..."
                             rows={3}
                             className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
                         />
@@ -280,8 +217,8 @@ export default function ServiceTypeForm({ isOpen, serviceType, onClose, onSucces
                         disabled={loading}
                         className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
                     >
-                        {(loading || uploading) && <ICONS.cog className="size-4 animate-spin" />}
-                        {uploading ? 'Uploading...' : serviceType ? 'Update' : 'Create'}
+                        {loading && <ICONS.cog className="size-4 animate-spin" />}
+                        {spaceType ? 'Update' : 'Create'}
                     </button>
                 </div>
             </div>
