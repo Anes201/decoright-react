@@ -2,6 +2,7 @@ import { supabase } from '@/lib/supabase';
 import type { ChatRoom, Message, MessageType } from '@/types/chat';
 
 export const ChatService = {
+
     async getChatRooms() {
         const { data, error } = await supabase
             .from('chat_rooms')
@@ -27,7 +28,8 @@ export const ChatService = {
 
         if (error) throw error;
 
-        // Fetch unread count and last message for each room
+        // Fetch unread count and last message for each room in parallel
+        // Still doing it in loop for now as we don't have a view/rpc, but at least parallelized
         const roomsWithMeta = await Promise.all((data as any[]).map(async (room) => {
             const { data: lastMsg } = await supabase
                 .from('messages')
@@ -64,31 +66,78 @@ export const ChatService = {
         return data as Message[];
     },
 
-    async sendMessage(roomId: string, requestId: string, content: string, type: MessageType = 'TEXT', mediaUrl?: string) {
+    // Handle both old and new API for getMessages
+    async getMessages(targetId: string) {
+        // Try to fetch by chat_room_id first, then by request_id
+        const { data, error } = await supabase
+            .from('messages')
+            .select('*')
+            .or(`chat_room_id.eq.${targetId},request_id.eq.${targetId}`)
+            .order('created_at', { ascending: true });
+
+        if (error) throw error;
+        return data as Message[];
+    },
+
+    async sendMessage(
+        roomIdOrObj: string | { requestId: string; content: string; messageType?: MessageType; mediaUrl?: string },
+        requestId?: string,
+        content?: string,
+        type: MessageType = 'TEXT',
+        mediaUrl?: string
+    ) {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) throw new Error("Auth required");
+
+        let rId: string;
+        let reqId: string;
+        let text: string;
+        let mType: MessageType;
+        let mUrl: string | undefined;
+
+        if (typeof roomIdOrObj === 'object') {
+            reqId = roomIdOrObj.requestId;
+            text = roomIdOrObj.content;
+            mType = roomIdOrObj.messageType || 'TEXT';
+            mUrl = roomIdOrObj.mediaUrl;
+
+            // We need to find the roomId for this requestId
+            const { data: room } = await supabase
+                .from('chat_rooms')
+                .select('id')
+                .eq('request_id', reqId)
+                .maybeSingle();
+
+            if (!room) throw new Error("Chat room not found for request");
+            rId = room.id;
+        } else {
+            rId = roomIdOrObj;
+            reqId = requestId!;
+            text = content!;
+            mType = type;
+            mUrl = mediaUrl;
+        }
 
         const { data, error } = await supabase
             .from('messages')
             .insert({
-                request_id: requestId,
-                chat_room_id: roomId,
+                request_id: reqId,
+                chat_room_id: rId,
                 sender_id: user.id,
-                content: content,
-                message_type: type,
-                media_url: mediaUrl,
-                is_read: true // Admin's own messages are "read"
+                content: text,
+                message_type: mType,
+                media_url: mUrl,
+                is_read: true
             })
             .select()
             .single();
 
         if (error) throw error;
 
-        // Update chat room's updated_at
         await supabase
             .from('chat_rooms')
             .update({ updated_at: new Date().toISOString() })
-            .eq('id', roomId);
+            .eq('id', rId);
 
         return data as Message;
     },
@@ -134,6 +183,21 @@ export const ChatService = {
                     schema: 'public',
                     table: 'messages',
                     filter: `chat_room_id=eq.${roomId}`
+                },
+                (payload) => onNewMessage(payload.new as Message)
+            )
+            .subscribe();
+    },
+
+    subscribeToRequestChat(requestId: string, onNewMessage: (msg: Message) => void) {
+        return supabase
+            .channel(`request_${requestId}`)
+            .on('postgres_changes',
+                {
+                    event: 'INSERT',
+                    schema: 'public',
+                    table: 'messages',
+                    filter: `request_id=eq.${requestId}`
                 },
                 (payload) => onNewMessage(payload.new as Message)
             )

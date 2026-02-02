@@ -3,8 +3,12 @@ import { useSearchParams } from 'react-router-dom';
 import { ChatService } from '@/services/chat.service';
 import type { ChatRoom, Message, MessageType } from '@/types/chat';
 import { supabase } from '@/lib/supabase';
+import useAuth from './useAuth';
 
 export function useAdminChat() {
+    const { user } = useAuth();
+    const currentUserId = user?.id;
+
     const [searchParams, setSearchParams] = useSearchParams();
     const roomIdParam = searchParams.get('room');
 
@@ -24,8 +28,10 @@ export function useAdminChat() {
         scrollToBottom();
     }, [messages, scrollToBottom]);
 
+
     const loadRooms = useCallback(async () => {
         try {
+            setLoading(true);
             const data = await ChatService.getChatRooms();
             setRooms(data);
         } catch (error) {
@@ -35,15 +41,40 @@ export function useAdminChat() {
         }
     }, []);
 
+    // Initial load
     useEffect(() => {
-        loadRooms().then(() => {
-            // Subscription handled inside loadRooms or by its own effect
-        });
-        const sub = ChatService.subscribeToRooms(loadRooms);
-        return () => { sub.unsubscribe(); };
+        loadRooms();
     }, [loadRooms]);
 
-    // Handle deep linking when rooms are loaded
+    // Room subscription - handle updates to room metadata (like last_message_at)
+    useEffect(() => {
+        const sub = supabase
+            .channel('chat_rooms_list')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'chat_rooms' }, () => {
+                // When rooms change, we can just refresh the list or update the specific room
+                // For now, refreshing the list is fine as it's not frequent
+                loadRooms();
+            })
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
+                const newMsg = payload.new as Message;
+                setRooms(prev => prev.map(room => {
+                    if (room.id === newMsg.chat_room_id) {
+                        return {
+                            ...room,
+                            last_message: newMsg,
+                            unread_count: (newMsg.sender_id !== currentUserId) ? (room.unread_count || 0) + 1 : (room.unread_count || 0),
+                            updated_at: newMsg.created_at
+                        };
+                    }
+                    return room;
+                }));
+            })
+            .subscribe();
+
+        return () => { sub.unsubscribe(); };
+    }, [loadRooms, currentUserId]);
+
+    // Handle deep linking
     useEffect(() => {
         if (roomIdParam && rooms.length > 0 && !selectedRoom) {
             const room = rooms.find(r => r.id === roomIdParam);
@@ -53,7 +84,6 @@ export function useAdminChat() {
 
     const handleSelectRoom = (room: ChatRoom | null) => {
         setSelectedRoom(room);
-        // Clear the URL parameter when manual selection happens to avoid stickiness
         if (roomIdParam) {
             setSearchParams(params => {
                 params.delete('room');
@@ -62,21 +92,21 @@ export function useAdminChat() {
         }
     };
 
+    // Load messages when room changes
     useEffect(() => {
         if (!selectedRoom) {
             setMessages([]);
             return;
         }
 
-        // Clear messages immediately when room changes for seamless feel
-        setMessages([]);
-
         const loadMessages = async () => {
             try {
                 const data = await ChatService.getRoomMessages(selectedRoom.id);
                 setMessages(data);
+
+                // Optimistically clear unread count for this room
+                setRooms(prev => prev.map(r => r.id === selectedRoom.id ? { ...r, unread_count: 0 } : r));
                 await ChatService.markAsRead(selectedRoom.id);
-                loadRooms(); // Refresh unread counts
             } catch (error) {
                 console.error("Failed to load messages:", error);
             }
@@ -86,21 +116,19 @@ export function useAdminChat() {
 
         const sub = ChatService.subscribeToMessages(selectedRoom.id, (newMsg) => {
             setMessages(prev => {
-                const exists = prev.some(m => m.id === newMsg.id);
-                if (exists) return prev;
+                if (prev.some(m => m.id === newMsg.id)) return prev;
                 return [...prev, newMsg];
             });
 
-            // If message is from client, mark as read
-            const clientId = selectedRoom.service_requests.profiles.id;
-            if (newMsg.sender_id === clientId) {
+            // If we are in the room, mark as read immediately
+            if (newMsg.sender_id !== currentUserId) {
                 ChatService.markAsRead(selectedRoom.id);
-                loadRooms();
+                setRooms(prev => prev.map(r => r.id === selectedRoom.id ? { ...r, unread_count: 0 } : r));
             }
         });
 
         return () => { sub.unsubscribe(); };
-    }, [selectedRoom, loadRooms]);
+    }, [selectedRoom?.id, currentUserId]); // Only depend on selectedRoom ID and currentUserId
 
 
     const sendMessage = async (e?: React.FormEvent) => {
