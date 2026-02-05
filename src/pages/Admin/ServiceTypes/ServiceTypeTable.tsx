@@ -72,11 +72,11 @@ export default function ServiceTypeTable({ serviceTypes, onEdit, onRefresh }: Se
                         serviceTypes.map((serviceType) => (
                             <tr key={serviceType.id} className="hover:bg-surface/30 transition-colors">
                                 <td className="px-4 py-3">
-                                    <div className="size-10 rounded-lg overflow-hidden border border-muted/10 bg-surface flex items-center justify-center">
+                                    <div className="w-24 h-16 rounded-lg overflow-hidden border border-muted/10 bg-surface flex items-center justify-center">
                                         {serviceType.image_url ? (
                                             <img src={serviceType.image_url} alt="" className="w-full h-full object-cover" />
                                         ) : (
-                                            <ICONS.photo className="size-5 text-muted/20" />
+                                            <ICONS.photo className="size-8 text-muted/20" />
                                         )}
                                     </div>
                                 </td>
