@@ -42,22 +42,22 @@ export default function RequestServiceList() {
 
     return (
         <main className="flex-1 flex flex-col w-full overflow-hidden">
-            <section className="flex-1 min-h-0 flex flex-col p-4 md:p-6 overflow-hidden">
+            <section className="flex-1 min-h-0 flex flex-col pt-4 md:pt-6 overflow-hidden">
+                <div className="px-4 md:px-6 mb-6 flex-none">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h1 className="font-bold text-2xl md:text-3xl text-heading tracking-tight">Request Management</h1>
+                            <p className="text-sm text-muted mt-1">Manage and track service requests through their lifecycle.</p>
+                        </div>
 
-                {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 flex-none">
-                    <div>
-                        <h1 className="font-bold text-2xl md:text-3xl text-heading tracking-tight">Request Management</h1>
-                        <p className="text-sm text-muted mt-1">Manage and track service requests through their lifecycle.</p>
+                        <button
+                            onClick={loadRequests}
+                            className="px-4 py-2 bg-emphasis text-body rounded-lg hover:bg-neutral-tertiary-medium transition-colors flex items-center gap-2 text-sm font-semibold"
+                        >
+                            <ICONS.arrowPath className={`size-4 ${loading ? 'animate-spin' : ''}`} />
+                            Refresh
+                        </button>
                     </div>
-
-                    <button
-                        onClick={loadRequests}
-                        className="px-4 py-2 bg-emphasis text-body rounded-lg hover:bg-neutral-tertiary-medium transition-colors flex items-center gap-2 text-sm font-semibold"
-                    >
-                        <ICONS.arrowPath className={`size-4 ${loading ? 'animate-spin' : ''}`} />
-                        Refresh
-                    </button>
                 </div>
 
                 {/* Main Content Area */}

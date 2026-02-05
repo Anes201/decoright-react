@@ -2,7 +2,6 @@ import Spinner from "@/components/common/Spinner";
 import { PButton } from "@/components/ui/Button";
 import { SCTALink } from "@/components/ui/CTA";
 import FileUploadPanel from "@/components/ui/FileUploadPanel";
-import { AdminService } from "@/services/admin.service";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -15,8 +14,9 @@ export default function ServiceCreateLayout() {
         setLoading(true);
 
         const formData = new FormData(e.currentTarget);
-        const title = formData.get('service-title') as string;
-        const description = formData.get('service-description') as string;
+        // formData items read but not directly used in this logic
+        formData.get('service-title');
+        formData.get('service-description');
 
         try {
             // Create the service here

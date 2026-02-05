@@ -34,15 +34,15 @@ export function NavMenuItems() {
     return (
 
         <>
-        {adminMenuNav.map((item, index) => (
-            <li key={index} className="w-full">
-                <Link to={item.path} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15">
-                    <div className="flex content-center gap-2">
-                        {/* Icon */}
-                        {/* { ICONS.informationCircle({}) } */}
-                        {/* Label */}
-                        <h3 className="font-medium text-sm"> {item.label} </h3>
-                    </div>
+            {adminMenuNav.map((item, index) => (
+                <li key={index} className="w-full">
+                    <Link to={item.path} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15">
+                        <div className="flex content-center gap-2">
+                            {/* Icon */}
+                            {/* { ICONS.informationCircle({}) } */}
+                            {/* Label */}
+                            <h3 className="font-medium text-sm"> {item.label} </h3>
+                        </div>
 
                         {/* Context */}
                         <div className="w-full">
@@ -71,11 +71,9 @@ export function NavActions() {
                     Create a Project
                 </Link>
 
-                {/* Chat Menu Card */}
-                <button type="button" title="Chat Menu" onClick={() => setChatMenuOpen(!chatMenuOpen)}
-                className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
+                {/* Chat Nav Page */}
+                <Link to={PATHS.ADMIN.CHAT} title="Chats" className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
                     <ICONS.chat className="size-5 md:size-6" />
-
                     <span className="absolute flex size-3 top-0 left-0">
                         <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
                         <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
@@ -84,12 +82,12 @@ export function NavActions() {
 
                 {/* User Profile Nav Page */}
                 <Link to={PATHS.CLIENT.ROOT} title="Client Home Page" className="max-md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full">
-                    <ICONS.home className="size-5 md:size-6"/>
+                    <ICONS.home className="size-5 md:size-6" />
                 </Link>
 
                 {/* Menu Trigger */}
                 <button type="button" title="Menu" className="md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>
-                    <ICONS.menu className="size-5 md:size-6"/>
+                    <ICONS.menu className="size-5 md:size-6" />
                 </button>
             </div>
 

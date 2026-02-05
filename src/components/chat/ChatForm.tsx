@@ -3,12 +3,23 @@ import { AutoResizeTextarea } from "@components/ui/Input";
 import { ICONS } from "@/icons";
 import { useChat } from '@/hooks/useChat';
 
-interface RequestLike { id: string }
-interface Props { request?: RequestLike }
 
-export default function ChatForm() {
 
-    const { sendMessage, sendMedia, messageText, setMessageText } = useChat();
+interface ChatFormProps {
+    message?: string;
+    setMessage?: (v: string) => void;
+    onSend?: (e?: React.FormEvent) => void;
+    onSendMedia?: (file: File | Blob, type: any) => Promise<void>;
+}
+
+export default function ChatForm({ message, setMessage, onSend, onSendMedia }: ChatFormProps = {}) {
+
+    const { sendMessage: hookSendMessage, sendMedia: hookSendMedia, messageText: hookMessageText, setMessageText: hookSetMessageText } = useChat();
+
+    const displayMessage = message !== undefined ? message : hookMessageText;
+    const handleSetMessage = setMessage || hookSetMessageText;
+    const handleSend = onSend || hookSendMessage;
+    const handleSendMedia = onSendMedia || hookSendMedia;
     const [isRecording, setIsRecording] = useState(false);
     const [recordingTime, setRecordingTime] = useState(0);
     const [isUploading, setIsUploading] = useState(false);
@@ -52,7 +63,7 @@ export default function ChatForm() {
                 if (audioChunksRef.current.length > 0) {
                     setIsUploading(true);
                     try {
-                        await sendMedia(audioBlob, 'AUDIO');
+                        await handleSendMedia(audioBlob, 'AUDIO');
                     } finally {
                         setIsUploading(false);
                     }
@@ -81,7 +92,7 @@ export default function ChatForm() {
 
         setIsUploading(true);
         try {
-            await sendMedia(file, 'IMAGE');
+            await handleSendMedia(file, 'IMAGE');
         } finally {
             setIsUploading(false);
             if (fileInputRef.current) fileInputRef.current.value = '';
@@ -91,7 +102,7 @@ export default function ChatForm() {
     return (
         <div className="flex flex-col gap-2 w-full">
             <form
-                onSubmit={sendMessage}
+                onSubmit={handleSend}
                 className={`flex items-center gap-2 sm:gap-4 w-full h-fit p-1.5 sm:p-2 border border-muted/25 bg-background/50 rounded-xl transition-all ${isRecording ? 'border-primary ring-1 ring-primary/20' : ''}`}
             >
                 {isRecording ? (
@@ -111,8 +122,8 @@ export default function ChatForm() {
                     </div>
                 ) : (
                     <AutoResizeTextarea
-                        value={messageText}
-                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMessageText(e.target.value)}
+                        value={displayMessage}
+                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleSetMessage(e.target.value)}
                         placeholder={isUploading ? "Uploading..." : "Type your message..."}
                         disabled={isUploading}
                         minRows={1}
@@ -121,7 +132,7 @@ export default function ChatForm() {
                         onKeyDown={(e: React.KeyboardEvent) => {
                             if (e.key === 'Enter' && !e.shiftKey) {
                                 e.preventDefault();
-                                sendMessage();
+                                handleSend();
                             }
                         }}
                     />
@@ -136,7 +147,7 @@ export default function ChatForm() {
                         className="hidden"
                     />
 
-                    {!isRecording && !messageText.trim() && (
+                    {!isRecording && !displayMessage.trim() && (
                         <>
                             <button
                                 type="button"
@@ -170,8 +181,8 @@ export default function ChatForm() {
                     ) : (
                         <button
                             type="submit"
-                            disabled={!messageText.trim() || isUploading}
-                            className={`${(!messageText.trim() || isUploading) ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'} p-2.5 bg-primary text-white rounded-lg shadow-sm transition-all`}
+                            disabled={!displayMessage.trim() || isUploading}
+                            className={`${(!displayMessage.trim() || isUploading) ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'} p-2.5 bg-primary text-white rounded-lg shadow-sm transition-all`}
                         >
                             <ICONS.paperAirplane className="size-5" />
                         </button>

@@ -1,9 +1,7 @@
 
-import Spinner from "@/components/common/Spinner";
 import { EmailInput, Input, PhoneInput } from "@/components/ui/Input";
 import { images, SocialMediaPhoneFields, SocialMediaUrlFields } from "@/constants";
 import { companyNameTitle } from "@/constants/company";
-import { ICONS } from "@/icons";
 import { AdminService } from "@/services/admin.service";
 import { useEffect, useState, useCallback } from "react";
 
@@ -97,13 +95,13 @@ export default function Settings() {
                                             id="primary_email"
                                             placeholder="hello@example.com"
                                             value={settings['primary_email'] || ''}
-                                            onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleChange('primary_email', e.target.value)}
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('primary_email', e.target.value)}
                                         />
                                         <EmailInput
                                             id="admin_email"
                                             placeholder="admin@example.com"
                                             value={settings['admin_email'] || ''}
-                                            onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleChange('admin_email', e.target.value)}
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('admin_email', e.target.value)}
                                         />
                                     </div>
                                 </div>
@@ -115,7 +113,7 @@ export default function Settings() {
                                             id="primary_phone"
                                             placeholder="+213123456789"
                                             value={settings['primary_phone'] || ''}
-                                            onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleChange('primary_phone', e.target.value)}
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('primary_phone', e.target.value)}
                                         />
                                     </div>
                                 </div>
@@ -136,7 +134,7 @@ export default function Settings() {
                                     placeholder={social.placeholder}
                                     className="content-center pl-10"
                                     value={settings[social.label.toLowerCase()] || ''}
-                                    onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleChange(social.label.toLowerCase(), e.target.value)}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(social.label.toLowerCase(), e.target.value)}
                                 >
                                     <span className="absolute px-1.5 left-0.5 md:left-1"> {social.icon} </span>
                                 </Input>
@@ -150,7 +148,7 @@ export default function Settings() {
                                     placeholder={social.placeholder}
                                     className="content-center pl-10"
                                     value={settings[social.label.toLowerCase()] || ''}
-                                    onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleChange(social.label.toLowerCase(), e.target.value)}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(social.label.toLowerCase(), e.target.value)}
                                 >
                                     <span className="absolute px-1.5 left-0.5 md:left-1"> {social.icon} </span>
                                 </Input>

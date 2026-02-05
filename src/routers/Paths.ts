@@ -4,11 +4,10 @@ export const PATHS = {
     ABOUT: "/about-us",
 
     SERVICE_LIST: "/service-list",
-    GALLERY_PORTFOLIO_LIST: "/gallery/portfolio/list",
-
+    GALLERY_LIST: "/gallery",
     PROJECT_LIST: "/project-list",
-    PROJECT_DETAIL: "/projects/:slug",   // pattern for router
-    projectDetail: (slug: string) => `/projects/${encodeURIComponent(slug)}/`, // generator for links
+    PROJECT_DETAIL: "/projects/:slug",
+    projectDetail: (slug: string) => `/projects/${encodeURIComponent(slug)}/`,
     // projectType: (slug: string) => `/projects/${encodeURIComponent(slug)}`, // generator for links
 
     CONTACT: "/contact",
@@ -53,8 +52,8 @@ export const PATHS = {
         USER_DETAIL: "/admin/user/:id",
         userDetail: (id: string) => `/admin/user/${encodeURIComponent(id)}/`,
 
-        SERVICE_LIST: "/admin/service/list",
-        SERVICE_CREATE: "/admin/service/create",
+        SERVICE_LIST: "/admin/service-list",
+        SERVICE_CREATE: "/admin/service-create",
         SERVICE_UPDATE: "/admin/service/:id/edit",
         serviceUpdate: (slug: string) => `/admin/service/${encodeURIComponent(slug)}/edit`,
         SERVICE_SPACE_LIST: "/admin/service-space/list",
@@ -63,19 +62,22 @@ export const PATHS = {
         SERVICE_SPACE_UPDATE: "/admin/service-space/:id/edit",
         serviceSpaceUpdate: (slug: string) => `/admin/service-space/${encodeURIComponent(slug)}/edit`,
 
+        SERVICE_TYPES: "/admin/service-types",
+        SPACE_TYPES: "/admin/space-types",
+
+        GALLERY_LIST: "/admin/gallery/list",
+        GALLERY_CREATE: "/admin/gallery/create",
+        GALLERY_UPDATE: "/admin/gallery/:id/edit",
+        galleryUpdate: (id: string) => `/admin/gallery/${encodeURIComponent(id)}/edit`,
+
         PROJECT_LIST: "/admin/project/list",
         PROJECT_CREATE: "/admin/project/create",
-        PROJECT_UPDATE: "/admin/project/:slug/edit",
-        projectUpdate: (slug: string) => `/admin/project/${encodeURIComponent(slug)}/edit`, // generator for links
+        PROJECT_UPDATE: "/admin/project/:id/edit",
+        projectUpdate: (id: string) => `/admin/project/${encodeURIComponent(id)}/edit`,
 
         REQUEST_SERVICE_LIST: "/admin/service-request/list",
         REQUEST_SERVICE_DETAIL: "/admin/service-request/:id/",
         requestServiceDetail: (id: string) => `/admin/service-request/${encodeURIComponent(id)}/`,
-
-        GALLERY_PORTFOLIO_LIST: "/admin/gallery/portfolio/list",
-        GALLERY_PORTFOLIO_CREATE: "/admin/gallery/portfolio/:slug/",
-        GALLERY_PORTFOLIO_UPDATE: "/admin/gallery/portfolio/:slug/edit",
-        galleryPortfolioUpdate: (id: string) => `/admin/gallery/portfolio/${encodeURIComponent(id)}/edit`,
 
         SETTINGS: "/admin/settings",
     },

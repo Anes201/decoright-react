@@ -5,7 +5,7 @@ import Logo from "/public/vite.svg"
 import { Link } from "react-router-dom"
 import { createContext, useContext, useState } from "react"
 
-import { LogoutButton} from "@components/common/Confirm"
+import { LogoutButton } from "@components/common/Confirm"
 import { ICONS } from "@/icons"
 import { publicMenuItems, clientMenuItems } from "@/constants/navigation"
 import { MenuCard } from "@components/ui/MenuCard"
@@ -56,9 +56,9 @@ export function AuthenticatedUserActins() {
         <>
             <div className="flex items-center gap-2 md:gap-4">
 
-                { isAdmin
+                {isAdmin
 
-                ?   <>
+                    ? <>
                         {/* Request Project */}
                         <Link to={PATHS.ADMIN.PROJECT_CREATE} title="Create Project" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
                             Create a Project
@@ -70,7 +70,7 @@ export function AuthenticatedUserActins() {
 
                         {/* Chat Menu Card */}
                         <button type="button" title="Chat Menu" onClick={() => setChatMenuOpen(!chatMenuOpen)}
-                        className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
+                            className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
                             <ICONS.chat className="size-5 md:size-6" />
 
                             <span className="absolute flex size-3 top-0 left-0">
@@ -80,7 +80,7 @@ export function AuthenticatedUserActins() {
                         </button>
                     </>
 
-                :   <>
+                    : <>
                         {/* Request Project */}
                         <Link to={PATHS.CLIENT.REQUEST_SERVICE} title="Request Service" className="max-md:hidden content-center p-2 min-w-max font-medium text-sm border border-primary/45 bg-surface/75 rounded-full">
                             Request Service
@@ -107,7 +107,7 @@ export function AuthenticatedUserActins() {
 
                 {/* Menu Trigger */}
                 <button type="button" title="Menu" onClick={() => setNavMenuOpen(!navMenuOpen)}
-                className="content-center p-1.5 md:p-2 border border-muted/15 bg-surface/75 rounded-full">
+                    className="content-center p-1.5 md:p-2 border border-muted/15 bg-surface/75 rounded-full">
                     <ICONS.menu className="size-5 md:size-6" />
                 </button>
 
@@ -241,15 +241,15 @@ export function ClientMenu() {
     return (
 
         <>
-        {isAdmin &&
-            <li id="admin-dashboard-nav-menu-item" className="w-full">
-                <Link to={PATHS.ADMIN.ROOT} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15">
-                    <div className="flex content-center gap-2">
-                        {/* Icon */}
-                        <ICONS.presentationChartLine/>
-                        {/* Label */}
-                        <span className="font-medium text-sm"> Dashboard </span>
-                    </div>
+            {isAdmin &&
+                <li id="admin-dashboard-nav-menu-item" className="w-full">
+                    <Link to={PATHS.ADMIN.ROOT} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15">
+                        <div className="flex content-center gap-2">
+                            {/* Icon */}
+                            <ICONS.presentationChartLine />
+                            {/* Label */}
+                            <span className="font-medium text-sm"> Dashboard </span>
+                        </div>
 
                         {/* Context */}
                         <div className="w-full">
@@ -313,30 +313,30 @@ export function NavBar() {
 
             {/* Prevent flicker or showing links prematurely during loading */}
             {authLoading
-            ?
-            <div className="flex items-center justify-end gap-2 md:gap-4 w-full">
+                ?
+                <div className="flex items-center justify-end gap-2 md:gap-4 w-full">
 
-                <span className="max-md:hidden w-35 p-5 border border-muted/15 bg-surface rounded-full animate-pulse" />
-                <span className="max-md:hidden p-4 md:p-5 border border-muted/15 bg-surface rounded-full animate-pulse" />
-                <span className="p-4 md:p-5 border border-muted/15 bg-surface rounded-full animate-pulse" />
-                <span className="p-4 md:p-5 border border-muted/15 bg-surface rounded-full animate-pulse" />
+                    <span className="max-md:hidden w-35 p-5 border border-muted/15 bg-surface rounded-full animate-pulse" />
+                    <span className="max-md:hidden p-4 md:p-5 border border-muted/15 bg-surface rounded-full animate-pulse" />
+                    <span className="p-4 md:p-5 border border-muted/15 bg-surface rounded-full animate-pulse" />
+                    <span className="p-4 md:p-5 border border-muted/15 bg-surface rounded-full animate-pulse" />
 
-            </div>
+                </div>
 
-            :
-            <UserContext.Provider value={{user, isAdmin}}>
-                {user
-                    ?
-                    <nav className="flex items-center justify-end w-full">
-                        <NavActions />
-                    </nav>
-                    :
-                    <nav className="flex items-center w-fit md:w-full">
-                        <NavLinks />
-                        <NavActions />
-                    </nav>
-                }
-            </UserContext.Provider>
+                :
+                <UserContext.Provider value={{ user, isAdmin }}>
+                    {user
+                        ?
+                        <nav className="flex items-center justify-end w-full">
+                            <NavActions />
+                        </nav>
+                        :
+                        <nav className="flex items-center w-fit md:w-full">
+                            <NavLinks />
+                            <NavActions />
+                        </nav>
+                    }
+                </UserContext.Provider>
             }
 
         </div>

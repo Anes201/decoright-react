@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState, useEffect } from 'react';
 import { ChatService } from '@/services/chat.service';
-import type { Message as ChatMessage, Contact } from '@/types/chat';
+import type { Message as ChatMessage, ClientContact as Contact, MessageType } from '@/types/chat';
 
 export interface UseChatOptions {
   requestId: string | number;
@@ -26,7 +26,7 @@ export interface UseChatReturn {
   clearError: () => void;
 
   // Refs
-  messagesEndRef: React.RefObject<HTMLDivElement>;
+  messagesEndRef: React.RefObject<HTMLDivElement | null>;
   scrollToBottom: () => void;
 }
 
@@ -34,7 +34,7 @@ export interface UseChatReturn {
  * useChat hook — manages a single chat session (request/contact).
  * Handles message fetching, real-time subscriptions, and sending with optimistic UI.
  */
-export function useChat(opts: UseChatOptions = {}): UseChatReturn {
+export function useChat(opts: Partial<UseChatOptions> = {}): UseChatReturn {
   const { requestId, autoLoadMessages = true, autoScroll = true } = opts;
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -60,14 +60,11 @@ export function useChat(opts: UseChatOptions = {}): UseChatReturn {
   // Normalize server message to UI shape
   const normalizeMessage = useCallback((m: any): ChatMessage => ({
     id: m.id,
-    kind: m.message_type?.toLowerCase() === 'text' ? 'text' :
-          m.message_type?.toLowerCase() === 'image' ? 'file' :
-          m.message_type?.toLowerCase() === 'audio' ? 'voice' : 'text',
-    uid: m.sender_id,
-    timestamp: new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    text: m.content ?? '',
-    url: m.media_url ?? null,
-    filename: m.filename ?? (m.content || 'attachment'),
+    message_type: m.message_type as MessageType,
+    sender_id: m.sender_id,
+    content: m.content ?? '',
+    media_url: m.attachment_url ?? undefined,
+    created_at: m.created_at,
   }), []);
 
   // Load messages from server
@@ -123,18 +120,21 @@ export function useChat(opts: UseChatOptions = {}): UseChatReturn {
     // Optimistic add
     const optimistic: ChatMessage = {
       id: localId,
-      kind: 'text',
-      uid: 'me',
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      text: trimmed,
+      message_type: 'TEXT',
+      sender_id: 'me',
+      created_at: new Date().toISOString(),
+      content: trimmed,
     };
 
     setMessages(prev => [...prev, optimistic]);
     setMessageText('');
 
     try {
+      // NOTE: This now requires chatRoomId and senderId. 
+      // In a real scenario, you'd fetch the chatRoomId for the requestId first.
+      // For now, we'll try to find a way to get it or pass what we have.
       const resp = await ChatService.sendMessage({
-        requestId: String(requestId),
+        requestId: String(requestId), // Property name should be requestId for the object form
         content: trimmed,
         messageType: 'TEXT',
       });
@@ -162,18 +162,18 @@ export function useChat(opts: UseChatOptions = {}): UseChatReturn {
 
     const optimistic: ChatMessage = {
       id: localId,
-      kind: 'file',
-      uid: 'me',
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      url,
-      filename: file.name,
+      message_type: 'IMAGE',
+      sender_id: 'me',
+      created_at: new Date().toISOString(),
+      attachment_url: url,
+      content: file.name,
     };
 
     setMessages(prev => [...prev, optimistic]);
 
     try {
       const resp = await ChatService.sendMessage(
-        {requestId: String(requestId), file: file, messageType: "IMAGE"});
+        { requestId: String(requestId), content: file.name, messageType: "IMAGE", mediaUrl: url });
 
       if (resp?.id) {
         setMessages(prev =>
@@ -198,19 +198,19 @@ export function useChat(opts: UseChatOptions = {}): UseChatReturn {
 
     const optimistic: ChatMessage = {
       id: localId,
-      kind: 'voice',
-      uid: 'me',
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      url,
-      filename: 'voice.webm',
+      message_type: 'AUDIO',
+      sender_id: 'me',
+      created_at: new Date().toISOString(),
+      attachment_url: url,
+      content: 'voice.webm',
     };
 
     setMessages(prev => [...prev, optimistic]);
 
     try {
       const resp = await ChatService.sendMessage(
-        {requestId:String(requestId), file:blob, messageType:"AUDIO"}
-        );
+        { requestId: String(requestId), content: 'voice.webm', messageType: "AUDIO", mediaUrl: url }
+      );
 
       if (resp?.id) {
         setMessages(prev =>

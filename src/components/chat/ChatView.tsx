@@ -18,14 +18,13 @@ export function ChatRoom(props: {
   onSend: (e?: React.FormEvent) => void;
   onSendMedia: (file: File | Blob, type: any) => Promise<void>;
   messagesEndRef: React.RefObject<HTMLDivElement>;
-  isAdmin?: boolean;
   currentUserId?: string;
   // slots/overrides
   renderRightHeaderActions?: (args: { selectedContact: Contact | null }) => React.ReactNode;
 }) {
   const {
     selectedContact, messages, messageText, onMessageChange,
-    onSend, onSendMedia, messagesEndRef, isAdmin, renderRightHeaderActions, currentUserId
+    onSend, onSendMedia, messagesEndRef, renderRightHeaderActions, currentUserId
   } = props;
 
   if (!selectedContact) {
@@ -46,7 +45,6 @@ export function ChatRoom(props: {
     <div className="flex flex-col w-full h-full p-2 sm:p-4 border border-muted/15 bg-surface rounded-xl">
       <ChatHeader
         selected={selectedContact}
-        isAdmin={isAdmin}
         rightActions={renderRightHeaderActions ? renderRightHeaderActions({ selectedContact }) : null}
       />
       <ChatBody messages={messages} messagesEndRef={messagesEndRef} currentUserId={currentUserId} />
@@ -72,7 +70,6 @@ export default function ChatView(props: {
   onSendMedia: (file: File | Blob, type: any) => Promise<void>;
   onSelectContact: (c: Contact) => void;
   messagesEndRef: React.RefObject<HTMLDivElement>;
-  isAdmin?: boolean;
   filter?: string;
   setFilter?: (v: 'all' | 'unread') => void;
   currentUserId?: string;
@@ -80,7 +77,7 @@ export default function ChatView(props: {
   renderRightHeaderActions?: (args: { selectedContact: Contact | null }) => React.ReactNode;
 }) {
   const {
-    contacts, onSelectContact, selectedContact, isAdmin, filter, setFilter
+    contacts, onSelectContact, selectedContact, filter, setFilter
   } = props;
 
   return (
@@ -92,7 +89,7 @@ export default function ChatView(props: {
           <div className="p-4 border-b border-muted/15 flex flex-col gap-3">
             <div className="flex justify-between items-center">
               <h2 className="font-semibold text-base">Conversations</h2>
-              {isAdmin && setFilter && (
+              {setFilter && (
                 <div className="flex gap-1 p-1 bg-background rounded-lg border border-muted/10">
                   <button
                     onClick={() => setFilter('all')}

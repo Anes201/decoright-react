@@ -81,34 +81,37 @@ export type Database = {
             }
             messages: {
                 Row: {
-                    attachment_url: string | null
+                    media_url: string | null
                     chat_room_id: string | null
                     content: string
                     created_at: string | null
                     id: string
                     is_read: boolean | null
+                    request_id: string
                     sender_id: string | null
-                    type: Database["public"]["Enums"]["message_type_enum"] | null
+                    message_type: Database["public"]["Enums"]["message_type_enum"] | null
                 }
                 Insert: {
-                    attachment_url?: string | null
+                    media_url?: string | null
                     chat_room_id?: string | null
                     content: string
                     created_at?: string | null
                     id?: string
                     is_read?: boolean | null
+                    request_id: string
                     sender_id?: string | null
-                    type?: Database["public"]["Enums"]["message_type_enum"] | null
+                    message_type?: Database["public"]["Enums"]["message_type_enum"] | null
                 }
                 Update: {
-                    attachment_url?: string | null
+                    media_url?: string | null
                     chat_room_id?: string | null
                     content?: string
                     created_at?: string | null
                     id?: string
                     is_read?: boolean | null
+                    request_id?: string
                     sender_id?: string | null
-                    type?: Database["public"]["Enums"]["message_type_enum"] | null
+                    message_type?: Database["public"]["Enums"]["message_type_enum"] | null
                 }
                 Relationships: [
                     {
@@ -195,33 +198,36 @@ export type Database = {
                     },
                 ]
             }
-            portfolio_items: {
+            gallery_items: {
                 Row: {
                     id: string
-                    title: string | null
+                    title: string
                     description: string | null
-                    media_url: string | null
-                    media_type: string | null
-                    is_public_guest: boolean | null
+                    before_image_url: string | null
+                    after_image_url: string | null
+                    visibility: Database["public"]["Enums"]["project_visibility"] | null
                     created_at: string | null
+                    updated_at: string | null
                 }
                 Insert: {
                     id?: string
-                    title?: string | null
+                    title: string
                     description?: string | null
-                    media_url?: string | null
-                    media_type?: string | null
-                    is_public_guest?: boolean | null
+                    before_image_url?: string | null
+                    after_image_url?: string | null
+                    visibility?: Database["public"]["Enums"]["project_visibility"] | null
                     created_at?: string | null
+                    updated_at?: string | null
                 }
                 Update: {
                     id?: string
-                    title?: string | null
+                    title?: string
                     description?: string | null
-                    media_url?: string | null
-                    media_type?: string | null
-                    is_public_guest?: boolean | null
+                    before_image_url?: string | null
+                    after_image_url?: string | null
+                    visibility?: Database["public"]["Enums"]["project_visibility"] | null
                     created_at?: string | null
+                    updated_at?: string | null
                 }
                 Relationships: []
             }
@@ -262,7 +268,8 @@ export type Database = {
             }
             projects: {
                 Row: {
-                    area_sqm: number | null
+                    width: number | null
+                    height: number | null
                     construction_end_date: string | null
                     construction_start_date: string | null
                     created_at: string | null
@@ -281,7 +288,8 @@ export type Database = {
                     visibility: Database["public"]["Enums"]["project_visibility"] | null
                 }
                 Insert: {
-                    area_sqm?: number | null
+                    width?: number | null
+                    height?: number | null
                     construction_end_date?: string | null
                     construction_start_date?: string | null
                     created_at?: string | null
@@ -300,7 +308,8 @@ export type Database = {
                     visibility?: Database["public"]["Enums"]["project_visibility"] | null
                 }
                 Update: {
-                    area_sqm?: number | null
+                    width?: number | null
+                    height?: number | null
                     construction_end_date?: string | null
                     construction_start_date?: string | null
                     created_at?: string | null
@@ -337,7 +346,8 @@ export type Database = {
             }
             service_requests: {
                 Row: {
-                    area_sqm: number | null
+                    width: number | null
+                    height: number | null
                     created_at: string | null
                     description: string | null
                     id: string
@@ -352,7 +362,8 @@ export type Database = {
                     user_id: string | null
                 }
                 Insert: {
-                    area_sqm?: number | null
+                    width?: number | null
+                    height?: number | null
                     created_at?: string | null
                     description?: string | null
                     id?: string
@@ -367,7 +378,8 @@ export type Database = {
                     user_id?: string | null
                 }
                 Update: {
-                    area_sqm?: number | null
+                    width?: number | null
+                    height?: number | null
                     created_at?: string | null
                     description?: string | null
                     id?: string

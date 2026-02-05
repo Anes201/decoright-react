@@ -4,11 +4,12 @@ export type MessageType = 'TEXT' | 'IMAGE' | 'AUDIO' | 'SYSTEM';
 
 export type Message = {
   id: string;
-  request_id?: string;
+  request_id: string;
+  chat_room_id?: string;
   sender_id: string;
   content: string;
-  type: MessageType;
-  attachment_url?: string;
+  message_type: MessageType;
+  media_url?: string;
   duration_seconds?: number;
   created_at: string;
   attachments?: any;
@@ -41,3 +42,7 @@ export type ChatRoom = {
 
 // For backward compatibility while refactoring components
 export type ClientContact = ChatRoom;
+export type Contact = ChatRoom;
+export type TextMsg = Message;
+export type VoiceMsg = Message;
+export type FileMsg = Message;

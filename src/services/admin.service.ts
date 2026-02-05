@@ -2,9 +2,12 @@ import { supabase } from '@/lib/supabase'
 import type { Database } from '@/types/database.types'
 import { compressImage } from '@/utils/image.utils'
 
-export type UserProfile = Database['public']['Tables']['profiles']['Row']
+export type UserProfile = Database['public']['Tables']['profiles']['Row'] & { email?: string }
 export type ServiceRequest = Database['public']['Tables']['service_requests']['Row']
 export type AdminActivity = Database['public']['Tables']['admin_activities']['Row']
+export type GalleryItem = Database['public']['Tables']['gallery_items']['Row']
+export type GalleryItemInsert = Database['public']['Tables']['gallery_items']['Insert']
+export type GalleryItemUpdate = Database['public']['Tables']['gallery_items']['Update']
 
 export const AdminService = {
     async getMorningCoffeeStats() {
@@ -37,20 +40,26 @@ export const AdminService = {
         }
     },
 
-    async getDashboardStats() {
-        const { count: totalRequests } = await supabase
-            .from('service_requests')
-            .select('*', { count: 'exact', head: true })
+    async getDashboardStats(timeframe: '30d' | '90d' | 'lifetime' = '30d') {
+        let query = supabase.from('service_requests').select('*', { count: 'exact', head: true });
+        let userQuery = supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'customer');
 
-        const { count: completedRequests } = await supabase
-            .from('service_requests')
-            .select('*', { count: 'exact', head: true })
-            .eq('status', 'Completed')
+        if (timeframe !== 'lifetime') {
+            const days = timeframe === '30d' ? 30 : 90;
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - days);
+            query = query.gte('created_at', startDate.toISOString());
+            userQuery = userQuery.gte('created_at', startDate.toISOString());
+        }
 
-        const { count: totalUsers } = await supabase
-            .from('profiles')
-            .select('*', { count: 'exact', head: true })
-            .eq('role', 'customer')
+        const { count: totalRequests } = await query;
+
+        const completedQuery = timeframe !== 'lifetime'
+            ? query.eq('status', 'Completed')
+            : supabase.from('service_requests').select('*', { count: 'exact', head: true }).eq('status', 'Completed');
+
+        const { count: completedRequests } = await completedQuery;
+        const { count: totalUsers } = await userQuery;
 
         const completionRate = totalRequests && totalRequests > 0
             ? Math.round(((completedRequests || 0) / totalRequests) * 100)
@@ -64,39 +73,80 @@ export const AdminService = {
         }
     },
 
-    async getRequestsByMonth() {
-        // Since we can't do complex grouping in Supabase client easily without RPC,
-        // we'll fetch the last 12 months of requests and group them in JS for current scale.
-        const { data, error } = await supabase
+    async getRequestsByMonth(timeframe: '30d' | '90d' | 'lifetime' = '30d') {
+        let query = supabase
             .from('service_requests')
             .select('created_at, status')
             .order('created_at', { ascending: true })
 
+        if (timeframe !== 'lifetime') {
+            const days = timeframe === '30d' ? 30 : 90;
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - days);
+            query = query.gte('created_at', startDate.toISOString());
+        }
+
+        const { data, error } = await query;
+
         if (error) throw error
 
-        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-        const currentYear = new Date().getFullYear()
+        if (timeframe === '30d' || timeframe === '90d') {
+            const daysCount = timeframe === '30d' ? 30 : 90;
+            const days = Array.from({ length: daysCount }, (_, i) => {
+                const d = new Date();
+                d.setDate(d.getDate() - (daysCount - 1 - i));
+                return d.toISOString().split('T')[0];
+            });
 
-        const chartData = months.map((month, index) => {
-            const monthRequests = data.filter(req => {
-                const date = new Date(req.created_at!)
-                return date.getMonth() === index && date.getFullYear() === currentYear
-            })
+            return days.map(day => {
+                const dayDate = new Date(day);
+                const dayRequests = (data || []).filter(req => req.created_at?.startsWith(day));
+                return {
+                    date: dayDate.toLocaleDateString('en-US', { day: '2-digit', month: 'short' }),
+                    Requests: dayRequests.length,
+                    Complete: dayRequests.filter(req => req.status === 'Completed').length
+                };
+            });
+        }
 
-            return {
-                date: `${month} ${currentYear}`,
-                Requests: monthRequests.length,
-                Complete: monthRequests.filter(req => req.status === 'Completed').length
+        // Lifetime: Group by month across all years
+        const monthsMap = new Map();
+        (data || []).forEach(req => {
+            const d = new Date(req.created_at!);
+            const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+            if (!monthsMap.has(key)) {
+                monthsMap.set(key, { Requests: 0, Complete: 0 });
             }
-        })
+            const stats = monthsMap.get(key);
+            stats.Requests++;
+            if (req.status === 'Completed') stats.Complete++;
+        });
 
-        return chartData
+        const sortedKeys = Array.from(monthsMap.keys()).sort();
+        return sortedKeys.map(key => {
+            const [year, month] = key.split('-');
+            const d = new Date(parseInt(year), parseInt(month) - 1);
+            return {
+                date: d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+                Requests: monthsMap.get(key).Requests,
+                Complete: monthsMap.get(key).Complete
+            };
+        });
     },
 
-    async getTopServices() {
-        const { data, error } = await supabase
+    async getTopServices(timeframe: '30d' | '90d' | 'lifetime' = '30d') {
+        let query = supabase
             .from('service_requests')
-            .select('service_type_id, service_types(name, display_name_en)')
+            .select('service_type_id, created_at, service_types(name, display_name_en)')
+
+        if (timeframe !== 'lifetime') {
+            const days = timeframe === '30d' ? 30 : 90;
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - days);
+            query = query.gte('created_at', startDate.toISOString());
+        }
+
+        const { data, error } = await query
 
         if (error) throw error
 
@@ -217,7 +267,7 @@ export const AdminService = {
         return data
     },
 
-    async updateRequestStatus(id: string, status: string) {
+    async updateRequestStatus(id: string, status: Database['public']['Enums']['request_status']) {
         const { data, error } = await supabase
             .from('service_requests')
             .update({ status })
@@ -364,5 +414,76 @@ export const AdminService = {
             .getPublicUrl(filePath)
 
         return publicUrl
+    },
+
+    // Gallery Methods
+    async getGalleryItems(options?: { visibility?: Database['public']['Enums']['project_visibility'][], limit?: number }) {
+        let query = supabase
+            .from('gallery_items')
+            .select('*')
+            .order('created_at', { ascending: false })
+
+        if (options?.visibility) {
+            query = query.in('visibility', options.visibility)
+        }
+
+        if (options?.limit) {
+            query = query.limit(options.limit)
+        }
+
+        const { data, error } = await query
+        if (error) throw error
+        return data as GalleryItem[]
+    },
+
+    async getGalleryItem(id: string) {
+        const { data, error } = await supabase
+            .from('gallery_items')
+            .select('*')
+            .eq('id', id)
+            .single()
+
+        if (error) throw error
+        return data as GalleryItem
+    },
+
+    async createGalleryItem(item: GalleryItemInsert) {
+        const payload = {
+            ...item,
+            visibility: item.visibility?.toUpperCase() as any
+        }
+        const { data, error } = await supabase
+            .from('gallery_items')
+            .insert(payload)
+            .select()
+            .single()
+
+        if (error) throw error
+        return data as GalleryItem
+    },
+
+    async updateGalleryItem(id: string, updates: GalleryItemUpdate) {
+        const payload = {
+            ...updates,
+            visibility: updates.visibility?.toUpperCase() as any
+        }
+        const { data, error } = await supabase
+            .from('gallery_items')
+            .update(payload)
+            .eq('id', id)
+            .select()
+            .single()
+
+        if (error) throw error
+        return data as GalleryItem
+    },
+
+    async deleteGalleryItem(id: string) {
+        const { error } = await supabase
+            .from('gallery_items')
+            .delete()
+            .eq('id', id)
+
+        if (error) throw error
     }
 }

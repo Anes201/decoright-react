@@ -1,23 +1,26 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { PButton } from "@/components/ui/Button";
-import { SCTALink } from "@/components/ui/CTA";
 import FileUploadPanel from "@/components/ui/FileUploadPanel";
 import { DateInput } from "@/components/ui/Input";
 import { SelectMenu } from "@/components/ui/Select";
-import { projectVisibility } from "@/constants";
+import { projectVisibilityStags } from "@/constants";
 import { AdminService } from "@/services/admin.service";
 import { ServiceTypesService, type ServiceType } from "@/services/service-types.service";
 import { SpaceTypesService, type SpaceType } from "@/services/space-types.service";
-import { useState, useEffect } from "react";
 import { useStagedFiles } from "@/hooks/useStagedFiles";
-import Spinner from "@/components/ui/Spinner";
+import Spinner from "@/components/common/Spinner";
+import { PATHS } from "@/routers/Paths";
 
 interface ProjectFormProps {
     project?: any;
-    onSuccess: () => void;
-    onCancel: () => void;
+    onSuccess?: () => void;
+    onCancel?: () => void;
 }
 
 export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFormProps) {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [fetchingOptions, setFetchingOptions] = useState(true);
     const [serviceTypes, setServiceTypes] = useState<ServiceType[]>([]);
@@ -43,6 +46,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                 setSpaceTypes(spaces);
             } catch (error) {
                 console.error("Failed to fetch form options:", error);
+                toast.error("Failed to load form options.");
             } finally {
                 setFetchingOptions(false);
             }
@@ -62,15 +66,13 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                     id: img.id,
                     url: img.image_url,
                     status: 'complete',
-                    file: null
+                    file: undefined,
+                    name: img.id,
+                    size: 0,
+                    mime: 'image/jpeg',
+                    progress: 100
                 })));
             }
-        } else {
-            // Reset for Create Mode
-            setServiceType("");
-            setSpaceType("");
-            setVisibility("PUBLIC");
-            setFiles([]);
         }
     }, [project, setFiles]);
 
@@ -90,7 +92,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
         try {
             const uploading = files.some(f => f.status === 'uploading');
             if (uploading) {
-                alert("Please wait for all images to finish uploading.");
+                toast.error("Please wait for all images to finish uploading.");
                 setLoading(false);
                 return;
             }
@@ -105,7 +107,8 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                 location,
                 service_type_id: serviceType,
                 space_type_id: spaceType,
-                area_sqm: width * height,
+                width: width || null,
+                height: height || null,
                 visibility: visibility as any,
                 construction_start_date: startDate || null,
                 construction_end_date: endDate || null,
@@ -113,37 +116,38 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             };
 
             if (project) {
-                // UPDATE Existing Project
                 await AdminService.updateProject(project.id, projectData);
-                // Update images (overwrite existing)
                 await AdminService.addProjectImages(project.id, imageUrls, true);
+                toast.success("Project updated successfully!");
             } else {
-                // CREATE New Project
                 const newProject = await AdminService.createProject(projectData);
                 if (imageUrls.length > 0) {
                     await AdminService.addProjectImages(newProject.id, imageUrls);
                 }
+                toast.success("Project created successfully!");
             }
 
-            onSuccess();
+            if (onSuccess) {
+                onSuccess();
+            } else {
+                navigate(PATHS.ADMIN.PROJECT_LIST);
+            }
         } catch (error) {
             console.error("Failed to save project:", error);
-            alert("Failed to save project.");
+            toast.error("Failed to save project.");
         } finally {
             setLoading(false);
         }
     };
 
-    if (fetchingOptions) return <div className="p-10 text-center"><Spinner className="w-8 h-8" /></div>;
-
-    const areaWidth = project ? Math.sqrt(project.area_sqm || 0) : undefined;
+    if (fetchingOptions) {
+        return <div className="p-20 flex justify-center"><Spinner status={true} size="lg" /></div>;
+    }
 
     return (
-        <form onSubmit={handleSubmit} id="project-form" className="flex flex-col gap-8 h-full">
-            <div className="flex flex-col gap-6 flex-1 overflow-y-auto px-1 min-scrollbar">
-
-                {/* Basic Info */}
-                <div className="space-y-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div className="flex flex-col gap-6">
                     <div className="flex flex-col gap-2">
                         <label htmlFor="project-title" className="font-medium text-xs text-muted px-1"> Title </label>
                         <input
@@ -153,7 +157,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                             defaultValue={project?.title}
                             placeholder="e.g. Modern Villa Renovation"
                             required
-                            className="w-full p-2.5 text-sm text-heading bg-surface border border-muted/20 rounded-lg focus:outline-none focus:border-primary/50 transition-colors"
+                            className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45"
                         />
                     </div>
 
@@ -166,7 +170,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                             defaultValue={project?.location}
                             placeholder="e.g. Dubai, UAE"
                             required
-                            className="w-full p-2.5 text-sm text-heading bg-surface border border-muted/20 rounded-lg focus:outline-none focus:border-primary/50 transition-colors"
+                            className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45"
                         />
                     </div>
 
@@ -175,44 +179,51 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                         <textarea
                             name="description"
                             id="project-description"
-                            rows={4}
+                            rows={6}
                             defaultValue={project?.description}
                             placeholder="Describe the project..."
                             required
-                            className="w-full p-2.5 text-sm text-heading bg-surface border border-muted/20 rounded-lg focus:outline-none focus:border-primary/50 transition-colors resize-none"
+                            className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 resize-none"
                         />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-2">
+                            <label className="font-medium text-xs text-muted px-1"> Service Type </label>
+                            <SelectMenu
+                                options={serviceTypes.map(s => ({ label: s.display_name_en, value: s.id }))}
+                                defaultValue={project ? { label: project.service_types?.display_name_en, value: project.service_type_id } : undefined}
+                                placeholder="Select Service"
+                                required
+                                onChange={(val: any) => setServiceType(val.value)}
+                            />
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                            <label className="font-medium text-xs text-muted px-1"> Space Category </label>
+                            <SelectMenu
+                                options={spaceTypes.map(s => ({ label: s.display_name_en, value: s.id }))}
+                                defaultValue={project ? { label: project.space_types?.display_name_en, value: project.space_type_id } : undefined}
+                                placeholder="Select Space"
+                                required
+                                onChange={(val: any) => setSpaceType(val.value)}
+                            />
+                        </div>
                     </div>
                 </div>
 
-                {/* Classification */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex flex-col gap-6">
                     <div className="flex flex-col gap-2">
-                        <label className="font-medium text-xs text-muted px-1"> Service Type </label>
+                        <label className="font-medium text-xs text-muted px-1"> Visibility </label>
                         <SelectMenu
-                            options={serviceTypes.map(s => ({ label: s.display_name_en, value: s.id }))}
-                            defaultValue={project ? { label: project.service_types?.display_name_en, value: project.service_type_id } : undefined}
-                            placeholder="Select Service"
-                            id="select-service-type"
+                            options={projectVisibilityStags}
+                            defaultValue={projectVisibilityStags.find((v: any) => v.value.toUpperCase() === (project?.visibility || 'public').toUpperCase())}
+                            placeholder="Project Visibility"
                             required
-                            onChange={(val: any) => setServiceType(val.value)}
+                            onChange={(val: any) => setVisibility(val.value)}
                         />
                     </div>
 
-                    <div className="flex flex-col gap-2">
-                        <label className="font-medium text-xs text-muted px-1"> Space Category </label>
-                        <SelectMenu
-                            options={spaceTypes.map(s => ({ label: s.display_name_en, value: s.id }))}
-                            defaultValue={project ? { label: project.space_types?.display_name_en, value: project.space_type_id } : undefined}
-                            placeholder="Select Space"
-                            id="select-space-type"
-                            required
-                            onChange={(val: any) => setSpaceType(val.value)}
-                        />
-                    </div>
-                </div>
-
-                {/* Metrics */}
-                <div className="space-y-4">
                     <div className="flex flex-col gap-2">
                         <label className="font-medium text-xs text-muted px-1"> Area Dimensions (m) </label>
                         <div className="flex gap-4">
@@ -220,74 +231,53 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                                 type="number"
                                 name="project-area-width"
                                 placeholder="Width"
-                                defaultValue={areaWidth ? Math.round(areaWidth) : undefined}
-                                className="w-full p-2.5 text-sm text-heading bg-surface border border-muted/20 rounded-lg focus:outline-none focus:border-primary/50 transition-colors"
+                                defaultValue={project?.width}
+                                className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45"
                             />
                             <input
                                 type="number"
                                 name="project-area-height"
                                 placeholder="Height"
-                                defaultValue={areaWidth ? Math.round(areaWidth) : undefined}
-                                className="w-full p-2.5 text-sm text-heading bg-surface border border-muted/20 rounded-lg focus:outline-none focus:border-primary/50 transition-colors"
+                                defaultValue={project?.height}
+                                className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45"
                             />
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-2">
-                        <label className="font-medium text-xs text-muted px-1"> Construction Dates </label>
-                        <div className="flex gap-4">
-                            <div className="w-full">
-                                <DateInput
-                                    name="project-construction-start-date"
-                                    id="project-construction-start-date"
-                                    defaultValue={project?.construction_start_date}
-                                    placeholder="Start Date"
-                                    className="w-full p-2.5 text-sm text-heading bg-surface border border-muted/20 rounded-lg focus:outline-none focus:border-primary/50 transition-colors"
-                                />
-                            </div>
-                            <div className="w-full">
-                                <DateInput
-                                    name="project-construction-end-date"
-                                    id="project-construction-end-date"
-                                    defaultValue={project?.construction_end_date}
-                                    placeholder="End Date"
-                                    className="w-full p-2.5 text-sm text-heading bg-surface border border-muted/20 rounded-lg focus:outline-none focus:border-primary/50 transition-colors"
-                                />
-                            </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-2">
+                            <label className="font-medium text-xs text-muted px-1"> Start Date </label>
+                            <DateInput
+                                name="project-construction-start-date"
+                                defaultValue={project?.construction_start_date}
+                                className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45"
+                            />
                         </div>
-                    </div>
-                </div>
-
-                {/* Media & Settings */}
-                <div className="space-y-4">
-                    <div className="flex flex-col gap-2">
-                        <label className="font-medium text-xs text-muted px-1"> Visibility </label>
-                        <SelectMenu
-                            options={projectVisibility}
-                            defaultValue={projectVisibility.find(v => v.value.toUpperCase() === (project?.visibility || 'public').toUpperCase())}
-                            placeholder="Project Visibility"
-                            id="project-visibility"
-                            required
-                            onChange={(val: any) => setVisibility(val.value)}
-                        />
+                        <div className="flex flex-col gap-2">
+                            <label className="font-medium text-xs text-muted px-1"> Finish Date </label>
+                            <DateInput
+                                name="project-construction-end-date"
+                                defaultValue={project?.construction_end_date}
+                                className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45"
+                            />
+                        </div>
                     </div>
 
                     <FileUploadPanel stagedFiles={stagedFiles} />
                 </div>
             </div>
 
-            {/* Actions */}
-            <div className="flex gap-3 pt-4 border-t border-muted/10 mt-auto">
+            <div className="flex gap-4 border-t border-muted/10 pt-8">
+                <PButton type="submit" disabled={loading} className="min-w-[150px]">
+                    <Spinner status={loading} size="sm"> {project ? "Update Project" : "Create Project"} </Spinner>
+                </PButton>
                 <button
                     type="button"
-                    onClick={onCancel}
-                    className="flex-1 py-2.5 text-sm font-semibold text-muted hover:text-heading hover:bg-emphasis/50 rounded-lg transition-colors"
+                    onClick={() => onCancel ? onCancel() : navigate(PATHS.ADMIN.PROJECT_LIST)}
+                    className="p-button-ghost"
                 >
                     Cancel
                 </button>
-                <PButton type="submit" className="flex-[2]" disabled={loading}>
-                    {loading ? (project ? "Updating..." : "Creating...") : (project ? "Save Changes" : "Create Project")}
-                </PButton>
             </div>
         </form>
     );

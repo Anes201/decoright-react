@@ -1,5 +1,5 @@
 
-import React, { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 import { ICONS } from "@/icons";
 
@@ -10,22 +10,22 @@ export function Input({ className, children, ...props }: any) {
     <div className="relative flex flex-col gap-1 w-full">
       <div className="relative flex items-center">
         <input dir="auto"
-        className={`
-          content-center text-sm cursor-text h-10 w-full px-2 py-1.5 md:py-2
-          ${ props.readOnly && 'ltr:pr-8 ltr:sm:pr-10 rtl:pl-8 rtl:sm:pl-10'}
+          className={`
+          content-center text-sm h-10 w-full px-2 py-1.5 md:py-2 border border-muted/15
+          ${props.readOnly && 'ltr:pr-8 ltr:sm:pr-10 rtl:pl-8 rtl:sm:pl-10'}
           ${props.value && props.error ? 'outline-danger/45' : 'outline-muted/15'}
           bg-emphasis/75 rounded-lg outline-0 focus:outline-1 placeholder:max-md:text-xs
           lang-ar:placeholder:text-right
           border ${props.error ? 'border-danger/45' : 'border-muted/15'}
           ${className}
         `}
-        {...props} />
+          {...props} />
         {children}
       </div>
       {props.readOnly &&
-      <span title="Locked for viewing only" aria-label="error"  className="absolute content-center right-1 px-1.5 sm:right-1.5 h-full">
-        <ICONS.lockClosed className="size-4 md:size-5 text-muted/75" />
-      </span>}
+        <span title="Locked for viewing only" aria-label="error" className="absolute content-center right-1 px-1.5 sm:right-1.5 h-full">
+          <ICONS.lockClosed className="size-4 md:size-5 text-muted/75" />
+        </span>}
 
       {props.error && <p title={props.error} aria-label="error" className="text-xs text-danger/75 px-0.5"> {props.error} </p>}
     </div>
@@ -72,7 +72,7 @@ export function PasswordInput({ id = 'password_field', label = 'Password', value
         aria-pressed={show} aria-label={show ? 'Hide password' : 'Show password'}
         className="absolute px-2 right-1 sm:right-1.5 border-l border-muted/15"
       >
-        {!show ? <ICONS.eyeSlash className='size-5 text-muted/75'/> : <ICONS.eye className='size-5 text-muted/75'/>}
+        {!show ? <ICONS.eyeSlash className='size-5 text-muted/75' /> : <ICONS.eye className='size-5 text-muted/75' />}
       </button>
     </Input>
   );
@@ -98,34 +98,26 @@ export function EmailOrPhoneInput({ id = 'email_or_phone_field', label = 'Email 
   );
 };
 
-export function TextArea({...props}:any) {
+export function TextArea({ ...props }: any) {
   return (
     <>
       <textarea
-      dir="auto"
-      className={
-        `w-full p-2.5 text-sm text-muted bg-emphasis/75 rounded-lg cursor-text outline-1
+        dir="auto"
+        className={
+          `w-full p-2.5 text-sm text-muted bg-emphasis/75 rounded-lg cursor-text outline-1
         hover:outline-muted/25 focus:outline-muted/45
         ${props.error ? 'outline-danger/45' : 'outline-muted/15'}
         ${props.className}`
-      }
+        }
 
-      {...props}
+        {...props}
       />
-      {props.error && <p className="text-xs text-danger">{ props.error }</p>}
+      {props.error && <p className="text-xs text-danger">{props.error}</p>}
     </>
   )
 }
 
-type AutoResizeTextareaProps = {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  placeholder?: string;
-  className?: string;
-  minRows?: number; // default 1
-  maxRows?: number; // default 5
-  props?:any
-};
+// Unused AutoResizeTextareaProps removed to clear lint error
 
 export function AutoResizeTextarea({
   value,
@@ -135,7 +127,7 @@ export function AutoResizeTextarea({
   minRows = 1,
   maxRows = 5,
   ...props
-}:any) {
+}: any) {
   const taRef = useRef<HTMLTextAreaElement | null>(null);
 
   // Resize function: set height based on scrollHeight but cap to maxRows

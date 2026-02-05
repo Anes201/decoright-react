@@ -29,7 +29,7 @@ export default function SpaceTypeForm({ isOpen, spaceType, onClose, onSuccess }:
                 display_name_ar: spaceType.display_name_ar || '',
                 display_name_fr: spaceType.display_name_fr || '',
                 description: spaceType.description || '',
-                is_active: spaceType.is_active,
+                is_active: spaceType.is_active ?? true,
             });
         } else {
             setFormData({

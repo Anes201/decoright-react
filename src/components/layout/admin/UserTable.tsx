@@ -3,11 +3,11 @@ import { AdminService, type UserProfile } from "@/services/admin.service";
 import { useEffect, useState } from "react";
 import { ICONS } from "@/icons";
 import UserDetailDrawer from "./UserDetailDrawer";
-import RequestDetailDrawer from "./RequestDetailDrawer";
+
 
 const columns = [
   {
-    key: 'identity',
+    key: 'full_name',
     title: 'Identity',
     searchable: true,
     sortable: true,
@@ -89,10 +89,7 @@ export default function UserTable() {
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  // Request Drawer State
-  const [selectedRequestId, setSelectedRequestId] = useState<string | null>(null);
-  const [selectedRequest, setSelectedRequest] = useState<any | null>(null);
-  const [isRequestDrawerOpen, setIsRequestDrawerOpen] = useState(false);
+
 
   const loadUsers = async () => {
     try {
@@ -124,8 +121,8 @@ export default function UserTable() {
       <Table
         columns={columns}
         data={users}
-        onRowClick={handleUserClick}
         options={{
+          onRowClick: handleUserClick,
           selectable: false, // simplified for now
           filterOptions: [
             { label: 'Show Admins', value: 'admin' },

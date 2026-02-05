@@ -4,7 +4,12 @@
  * @param quality Quality from 0 to 1 (default 0.7)
  * @returns A promise that resolves to the compressed Blob
  */
-export async function compressImage(file: File, quality: number = 0.7): Promise<Blob> {
+export async function compressImage(
+    file: File,
+    quality: number = 0.7,
+    maxWidth: number = 1920,
+    maxHeight: number = 1080
+): Promise<Blob> {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -20,11 +25,23 @@ export async function compressImage(file: File, quality: number = 0.7): Promise<
                     return;
                 }
 
-                // Maintain aspect ratio
-                canvas.width = img.width;
-                canvas.height = img.height;
+                // Maintain aspect ratio while capping dimensions
+                let width = img.width;
+                let height = img.height;
 
-                ctx.drawImage(img, 0, 0);
+                if (width > maxWidth) {
+                    height = (maxWidth / width) * height;
+                    width = maxWidth;
+                }
+                if (height > maxHeight) {
+                    width = (maxHeight / height) * width;
+                    height = maxHeight;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+
+                ctx.drawImage(img, 0, 0, width, height);
 
                 canvas.toBlob(
                     (blob) => {

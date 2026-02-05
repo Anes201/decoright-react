@@ -38,7 +38,7 @@ export const UserRoles = {
     CLIENT: 'client',
 }
 
-export const userPhoneIsVerified = false;
+
 
 
 
@@ -47,7 +47,7 @@ export const gallery = [
         id: '1',
         label: 'Residential', value: 'residential',
         description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur unde excepturi magnam cum labore laboriosam ad obcaecati provident laborum!",
-        images: {before: image6, after: image2},
+        images: { before: image6, after: image2 },
         checklist: [
             'Customized interior design solutions',
             'Expert space planning and layout optimization',
@@ -61,7 +61,7 @@ export const gallery = [
         id: '2',
         label: 'Commercial', value: 'commercial',
         description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur unde excepturi accusamus consequatur? Consequuntur odio similique ratione qui laudantium! Quos atque distinctio, magnam cum labore laboriosam ad obcaecati provident laborum!",
-        images: {before: image4, after: image3},
+        images: { before: image4, after: image3 },
         checklist: [
             'Customized interior design solutions',
             'Expert space planning and layout optimization',
@@ -74,7 +74,7 @@ export const gallery = [
         id: '3',
         label: 'Office', value: 'office',
         description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.adipisicing elit. Aspernatur unde excepturi accusamus consequatur? Aspernatur unde excepturi accusamus consequatur? Consequuntur adipisicing elit. Aspernatur unde excepturi accusamus consequatur? odio similique ratione qui laudantium! Quos atque distinctio, magnam cum labore laboriosam ad obcaecati provident laborum!",
-        images: {before: image2, after: image6},
+        images: { before: image2, after: image6 },
         checklist: [
             'Customized interior design solutions',
             'Selection of furniture and decor',
@@ -85,7 +85,7 @@ export const gallery = [
     {
         label: 'Hospitality', value: 'hospitality',
         description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. odio similique ratione qui laudantium! Quos atque distinctio, magnam cum labore laboriosam ad obcaecati provident laborum!",
-        images: {before: image4, after: image6},
+        images: { before: image4, after: image6 },
         checklist: [
             'Customized interior design solutions',
             'Expert space planning and layout optimization',
@@ -106,27 +106,27 @@ export const gallery = [
 ]
 
 export const serviceTypes = [
-    { id:'1', label: 'Space Planning', value: 'space-planning', src: SpacesPlaning, description: 'Practical layouts and furniture plans that boost usability and circulation while matching your style.' },
-    { id:'2', label: 'Interior Design', value: 'redesign', src: InteriorDesign, description: 'Transform your interiors with cohesive themes, furniture, lighting, and decor that reflect your taste.' },
-    { id:'3', label: 'Exterior Design', value: 'furniture-selection', src: ExteriorDesign, description: 'Make your home stand out — façades, landscaping, and outdoor lighting that look great and work well.' },
-    { id:'4', label: 'Color Consultation', value: 'color-consultation', src: ColorConsultation, description: 'Get tailored palettes and finish advice (with sample testing) to set the perfect mood for each room.' },
-    { id:'5', label: 'Restructuring Redesign', value: 'project-management', src: ProjectManaging, description: 'We’ll coordinate contractors, schedules, and budgets so your project runs smoothly from start to finish.' },
-    { id:'6', label: 'Restructuring Redesign', value: 'redesign', src: RestructuringRedesign, description: 'Reconfigure layouts and structure to improve flow, safety, and comfort — smart changes that refresh your space.' },
+    { id: '1', label: 'Space Planning', value: 'space-planning', src: SpacesPlaning, description: 'Practical layouts and furniture plans that boost usability and circulation while matching your style.' },
+    { id: '2', label: 'Interior Design', value: 'redesign', src: InteriorDesign, description: 'Transform your interiors with cohesive themes, furniture, lighting, and decor that reflect your taste.' },
+    { id: '3', label: 'Exterior Design', value: 'furniture-selection', src: ExteriorDesign, description: 'Make your home stand out — façades, landscaping, and outdoor lighting that look great and work well.' },
+    { id: '4', label: 'Color Consultation', value: 'color-consultation', src: ColorConsultation, description: 'Get tailored palettes and finish advice (with sample testing) to set the perfect mood for each room.' },
+    { id: '5', label: 'Restructuring Redesign', value: 'project-management', src: ProjectManaging, description: 'We’ll coordinate contractors, schedules, and budgets so your project runs smoothly from start to finish.' },
+    { id: '6', label: 'Restructuring Redesign', value: 'redesign', src: RestructuringRedesign, description: 'Reconfigure layouts and structure to improve flow, safety, and comfort — smart changes that refresh your space.' },
 ]
 
 export const serviceSpaceTypes = [
-    { id:'1', label: 'Houses and Rooms', value: 'HOUSES_AND_ROOMS' },
-    { id:'2', label: 'Commercial Shops', value: 'COMMERCIAL_SHOPS' },
-    { id:'3', label: 'Schools and Nurseries', value: 'SCHOOLS_AND_NURSERIES' },
-    { id:'4', label: 'Offices Reception', value: 'OFFICES_RECEPTION' },
-    { id:'5', label: 'Restructuring Redesign', value: 'DORMITORY_LODGINGS' },
+    { id: '1', label: 'Houses and Rooms', value: 'HOUSES_AND_ROOMS' },
+    { id: '2', label: 'Commercial Shops', value: 'COMMERCIAL_SHOPS' },
+    { id: '3', label: 'Schools and Nurseries', value: 'SCHOOLS_AND_NURSERIES' },
+    { id: '4', label: 'Offices Reception', value: 'OFFICES_RECEPTION' },
+    { id: '5', label: 'Restructuring Redesign', value: 'DORMITORY_LODGINGS' },
 ]
 
 
 export const projectVisibilityStags = [
-    { id:'1', label: 'Public', value: 'public' },
-    { id:'2', label: 'Clients', value: 'clients' },
-    { id:'3', label: 'Hidden', value: 'hidden' },
+    { id: '1', label: 'Public', value: 'public' },
+    { id: '2', label: 'Clients', value: 'clients' },
+    { id: '3', label: 'Hidden', value: 'hidden' },
 ]
 
 export const serviceStatus = [
@@ -163,9 +163,9 @@ export const projects = [
         alt: "Interior Design",
         service_type: "Space Planning",
         service_space_type: "Houses and Rooms",
-        stage: {label: 'Clients', value: 'clients' },
-        views:121,
-        likes:64,
+        stage: { label: 'Clients', value: 'clients' },
+        views: 121,
+        likes: 64,
         created_at: '2026-02-01T17:35:29.707536+00:00',
         updated_at: '2026-02-01T17:35:29.707536+00:00',
     },
@@ -178,9 +178,9 @@ export const projects = [
         alt: "Interior Design",
         service_type: "Interior Design",
         service_space_type: "Commercial Shops",
-        stage: {label: 'Hidden', value: 'hidden' },
-        views:762,
-        likes:441,
+        stage: { label: 'Hidden', value: 'hidden' },
+        views: 762,
+        likes: 441,
         created_at: '2026-01-27T10:16:39.502926+00:00',
         updated_at: '2026-02-01T17:35:29.707536+00:00',
     },
@@ -193,9 +193,9 @@ export const projects = [
         alt: "Interior Design",
         service_type: "Space Planning",
         service_space_type: "Schools and Nurseries",
-        stage: {label: 'Clients', value: 'clients' },
-        views:92,
-        likes:419,
+        stage: { label: 'Clients', value: 'clients' },
+        views: 92,
+        likes: 419,
         created_at: '2026-01-27T10:16:39.502926+00:00',
         updated_at: '2026-02-01T17:35:29.707536+00:00',
     },
@@ -208,9 +208,9 @@ export const projects = [
         alt: "Interior Design",
         service_type: "Space Planning",
         service_space_type: "Houses and Rooms",
-        stage: {label: 'Public', value: 'public' },
-        views:363,
-        likes:93,
+        stage: { label: 'Public', value: 'public' },
+        views: 363,
+        likes: 93,
         created_at: '2026-01-27T10:23:53.719066+00:00',
         updated_at: '2026-02-01T17:35:29.707536+00:00',
     },
@@ -223,9 +223,9 @@ export const projects = [
         alt: "Interior Design",
         service_type: "Exterior Design",
         service_space_type: "Houses and Rooms",
-        stage: {label: 'Public', value: 'public' },
-        views:244,
-        likes:41,
+        stage: { label: 'Public', value: 'public' },
+        views: 244,
+        likes: 41,
         created_at: '2026-02-01T17:35:29.707536+00:00',
         updated_at: '2026-02-01T17:35:29.707536+00:00',
     },
@@ -238,9 +238,9 @@ export const projects = [
         alt: "Interior Design",
         service_type: "Interior Design",
         service_space_type: "Restructuring Redesign",
-        stage: {label: 'Public', value: 'public' },
-        views:162,
-        likes:13,
+        stage: { label: 'Public', value: 'public' },
+        views: 162,
+        likes: 13,
         created_at: '2026-04-27T10:23:53.719066+00:00',
         updated_at: '2026-06-01T17:35:29.707536+00:00',
     },
@@ -253,9 +253,9 @@ export const projects = [
         alt: "Interior Design",
         service_type: "Space Planning",
         service_space_type: "Restructuring Redesign",
-        stage: {label: 'Clients', value: 'clients' },
-        views:762,
-        likes:413,
+        stage: { label: 'Clients', value: 'clients' },
+        views: 762,
+        likes: 413,
         created_at: '2026-01-27T10:21:53.719066+00:00',
         updated_at: '2026-02-01T17:35:29.707536+00:00',
     },
@@ -268,9 +268,9 @@ export const projects = [
         alt: "Interior Design",
         service_type: "Restructuring Redesign",
         service_space_type: "Houses and Rooms",
-        stage: {label: 'Public', value: 'public' },
-        views:762,
-        likes:413,
+        stage: { label: 'Public', value: 'public' },
+        views: 762,
+        likes: 413,
         created_at: '2026-01-27T10:23:53.719066+00:00',
         updated_at: '2026-01-27T10:23:53.719066+00:00',
     },
@@ -508,7 +508,7 @@ export const SocialMediaPhoneFields = [
 ]
 
 export const Languages = [
-    {label:'English', value:'en'},
-    {label:'Arabic', value:'ar'},
-    {label:'French', value:'fr'},
+    { label: 'English', value: 'en' },
+    { label: 'Arabic', value: 'ar' },
+    { label: 'French', value: 'fr' },
 ]

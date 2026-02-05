@@ -1,13 +1,11 @@
 
 import HeroImg from "/password/password-sent.svg"
 import { ICONS } from "@/icons";
-import { supabase } from "@/lib/supabase";
 import { PATHS } from "@/routers/Paths";
-import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
-export default function PasswordSent () {
+export default function PasswordSent() {
 
     // const location = useLocation()
     // const [loading, setLoading] = useState(false)
@@ -35,7 +33,7 @@ export default function PasswordSent () {
     // }
 
     const navigate = useNavigate();
-    function handleGoBack(e:any){
+    function handleGoBack(e: any) {
         e.preventDefault();
         navigate(-1);
     }
@@ -46,7 +44,7 @@ export default function PasswordSent () {
 
                 <div className="absolute right-full w-full h-[calc(100svh-24rem)] md:h-[calc(100svh-22rem)] border border-muted/20 rounded-4xl mask-l-to-transparent mask-l-to-30% overflow-hidden" />
                 <div className="relative flex flex-col gap-8 w-full h-full px-2 sm:px-8 md:px-16 p-4 md:py-8">
-                    <div className="absolute max-md:hidden top-0 left-0 w-full h-full border border-muted/15 rounded-4xl bg-surface/45 -z-10 mask-b-to-transparent mask-b-to-100%"/>
+                    <div className="absolute max-md:hidden top-0 left-0 w-full h-full border border-muted/15 rounded-4xl bg-surface/45 -z-10 mask-b-to-transparent mask-b-to-100%" />
 
 
                     <div className="flex flex-col items-center w-full">
@@ -67,8 +65,8 @@ export default function PasswordSent () {
                         {/* {error && <p className="text-xs text-danger text-center"> {error} </p>} */}
 
                         <Link to={PATHS.PASSWORD_RESET} onClick={handleGoBack}
-                        className="flex items-center gap-2 font-medium text-xs md:text-sm text-center w-fit hover:underline active:underline"
-                        > <ICONS.arrowLeft className="size-4"/> Go back </Link>
+                            className="flex items-center gap-2 font-medium text-xs md:text-sm text-center w-fit hover:underline active:underline"
+                        > <ICONS.arrowLeft className="size-4" /> Go back </Link>
 
                         {/* <button
                             type="button"
@@ -82,7 +80,7 @@ export default function PasswordSent () {
 
                 </div>
 
-                <div className="absolute left-full w-full h-[calc(100svh-24rem)] md:h-[calc(100svh-22rem)] border border-muted/20 rounded-4xl mask-r-to-transparent mask-r-to-30% overflow-hidden"/>
+                <div className="absolute left-full w-full h-[calc(100svh-24rem)] md:h-[calc(100svh-22rem)] border border-muted/20 rounded-4xl mask-r-to-transparent mask-r-to-30% overflow-hidden" />
             </section>
         </main>
     )
