@@ -13,7 +13,7 @@ const About = lazy(() => import('@/pages/Public/About'));
 const Contact = lazy(() => import('@/pages/Public/Contact'));
 const ServiceList = lazy(() => import('@/pages/Public/ServiceList'));
 const ProjectList = lazy(() => import('@/pages/Public/ProjectList'));
-const ProjectDetail = lazy(() => import('@/pages/Public/Project'));
+const ProjectDetail = lazy(() => import('@/pages/Public/ProjectDetail'));
 
 const Signup = lazy(() => import('@/pages/Public/Signup'));
 const Login = lazy(() => import('@/pages/Public/Login'));
