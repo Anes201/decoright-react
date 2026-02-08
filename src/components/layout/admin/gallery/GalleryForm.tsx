@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Spinner from "@/components/common/Spinner";
 import { PButton } from "@/components/ui/Button";
-import { SCTALink } from "@/components/ui/CTA";
 import { ICONS } from "@/icons";
 import { SelectMenu } from "@/components/ui/Select";
 import { projectVisibilityStags } from "@/constants";
 import { AdminService, type GalleryItem } from "@/services/admin.service";
 import { PATHS } from "@/routers/Paths";
+import { useStagedFiles } from "@/hooks/useStagedFiles";
+import ProgressBar from "@/components/ui/ProgressBar";
 
 interface GalleryFormProps {
     initialData?: GalleryItem;
@@ -21,42 +22,63 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
     const [formData, setFormData] = useState({
         title: initialData?.title || "",
         description: initialData?.description || "",
-        visibility: initialData?.visibility?.toLowerCase() || "public",
+        visibility: initialData?.visibility || "PUBLIC",
     });
 
-    const [beforeFile, setBeforeFile] = useState<File | null>(null);
-    const [afterFile, setAfterFile] = useState<File | null>(null);
-    const [beforePreview, setBeforePreview] = useState<string>(initialData?.before_image_url || "");
-    const [afterPreview, setAfterPreview] = useState<string>(initialData?.after_image_url || "");
+    const beforeUpload = useStagedFiles(AdminService.uploadProjectImage);
+    const afterUpload = useStagedFiles(AdminService.uploadProjectImage);
+
+    // Initial URLs if any
+    const [initialBeforeUrl] = useState(initialData?.before_image_url || "");
+    const [initialAfterUrl] = useState(initialData?.after_image_url || "");
+
+    const beforeFile = beforeUpload.files[0];
+    const afterFile = afterUpload.files[0];
+
+    const beforePreview = beforeFile?.status === 'complete' ? beforeFile.url : (beforeFile?.file ? URL.createObjectURL(beforeFile.file) : initialBeforeUrl);
+    const afterPreview = afterFile?.status === 'complete' ? afterFile.url : (afterFile?.file ? URL.createObjectURL(afterFile.file) : initialAfterUrl);
 
     const onFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'before' | 'after') => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-
         if (type === 'before') {
-            setBeforeFile(file);
-            setBeforePreview(URL.createObjectURL(file));
+            beforeUpload.addSingleFile(e.target.files);
         } else {
-            setAfterFile(file);
-            setAfterPreview(URL.createObjectURL(file));
+            afterUpload.addSingleFile(e.target.files);
         }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Check statuses of selected files
+        const beforeStatus = beforeUpload.files[0]?.status;
+        const afterStatus = afterUpload.files[0]?.status;
+
+        const isUploading = beforeStatus === 'uploading' || afterStatus === 'uploading';
+        const isFailed = beforeStatus === 'failed' || afterStatus === 'failed';
+        const isIdle = (beforeUpload.files.length > 0 && beforeStatus === 'idle') ||
+            (afterUpload.files.length > 0 && afterStatus === 'idle');
+
+        if (isUploading || isIdle) {
+            toast.error("Please wait for images to finish uploading.");
+            return;
+        }
+
+        if (isFailed) {
+            toast.error("Some images failed to upload. Please retry or re-select them.");
+            return;
+        }
+
+        const before_url = beforeUpload.files[0]?.url || initialBeforeUrl;
+        const after_url = afterUpload.files[0]?.url || initialAfterUrl;
+
+        if (!before_url || !after_url) {
+            toast.error("Both 'Before' and 'After' images are required.");
+            return;
+        }
+
         setLoading(true);
 
         try {
-            let before_url = initialData?.before_image_url || "";
-            let after_url = initialData?.after_image_url || "";
-
-            if (beforeFile) {
-                before_url = await AdminService.uploadProjectImage(beforeFile);
-            }
-            if (afterFile) {
-                after_url = await AdminService.uploadProjectImage(afterFile);
-            }
-
             const payload = {
                 ...formData,
                 before_image_url: before_url,
@@ -131,13 +153,28 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
                         {beforePreview ? (
                             <div className="relative aspect-video rounded-lg overflow-hidden border border-muted/10 bg-black/5">
                                 <img src={beforePreview} alt="Before" className="w-full h-full object-cover" />
+                                {beforeFile?.status === 'uploading' && (
+                                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center px-8">
+                                        <ProgressBar value={beforeFile.progress} />
+                                    </div>
+                                )}
                                 <button
                                     type="button"
-                                    onClick={() => { setBeforeFile(null); setBeforePreview(""); }}
+                                    onClick={() => beforeUpload.setFiles([])}
                                     className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
                                 >
                                     <ICONS.xMark className="size-4" />
                                 </button>
+                                {beforeFile?.status === 'failed' && (
+                                    <button
+                                        type="button"
+                                        onClick={() => beforeUpload.retryFile(beforeFile.id)}
+                                        className="absolute bottom-2 right-2 p-1.5 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+                                        title="Retry Upload"
+                                    >
+                                        <ICONS.arrowPath className="size-4" />
+                                    </button>
+                                )}
                             </div>
                         ) : (
                             <div className="aspect-video rounded-lg border-2 border-dashed border-muted/10 flex flex-col items-center justify-center text-muted">
@@ -159,13 +196,28 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
                         {afterPreview ? (
                             <div className="relative aspect-video rounded-lg overflow-hidden border border-muted/10 bg-black/5">
                                 <img src={afterPreview} alt="After" className="w-full h-full object-cover" />
+                                {afterFile?.status === 'uploading' && (
+                                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center px-8">
+                                        <ProgressBar value={afterFile.progress} />
+                                    </div>
+                                )}
                                 <button
                                     type="button"
-                                    onClick={() => { setAfterFile(null); setAfterPreview(""); }}
+                                    onClick={() => afterUpload.setFiles([])}
                                     className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
                                 >
                                     <ICONS.xMark className="size-4" />
                                 </button>
+                                {afterFile?.status === 'failed' && (
+                                    <button
+                                        type="button"
+                                        onClick={() => afterUpload.retryFile(afterFile.id)}
+                                        className="absolute bottom-2 right-2 p-1.5 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+                                        title="Retry Upload"
+                                    >
+                                        <ICONS.arrowPath className="size-4" />
+                                    </button>
+                                )}
                             </div>
                         ) : (
                             <div className="aspect-video rounded-lg border-2 border-dashed border-muted/10 flex flex-col items-center justify-center text-muted">
@@ -177,11 +229,17 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
                 </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-4 border-t border-muted/10 pt-8 pb-32">
                 <PButton type="submit" disabled={loading} className="min-w-[150px]">
                     <Spinner status={loading} size="sm"> {isEdit ? "Update Item" : "Create Item"} </Spinner>
                 </PButton>
-                <SCTALink to={PATHS.ADMIN.GALLERY_LIST}> Cancel </SCTALink>
+                <button
+                    type="button"
+                    onClick={() => navigate(PATHS.ADMIN.GALLERY_LIST)}
+                    className="p-button-ghost"
+                >
+                    Cancel
+                </button>
             </div>
         </form>
     );

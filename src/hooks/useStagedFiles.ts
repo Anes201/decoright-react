@@ -29,14 +29,23 @@ export function useStagedFiles(uploadFn?: (file: File) => Promise<string>) {
       status: "idle",
     }));
 
-    setFiles((prev) => [...prev, ...newStaged]);
+    setFiles((prev) => {
+      const nextFiles = [...prev, ...newStaged];
+
+      // start uploads for new files immediately
+      setTimeout(() => {
+        newStaged.forEach((f) => startUpload(f.id));
+      }, 0);
+
+      return nextFiles;
+    });
   }
 
   function addSingleFile(file: FileList | null) {
     if (!file) return;
 
     const arr = Array.from(file);
-    const newStaged: StagedFile [] = arr.map((f) => ({
+    const newStaged: StagedFile[] = arr.map((f) => ({
       id: `local-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       name: f.name,
       size: f.size,
@@ -49,8 +58,10 @@ export function useStagedFiles(uploadFn?: (file: File) => Promise<string>) {
     // prepend new files so newest appear at top (choose your UX)
     setFiles(newStaged);
 
-    // start upload immediately (optimistic). If you don't want this, remove this loop.
-    startUpload(newStaged[0].id);
+    // start upload immediately (optimistic) after state update
+    setTimeout(() => {
+      if (newStaged[0]) startUpload(newStaged[0].id);
+    }, 0);
   }
 
   function removeFile(id: string) {

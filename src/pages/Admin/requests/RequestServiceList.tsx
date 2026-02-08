@@ -1,14 +1,11 @@
 import { useState, useEffect } from 'react';
 import RequestServiceTable from "@components/layout/admin/RequestServiceTable";
-import RequestDetailDrawer from "@components/layout/admin/RequestDetailDrawer";
 import { AdminService } from "@/services/admin.service";
 import { ICONS } from "@/icons";
 
 export default function RequestServiceList() {
     const [requests, setRequests] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const [selectedRequest, setSelectedRequest] = useState<any | null>(null);
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     const loadRequests = async () => {
         try {
@@ -34,11 +31,6 @@ export default function RequestServiceList() {
     useEffect(() => {
         loadRequests();
     }, []);
-
-    const handleOpenDrawer = (request: any) => {
-        setSelectedRequest(request);
-        setIsDrawerOpen(true);
-    };
 
     return (
         <main className="flex-1 flex flex-col w-full overflow-hidden">
@@ -69,21 +61,11 @@ export default function RequestServiceList() {
                         </div>
                     ) : (
                         <RequestServiceTable
-                            onRowClick={handleOpenDrawer}
                             externalData={requests}
                             onRefresh={loadRequests}
                         />
                     )}
                 </div>
-
-                {/* Detail Drawer */}
-                <RequestDetailDrawer
-                    isOpen={isDrawerOpen}
-                    request={selectedRequest}
-                    onClose={() => setIsDrawerOpen(false)}
-                    onStatusUpdate={loadRequests}
-                />
-
             </section>
         </main>
     );

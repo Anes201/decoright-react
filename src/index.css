@@ -143,7 +143,7 @@
     }
 
     main {
-        @apply flex flex-col items-center overflow-x-clip overflow-y-clip;
+        @apply flex flex-col items-center overflow-x-clip overflow-y-visible;
     }
 
     .navbar-height {

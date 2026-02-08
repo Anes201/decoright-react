@@ -115,7 +115,7 @@ export default function SpaceTypeForm({ isOpen, spaceType, onClose, onSuccess }:
                         <input
                             type="text"
                             value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value.toUpperCase().replace(/[^A-Z_]/g, '') })}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value.toUpperCase().replace(/[\s-]/g, '_').replace(/[^A-Z_]/g, '') })}
                             placeholder="KITCHEN_AND_BATH"
                             disabled={!!spaceType}
                             required

@@ -12,7 +12,8 @@ export const RequestService = {
         // Generate a simple request code if not provided
         const requestCode = `REQ-${Math.floor(1000 + Math.random() * 9000)}`
 
-        const { data, error } = await supabase
+        // Create the service request
+        const { data: request, error: requestError } = await supabase
             .from('service_requests')
             .insert({
                 ...input,
@@ -23,8 +24,25 @@ export const RequestService = {
             .select()
             .single()
 
-        if (error) throw error
-        return data
+        if (requestError) throw requestError
+
+        // Automatically create the chat room for this request (1-to-1 relationship)
+        const { data: chatRoom, error: chatError } = await supabase
+            .from('chat_rooms')
+            .insert({
+                request_id: request.id,
+                is_active: true
+            })
+            .select()
+            .single()
+
+        if (chatError) {
+            console.error('Failed to create chat room:', chatError)
+            // Don't throw - request was created successfully
+            // Admin can manually create chat if needed
+        }
+
+        return { ...request, chat_room: chatRoom }
     },
 
     async getMyRequests() {

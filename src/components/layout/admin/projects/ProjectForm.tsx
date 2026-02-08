@@ -91,8 +91,16 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
 
         try {
             const uploading = files.some(f => f.status === 'uploading');
+            const failed = files.some(f => f.status === 'failed');
+
             if (uploading) {
                 toast.error("Please wait for all images to finish uploading.");
+                setLoading(false);
+                return;
+            }
+
+            if (failed) {
+                toast.error("Some images failed to upload. Please retry or remove them.");
                 setLoading(false);
                 return;
             }

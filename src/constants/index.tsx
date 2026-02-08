@@ -124,20 +124,20 @@ export const serviceSpaceTypes = [
 
 
 export const projectVisibilityStags = [
-    { id: '1', label: 'Public', value: 'public' },
-    { id: '2', label: 'Clients', value: 'clients' },
-    { id: '3', label: 'Hidden', value: 'hidden' },
+    { id: '1', label: 'Public', value: 'PUBLIC' },
+    { id: '2', label: 'Clients', value: 'AUTHENTICATED_ONLY' },
+    { id: '3', label: 'Hidden', value: 'HIDDEN' },
 ]
 
 export const serviceStatus = [
-    { id:'1', label: 'Active', value: 'active' },
-    { id:'2', label: 'Inactive', value: 'inactive' },
+    { id: '1', label: 'Active', value: 'active' },
+    { id: '2', label: 'Inactive', value: 'inactive' },
 ]
 
 
 export const serviceSpaceStatus = [
-    { id:'1', label: 'Active', value: 'active' },
-    { id:'2', label: 'Inactive', value: 'inactive' },
+    { id: '1', label: 'Active', value: 'active' },
+    { id: '2', label: 'Inactive', value: 'inactive' },
 ]
 
 export const serviceDesignStyle = [

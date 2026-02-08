@@ -1,3 +1,4 @@
+import useAuth from "@/hooks/useAuth";
 import { useState, useEffect } from "react";
 import { ImgComparisonSlider } from '@img-comparison-slider/react';
 import ZoomImage from "@components/ui/ZoomImage";
@@ -57,16 +58,22 @@ export function GalleryItemCard({ item }: { item: GalleryItem }) {
         </li>
     );
 }
-
 export default function GalleryPortfolioListLayout() {
     const [items, setItems] = useState<GalleryItem[]>([]);
     const [loading, setLoading] = useState(true);
+    const { user, isAdmin } = useAuth();
 
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                // Public list only shows 'PUBLIC' items
-                const data = await AdminService.getGalleryItems({ visibility: ['PUBLIC'] });
+                // Public list shows 'PUBLIC' items to everyone
+                // 'AUTHENTICATED_ONLY' to logged-in users
+                // and everything including 'HIDDEN' to Admins
+                const visibility: any[] = ['PUBLIC'];
+                if (user) visibility.push('AUTHENTICATED_ONLY');
+                if (isAdmin) visibility.push('HIDDEN');
+
+                const data = await AdminService.getGalleryItems({ visibility });
                 setItems(data);
             } catch (error) {
                 console.error("Failed to fetch gallery items:", error);
@@ -77,7 +84,7 @@ export default function GalleryPortfolioListLayout() {
         };
 
         fetchItems();
-    }, []);
+    }, [user]);
 
     if (loading) {
         return <div className="flex justify-center p-20"><Spinner status={true} size="lg" /></div>;

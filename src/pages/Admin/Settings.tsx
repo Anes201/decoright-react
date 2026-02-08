@@ -2,7 +2,7 @@
 import { EmailInput, Input, PhoneInput } from "@/components/ui/Input";
 import { images, SocialMediaPhoneFields, SocialMediaUrlFields } from "@/constants";
 import { companyNameTitle } from "@/constants/company";
-import { AdminService } from "@/services/admin.service";
+import { SiteSettingsService } from "@/services/site-settings.service";
 import { useEffect, useState, useCallback } from "react";
 
 // Custom debounce function to avoid lodash dependency
@@ -23,7 +23,7 @@ export default function Settings() {
     useEffect(() => {
         async function loadSettings() {
             try {
-                const data = await AdminService.getSettings();
+                const data = await SiteSettingsService.getAll();
                 setSettings(data);
             } catch (error) {
                 console.error("Failed to load settings:", error);
@@ -38,7 +38,7 @@ export default function Settings() {
         debounce(async (key: string, value: string) => {
             setLoading(true);
             try {
-                await AdminService.updateSetting(key, value);
+                await SiteSettingsService.update(key, value);
                 setDataSaved(true);
                 setTimeout(() => setDataSaved(false), 2000);
             } catch (error) {
@@ -114,6 +114,25 @@ export default function Settings() {
                                             placeholder="+213123456789"
                                             value={settings['primary_phone'] || ''}
                                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('primary_phone', e.target.value)}
+                                        />
+                                        <PhoneInput
+                                            id="whatsapp"
+                                            placeholder="WhatsApp Number"
+                                            value={settings['whatsapp'] || ''}
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('whatsapp', e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col gap-2">
+                                    <label className="font-medium text-xs text-muted mx-1"> Location </label>
+                                    <div className="flex flex-col gap-2">
+                                        <Input
+                                            id="google_maps_url"
+                                            type="url"
+                                            placeholder="Google Maps Location URL"
+                                            value={settings['google_maps_url'] || ''}
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('google_maps_url', e.target.value)}
                                         />
                                     </div>
                                 </div>

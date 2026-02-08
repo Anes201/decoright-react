@@ -1,4 +1,4 @@
-
+import useAuth from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom"
 import { ICONS } from "@/icons";
@@ -35,11 +35,16 @@ export function ProjectCard({ project, index }: { project: any, index: number })
 export function ProjectCardList() {
     const [projects, setProjects] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const { user, isAdmin } = useAuth();
 
     useEffect(() => {
         async function fetchProjects() {
             try {
-                const data = await AdminService.getProjects({ visibility: ['PUBLIC'] });
+                const visibility: any[] = ['PUBLIC'];
+                if (user) visibility.push('AUTHENTICATED_ONLY');
+                if (isAdmin) visibility.push('HIDDEN');
+
+                const data = await AdminService.getProjects({ visibility });
                 setProjects(data || []);
             } catch (err) {
                 console.error("Failed to fetch projects:", err);
@@ -48,7 +53,7 @@ export function ProjectCardList() {
             }
         }
         fetchProjects();
-    }, []);
+    }, [user]);
 
     if (loading) {
         return <div className="flex justify-center p-8"><Spinner className="w-8 h-8" /></div>;

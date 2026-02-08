@@ -1,5 +1,5 @@
-
 import { ICONS } from "@/icons"
+import useAuth from "@/hooks/useAuth";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState, type CSSProperties } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -32,11 +32,16 @@ export function ProjectCardItem({ project, index }: { project: any, index: numbe
 export function ProjectSimilarList() {
     const [projects, setProjects] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const { user, isAdmin } = useAuth();
 
     useEffect(() => {
         async function fetchSimilar() {
             try {
-                const data = await AdminService.getProjects({ visibility: ['PUBLIC'], limit: 5 });
+                const visibility: any[] = ['PUBLIC'];
+                if (user) visibility.push('AUTHENTICATED_ONLY');
+                if (isAdmin) visibility.push('HIDDEN');
+
+                const data = await AdminService.getProjects({ visibility, limit: 5 });
                 setProjects(data || []);
             } catch (err) {
                 console.error("Failed to fetch similar projects:", err);
@@ -45,7 +50,7 @@ export function ProjectSimilarList() {
             }
         }
         fetchSimilar();
-    }, []);
+    }, [user]);
 
     if (loading) return <div className="p-4 flex justify-center"><Spinner className="w-6 h-6" /></div>;
 

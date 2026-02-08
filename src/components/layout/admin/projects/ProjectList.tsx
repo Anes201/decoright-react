@@ -10,16 +10,42 @@ import { useConfirm } from "@/components/confirm";
 
 export function ProjectCard({ project, onDelete }: { project: any, onDelete: (id: string) => void }) {
     return (
-        <li className="relative">
-            <Link to={PATHS.ADMIN.projectUpdate(project.id)} className="flex max-xs:flex-col gap-4 w-full p-4 border border-muted/10 bg-surface rounded-xl hover:border-primary/30 transition-all group">
-                <div className="xs:min-w-[180px] xs:h-28 aspect-video overflow-hidden rounded-lg">
+        <li className="relative group">
+            <div className="flex max-xs:flex-col gap-4 w-full p-4 border border-muted/10 bg-surface rounded-xl hover:border-primary/30 transition-all">
+                <Link to={PATHS.ADMIN.projectUpdate(project.id)} className="xs:min-w-[180px] xs:h-28 aspect-video overflow-hidden rounded-lg shrink-0">
                     <ZoomImage src={project.thumbnail_url || project.main_image_url} alt="" className="object-cover h-full w-full" />
-                </div>
+                </Link>
 
                 <div className="flex flex-col gap-2 w-full">
-                    <div className="flex justify-between items-start">
-                        <h4 className="font-semibold text-sm md:text-base text-foreground group-hover:text-primary transition-colors"> {project.title} </h4>
-                        <span className={`text-3xs font-bold px-2 py-0.5 rounded-full uppercase tracking-tighter ${project.visibility === 'PUBLIC' ? 'bg-green-500/10 text-green-500' :
+                    <div className="flex justify-between items-start gap-4">
+                        <Link to={PATHS.ADMIN.projectUpdate(project.id)} className="hover:text-primary transition-colors">
+                            <h4 className="font-semibold text-sm md:text-base text-foreground"> {project.title} </h4>
+                        </Link>
+
+                        <div className="flex items-center gap-1 shrink-0">
+                            <Link
+                                to={PATHS.ADMIN.projectUpdate(project.id)}
+                                className="p-2 text-muted hover:text-primary hover:bg-primary/10 rounded-lg transition-all"
+                                title="Edit Project"
+                            >
+                                <ICONS.pencilSquare className="size-4" />
+                            </Link>
+                            <button
+                                onClick={() => onDelete(project.id)}
+                                className="p-2 text-muted hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
+                                title="Delete Project"
+                            >
+                                <ICONS.trash className="size-4" />
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                        {project.service_types && <span className="text-2xs px-1.5 py-0.5 border border-muted/15 rounded-md text-muted">{project.service_types.display_name_en}</span>}
+                        {project.space_types && <span className="text-2xs px-1.5 py-0.5 border border-muted/15 rounded-md text-muted">{project.space_types.display_name_en}</span>}
+                        {project.location && <span className="text-2xs px-1.5 py-0.5 border border-muted/15 rounded-md text-muted">{project.location}</span>}
+
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-tighter ${project.visibility === 'PUBLIC' ? 'bg-green-500/10 text-green-500' :
                             project.visibility === 'AUTHENTICATED_ONLY' ? 'bg-blue-500/10 text-blue-500' :
                                 'bg-red-500/10 text-red-500'
                             }`}>
@@ -27,30 +53,12 @@ export function ProjectCard({ project, onDelete }: { project: any, onDelete: (id
                         </span>
                     </div>
 
-                    <div className="flex flex-wrap gap-2">
-                        {project.service_types && <span className="text-2xs px-1.5 py-0.5 border border-muted/15 rounded-md text-muted">{project.service_types.display_name_en}</span>}
-                        {project.space_types && <span className="text-2xs px-1.5 py-0.5 border border-muted/15 rounded-md text-muted">{project.space_types.display_name_en}</span>}
-                        {project.location && <span className="text-2xs px-1.5 py-0.5 border border-muted/15 rounded-md text-muted">{project.location}</span>}
-                    </div>
-
                     <div className="flex flex-wrap items-center mt-auto">
                         <span className="text-2xs text-muted/60">{new Date(project.created_at).toLocaleDateString()}</span>
                         {(project.width || project.height) && <span className="text-2xs text-muted/60 before:content-['•'] before:mx-2">{project.width || 0}m × {project.height || 0}m</span>}
                     </div>
                 </div>
-            </Link>
-
-            <button
-                onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    onDelete(project.id);
-                }}
-                className="absolute top-4 right-4 p-2 text-muted hover:text-red-500 hover:bg-red-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all z-10"
-                title="Delete Project"
-            >
-                <ICONS.trash className="size-4" />
-            </button>
+            </div>
         </li>
     )
 }

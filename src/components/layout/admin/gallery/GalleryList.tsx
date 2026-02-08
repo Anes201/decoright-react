@@ -30,7 +30,7 @@ export function GalleryItemRow({ item, onDelete }: { item: GalleryItem, onDelete
                     </div>
                 </div>
 
-                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex items-center gap-1 transition-opacity">
                     <Link
                         to={PATHS.ADMIN.galleryUpdate(item.id)}
                         className="p-1.5 text-muted hover:text-primary hover:bg-primary/10 rounded-md transition-colors"

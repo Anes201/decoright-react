@@ -1,29 +1,35 @@
 
 import { ICONS } from "@/icons";
-import { supportMailAddress, phoneNumber, googleMapLocationUrl } from "@/constants/company";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
-export function ContactCard({children}:any) {
+export function ContactCard({ children }: any) {
     return (
         <li className="flex flex-col justify-between gap-8 w-full p-4 sm:p-6 border border-muted/25 bg-surface/75 rounded-lg cursor-pointer hover:bg-emphasis/75 active:bg-emphasis/75"> {children} </li>
     )
 }
 
 export function ContactCardList() {
+    const {
+        primaryPhone,
+        primaryEmail,
+        googleMapsUrl
+    } = useSiteSettings();
+
     return (
         <ul className="grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] justify-center gap-4 w-full">
             <ContactCard>
                 {/* Card Icon */}
                 <div className="p-2 ring-1 ring-muted/15 rounded-lg w-fit bg-surface">
-                    {ICONS.phone({className:'size-6'})}
+                    {ICONS.phone({ className: 'size-6' })}
                 </div>
 
-                <a href={`tel:${phoneNumber}`} className="space-y-3">
+                <a href={`tel:${primaryPhone}`} className="space-y-3">
                     <div>
                         <h3 className="font-semibold text-primary text-lg"> Call Us </h3>
-                        <p className="text-2xs md:text-xs text-muted"> Lorem ipsum dolor sit amet consectetur, adipisicing elit. </p>
+                        <p className="text-2xs md:text-xs text-muted"> Have a quick question? Give us a call or send a text. </p>
                     </div>
 
-                    <span className="font-medium text-xs text-foreground hover:underline active:underline"> {phoneNumber} </span>
+                    <span className="font-medium text-xs text-foreground hover:underline active:underline"> {primaryPhone} </span>
                 </a>
 
             </ContactCard>
@@ -31,29 +37,29 @@ export function ContactCardList() {
             <ContactCard>
                 {/* Card Icon */}
                 <div className="p-2 ring-1 ring-muted/15 rounded-lg w-fit bg-surface">
-                    {ICONS.envelope({className:'size-6'})}
+                    {ICONS.envelope({ className: 'size-6' })}
                 </div>
 
-                <a href={`mailto:${supportMailAddress}`} className="space-y-3">
+                <a href={`mailto:${primaryEmail}`} className="space-y-3">
                     <div>
                         <h3 className="font-semibold text-primary text-lg"> Mail & Support </h3>
-                        <p className="text-2xs md:text-xs text-muted"> Lorem ipsum dolor sit amet consectetur, adipisicing elit. </p>
+                        <p className="text-2xs md:text-xs text-muted"> Email us for detailed inquiries and project proposals. </p>
                     </div>
 
-                        <span className="font-medium text-xs text-foreground hover:underline active:underline"> {supportMailAddress} </span>
+                    <span className="font-medium text-xs text-foreground hover:underline active:underline"> {primaryEmail} </span>
                 </a>
             </ContactCard>
 
             <ContactCard>
                 {/* Card Icon */}
                 <div className="p-2 ring-1 ring-muted/15 rounded-lg w-fit bg-surface">
-                    {ICONS.mapPin({className:'size-6'})}
+                    {ICONS.mapPin({ className: 'size-6' })}
                 </div>
 
-                <a href={googleMapLocationUrl} target="_blank" rel="noopener noreferrer" className="space-y-3">
+                <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer" className="space-y-3">
                     <div>
                         <h3 className="font-semibold text-primary text-lg"> Visit Us </h3>
-                        <p className="text-2xs md:text-xs text-muted"> Lorem ipsum dolor sit amet consectetur, adipisicing elit. </p>
+                        <p className="text-2xs md:text-xs text-muted"> Come visit our office to discuss your project in person. </p>
                     </div>
 
                     <span className="font-medium text-xs text-foreground hover:underline active:underline"> View on Google Maps </span>
@@ -63,7 +69,7 @@ export function ContactCardList() {
     )
 }
 
-export default function Contact () {
+export default function Contact() {
     return (
         <main>
             <section className="h-hero min-h-hero content-container relative flex flex-col items-center justify-center space-y-8">
@@ -75,7 +81,7 @@ export default function Contact () {
                     <p className="text-2xs sm:text-xs md:text-sm text-muted/75"> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam corrupti vero a enim harum molestias facilis, optio pariatur voluptate itaque nam obcaecati quas omnis reprehenderit doloribus perspiciatis. dolores enim harum molestias facilis, optio pariatur voluptate itaque nam obcaecati quas omnis reprehenderit doloribus perspiciatis. Qui, ex.  </p>
                 </div>
 
-                <ContactCardList/>
+                <ContactCardList />
 
             </section>
         </main>
