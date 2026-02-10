@@ -1,0 +1,250 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "projects": "Projects",
+    "contact_us": "Contact Us",
+    "contact": "Contact",
+    "about": "About",
+    "gallery": "Gallery",
+    "messages": "Messages",
+    "request_service": "Request Service",
+    "your_requests": "Your Requests",
+    "admin": "Admin Panel",
+    "dashboard": "Dashboard",
+    "analytics": "Analytics",
+    "users": "Users & Activity",
+    "requests": "Service Requests",
+    "service_request": "Service Request",
+    "request_list": "Request List",
+    "gallery_management": "Gallery Management",
+    "gallery_list": "Gallery List",
+    "add_gallery": "Add Gallery Item",
+    "project_management": "Project Management",
+    "project_list": "Project List",
+    "add_project": "Add Project",
+    "services_spaces": "Services & Spaces",
+    "service_types": "Service Types",
+    "space_types": "Space Types",
+    "faq_management": "FAQ Management",
+    "faq_list": "FAQ List",
+    "add_faq": "Add FAQ",
+    "settings": "Settings"
+  },
+  "common": {
+    "decor_agency": "Decor agency",
+    "menu": "Menu",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view_all": "View All",
+    "view_all_projects": "View All Projects"
+  },
+  "auth": {
+    "login": "Login",
+    "login_to": "Login to",
+    "login_description": "Enter your credentials to access your account and manage your design requests.",
+    "signup": "Sign Up",
+    "signup_to": "Sign Up to",
+    "signup_description": "Create an account to start your design journey with us.",
+    "logout": "Logout",
+    "email": "Email Address",
+    "password": "Password",
+    "show_password": "Show password",
+    "hide_password": "Hide password",
+    "remember_me": "Remember me",
+    "forgot_password": "Forgot your password ?",
+    "no_account": "Don't have an account yet?",
+    "signup_now": "Sign up",
+    "already_have_account": "Already have an account?",
+    "login_now": "Login",
+    "error_failed_login": "Failed to login",
+    "error_failed_signup": "Failed to sign up",
+    "phone": "Phone Number",
+    "placeholders": {
+      "email": "email@example.com",
+      "phone": "Phone Number",
+      "email_or_phone": "Enter email or phone",
+      "first_name": "First name",
+      "last_name": "Last name"
+    },
+    "otp": {
+      "verify_account": "Verify your account",
+      "description": "A 6-digit verification code has been sent to <b>{{email}}</b>. Enter it below to complete your signup.",
+      "verify_button": "Verify Code",
+      "resend_prompt": "Didn't receive a code?",
+      "resend_button": "Resend",
+      "invalid_code": "Please enter a valid 6-digit code",
+      "error_invalid": "Invalid or expired code",
+      "error_invalid_length": "Please enter a valid 6-digit code",
+      "error_resend": "Failed to resend code",
+      "resend_success": "Verification code resent to your email",
+      "loading_moment": "Just a moment..."
+    }
+  },
+  "footer": {
+    "description": "{{companyName}} is your trusted partner for exquisite interior design and decor solutions. We bring your vision to life with creativity and style.",
+    "rights": "All rights reserved.",
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "tiktok": "Tiktok",
+      "youtube": "Youtube",
+      "whatsapp": "Whatsapp"
+    },
+    "legal": {
+      "terms": "Terms & Conditions",
+      "privacy": "Privacy Policy"
+    }
+  },
+  "landing": {
+    "hero": {
+      "subtitle": "Space & Decoration",
+      "title": "Interior Design That Elevates Everyday Living",
+      "description": "Welcome to Deco Right, your trusted partner for exquisite interior design and decor solutions. We bring your vision to life with creativity and style.",
+      "checklist": {
+        "consultations": "Personalized Design Consultations",
+        "planning": "Space Planning",
+        "furniture": "Custom Furniture & Decor"
+      },
+      "cta": {
+        "request_service": "Request Service",
+        "services": "Services",
+        "projects": "Projects & Categories"
+      },
+      "metrics": {
+        "rating": "Customer Rating",
+        "completed": "Projects Completed",
+        "experience": "Years of Experience"
+      }
+    },
+    "sections": {
+      "services": {
+        "title": "Explore our range of interior design services",
+        "description": "From concept to completion, we offer comprehensive design solutions tailored to meet your unique needs."
+      },
+      "projects": {
+        "title": "Browse our previous projects from our showcase",
+        "description": "A curated selection of our finest interior design projects, highlighting our commitment to quality, creativity, and client satisfaction."
+      },
+      "faq": {
+        "title": "Most frequently asked questions by our users",
+        "description": "Find answers to common questions about our design services, process, and pricing."
+      }
+    }
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "description": "We'd love to hear from you. Whether you have a question about our services, pricing, or anything else, our team is ready to answer all your questions.",
+    "cards": {
+      "call_us": {
+        "title": "Call Us",
+        "description": "Have a quick question? Give us a call or send a text."
+      },
+      "mail_support": {
+        "title": "Mail & Support",
+        "description": "Email us for detailed inquiries and project proposals."
+      },
+      "visit_us": {
+        "title": "Visit Us",
+        "description": "Come visit our office to discuss your project in person.",
+        "cta": "View on Google Maps"
+      }
+    }
+  },
+  "profile": {
+    "loading": "Loading profile...",
+    "anonymous": "Anonymous",
+    "joined_at": "Joined at {{date}}",
+    "personal_info": "Personal Information",
+    "role": "Role",
+    "client": "Client",
+    "not_provided": "Not provided"
+  },
+  "requests": {
+    "title": "My Service Requests",
+    "description": "Recent service requests and current request status.",
+    "open_chat": "Open Chat",
+    "no_requests": "No service requests found.",
+    "loading": "Loading requests...",
+    "error_load": "Failed to load requests",
+    "status": {
+      "pending": "Pending",
+      "under_review": "Under Review",
+      "approved": "Approved",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "rejected": "Rejected"
+    }
+  },
+  "request_form": {
+    "title": "Request Service Form",
+    "description": "Submit your details to create a private conversation. Admins will evaluate the request in the chat and respond with next steps.",
+    "submit": "Submit Request",
+    "submit_hint": "Verify your phone to enable submission",
+    "verification_required": "Phone verification required",
+    "verification_description": "Verify your phone to access this service request. We’ll send a code when you tap the button.",
+    "get_verified": "Get Verified",
+    "error_fields": "Please fill in all required fields (Space Type, Service Type, Location)",
+    "error_uploading": "Please wait for all attachments to finish uploading.",
+    "error_submit": "Failed to submit request",
+    "service_type": "Service Type",
+    "space_type": "Space Type",
+    "service_type_placeholder": "Select a Service Type",
+    "space_type_placeholder": "Select a Space Type",
+    "completion_date": "When do you need this completed?",
+    "location": "Location",
+    "location_placeholder": "Enter physical location",
+    "area_dimensions": "Area Dimensions (m)",
+    "width": "Width",
+    "height": "Height",
+    "description": "Description",
+    "description_placeholder": "Write a description...",
+    "cancel": "Cancel"
+  },
+  "phone_verification": {
+    "title": "Phone Verification",
+    "description_phone": "Enter your phone number to receive a verification code.",
+    "description_code": "Enter the code we sent to {{phone}}",
+    "phone_label": "Phone Number (with country code)",
+    "code_label": "Verification Code",
+    "change_phone": "Change phone number",
+    "send_code": "Send Code",
+    "verify_code": "Verify Code",
+    "error_send": "Failed to send OTP",
+    "error_verify": "Invalid code"
+  },
+  "settings": {
+    "title": "Account Settings",
+    "profile_info": "Profile Information",
+    "upload_picture": "Upload Profile Picture",
+    "remove_picture": "Remove",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "preferences": "Preferences",
+    "language": "Language",
+    "language_placeholder": "Select a Language",
+    "security": "Security",
+    "change_password": "Change Password",
+    "forgot_password": "Forgot Password",
+    "privacy_policy": "Privacy Policy",
+    "saved": "Data saved successfully!",
+    "error_load": "Failed to load profile",
+    "error_missing_user": "Missing user.",
+    "error_required": "This field is required.",
+    "error_max_length": "Must be at most {{max}} characters.",
+    "error_invalid_chars": "Only letters, spaces, hyphens, and apostrophes allowed.",
+    "error_invalid_phone": "Enter a valid phone number"
+  },
+  "gallery": {
+    "before": "Before",
+    "after": "After",
+    "no_items": "No showcase items available at the moment."
+  }
+}

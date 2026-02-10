@@ -6,6 +6,7 @@ import { PATHS } from "@/routers/Paths"
 import { EmailInput, Input, PasswordInput } from "../ui/Input"
 import { LegalLinks } from "../../constants"
 import Spinner from "../common/Spinner"
+import { useTranslation } from "react-i18next"
 
 export function SignupLayout() {
     const [firstName, setFirstName] = useState("")
@@ -15,6 +16,7 @@ export function SignupLayout() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -38,7 +40,7 @@ export function SignupLayout() {
             navigate(PATHS.VERIFY_OTP, { state: { email } })
         } catch (err: any) {
             console.error("Signup error details:", err)
-            setError(err.message || "Failed to sign up")
+            setError(err.message || t('auth.error_failed_signup'))
         } finally {
             setLoading(false)
         }
@@ -50,16 +52,16 @@ export function SignupLayout() {
 
             {/* Form Header */}
             <div className="flex flex-col items-center gap-3">
-                <h1 className="font-semibold text-2xl md:text-4xl"> Sign Up to <span className="text-transparent bg-linear-to-br from-foreground to-primary to-65% bg-clip-text">DecoRight</span> </h1>
-                <p className="text-ellipsis-2line text-2xs md:text-xs text-muted">Create an account to start your design journey with us.</p>
+                <h1 className="font-semibold text-2xl md:text-4xl"> {t('auth.signup_to')} <span className="text-transparent bg-linear-to-br from-foreground to-primary to-65% bg-clip-text">DecoRight</span> </h1>
+                <p className="text-ellipsis-2line text-2xs md:text-xs text-muted">{t('auth.signup_description')}</p>
             </div>
 
             <form onSubmit={handleSignup} className="flex flex-col items-center gap-8">
 
                 <div className="flex flex-col gap-4 w-full">
                     <div className="flex max-xs:flex-col md:flex-col lg:flex-row gap-3 md:gap-4 w-full">
-                        <Input type="text" placeholder="First name" value={firstName} onChange={(e: any) => setFirstName(e.target.value)} required />
-                        <Input type="text" placeholder="Last name" value={lastName} onChange={(e: any) => setLastName(e.target.value)} required />
+                        <Input type="text" placeholder={t('auth.placeholders.first_name')} value={firstName} onChange={(e: any) => setFirstName(e.target.value)} required />
+                        <Input type="text" placeholder={t('auth.placeholders.last_name')} value={lastName} onChange={(e: any) => setLastName(e.target.value)} required />
                     </div>
                     <EmailInput value={email} onChange={(e: any) => setEmail(e.target.value)} required />
                     <PasswordInput value={password} onChange={(e: any) => setPassword(e.target.value)} required />
@@ -73,18 +75,18 @@ export function SignupLayout() {
                         disabled={loading}
                         className="font-semibold text-white/95 w-full px-4 p-2 bg-primary rounded-xl disabled:opacity-50"
                     >
-                        <Spinner status={loading} size="sm"> Sign Up </Spinner>
+                        <Spinner status={loading} size="sm"> {t('auth.signup')} </Spinner>
                     </button>
                 </div>
             </form>
 
             <div className="flex flex-col items-center w-full">
-                <Link to={'/login'}> <p className="text-xs text-muted"> Already have an account? <span className="font-medium text-foreground hover:underline active:underline"> Login </span> </p> </Link>
+                <Link to={'/login'}> <p className="text-xs text-muted"> {t('auth.already_have_account')} <span className="font-medium text-foreground hover:underline active:underline"> {t('auth.login_now')} </span> </p> </Link>
                 <hr className="w-full border-t border-muted/25 my-4 mask-x-to-transparent mask-x-from-45%" />
                 {/* Legal Links */}
                 <nav className="flex flex-wrap items-center">
                     {LegalLinks.map((item, index) => (
-                        <Link key={index} to={item.path} className="flex justify-center text-3xs sm:text-2xs text-muted hover:underline active:underline after:content-['•'] after:mx-2 last:after:content-none"> {item.label} </Link>
+                        <Link key={index} to={item.path} className="flex justify-center text-3xs sm:text-2xs text-muted hover:underline active:underline after:content-['•'] after:mx-2 rtl:after:mx-2 last:after:content-none"> {t(`footer.legal.${item.key}`)} </Link>
                     ))}
                 </nav>
             </div>

@@ -1,0 +1,250 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "services": "Services",
+    "projects": "Projets",
+    "contact_us": "Contactez-nous",
+    "contact": "Contact",
+    "about": "À propos",
+    "gallery": "Galerie",
+    "messages": "Messages",
+    "request_service": "Demander un service",
+    "your_requests": "Mes demandes",
+    "admin": "Panneau d'administration",
+    "dashboard": "Tableau de bord",
+    "analytics": "Analytique",
+    "users": "Utilisateurs et Activité",
+    "requests": "Demandes de service",
+    "service_request": "Demande de service",
+    "request_list": "Liste des demandes",
+    "gallery_management": "Gestion de la galerie",
+    "gallery_list": "Liste de la galerie",
+    "add_gallery": "Ajouter à la galerie",
+    "project_management": "Gestion des projets",
+    "project_list": "Liste des projets",
+    "add_project": "Ajouter un projet",
+    "services_spaces": "Services et Espaces",
+    "service_types": "Types de services",
+    "space_types": "Types d'espaces",
+    "faq_management": "Gestion des FAQ",
+    "faq_list": "Liste des FAQ",
+    "add_faq": "Ajouter une FAQ",
+    "settings": "Paramètres"
+  },
+  "common": {
+    "decor_agency": "Agence de décoration",
+    "menu": "Menu",
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "view_all": "Voir tout",
+    "view_all_projects": "Voir tous les projets"
+  },
+  "auth": {
+    "login": "Connexion",
+    "login_to": "Connexion à",
+    "login_description": "Entrez vos identifiants pour accéder à votre compte et gérer vos demandes de design.",
+    "signup": "S'inscrire",
+    "signup_to": "S'inscrire à",
+    "signup_description": "Créez un compte pour commencer votre voyage design avec nous.",
+    "logout": "Déconnexion",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "show_password": "Afficher le mot de passe",
+    "hide_password": "Masquer le mot de passe",
+    "remember_me": "Se souvenir de moi",
+    "forgot_password": "Mot de passe oublié ?",
+    "no_account": "Vous n'avez pas encore de compte ?",
+    "signup_now": "S'inscrire",
+    "already_have_account": "Vous avez déjà un compte ?",
+    "login_now": "Connexion",
+    "error_failed_login": "Échec de la connexion",
+    "error_failed_signup": "Échec de l'inscription",
+    "phone": "Numéro de téléphone",
+    "placeholders": {
+      "email": "email@exemple.com",
+      "phone": "Numéro de téléphone",
+      "email_or_phone": "Entrez l'e-mail ou le téléphone",
+      "first_name": "Prénom",
+      "last_name": "Nom"
+    },
+    "otp": {
+      "verify_account": "Vérifiez votre compte",
+      "description": "Un code de vérification à 6 chiffres a été envoyé à <b>{{email}}</b>. Entrez-le ci-dessous pour terminer votre inscription.",
+      "verify_button": "Vérifier le code",
+      "resend_prompt": "Vous n'avez pas reçu de code ?",
+      "resend_button": "Renvoyer",
+      "invalid_code": "Veuillez entrer un code valide à 6 chiffres",
+      "error_invalid": "Code invalide ou expiré",
+      "error_invalid_length": "Veuillez entrer un code valide à 6 chiffres",
+      "error_resend": "Échec du renvoi du code",
+      "resend_success": "Code de vérification renvoyé à votre adresse e-mail",
+      "loading_moment": "Un instant..."
+    }
+  },
+  "footer": {
+    "description": "{{companyName}} est votre partenaire de confiance pour des solutions de design d'intérieur et de décoration exquises. Nous donnons vie à votre vision avec créativité et style.",
+    "rights": "Tous droits réservés.",
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "tiktok": "Tiktok",
+      "youtube": "Youtube",
+      "whatsapp": "Whatsapp"
+    },
+    "legal": {
+      "terms": "Conditions Générales",
+      "privacy": "Politique de Confidentialité"
+    }
+  },
+  "landing": {
+    "hero": {
+      "subtitle": "Espace & Décoration",
+      "title": "Un design d'intérieur qui rehausse la vie quotidienne",
+      "description": "Bienvenue chez Deco Right, votre partenaire de confiance pour des solutions exquises de design d'intérieur et de décoration. Nous donnons vie à votre vision avec créativité et style.",
+      "checklist": {
+        "consultations": "Consultations de design personnalisées",
+        "planning": "Planification de l'espace",
+        "furniture": "Mobilier et décoration sur mesure"
+      },
+      "cta": {
+        "request_service": "Demander un service",
+        "services": "Services",
+        "projects": "Projets et Catégories"
+      },
+      "metrics": {
+        "rating": "Évaluation client",
+        "completed": "Projets terminés",
+        "experience": "Années d'expérience"
+      }
+    },
+    "sections": {
+      "services": {
+        "title": "Explorez notre gamme de services de design d'intérieur",
+        "description": "De la conception à la réalisation, nous proposons des solutions de design complètes adaptées à vos besoins uniques."
+      },
+      "projects": {
+        "title": "Parcourez nos projets précédents à partir de notre vitrine",
+        "description": "Une sélection raffinée de nos meilleurs projets de design d'intérieur, soulignant notre engagement envers la qualité, la créativité et la satisfaction du client."
+      },
+      "faq": {
+        "title": "Questions les plus fréquemment posées par nos utilisateurs",
+        "description": "Trouvez des réponses aux questions courantes sur nos services de design, notre processus et nos tarifs."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "description": "Nous aimerions avoir de vos nouvelles. Que vous ayez une question sur nos services, nos tarifs ou toute autre chose, notre équipe est prête à répondre à toutes vos questions.",
+    "cards": {
+      "call_us": {
+        "title": "Appelez-nous",
+        "description": "Vous avez une question rapide ? Appelez-nous ou envoyez un SMS."
+      },
+      "mail_support": {
+        "title": "Mail & Support",
+        "description": "Envoyez-nous un e-mail pour des demandes détaillées et des propositions de projets."
+      },
+      "visit_us": {
+        "title": "Visitez-nous",
+        "description": "Venez visiter notre bureau pour discuter de votre projet en personne.",
+        "cta": "Voir sur Google Maps"
+      }
+    }
+  },
+  "profile": {
+    "loading": "Chargement du profil...",
+    "anonymous": "Anonyme",
+    "joined_at": "Inscrit le {{date}}",
+    "personal_info": "Informations personnelles",
+    "role": "Rôle",
+    "client": "Client",
+    "not_provided": "Non fourni"
+  },
+  "requests": {
+    "title": "Mes demandes de service",
+    "description": "Demandes de service récentes et état actuel des demandes.",
+    "open_chat": "Ouvrir le chat",
+    "no_requests": "Aucune demande de service trouvée.",
+    "loading": "Chargement des demandes...",
+    "error_load": "Échec de chargement des demandes",
+    "status": {
+      "pending": "En attente",
+      "under_review": "En cours d'examen",
+      "approved": "Approuvée",
+      "in_progress": "En cours",
+      "completed": "Terminée",
+      "cancelled": "Annulée",
+      "rejected": "Rejetée"
+    }
+  },
+  "request_form": {
+    "title": "Formulaire de demande de service",
+    "description": "Soumettez vos coordonnées pour créer une conversation privée. Les administrateurs évalueront la demande dans le chat et répondront avec les étapes suivantes.",
+    "submit": "Soumettre la demande",
+    "submit_hint": "Vérifiez votre téléphone pour permettre la soumission",
+    "verification_required": "Vérification du téléphone requise",
+    "verification_description": "Vérifiez votre téléphone pour accéder à cette demande de service. Nous vous enverrons un code lorsque vous appuierez sur le bouton.",
+    "get_verified": "Se faire vérifier",
+    "error_fields": "Veuillez remplir tous les champs obligatoires (Type d'espace, Type de service, Emplacement)",
+    "error_uploading": "Veuillez attendre que toutes les pièces jointes aient fini de se charger.",
+    "error_submit": "Échec de la soumission de la demande",
+    "service_type": "Type de service",
+    "space_type": "Type d'espace",
+    "service_type_placeholder": "Sélectionnez un type de service",
+    "space_type_placeholder": "Sélectionnez un type d'espace",
+    "completion_date": "Quand avez-vous besoin que ce soit terminé ?",
+    "location": "Emplacement",
+    "location_placeholder": "Entrez l'emplacement physique",
+    "area_dimensions": "Dimensions de la zone (m)",
+    "width": "Largeur",
+    "height": "Hauteur",
+    "description": "Description",
+    "description_placeholder": "Écrivez une description...",
+    "cancel": "Annuler"
+  },
+  "phone_verification": {
+    "title": "Vérification du téléphone",
+    "description_phone": "Entrez votre numéro de téléphone pour recevoir un code de vérification.",
+    "description_code": "Entrez le code que nous avons envoyé à {{phone}}",
+    "phone_label": "Numéro de téléphone (avec code pays)",
+    "code_label": "Code de vérification",
+    "change_phone": "Changer le numéro de téléphone",
+    "send_code": "Envoyer le code",
+    "verify_code": "Vérifier le code",
+    "error_send": "Échec de l'envoi de l'OTP",
+    "error_verify": "Code invalide"
+  },
+  "settings": {
+    "title": "Paramètres du compte",
+    "profile_info": "Informations de profil",
+    "upload_picture": "Télécharger une photo de profil",
+    "remove_picture": "Supprimer",
+    "first_name": "Prénom",
+    "last_name": "Nom",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "preferences": "Préférences",
+    "language": "Langue",
+    "language_placeholder": "Sélectionnez une langue",
+    "security": "Sécurité",
+    "change_password": "Changer le mot de passe",
+    "forgot_password": "Mot de passe oublié",
+    "privacy_policy": "Politique de confidentialité",
+    "saved": "Données enregistrées avec succès !",
+    "error_load": "Échec du chargement du profil",
+    "error_missing_user": "Utilisateur manquant.",
+    "error_required": "Ce champ est obligatoire.",
+    "error_max_length": "Doit comporter au maximum {{max}} caractères.",
+    "error_invalid_chars": "Seuls les lettres, les espaces, les traits d'union et les apostrophes sont autorisés.",
+    "error_invalid_phone": "Entrez un numéro de téléphone valide"
+  },
+  "gallery": {
+    "before": "Avant",
+    "after": "Après",
+    "no_items": "Aucun élément de vitrine disponible pour le moment."
+  }
+}

@@ -4,6 +4,7 @@ import { ICONS } from "@/icons"
 import { PATHS } from "@/routers/Paths"
 import { PCTALink, SCTALink } from "../ui/CTA"
 import useAuth from "@/hooks/useAuth";
+import { useTranslation } from "react-i18next";
 
 export function HeroContentCheckListItem({ content }: { content: string }) {
     return (
@@ -12,19 +13,23 @@ export function HeroContentCheckListItem({ content }: { content: string }) {
 }
 
 export function HeroContentCheckList() {
+    const { t } = useTranslation();
     return (
         <ul className="flex flex-wrap gap-2 w-full">
-            <HeroContentCheckListItem content={'Personalized Design Consultations'} />
-            <HeroContentCheckListItem content={'Space Planning'} />
-            <HeroContentCheckListItem content={'Custom Furniture & Decor'} />
+            <HeroContentCheckListItem content={t('landing.hero.checklist.consultations')} />
+            <HeroContentCheckListItem content={t('landing.hero.checklist.planning')} />
+            <HeroContentCheckListItem content={t('landing.hero.checklist.furniture')} />
         </ul>
     )
 }
 
 export function HeroContent({ settings }: { settings: Record<string, string> }) {
-    const heroSubtitle = settings.home_hero_subtitle || "Space & Decoration";
-    const heroTitle = settings.home_hero_title || "Interior Design That Elevates Everyday Living";
-    const heroDescription = settings.home_hero_description || "Welcome to Deco Right, your trusted partner for exquisite interior design and decor solutions. We bring your vision to life with creativity and style.";
+    const { t, i18n } = useTranslation();
+    const lang = i18n.language.startsWith('ar') ? '_ar' : i18n.language.startsWith('fr') ? '_fr' : '';
+
+    const heroSubtitle = settings[`home_hero_subtitle${lang}`] || settings.home_hero_subtitle || t('landing.hero.subtitle');
+    const heroTitle = settings[`home_hero_title${lang}`] || settings.home_hero_title || t('landing.hero.title');
+    const heroDescription = settings[`home_hero_description${lang}`] || settings.home_hero_description || t('landing.hero.description');
 
     return (
         <div className="flex flex-col justify-center gap-8 h-full">
@@ -52,35 +57,37 @@ export function HeroContent({ settings }: { settings: Record<string, string> }) 
 
 export function HeroCTA() {
     const { user } = useAuth();
+    const { t, i18n } = useTranslation();
     return (
 
         <div className="flex max-md:flex-col gap-4">
             {user
                 ?
-                <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE}> Request Service </PCTALink>
+                <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE}> {t('landing.hero.cta.request_service')} </PCTALink>
                 :
-                <PCTALink to={PATHS.SERVICE_LIST}> Services </PCTALink>
+                <PCTALink to={PATHS.SERVICE_LIST}> {t('landing.hero.cta.services')} </PCTALink>
             }
-            <SCTALink to={PATHS.PROJECT_LIST} className="flex items-center justify-center gap-2"> Projects & Categories <ICONS.arrowLongRight className="size-4 text-foreground" /> </SCTALink>
+            <SCTALink to={PATHS.PROJECT_LIST} className="flex items-center justify-center gap-2"> {t('landing.hero.cta.projects')} <ICONS.arrowLongRight className={`size-4 text-foreground ${i18n.dir() === 'rtl' ? 'rotate-180' : ''}`} /> </SCTALink>
         </div>
     )
 }
 
 export function HeroMetrics() {
+    const { t } = useTranslation();
     return (
         <div className="relative flex justify-center items-center gap-4 md:gap-6 w-full p-4">
             <div className="absolute top-0 left-0 w-full h-full border-2 border-emphasis/75 rounded-2xl -z-10 mask-r-to-transparent mask-r-to-95%"></div>
             <div className="flex flex-col items-center w-full">
                 <span className="font-bold text-2xl md:text-4xl">4.8<span className="font-semibold text-sm md:text-lg">/5</span> </span>
-                <span className="text-3xs md:text-2xs text-muted"> Customer Rating </span>
+                <span className="text-3xs md:text-2xs text-muted"> {t('landing.hero.metrics.rating')} </span>
             </div>
             <div className="flex flex-col items-center w-full">
                 <span className="flex items-center font-bold text-2xl md:text-4xl">500<span className="font-semibold text-sm md:text-lg">+</span> </span>
-                <span className="text-3xs md:text-2xs text-muted"> Projects Completed </span>
+                <span className="text-3xs md:text-2xs text-muted"> {t('landing.hero.metrics.completed')} </span>
             </div>
             <div className="flex flex-col items-center w-full">
                 <span className="flex items-center font-bold text-2xl md:text-4xl">10<span className="font-semibold text-sm md:text-lg">+</span> </span>
-                <span className="text-3xs md:text-2xs text-muted"> Years of Experience </span>
+                <span className="text-3xs md:text-2xs text-muted"> {t('landing.hero.metrics.experience')} </span>
             </div>
         </div>
     )

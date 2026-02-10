@@ -111,8 +111,14 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
 
             const projectData = {
                 title,
+                title_ar: formData.get('title_ar') as string,
+                title_fr: formData.get('title_fr') as string,
                 description,
+                description_ar: formData.get('description_ar') as string,
+                description_fr: formData.get('description_fr') as string,
                 location,
+                location_ar: formData.get('location_ar') as string,
+                location_fr: formData.get('location_fr') as string,
                 service_type_id: serviceType,
                 space_type_id: spaceType,
                 width: width || null,
@@ -170,6 +176,15 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                     </div>
 
                     <div className="flex flex-col gap-2">
+                        <label htmlFor="title_ar" className="font-medium text-xs text-muted px-1"> Title (Arabic) </label>
+                        <input type="text" name="title_ar" id="title_ar" defaultValue={project?.title_ar} placeholder="العنوان بالعربية" className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 text-right" dir="rtl" />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="title_fr" className="font-medium text-xs text-muted px-1"> Title (French) </label>
+                        <input type="text" name="title_fr" id="title_fr" defaultValue={project?.title_fr} placeholder="Titre en français" className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45" />
+                    </div>
+
+                    <div className="flex flex-col gap-2">
                         <label htmlFor="project-location" className="font-medium text-xs text-muted px-1"> Location </label>
                         <input
                             type="text"
@@ -183,6 +198,15 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                     </div>
 
                     <div className="flex flex-col gap-2">
+                        <label htmlFor="location_ar" className="font-medium text-xs text-muted px-1"> Location (Arabic) </label>
+                        <input type="text" name="location_ar" id="location_ar" defaultValue={project?.location_ar} placeholder="الموقع بالعربية" className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 text-right" dir="rtl" />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="location_fr" className="font-medium text-xs text-muted px-1"> Location (French) </label>
+                        <input type="text" name="location_fr" id="location_fr" defaultValue={project?.location_fr} placeholder="Lieu en français" className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45" />
+                    </div>
+
+                    <div className="flex flex-col gap-2">
                         <label htmlFor="project-description" className="font-medium text-xs text-muted px-1"> Description </label>
                         <textarea
                             name="description"
@@ -193,6 +217,15 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                             required
                             className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 resize-none"
                         />
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="description_ar" className="font-medium text-xs text-muted px-1"> Description (Arabic) </label>
+                        <textarea name="description_ar" id="description_ar" rows={4} defaultValue={project?.description_ar} placeholder="الوصف بالعربية..." className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 resize-none text-right" dir="rtl" />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="description_fr" className="font-medium text-xs text-muted px-1"> Description (French) </label>
+                        <textarea name="description_fr" id="description_fr" rows={4} defaultValue={project?.description_fr} placeholder="Description en français..." className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 resize-none" />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">

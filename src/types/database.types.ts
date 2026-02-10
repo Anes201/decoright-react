@@ -208,6 +208,10 @@ export type Database = {
                     visibility: Database["public"]["Enums"]["project_visibility"] | null
                     created_at: string | null
                     updated_at: string | null
+                    title_ar: string | null
+                    title_fr: string | null
+                    description_ar: string | null
+                    description_fr: string | null
                 }
                 Insert: {
                     id?: string
@@ -218,6 +222,10 @@ export type Database = {
                     visibility?: Database["public"]["Enums"]["project_visibility"] | null
                     created_at?: string | null
                     updated_at?: string | null
+                    title_ar?: string | null
+                    title_fr?: string | null
+                    description_ar?: string | null
+                    description_fr?: string | null
                 }
                 Update: {
                     id?: string
@@ -228,6 +236,10 @@ export type Database = {
                     visibility?: Database["public"]["Enums"]["project_visibility"] | null
                     created_at?: string | null
                     updated_at?: string | null
+                    title_ar?: string | null
+                    title_fr?: string | null
+                    description_ar?: string | null
+                    description_fr?: string | null
                 }
                 Relationships: []
             }
@@ -286,6 +298,12 @@ export type Database = {
                     title: string
                     updated_at: string | null
                     visibility: Database["public"]["Enums"]["project_visibility"] | null
+                    title_ar: string | null
+                    title_fr: string | null
+                    description_ar: string | null
+                    description_fr: string | null
+                    location_ar: string | null
+                    location_fr: string | null
                 }
                 Insert: {
                     width?: number | null
@@ -306,6 +324,12 @@ export type Database = {
                     title: string
                     updated_at?: string | null
                     visibility?: Database["public"]["Enums"]["project_visibility"] | null
+                    title_ar?: string | null
+                    title_fr?: string | null
+                    description_ar?: string | null
+                    description_fr?: string | null
+                    location_ar?: string | null
+                    location_fr?: string | null
                 }
                 Update: {
                     width?: number | null
@@ -326,6 +350,12 @@ export type Database = {
                     title?: string
                     updated_at?: string | null
                     visibility?: Database["public"]["Enums"]["project_visibility"] | null
+                    title_ar?: string | null
+                    title_fr?: string | null
+                    description_ar?: string | null
+                    description_fr?: string | null
+                    location_ar?: string | null
+                    location_fr?: string | null
                 }
                 Relationships: [
                     {
@@ -480,6 +510,48 @@ export type Database = {
                 }
                 Relationships: []
             }
+            faqs: {
+                Row: {
+                    id: string
+                    question: string
+                    answer: string
+                    display_order: number | null
+                    is_active: boolean | null
+                    created_at: string | null
+                    updated_at: string | null
+                    question_ar: string | null
+                    question_fr: string | null
+                    answer_ar: string | null
+                    answer_fr: string | null
+                }
+                Insert: {
+                    id?: string
+                    question: string
+                    answer: string
+                    display_order?: number | null
+                    is_active?: boolean | null
+                    created_at?: string | null
+                    updated_at?: string | null
+                    question_ar?: string | null
+                    question_fr?: string | null
+                    answer_ar?: string | null
+                    answer_fr?: string | null
+                }
+                Update: {
+                    id?: string
+                    question?: string
+                    answer?: string
+                    display_order?: number | null
+                    is_active?: boolean | null
+                    created_at?: string | null
+                    updated_at?: string | null
+                    question_ar?: string | null
+                    question_fr?: string | null
+                    answer_ar?: string | null
+                    answer_fr?: string | null
+                }
+                Relationships: []
+            },
             space_types: {
                 Row: {
                     created_at: string | null

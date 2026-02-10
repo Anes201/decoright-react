@@ -6,7 +6,6 @@ import { AdminService } from "@/services/admin.service"
 
 export default function ProjectListPage() {
     const [settings, setSettings] = useState<Record<string, string>>({});
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function fetchSettings() {
@@ -15,8 +14,6 @@ export default function ProjectListPage() {
                 setSettings(data);
             } catch (error) {
                 console.error("Failed to fetch site settings:", error);
-            } finally {
-                setLoading(false);
             }
         }
         fetchSettings();

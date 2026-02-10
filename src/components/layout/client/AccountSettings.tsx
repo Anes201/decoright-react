@@ -10,8 +10,8 @@ import { PATHS } from "@/routers/Paths";
 import { Link, Navigate } from "react-router-dom";
 import { SelectMenu } from "@components/ui/Select";
 import { DEFAULT_AUTH_USER_LANGUAGE, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "@/config";
-import { ICONS } from "@/icons";
 import { PHONE_REGEX, USERNAME_REGEX } from "@/utils/validators";
+import { useTranslation } from "react-i18next";
 
 // Unused types ProfileData and Settings removed to clear lint errors
 export type FieldKey = "firstName" | "lastName" | "phone";
@@ -21,7 +21,8 @@ export default function AccountSettingsLayout() {
 
     const { user, loading: authLoading } = useAuth()
     const [settings, setSettings] = useState<Record<string, string>>({});
-    const [language, setLanguage] = useState(DEFAULT_AUTH_USER_LANGUAGE ?? 'en')
+    const { t, i18n } = useTranslation();
+    const [language, setLanguage] = useState(i18n.language || DEFAULT_AUTH_USER_LANGUAGE || 'en')
     const [_dataSaved, setDataSaved] = useState(false);
     const [initializing, setInitializing] = useState(true);
     const [_loading, setLoading] = useState(false);
@@ -79,7 +80,7 @@ export default function AccountSettingsLayout() {
 
             } catch (err: any) {
                 console.error("Error fetching profile:", err);
-                setError(err?.message ?? String(err));
+                setError(err?.message ?? t('settings.error_load'));
             } finally {
                 setInitializing(false);
             }
@@ -93,7 +94,7 @@ export default function AccountSettingsLayout() {
         debounce(async (key: string, rawValue: string) => {
 
             if (!user?.id) {
-                setError("Missing user.");
+                setError(t('settings.error_missing_user'));
                 return;
             }
 
@@ -105,15 +106,15 @@ export default function AccountSettingsLayout() {
                 switch (key) {
                     case "firstName":
                     case "lastName":
-                        if (value.length < USERNAME_MIN_LENGTH) return "This field is required.";
-                        if (value.length > USERNAME_MAX_LENGTH) return `Must be at most ${USERNAME_MAX_LENGTH} characters.`;
-                        if (!USERNAME_REGEX.test(value)) return "Only letters, spaces, hyphens, and apostrophes allowed.";
+                        if (value.length < USERNAME_MIN_LENGTH) return t('settings.error_required');
+                        if (value.length > USERNAME_MAX_LENGTH) return t('settings.error_max_length', { max: USERNAME_MAX_LENGTH });
+                        if (!USERNAME_REGEX.test(value)) return t('settings.error_invalid_chars');
                         return null;
 
                     case "phone":
                         // phone is optional — empty is allowed
                         if (value === "") return null;
-                        if (!PHONE_REGEX.test(value)) return "Enter a valid phone number (e.g. 0123456789 or +213123456789)";
+                        if (!PHONE_REGEX.test(value)) return t('settings.error_invalid_phone');
                         return null;
 
                     default: null;
@@ -129,7 +130,7 @@ export default function AccountSettingsLayout() {
 
                 if (error) throw error
 
-                toast.success('Data saved successfully!')
+                toast.success(t('settings.saved'))
                 setDataSaved(true);
                 setTimeout(() => setDataSaved(false), 2000);
 
@@ -200,7 +201,7 @@ export default function AccountSettingsLayout() {
         return (
             <div className="flex flex-col items-center justify-center gap-4 w-full h-full">
                 <Spinner status={initializing} />
-                <span className="text-xs"> Loading profile... </span>
+                <span className="text-xs"> {t('profile.loading')} </span>
             </div>
         )
     }
@@ -224,7 +225,7 @@ export default function AccountSettingsLayout() {
                 {/* Profile Information container */}
                 <div className="flex flex-col gap-8">
                     <div className="flex items-center gap-4 w-full">
-                        <h2 className="text-xs min-w-max"> Profile Information </h2>
+                        <h2 className="text-xs min-w-max"> {t('settings.profile_info')} </h2>
                         <hr className="w-full border-0 border-b border-b-muted/15 mask-x-from-99%" />
                     </div>
 
@@ -238,13 +239,13 @@ export default function AccountSettingsLayout() {
                         <div className="flex flex-col max-sm:items-center justify-center gap-2">
 
                             <div>
-                                <label htmlFor="upload-profile-picture" className="text-xs text-muted cursor-pointer hover:underline active:underline"> Upload Profile Picture </label>
+                                <label htmlFor="upload-profile-picture" className="text-xs text-muted cursor-pointer hover:underline active:underline"> {t('settings.upload_picture')} </label>
                                 <input id="upload-profile-picture" className="hidden" onClick={handleUploadProfilePicture} />
                             </div>
                             <div>
                                 <label htmlFor="remove-profile-picture"
                                     className="text-sm text-danger cursor-pointer hover:underline active:underline"
-                                > Remove </label>
+                                > {t('settings.remove_picture')} </label>
                                 <input id="remove-profile-picture" className="hidden" onClick={handleRemoveProfilePicture} />
                             </div>
                         </div>
@@ -254,15 +255,15 @@ export default function AccountSettingsLayout() {
 
                         <div className="flex max-xs:flex-col md:flex-col lg:flex-row gap-3 md:gap-4 w-full">
                             <div className="w-full">
-                                <label htmlFor="first-name-field" className="text-xs text-muted mx-1"> First name </label>
-                                <Input type="text" id="first-name-field" placeholder="First name" className="bg-emphasis/75"
+                                <label htmlFor="first-name-field" className="text-xs text-muted mx-1"> {t('settings.first_name')} </label>
+                                <Input type="text" id="first-name-field" placeholder={t('settings.first_name')} className="bg-emphasis/75"
                                     value={settings.first_name ?? ''}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('first_name', e.target.value)} />
                             </div>
 
                             <div className="w-full">
-                                <label htmlFor="last-name-field" className="text-xs text-muted mx-1"> Last name </label>
-                                <Input type="text" id="last-name-field" placeholder="Last name"
+                                <label htmlFor="last-name-field" className="text-xs text-muted mx-1"> {t('settings.last_name')} </label>
+                                <Input type="text" id="last-name-field" placeholder={t('settings.last_name')}
                                     className="bg-emphasis/75"
                                     value={settings.last_name ?? ''}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('last_name', e.target.value)} />
@@ -270,12 +271,12 @@ export default function AccountSettingsLayout() {
                         </div>
 
                         <div>
-                            <label htmlFor="email-field" className="text-xs text-muted mx-1"> Email </label>
+                            <label htmlFor="email-field" className="text-xs text-muted mx-1"> {t('settings.email')} </label>
                             <EmailInput id="email-field" className="bg-muted/5" readOnly={true} defaultValue={user.email} />
                         </div>
 
                         <div>
-                            <label htmlFor="phone-field" className="text-xs text-muted mx-1"> Phone </label>
+                            <label htmlFor="phone-field" className="text-xs text-muted mx-1"> {t('settings.phone')} </label>
                             <PhoneInput id="phone-field"
                                 className="bg-emphasis/75"
                                 value={settings.phone ?? ''}
@@ -291,7 +292,7 @@ export default function AccountSettingsLayout() {
                 <div className="flex flex-col gap-8 mb-8">
 
                     <div className="flex items-center gap-4 w-full">
-                        <h2 className="text-xs min-w-max"> Preferences </h2>
+                        <h2 className="text-xs min-w-max"> {t('settings.preferences')} </h2>
                         <hr className="w-full border-0 border-b border-b-muted/15 mask-x-from-99%" />
                     </div>
 
@@ -299,13 +300,17 @@ export default function AccountSettingsLayout() {
                     <div className="flex flex-col w-full gap-3 md:gap-4 lg:w-3/5">
 
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="select-language" className="font-medium text-xs text-muted px-1"> Language </label>
+                            <label htmlFor="select-language" className="font-medium text-xs text-muted px-1"> {t('settings.language')} </label>
                             <SelectMenu
                                 options={Languages}
-                                placeholder="Select a Language"
+                                placeholder={t('settings.language_placeholder')}
                                 id="select-language"
                                 value={Languages.find(s => s.value === language)}
-                                onChange={(option: any) => setLanguage(option.value)}
+                                onChange={(option: any) => {
+                                    setLanguage(option.value);
+                                    i18n.changeLanguage(option.value);
+                                    debouncedSave('language', option.value);
+                                }}
                                 isSearchable={false}
                                 required
                             />
@@ -318,7 +323,7 @@ export default function AccountSettingsLayout() {
             <div className="flex flex-col gap-4">
 
                 <div className="flex items-center gap-4 w-full">
-                    <h2 className="text-xs min-w-max"> Security </h2>
+                    <h2 className="text-xs min-w-max"> {t('settings.security')} </h2>
                     <hr className="w-full border-0 border-b border-b-muted/15 mask-x-from-99%" />
                 </div>
 
@@ -328,17 +333,17 @@ export default function AccountSettingsLayout() {
                     <ul className="flex flex-col gap-4">
                         <li> <Link to={PATHS.CLIENT.PASSWORD_CHANGE}
                             className="flex items-center gap-2 w-full h-full px-2.5 py-2 bg-surface border border-muted/15 rounded-lg hover:underline active:underline"
-                        > <ICONS.lockClosed className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> Change Password </span> </Link>
+                        > <ICONS.lockClosed className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> {t('settings.change_password')} </span> </Link>
                         </li>
 
                         <li> <Link to={PATHS.CLIENT.PASSWORD_CHANGE}
                             className="flex items-center gap-2 w-full h-full px-2.5 py-2 bg-surface border border-muted/15 rounded-lg hover:underline active:underline"
-                        > <ICONS.questionMarkCircle className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> Forgot Password </span> </Link>
+                        > <ICONS.questionMarkCircle className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> {t('settings.forgot_password')} </span> </Link>
                         </li>
 
                         <li> <Link to={PATHS.CLIENT.PASSWORD_CHANGE}
                             className="flex items-center gap-2 w-full h-full px-2.5 py-2 bg-surface border border-muted/15 rounded-lg hover:underline active:underline"
-                        > <ICONS.bookOpen className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> Privacy Policy </span> </Link>
+                        > <ICONS.bookOpen className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> {t('settings.privacy_policy')} </span> </Link>
                         </li>
 
                     </ul>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { AdminService, type FAQ } from "@/services/admin.service";
 import { useTranslation } from "react-i18next";
+import { getLocalizedContent } from "@/utils/i18n";
 import Spinner from "@/components/common/Spinner";
 
 export function FAQList() {
@@ -25,25 +26,11 @@ export function FAQList() {
     }, []);
 
     const getTranslatedContent = (faq: FAQ) => {
-        const currentLang = i18n.language.split('-')[0]; // Handle language variants like 'en-US'
-
-        switch (currentLang) {
-            case 'ar':
-                return {
-                    question: faq.question_ar || faq.question_en,
-                    answer: faq.answer_ar || faq.answer_en
-                };
-            case 'fr':
-                return {
-                    question: faq.question_fr || faq.question_en,
-                    answer: faq.answer_fr || faq.answer_en
-                };
-            default:
-                return {
-                    question: faq.question_en,
-                    answer: faq.answer_en
-                };
-        }
+        const lang = i18n.language;
+        return {
+            question: getLocalizedContent(faq, 'question', lang),
+            answer: getLocalizedContent(faq, 'answer', lang)
+        };
     };
 
     if (loading) {

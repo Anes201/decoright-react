@@ -6,19 +6,23 @@ import { RequestService } from "@/services/request.service"
 import { ICONS } from "@/icons"
 import { Link } from "react-router-dom"
 import { PATHS } from "@/routers/Paths"
+import { useTranslation } from "react-i18next";
 
 export function RequestServiceItem({ request }: any) {
+    const { t, i18n } = useTranslation();
+    const langSuffix = i18n.language.startsWith('ar') ? '_ar' : i18n.language.startsWith('fr') ? '_fr' : '_en';
+
     const statusLabels: Record<string, string> = {
-        'PENDING': 'Pending',
-        'UNDER_REVIEW': 'Under Review',
-        'APPROVED': 'Approved',
-        'IN_PROGRESS': 'In Progress',
-        'COMPLETED': 'Completed',
-        'CANCELLED': 'Cancelled',
-        'REJECTED': 'Rejected'
+        'PENDING': t('requests.status.pending'),
+        'UNDER_REVIEW': t('requests.status.under_review'),
+        'APPROVED': t('requests.status.approved'),
+        'IN_PROGRESS': t('requests.status.in_progress'),
+        'COMPLETED': t('requests.status.completed'),
+        'CANCELLED': t('requests.status.cancelled'),
+        'REJECTED': t('requests.status.rejected')
     }
 
-    const date = new Date(request.created_at).toLocaleDateString()
+    const date = new Date(request.created_at).toLocaleDateString(i18n.language)
 
     return (
         <li className="flex max-md:flex-col gap-4 md:gap-6 w-full h-fit md:h-28 p-2 ring-1 ring-muted/10 bg-surface rounded-xl">
@@ -34,9 +38,9 @@ export function RequestServiceItem({ request }: any) {
                             #{request.request_code || request.id.slice(0, 8)}
                         </Link>
                         <div className="col col-project-type capitalize flex gap-1">
-                            <span>{request.service_types?.display_name_en || 'Unknown'}</span>
+                            <span>{request.service_types?.[`display_name${langSuffix}`] || request.service_types?.display_name_en || 'Unknown'}</span>
                             <span className="text-muted/50">•</span>
-                            <span>{request.space_types?.display_name_en || 'Unknown'}</span>
+                            <span>{request.space_types?.[`display_name${langSuffix}`] || request.space_types?.display_name_en || 'Unknown'}</span>
                         </div>
                         <div className="col col-date max-sm:text-xs"><time dateTime={request.created_at}>{date}</time></div>
                     </div>
@@ -52,9 +56,9 @@ export function RequestServiceItem({ request }: any) {
                 >
                     <span className="flex gap-2 items-center">
                         {ICONS.chatBubbleOvalLeftEllipsis({ className: 'size-5' })}
-                        <span>Open Chat</span>
+                        <span>{t('requests.open_chat')}</span>
                     </span>
-                    <span> {ICONS.chevronRight({ className: 'size-4' })} </span>
+                    <span> {ICONS.chevronRight({ className: 'size-4 rtl:rotate-180' })} </span>
                 </Link>
 
             </div>
@@ -67,6 +71,7 @@ export function RequestServiceList() {
     const [requests, setRequests] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchRequests = async () => {
@@ -74,7 +79,7 @@ export function RequestServiceList() {
                 const data = await RequestService.getMyRequests()
                 setRequests(data)
             } catch (err: any) {
-                setError(err.message || "Failed to load requests")
+                setError(err.message || t('requests.error_load'))
             } finally {
                 setLoading(false)
             }
@@ -83,9 +88,9 @@ export function RequestServiceList() {
         fetchRequests()
     }, [])
 
-    if (loading) return <div className="p-8 text-center text-muted">Loading requests...</div>
-    if (error) return <div className="p-8 text-center text-danger">Error: {error}</div>
-    if (requests.length === 0) return <div className="p-8 text-center text-muted">No service requests found.</div>
+    if (loading) return <div className="p-8 text-center text-muted">{t('requests.loading')}</div>
+    if (error) return <div className="p-8 text-center text-danger">{t('common.error')}: {error}</div>
+    if (requests.length === 0) return <div className="p-8 text-center text-muted">{t('requests.no_requests')}</div>
 
     return (
         <ol id="orders-table" role="table" aria-label="Your orders" className="flex flex-col gap-2 md:gap-4">

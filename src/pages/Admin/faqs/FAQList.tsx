@@ -1,4 +1,4 @@
-import { FAQRow } from "@/components/layout/admin/faqs/FAQList";
+
 import FAQList from "@/components/layout/admin/faqs/FAQList";
 import { Link } from "react-router-dom";
 import { PATHS } from "@/routers/Paths";

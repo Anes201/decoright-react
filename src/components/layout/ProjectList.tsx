@@ -5,8 +5,10 @@ import { ICONS } from "@/icons";
 import { PATHS } from "@/routers/Paths";
 import { AdminService } from "@/services/admin.service";
 import Spinner from "@components/common/Spinner";
+import { getLocalizedContent } from "@/utils/i18n";
+import { useTranslation } from "react-i18next";
 
-export function ProjectCard({ project, index }: { project: any, index: number }) {
+export function ProjectCard({ project, index, lang }: { project: any, index: number, lang: string }) {
     return (
         <li key={index} >
             <Link to={PATHS.projectDetail(project.slug || project.id)} className="flex flex-col h-fit gap-1">
@@ -15,7 +17,7 @@ export function ProjectCard({ project, index }: { project: any, index: number })
                 </div>
                 <div className="h-fit">
                     <div className="flex gap-2">
-                        <h3 className="font-medium text-xs"> {project.title} </h3>
+                        <h3 className="font-medium text-xs"> {getLocalizedContent(project, 'title', lang)} </h3>
                         <div className="flex h-fit gap-1 text-muted ml-auto px-1">
                             <div className="flex items-center gap-0.5 pt-0.5">
                                 {ICONS.eye({ className: 'size-4' })}
@@ -36,6 +38,7 @@ export function ProjectCardList() {
     const [projects, setProjects] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const { user, isAdmin } = useAuth();
+    const { i18n } = useTranslation();
 
     useEffect(() => {
         async function fetchProjects() {
@@ -66,7 +69,7 @@ export function ProjectCardList() {
     return (
         <ul className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] gap-8 md:gap-6 w-full">
             {projects.map((project, index) => (
-                <ProjectCard key={project.id} project={project} index={index} />
+                <ProjectCard key={project.id} project={project} index={index} lang={i18n.language} />
             ))}
         </ul>
     )

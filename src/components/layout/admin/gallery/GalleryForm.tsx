@@ -21,7 +21,11 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         title: initialData?.title || "",
+        title_ar: initialData?.title_ar || "",
+        title_fr: initialData?.title_fr || "",
         description: initialData?.description || "",
+        description_ar: initialData?.description_ar || "",
+        description_fr: initialData?.description_fr || "",
         visibility: initialData?.visibility || "PUBLIC",
     });
 
@@ -119,12 +123,56 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
                 </div>
 
                 <div className="flex flex-col gap-2">
+                    <label className="font-medium text-xs text-muted px-1"> Title (Arabic) </label>
+                    <input
+                        type="text"
+                        value={(formData as any).title_ar}
+                        onChange={(e) => setFormData({ ...formData, title_ar: e.target.value } as any)}
+                        placeholder="العنوان بالعربية"
+                        className="w-full p-2.5 text-sm text-muted bg-emphasis/75 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 text-right"
+                        dir="rtl"
+                    />
+                </div>
+                <div className="flex flex-col gap-2">
+                    <label className="font-medium text-xs text-muted px-1"> Title (French) </label>
+                    <input
+                        type="text"
+                        value={(formData as any).title_fr}
+                        onChange={(e) => setFormData({ ...formData, title_fr: e.target.value } as any)}
+                        placeholder="Titre en français"
+                        className="w-full p-2.5 text-sm text-muted bg-emphasis/75 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45"
+                    />
+                </div>
+
+                <div className="flex flex-col gap-2">
                     <label className="font-medium text-xs text-muted px-1"> Description </label>
                     <textarea
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         rows={5}
                         placeholder="Project description..."
+                        className="w-full p-2.5 text-sm bg-emphasis/75 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45"
+                    />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                    <label className="font-medium text-xs text-muted px-1"> Description (Arabic) </label>
+                    <textarea
+                        value={(formData as any).description_ar}
+                        onChange={(e) => setFormData({ ...formData, description_ar: e.target.value } as any)}
+                        rows={4}
+                        placeholder="الوصف بالعربية..."
+                        className="w-full p-2.5 text-sm bg-emphasis/75 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 text-right"
+                        dir="rtl"
+                    />
+                </div>
+                <div className="flex flex-col gap-2">
+                    <label className="font-medium text-xs text-muted px-1"> Description (French) </label>
+                    <textarea
+                        value={(formData as any).description_fr}
+                        onChange={(e) => setFormData({ ...formData, description_fr: e.target.value } as any)}
+                        rows={4}
+                        placeholder="Description en français..."
                         className="w-full p-2.5 text-sm bg-emphasis/75 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45"
                     />
                 </div>

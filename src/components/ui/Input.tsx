@@ -2,6 +2,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 
 import { ICONS } from "@/icons";
+import { useTranslation } from "react-i18next";
 
 export function Input({ className, children, ...props }: any) {
 
@@ -32,32 +33,38 @@ export function Input({ className, children, ...props }: any) {
   )
 }
 
-export function EmailInput({ id = 'email_field', label = 'Email', className, ...props }: any) {
+export function EmailInput({ id = 'email_field', label, className, ...props }: any) {
+  const { t } = useTranslation();
+  const displayLabel = label || t('auth.email');
   return (
-    <Input id={id} type={'email'} placeholder="email@example.com" className={`${className} ltr:pl-8 ltr:sm:pl-10 rtl:pr-8 rtl:sm:pr-10`} {...props}>
+    <Input id={id} type={'email'} placeholder={t('auth.placeholders.email')} className={`${className} ltr:pl-8 ltr:sm:pl-10 rtl:pr-8 rtl:sm:pr-10`} {...props}>
       {/* Password Icon Placeholder */}
       <span className="absolute px-1.5 ltr:left-1 ltr:sm:left-1.5 rtl:right-1 rtl:sm:right-1.5"> {ICONS.envelope({ className: 'size-4 text-muted/75' })} </span>
     </Input>
   );
 }
 
-export function PhoneInput({ id = 'phone_field', label = 'Phone', className, ...props }: any) {
+export function PhoneInput({ id = 'phone_field', label, className, ...props }: any) {
+  const { t } = useTranslation();
+  const displayLabel = label || t('auth.phone');
   return (
-    <Input id={id} type={'tel'} placeholder="Phone Number" className={`${className} ltr:pl-8 ltr:sm:pl-10 rtl:pr-8 rtl:sm:pr-10`} {...props}>
+    <Input id={id} type={'tel'} placeholder={t('auth.placeholders.phone')} className={`${className} ltr:pl-8 ltr:sm:pl-10 rtl:pr-8 rtl:sm:pr-10`} {...props}>
       {/* Password Icon Placeholder */}
       <span className="absolute px-1.5 ltr:left-1 ltr:sm:left-1.5 rtl:right-1 rtl:sm:right-1.5"> {ICONS.phone({ className: 'size-4 text-muted/75' })} </span>
     </Input>
   );
 }
 
-export function PasswordInput({ id = 'password_field', label = 'Password', value, onChange, error, ...props }: any) {
+export function PasswordInput({ id = 'password_field', label, value, onChange, error, ...props }: any) {
   const [show, setShow] = useState(false);
+  const { t } = useTranslation();
+  const displayLabel = label || t('auth.password');
 
   return (
     <Input
       id={id}
       type={show ? 'text' : 'password'}
-      placeholder={label}
+      placeholder={displayLabel}
       className="px-9 sm:px-10 md:pr-12"
       error={error}
       value={value}
@@ -65,12 +72,12 @@ export function PasswordInput({ id = 'password_field', label = 'Password', value
       {...props}
     >
       {/* Password Icon Placeholder */}
-      <span className="absolute px-2 left-1 sm:left-1.5"> {ICONS.key({ className: 'size-4 text-muted/75' })} </span>
+      <span className="absolute px-2 ltr:left-1 ltr:sm:left-1.5 rtl:right-1 rtl:sm:right-1.5"> {ICONS.key({ className: 'size-4 text-muted/75' })} </span>
 
       {/* Show/Hide Icon Placeholder */}
       <button type="button" onClick={() => setShow(s => !s)}
-        aria-pressed={show} aria-label={show ? 'Hide password' : 'Show password'}
-        className="absolute px-2 right-1 sm:right-1.5 border-l border-muted/15"
+        aria-pressed={show} aria-label={show ? t('auth.hide_password') : t('auth.show_password')}
+        className="absolute px-2 ltr:right-1 ltr:sm:right-1.5 rtl:left-1 rtl:sm:left-1.5 ltr:border-l rtl:border-r border-muted/15"
       >
         {!show ? <ICONS.eyeSlash className='size-5 text-muted/75' /> : <ICONS.eye className='size-5 text-muted/75' />}
       </button>
@@ -92,8 +99,8 @@ export function EmailOrPhoneInput({ id = 'email_or_phone_field', label = 'Email 
   }
 
   return (
-    <Input id={id} type="text" placeholder="Enter email or phone" value={value} onChange={onChange} className="px-9 sm:px-10 md:pr-12" error={error} {...props}>
-      <span className="absolute px-2 left-1 sm:left-1.5"> {getIcon(value)} </span>
+    <Input id={id} type="text" placeholder={t('auth.placeholders.email_or_phone')} value={value} onChange={onChange} className="px-9 sm:px-10 md:pr-12" error={error} {...props}>
+      <span className="absolute px-2 ltr:left-1 ltr:sm:left-1.5 rtl:right-1 rtl:sm:right-1.5"> {getIcon(value)} </span>
     </Input>
   );
 };

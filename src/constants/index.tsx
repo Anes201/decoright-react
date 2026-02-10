@@ -150,8 +150,8 @@ export const serviceDesignStyle = [
 ]
 
 export const LegalLinks = [
-    { label: 'Terms & Conditions', path: '/terms' },
-    { label: 'Privacy Policy', path: '/privacy-policy' },
+    { label: 'Terms & Conditions', key: 'terms', path: '/terms' },
+    { label: 'Privacy Policy', key: 'privacy', path: '/privacy-policy' },
 ]
 
 export const projects = [

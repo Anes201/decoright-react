@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { ICONS } from "@/icons";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { AdminService } from "@/services/admin.service";
+import { useTranslation } from "react-i18next";
 
 export function ContactCard({ children }: any) {
     return (
@@ -17,6 +18,8 @@ export function ContactCardList() {
         googleMapsUrl
     } = useSiteSettings();
 
+    const { t } = useTranslation();
+
     return (
         <ul className="grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] justify-center gap-4 w-full">
             <ContactCard>
@@ -27,8 +30,8 @@ export function ContactCardList() {
 
                 <a href={`tel:${primaryPhone}`} className="space-y-3">
                     <div>
-                        <h3 className="font-semibold text-primary text-lg"> Call Us </h3>
-                        <p className="text-2xs md:text-xs text-muted"> Have a quick question? Give us a call or send a text. </p>
+                        <h3 className="font-semibold text-primary text-lg"> {t('contact.cards.call_us.title')} </h3>
+                        <p className="text-2xs md:text-xs text-muted"> {t('contact.cards.call_us.description')} </p>
                     </div>
 
                     <span className="font-medium text-xs text-foreground hover:underline active:underline"> {primaryPhone} </span>
@@ -44,8 +47,8 @@ export function ContactCardList() {
 
                 <a href={`mailto:${primaryEmail}`} className="space-y-3">
                     <div>
-                        <h3 className="font-semibold text-primary text-lg"> Mail & Support </h3>
-                        <p className="text-2xs md:text-xs text-muted"> Email us for detailed inquiries and project proposals. </p>
+                        <h3 className="font-semibold text-primary text-lg"> {t('contact.cards.mail_support.title')} </h3>
+                        <p className="text-2xs md:text-xs text-muted"> {t('contact.cards.mail_support.description')} </p>
                     </div>
 
                     <span className="font-medium text-xs text-foreground hover:underline active:underline"> {primaryEmail} </span>
@@ -60,11 +63,11 @@ export function ContactCardList() {
 
                 <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer" className="space-y-3">
                     <div>
-                        <h3 className="font-semibold text-primary text-lg"> Visit Us </h3>
-                        <p className="text-2xs md:text-xs text-muted"> Come visit our office to discuss your project in person. </p>
+                        <h3 className="font-semibold text-primary text-lg"> {t('contact.cards.visit_us.title')} </h3>
+                        <p className="text-2xs md:text-xs text-muted"> {t('contact.cards.visit_us.description')} </p>
                     </div>
 
-                    <span className="font-medium text-xs text-foreground hover:underline active:underline"> View on Google Maps </span>
+                    <span className="font-medium text-xs text-foreground hover:underline active:underline"> {t('contact.cards.visit_us.cta')} </span>
                 </a>
             </ContactCard>
         </ul>
@@ -86,8 +89,11 @@ export default function Contact() {
         fetchSettings();
     }, []);
 
-    const pageTitle = settings.contact_page_title || "Get in Touch";
-    const pageDescription = settings.contact_page_description || "We'd love to hear from you. Whether you have a question about our services, pricing, or anything else, our team is ready to answer all your questions.";
+    const { t, i18n } = useTranslation();
+    const lang = i18n.language.startsWith('ar') ? '_ar' : i18n.language.startsWith('fr') ? '_fr' : '';
+
+    const pageTitle = settings[`contact_page_title${lang}`] || settings.contact_page_title || t('contact.title');
+    const pageDescription = settings[`contact_page_description${lang}`] || settings.contact_page_description || t('contact.description');
 
     return (
         <main>

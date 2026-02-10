@@ -6,17 +6,21 @@ import { AdminService, type GalleryItem } from "@/services/admin.service";
 import Spinner from "@/components/common/Spinner";
 import toast from "react-hot-toast";
 
-export function GalleryItemCard({ item }: { item: GalleryItem }) {
+import { getLocalizedContent } from "@/utils/i18n";
+import { useTranslation } from "react-i18next";
+
+export function GalleryItemCard({ item, lang }: { item: GalleryItem, lang: string }) {
+    const { t } = useTranslation();
     return (
         <li className="relative flex flex-col gap-2 w-full h-full rounded-2xl px-3 md:px-4 border border-muted/20 bg-surface overflow-clip group">
             <div className="p-3 md:p-4 h-full border-x border-muted/20 flex flex-col">
                 <div className="flex flex-col gap-2 mb-4">
                     <div className="relative flex items-center gap-2">
                         <div className="absolute w-2 aspect-square bg-primary border border-primary/20 rounded-full -left-5 md:-left-6" />
-                        <h3 className="font-semibold sm:text-lg lg:text-xl group-hover:text-primary transition-colors"> {item.title} </h3>
+                        <h3 className="font-semibold sm:text-lg lg:text-xl group-hover:text-primary transition-colors"> {getLocalizedContent(item, 'title', lang)} </h3>
                     </div>
                     {item.description && (
-                        <p className="text-sm text-muted/75 line-clamp-3"> {item.description} </p>
+                        <p className="text-sm text-muted/75 line-clamp-3"> {getLocalizedContent(item, 'description', lang)} </p>
                     )}
                 </div>
 
@@ -29,7 +33,7 @@ export function GalleryItemCard({ item }: { item: GalleryItem }) {
                                 alt="Before"
                                 className="block w-full h-full object-cover"
                             />
-                            <figcaption className="absolute top-2 left-2 text-3xs uppercase tracking-widest font-bold text-white px-2 py-0.5 bg-black/50 rounded-full backdrop-blur-sm">Before</figcaption>
+                            <figcaption className="absolute top-2 left-2 text-3xs uppercase tracking-widest font-bold text-white px-2 py-0.5 bg-black/50 rounded-full backdrop-blur-sm">{t('gallery.before', 'Before')}</figcaption>
                         </figure>
 
                         <figure slot="second" className="relative w-full h-full">
@@ -39,18 +43,18 @@ export function GalleryItemCard({ item }: { item: GalleryItem }) {
                                 alt="After"
                                 className="block w-full h-full object-cover"
                             />
-                            <figcaption className="absolute top-2 right-2 text-3xs uppercase tracking-widest font-bold text-white px-2 py-0.5 bg-black/50 rounded-full backdrop-blur-sm">After</figcaption>
+                            <figcaption className="absolute top-2 right-2 text-3xs uppercase tracking-widest font-bold text-white px-2 py-0.5 bg-black/50 rounded-full backdrop-blur-sm">{t('gallery.after', 'After')}</figcaption>
                         </figure>
                     </ImgComparisonSlider>
 
                     <div className="xs:hidden flex flex-col gap-4">
                         <div className='flex flex-col gap-1 w-full'>
                             <ZoomImage src={item.before_image_url || ""} className="aspect-video object-cover w-full rounded-lg" />
-                            <span className="text-3xs uppercase text-muted text-center"> Before </span>
+                            <span className="text-3xs uppercase text-muted text-center"> {t('gallery.before', 'Before')} </span>
                         </div>
                         <div className='flex flex-col gap-1 w-full'>
                             <ZoomImage src={item.after_image_url || ""} className="aspect-video object-cover w-full rounded-lg" />
-                            <span className="text-3xs uppercase text-muted text-center"> After </span>
+                            <span className="text-3xs uppercase text-muted text-center"> {t('gallery.after', 'After')} </span>
                         </div>
                     </div>
                 </div>
@@ -62,6 +66,7 @@ export default function GalleryPortfolioListLayout() {
     const [items, setItems] = useState<GalleryItem[]>([]);
     const [loading, setLoading] = useState(true);
     const { user, isAdmin } = useAuth();
+    const { t, i18n } = useTranslation();
 
     useEffect(() => {
         const fetchItems = async () => {
@@ -93,7 +98,7 @@ export default function GalleryPortfolioListLayout() {
     if (items.length === 0) {
         return (
             <div className="text-center p-20 border-2 border-dashed border-muted/10 rounded-2xl bg-surface/50">
-                <p className="text-muted">No showcase items available at the moment.</p>
+                <p className="text-muted">{t('gallery.no_items', 'No showcase items available at the moment.')}</p>
             </div>
         );
     }
@@ -101,7 +106,7 @@ export default function GalleryPortfolioListLayout() {
     return (
         <ul className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
             {items.map((item) => (
-                <GalleryItemCard key={item.id} item={item} />
+                <GalleryItemCard key={item.id} item={item} lang={i18n.language} />
             ))}
         </ul>
     );

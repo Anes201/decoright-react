@@ -6,8 +6,9 @@ import { SectionHeader } from "@/components/ui/SectionHeader"
 import { ShowcaseCardList } from "@/components/layout/Showcase"
 import { Link } from "react-router-dom"
 import { PATHS } from "@/routers/Paths"
-import { ICONS } from "@/icons"
 import { AdminService } from "@/services/admin.service"
+import { useTranslation } from "react-i18next"
+import { ICONS } from "@/icons"
 
 export default function Landing() {
     const [settings, setSettings] = useState<Record<string, string>>({});
@@ -24,12 +25,15 @@ export default function Landing() {
         fetchSettings();
     }, []);
 
-    const servicesTitle = settings.home_services_section_title || "Explore our range of interior design services";
-    const servicesDescription = settings.home_services_section_description || "From concept to completion, we offer comprehensive design solutions tailored to meet your unique needs.";
-    const projectsTitle = settings.home_projects_section_title || "Browse our previous projects from our showcase";
-    const projectsDescription = settings.home_projects_section_description || "A curated selection of our finest interior design projects, highlighting our commitment to quality, creativity, and client satisfaction. Explore the diverse styles and innovative solutions that define our work.";
-    const faqTitle = settings.home_faq_title || "Most frequently asked questions by our users";
-    const faqDescription = settings.home_faq_description || "Find answers to common questions about our design services, process, and pricing.";
+    const { t, i18n } = useTranslation();
+    const lang = i18n.language.startsWith('ar') ? '_ar' : i18n.language.startsWith('fr') ? '_fr' : '';
+
+    const servicesTitle = settings[`home_services_section_title${lang}`] || settings.home_services_section_title || t('landing.sections.services.title');
+    const servicesDescription = settings[`home_services_section_description${lang}`] || settings.home_services_section_description || t('landing.sections.services.description');
+    const projectsTitle = settings[`home_projects_section_title${lang}`] || settings.home_projects_section_title || t('landing.sections.projects.title');
+    const projectsDescription = settings[`home_projects_section_description${lang}`] || settings.home_projects_section_description || t('landing.sections.projects.description');
+    const faqTitle = settings[`home_faq_title${lang}`] || settings.home_faq_title || t('landing.sections.faq.title');
+    const faqDescription = settings[`home_faq_description${lang}`] || settings.home_faq_description || t('landing.sections.faq.description');
 
     return (
         <>
@@ -60,7 +64,7 @@ export default function Landing() {
                         desc={projectsDescription}
                     />
                     <Link to={PATHS.PROJECT_LIST} className="text-primary font-medium text-sm whitespace-nowrap hover:underline pb-2 flex items-center gap-1">
-                        View All Projects {ICONS.chevronRight({ className: 'size-4' })}
+                        {t('common.view_all_projects')} {ICONS.chevronRight({ className: `size-4 ${i18n.dir() === 'rtl' ? 'rotate-180' : ''}` })}
                     </Link>
                 </div>
 

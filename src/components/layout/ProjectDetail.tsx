@@ -11,7 +11,10 @@ import { AdminService } from "@/services/admin.service";
 import Spinner from "@components/common/Spinner";
 import { PATHS } from "@/routers/Paths";
 
-export function ProjectCardItem({ project, index }: { project: any, index: number }) {
+import { getLocalizedContent } from "@/utils/i18n";
+import { useTranslation } from "react-i18next";
+
+export function ProjectCardItem({ project, index, lang }: { project: any, index: number, lang: string }) {
     return (
         <li key={index}>
             <Link to={PATHS.projectDetail(project.slug || project.id)} className="flex max-md:flex-col gap-1 h-full">
@@ -19,7 +22,7 @@ export function ProjectCardItem({ project, index }: { project: any, index: numbe
                     <img src={project.thumbnail_url} alt={project.title} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex flex-col gap-1 w-full h-full overflow-hidden">
-                    <h3 className="font-medium text-xs md:text-2xs h-full text-ellipsis-3line"> {project.title} </h3>
+                    <h3 className="font-medium text-xs md:text-2xs h-full text-ellipsis-3line"> {getLocalizedContent(project, 'title', lang)} </h3>
                     <div className="flex md:flex-col">
                         <p className="font-medium text-2xs md:text-3xs text-muted/75"> View Project </p>
                     </div>
@@ -33,6 +36,7 @@ export function ProjectSimilarList() {
     const [projects, setProjects] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const { user, isAdmin } = useAuth();
+    const { i18n } = useTranslation();
 
     useEffect(() => {
         async function fetchSimilar() {
@@ -57,7 +61,7 @@ export function ProjectSimilarList() {
     return (
         <ul className="space-y-6 md:space-y-2">
             {projects.map((project, index) => (
-                <ProjectCardItem key={project.id} project={project} index={index} />
+                <ProjectCardItem key={project.id} project={project} index={index} lang={i18n.language} />
             ))}
         </ul>
     )
@@ -65,6 +69,8 @@ export function ProjectSimilarList() {
 
 export function ProjectDetail() {
     const { slug } = useParams<{ slug: string }>();
+    const { i18n } = useTranslation();
+    const lang = i18n.language;
     const [project, setProject] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [liked, setLiked] = useState(false);
@@ -124,13 +130,13 @@ export function ProjectDetail() {
 
                 <div className="flex flex-col gap-4 w-full mt-6">
                     <div className="flex max-lg:flex-col lg:justify-between gap-2">
-                        <h1 className="font-semibold text-lg md:text-xl text-heading leading-tight line-clamp-2">{project.title}</h1>
+                        <h1 className="font-semibold text-lg md:text-xl text-heading leading-tight line-clamp-2">{getLocalizedContent(project, 'title', lang)}</h1>
                         <div className="flex flex-wrap gap-2 min-w-max">
                             <span className="text-2xs md:text-xs px-3 py-1 h-fit rounded-full bg-muted/5 text-muted border border-muted/15">
-                                {project.service_types?.display_name_en}
+                                {getLocalizedContent(project.service_types, 'display_name', lang)}
                             </span>
                             <span className="text-2xs md:text-xs px-3 py-1 h-fit rounded-full bg-muted/5 text-muted border border-muted/15">
-                                {project.space_types?.display_name_en}
+                                {getLocalizedContent(project.space_types, 'display_name', lang)}
                             </span>
                         </div>
                     </div>
@@ -139,7 +145,7 @@ export function ProjectDetail() {
                     <div className="flex items-center gap-6 py-2 px-1 border-b border-muted/10">
                         <div className="flex items-center gap-2 text-muted">
                             {ICONS.mapPin({ className: 'size-4' })}
-                            <span className="text-xs font-medium">{project.location || 'N/A'}</span>
+                            <span className="text-xs font-medium">{getLocalizedContent(project, 'location', lang) || 'N/A'}</span>
                         </div>
                         <div className="flex items-center gap-2 text-muted">
                             {/* {ICONS.layout({ className: 'size-4' })} */}
@@ -184,7 +190,7 @@ export function ProjectDetail() {
                                         <ICONS.mapPin className="size-4" />
                                         <h5 className="text-xs text-muted"> Location </h5>
                                     </div>
-                                    <span className="text-xs font-medium"> {project.location || 'N/A'} </span>
+                                    <span className="text-xs font-medium"> {getLocalizedContent(project, 'location', lang) || 'N/A'} </span>
                                 </div>
                             }
 
@@ -201,7 +207,7 @@ export function ProjectDetail() {
                         <div onClick={() => setDescOpen(!descOpen)}>
 
                             <p className={`text-xs text-body leading-relaxed ${!descOpen && 'line-clamp-2'}`}>
-                                {project.description}
+                                {getLocalizedContent(project, 'description', lang)}
                             </p>
                         </div>
                     </div>

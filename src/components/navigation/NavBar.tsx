@@ -11,11 +11,14 @@ import { publicMenuItems, clientMenuItems } from "@/constants/navigation"
 import { MenuCard } from "@components/ui/MenuCard"
 import { PCTALink, SCTALink } from "@components/ui/CTA"
 import { PATHS } from "@/routers/Paths"
+import LanguageSwitcher from "@components/common/LanguageSwitcher"
+import { useTranslation } from "react-i18next"
 
 const UserContext = createContext<any>(null);
 
 
 export function NavLogo() {
+    const { t } = useTranslation();
     return (
         <div className="flex items-center gap-2 md:gap-4 min-w-max">
             <div className="content-center w-8 md:w-10 aspect-square">
@@ -23,8 +26,8 @@ export function NavLogo() {
             </div>
             <div className="flex flex-col">
                 <h3 className="text-sm md:text-base font-medium"> Deco Right </h3>
-                <span className="text-3xs md:text-2xs text-muted hover:text-foreground" title="Decor agency">
-                    Decor agency
+                <span className="text-3xs md:text-2xs text-muted hover:text-foreground" title={t('common.decor_agency')}>
+                    {t('common.decor_agency')}
                 </span>
             </div>
         </div>
@@ -32,11 +35,12 @@ export function NavLogo() {
 }
 
 export function NavLinks() {
+    const { t } = useTranslation();
     return (
         <ul className="hidden md:flex justify-center gap-4 w-full">
             {publicMenuItems.map((item, index) => (
                 <li key={index}>
-                    <Link to={item.path} className="font-medium text-sm p-2"> {item.label} </Link>
+                    <Link to={item.path} className="font-medium text-sm p-2"> {t(`nav.${item.key}`)} </Link>
                 </li>
             ))}
 
@@ -56,31 +60,31 @@ export function AuthenticatedUserActins() {
         <>
             <div className="flex items-center gap-2 md:gap-4">
 
-                {isAdmin
+                {isAdmin ? <>
+                    <LanguageSwitcher />
+                    {/* Request Project */}
+                    <Link to={PATHS.ADMIN.PROJECT_CREATE} title="Create Project" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
+                        Create a Project
+                    </Link>
 
-                    ? <>
-                        {/* Request Project */}
-                        <Link to={PATHS.ADMIN.PROJECT_CREATE} title="Create Project" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
-                            Create a Project
-                        </Link>
+                    <Link to={PATHS.ADMIN.ROOT} title="Dashboard Panel" className="max-md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full">
+                        <ICONS.presentationChartLine className="size-5 md:size-6" />
+                    </Link>
 
-                        <Link to={PATHS.ADMIN.ROOT} title="Dashboard Panel" className="max-md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full">
-                            <ICONS.presentationChartLine className="size-5 md:size-6" />
-                        </Link>
+                    {/* Chat Menu Card */}
+                    <button type="button" title="Chat Menu" onClick={() => setChatMenuOpen(!chatMenuOpen)}
+                        className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
+                        <ICONS.chat className="size-5 md:size-6" />
 
-                        {/* Chat Menu Card */}
-                        <button type="button" title="Chat Menu" onClick={() => setChatMenuOpen(!chatMenuOpen)}
-                            className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
-                            <ICONS.chat className="size-5 md:size-6" />
-
-                            <span className="absolute flex size-3 top-0 left-0">
-                                <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
-                                <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
-                            </span>
-                        </button>
-                    </>
+                        <span className="absolute flex size-3 top-0 left-0">
+                            <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
+                            <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
+                        </span>
+                    </button>
+                </>
 
                     : <>
+                        <LanguageSwitcher />
                         {/* Request Project */}
                         <Link to={PATHS.CLIENT.REQUEST_SERVICE} title="Request Service" className="max-md:hidden content-center p-2 min-w-max font-medium text-sm border border-primary/45 bg-surface/75 rounded-full">
                             Request Service
@@ -150,14 +154,16 @@ export function AnonymousUserActins() {
 
         <>
             <div className="flex items-center gap-2 md:gap-4">
+                <LanguageSwitcher />
+
                 {/* Login */}
-                <SCTALink to={PATHS.LOGIN} title="Login" className="max-md:hidden"> Login </SCTALink>
+                <SCTALink to={PATHS.LOGIN} title={t('auth.login')} className="max-md:hidden"> {t('auth.login')} </SCTALink>
 
                 {/* Sign Up */}
-                <PCTALink to={PATHS.SIGNUP} title="Sign Up"> Sign Up </PCTALink>
+                <PCTALink to={PATHS.SIGNUP} title={t('auth.signup')}> {t('auth.signup')} </PCTALink>
 
                 {/* Menu Trigger */}
-                <button type="button" title="Menu" className="md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>
+                <button type="button" title={t('common.menu')} className="md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>
                     <ICONS.menu className="size-6" />
                 </button>
 

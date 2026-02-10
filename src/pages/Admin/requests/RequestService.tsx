@@ -180,7 +180,7 @@ export default function RequestOverview() {
                                                     {attachment.file_type === 'IMAGE' ? (
                                                         <ICONS.photo className="size-5 text-primary" />
                                                     ) : attachment.file_type === 'PDF' ? (
-                                                        <ICONS.document className="size-5 text-primary" />
+                                                        <ICONS.documentText className="size-5 text-primary" />
                                                     ) : (
                                                         <ICONS.documentText className="size-5 text-primary" />
                                                     )}

@@ -1,0 +1,250 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "services": "الخدمات",
+    "projects": "المشاريع",
+    "contact_us": "اتصل بنا",
+    "contact": "اتصال",
+    "about": "حول",
+    "gallery": "المعرض",
+    "messages": "الرسائل",
+    "request_service": "طلب خدمة",
+    "your_requests": "طلباتي",
+    "admin": "لوحة التحكم",
+    "dashboard": "لوحة القيادة",
+    "analytics": "التحليلات",
+    "users": "المستخدمين والنشاط",
+    "requests": "طلبات الخدمة",
+    "service_request": "طلب خدمة",
+    "request_list": "قائمة الطلبات",
+    "gallery_management": "إدارة المعرض",
+    "gallery_list": "قائمة المعرض",
+    "add_gallery": "إضافة صورة للمعرض",
+    "project_management": "إدارة المشاريع",
+    "project_list": "قائمة المشاريع",
+    "add_project": "إضافة مشروع",
+    "services_spaces": "الخدمات والمساحات",
+    "service_types": "أنواع الخدمات",
+    "space_types": "أنواع المساحات",
+    "faq_management": "إدارة الأسئلة الشائعة",
+    "faq_list": "قائمة الأسئلة",
+    "add_faq": "إضافة سؤال",
+    "settings": "الإعدادات"
+  },
+  "common": {
+    "decor_agency": "وكالة ديكور",
+    "menu": "القائمة",
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ ما",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "view_all": "عرض الكل",
+    "view_all_projects": "عرض جميع المشاريع"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "login_to": "تسجيل الدخول إلى",
+    "login_description": "أدخل بياناتك للوصول إلى حسابك وإدارة طلبات التصميم الخاصة بك.",
+    "signup": "إنشاء حساب",
+    "signup_to": "إنشاء حساب في",
+    "signup_description": "أنشئ حسابًا لبدء رحلة التصميم معنا.",
+    "logout": "تسجيل الخروج",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "show_password": "إظهار كلمة المرور",
+    "hide_password": "إخفاء كلمة المرور",
+    "remember_me": "تذكرني",
+    "forgot_password": "هل نسيت كلمة المرور؟",
+    "no_account": "ليس لديك حساب بعد؟",
+    "signup_now": "أنشئ حساباً",
+    "already_have_account": "لديك حساب بالفعل؟",
+    "login_now": "تسجيل الدخول",
+    "error_failed_login": "فشل تسجيل الدخول",
+    "error_failed_signup": "فشل إنشاء الحساب",
+    "phone": "رقم الهاتف",
+    "placeholders": {
+      "email": "email@example.com",
+      "phone": "رقم الهاتف",
+      "email_or_phone": "أدخل البريد الإلكتروني أو الهاتف",
+      "first_name": "الاسم الأول",
+      "last_name": "اسم العائلة"
+    },
+    "otp": {
+      "verify_account": "تحقق من حسابك",
+      "description": "تم إرسال رمز تحقق مكون من 6 أرقام إلى <b>{{email}}</b>. أدخله أدناه لإكمال عملية التسجيل.",
+      "verify_button": "تحقق من الرمز",
+      "resend_prompt": "لم تستلم الرمز؟",
+      "resend_button": "إعادة الإرسال",
+      "invalid_code": "يرجى إدخال رمز صحيح مكون من 6 أرقام",
+      "error_invalid": "الرمز غير صحيح أو منتهي الصلاحية",
+      "error_invalid_length": "يرجى إدخال رمز صحيح مكون من 6 أرقام",
+      "error_resend": "فشل إعادة إرسال الرمز",
+      "resend_success": "تم إعادة إرسال رمز التحقق إلى بريدك الإلكتروني",
+      "loading_moment": "لحظة واحدة..."
+    }
+  },
+  "footer": {
+    "description": "{{companyName}} هو شريكك الموثوق لحلول التصميم الداخلي والديكور الرائعة. نحن نحول رؤيتك إلى واقع بإبداع وأناقة.",
+    "rights": "جميع الحقوق محفوظة.",
+    "social": {
+      "facebook": "فيسبوك",
+      "instagram": "إنستغرام",
+      "tiktok": "تيك توك",
+      "youtube": "يوتيوب",
+      "whatsapp": "واتساب"
+    },
+    "legal": {
+      "terms": "الشروط والأحكام",
+      "privacy": "سياسة الخصوصية"
+    }
+  },
+  "landing": {
+    "hero": {
+      "subtitle": "المساحة والديكور",
+      "title": "تصميم داخلي يرتقي بالحياة اليومية",
+      "description": "مرحبًا بكم في ديكو رايت، شريككم الموثوق لحلول التصميم الداخلي والديكور الرائعة. نحن نحول رؤيتكم إلى واقع بإبداع وأناقة.",
+      "checklist": {
+        "consultations": "استشارات تصميم شخصية",
+        "planning": "تخطيط المساحات",
+        "furniture": "أثاث وديكور مخصص"
+      },
+      "cta": {
+        "request_service": "طلب خدمة",
+        "services": "الخدمات",
+        "projects": "المشاريع والفئات"
+      },
+      "metrics": {
+        "rating": "تقييم العملاء",
+        "completed": "مشروع مكتمل",
+        "experience": "سنوات من الخبرة"
+      }
+    },
+    "sections": {
+      "services": {
+        "title": "اكتشف مجموعتنا من خدمات التصميم الداخلي",
+        "description": "من المفهوم إلى الاكتمال، نقدم حلول تصميم شاملة مصممة لتلبية احتياجاتك الفريدة."
+      },
+      "projects": {
+        "title": "تصفح مشاريعنا السابقة من معرضنا",
+        "description": "مجموعة مختارة من أفضل مشاريع التصميم الداخلي لدينا، تسلط الضوء على التزامنا بالجودة والإبداع ورضا العملاء."
+      },
+      "faq": {
+        "title": "الأسئلة الأكثر شيوعًا من قبل مستخدمينا",
+        "description": "اكتشف الأجوبة على الأسئلة الشائعة حول خدمات التصميم والعملية والأسعار لدينا."
+      }
+    }
+  },
+  "contact": {
+    "title": "اتصل بنا",
+    "description": "يسعدنا التواصل معك. سواء كان لديك سؤال حول خدماتنا، أو الأسعار، أو أي شيء آخر، فإن فريقنا مستعد للإجابة على جميع أسئلتك.",
+    "cards": {
+      "call_us": {
+        "title": "اتصل بنا",
+        "description": "لديك سؤال سريع؟ اتصل بنا أو أرسل رسالة نصية."
+      },
+      "mail_support": {
+        "title": "البريد والدعم",
+        "description": "راسلنا عبر البريد الإلكتروني للاستفسارات التفصيلية ومقترحات المشاريع."
+      },
+      "visit_us": {
+        "title": "قم بزيارتنا",
+        "description": "تفضل بزيارة مكتبنا لمناقشة مشروعك شخصيًا.",
+        "cta": "عرض على خرائط جوجل"
+      }
+    }
+  },
+  "profile": {
+    "loading": "جاري تحميل الملف الشخصي...",
+    "anonymous": "مجهول",
+    "joined_at": "انضم في {{date}}",
+    "personal_info": "المعلومات الشخصية",
+    "role": "الدور",
+    "client": "عميل",
+    "not_provided": "غير متوفر"
+  },
+  "requests": {
+    "title": "طلبات الخدمة الخاصة بي",
+    "description": "طلبات الخدمة الأخيرة وحالة الطلب الحالي.",
+    "open_chat": "فتح المحادثة",
+    "no_requests": "لا توجد طلبات خدمة.",
+    "loading": "جاري تحميل الطلبات...",
+    "error_load": "فشل تحميل الطلبات",
+    "status": {
+      "pending": "قيد الانتظار",
+      "under_review": "قيد المراجعة",
+      "approved": "مقبول",
+      "in_progress": "قيد التنفيذ",
+      "completed": "مكتمل",
+      "cancelled": "ملغي",
+      "rejected": "مرفوض"
+    }
+  },
+  "request_form": {
+    "title": "نموذج طلب الخدمة",
+    "description": "أرسل تفاصيلك لبدء محادثة خاصة. سيقوم المسؤولون بتقييم الطلب في المحادثة والرد بالخطوات التالية.",
+    "submit": "إرسال الطلب",
+    "submit_hint": "تحقق من هاتفك لتمكين الإرسال",
+    "verification_required": "مطلوب التحقق من الهاتف",
+    "verification_description": "تحقق من هاتفك للوصول إلى طلب الخدمة هذا. سنرسل رمزاً عند الضغط على الزر.",
+    "get_verified": "احصل على التحقق",
+    "error_fields": "يرجى ملء جميع الحقول المطلوبة (نوع المساحة، نوع الخدمة، الموقع)",
+    "error_uploading": "يرجى الانتظار حتى ينتهي رفع جميع المرفقات.",
+    "error_submit": "فشل إرسال الطلب",
+    "service_type": "نوع الخدمة",
+    "space_type": "نوع المساحة",
+    "service_type_placeholder": "اختر نوع الخدمة",
+    "space_type_placeholder": "اختر نوع المساحة",
+    "completion_date": "متى تحتاج إلى اكتمال هذا؟",
+    "location": "الموقع",
+    "location_placeholder": "أدخل الموقع الفعلي",
+    "area_dimensions": "أبعاد المساحة (م)",
+    "width": "العرض",
+    "height": "الارتفاع",
+    "description": "الوصف",
+    "description_placeholder": "اكتب وصفاً...",
+    "cancel": "إلغاء"
+  },
+  "phone_verification": {
+    "title": "التحقق من الهاتف",
+    "description_phone": "أدخل رقم هاتفك لتلقي رمز التحقق.",
+    "description_code": "أدخل الرمز الذي أرسلناه إلى {{phone}}",
+    "phone_label": "رقم الهاتف (مع رمز الدولة)",
+    "code_label": "رمز التحقق",
+    "change_phone": "تغيير رقم الهاتف",
+    "send_code": "إرسال الرمز",
+    "verify_code": "تحقق من الرمز",
+    "error_send": "فشل إرسال رمز التحقق",
+    "error_verify": "الرمز غير صحيح"
+  },
+  "settings": {
+    "title": "إعدادات الحساب",
+    "profile_info": "معلومات الملف الشخصي",
+    "upload_picture": "تحميل صورة الملف الشخصي",
+    "remove_picture": "إزالة",
+    "first_name": "الاسم الأول",
+    "last_name": "اسم العائلة",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "preferences": "التفضيلات",
+    "language": "اللغة",
+    "language_placeholder": "اختر لغة",
+    "security": "الأمان",
+    "change_password": "تغيير كلمة المرور",
+    "forgot_password": "نسيت كلمة المرور",
+    "privacy_policy": "سياسة الخصوصية",
+    "saved": "تم حفظ البيانات بنجاح!",
+    "error_load": "فشل تحميل الملف الشخصي",
+    "error_missing_user": "مستخدم مفقود.",
+    "error_required": "هذا الحقل مطلوب.",
+    "error_max_length": "يجب أن يكون بحد أقصى {{max}} حرفًا.",
+    "error_invalid_chars": "يسمح فقط بالأحرف والمسافات والشرطات والفاصلة العليا.",
+    "error_invalid_phone": "أدخل رقم هاتف صحيح"
+  },
+  "gallery": {
+    "before": "قبل",
+    "after": "بعد",
+    "no_items": "لا توجد عناصر عرض متاحة في الوقت الحالي."
+  }
+}

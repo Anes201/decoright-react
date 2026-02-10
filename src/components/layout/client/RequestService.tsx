@@ -16,6 +16,7 @@ import { ServiceTypesService, type ServiceType } from '@/services/service-types.
 import { SpaceTypesService, type SpaceType } from '@/services/space-types.service'
 import { useNavigate } from 'react-router-dom'
 import { PATHS } from '@/routers/Paths'
+import { useTranslation } from "react-i18next";
 
 
 export default function RequestServiceLayout() {
@@ -33,6 +34,8 @@ export default function RequestServiceLayout() {
     const [error, setError] = useState<string | null>(null)
     const [showVerifyModal, setShowVerifyModal] = useState(false)
     const navigate = useNavigate()
+    const { t, i18n } = useTranslation();
+    const langSuffix = i18n.language.startsWith('ar') ? '_ar' : i18n.language.startsWith('fr') ? '_fr' : '_en';
 
     const stagedFiles = useStagedFiles(ReqSvc.uploadAttachment);
     const { files } = stagedFiles;
@@ -63,13 +66,13 @@ export default function RequestServiceLayout() {
         fetchOptions();
     }, []);
 
-    if (authLoading) return <div>Loading...</div>
+    if (authLoading) return <div>{t('common.loading')}</div>
     if (!user) return null
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!spaceType || !serviceType || !location) {
-            setError("Please fill in all required fields (Space Type, Service Type, Location)")
+            setError(t('request_form.error_fields'))
             return
         }
 
@@ -80,7 +83,7 @@ export default function RequestServiceLayout() {
             // Check if all files are uploaded
             const uploading = files.some(f => f.status === 'uploading');
             if (uploading) {
-                setError("Please wait for all attachments to finish uploading.");
+                setError(t('request_form.error_uploading'));
                 setLoading(false);
                 return;
             }
@@ -112,7 +115,7 @@ export default function RequestServiceLayout() {
 
             navigate(PATHS.CLIENT.REQUEST_SERVICE_LIST)
         } catch (err: any) {
-            setError(err.message || "Failed to submit request")
+            setError(err.message || t('request_form.error_submit'))
             console.error("Submit error:", err);
         } finally {
             setLoading(false);
@@ -128,18 +131,18 @@ export default function RequestServiceLayout() {
 
             <div className="flex justify-between gap-4">
                 <div className="space-y-2 w-full">
-                    <h2 className='font-semibold text-lg'> Request Service Form </h2>
-                    <p className='text-2xs md:text-xs'> Submit your details to create a private conversation. Admins will evaluate the request in the chat and respond with next steps. </p>
+                    <h2 className='font-semibold text-lg'> {t('request_form.title')} </h2>
+                    <p className='text-2xs md:text-xs'> {t('request_form.description')} </p>
                 </div>
 
                 {/* CTA */}
                 <div className="hidden md:flex max-xs:flex-col md:flex-row gap-3 md:gap-4 w-fit">
                     <PButton type="submit" form="service-request-form"
                         disabled={loading || !user?.phoneVerified}
-                        title={!user?.phoneVerified ? 'Verify your phone to enable submission' : 'Submit request'}
+                        title={!user?.phoneVerified ? t('request_form.submit_hint') : t('request_form.submit')}
                         className="w-fit h-fit"
                     >
-                        <Spinner status={loading}> Submit Request </Spinner>
+                        <Spinner status={loading}> {t('request_form.submit')} </Spinner>
                     </PButton>
                 </div>
             </div>
@@ -149,14 +152,14 @@ export default function RequestServiceLayout() {
                     <div className="w-full">
                         <div>
                             <ICONS.exclamationTriangle className="size-6 text-warning" />
-                            <span className="font-medium text-lg text-warning group-hover/hint:text-foreground group-active/hint:text-foreground"> Phone verification required </span>
+                            <span className="font-medium text-lg text-warning group-hover/hint:text-foreground group-active/hint:text-foreground"> {t('request_form.verification_required')} </span>
                         </div>
-                        <p className="text-xs md:text-sm text-warning group-hover/hint:text-foreground group-active/hint:text-foreground mix-blend-multiply"> Verify your phone to access this service request. We’ll send a code when you tap the button. </p>
+                        <p className="text-xs md:text-sm text-warning group-hover/hint:text-foreground group-active/hint:text-foreground mix-blend-multiply"> {t('request_form.verification_description')} </p>
                     </div>
                     <button
                         onClick={() => setShowVerifyModal(true)}
                         className="font-medium text-sm text-center text-white min-w-max h-fit max-md:w-full px-3 py-1 border border-warning bg-warning/75 rounded-lg hover:text-white active:text-white hover:bg-warning active:bg-warning">
-                        Get Verified
+                        {t('request_form.get_verified')}
                     </button>
                 </div>
             }
@@ -178,41 +181,41 @@ export default function RequestServiceLayout() {
                     <div className="flex flex-col gap-6 w-full h-full">
 
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="select-service-design-style" className="font-medium text-xs text-muted px-1"> Service Type </label>
+                            <label htmlFor="select-service-design-style" className="font-medium text-xs text-muted px-1"> {t('request_form.service_type')} </label>
                             <SelectMenu
-                                options={serviceTypes.map(s => ({ label: s.display_name_en, value: s.id }))}
-                                placeholder="Select a Service Type"
+                                options={serviceTypes.map(s => ({ label: s[`display_name${langSuffix}`] || s.display_name_en, value: s.id }))}
+                                placeholder={t('request_form.service_type_placeholder')}
                                 id="select-service-service-type"
-                                value={serviceTypes.find(s => s.id === serviceType) ? { label: serviceTypes.find(s => s.id === serviceType)!.display_name_en, value: serviceType } : undefined}
+                                value={serviceTypes.find(s => s.id === serviceType) ? { label: serviceTypes.find(s => s.id === serviceType)![`display_name${langSuffix}`] || serviceTypes.find(s => s.id === serviceType)!.display_name_en, value: serviceType } : undefined}
                                 onChange={(option: any) => setServiceType(option.value)}
                             />
                         </div>
 
                         <div className="flex flex-col gap-2">
 
-                            <label htmlFor="select-service-space-type" className="font-medium text-xs text-muted px-1"> Space Type </label>
+                            <label htmlFor="select-service-space-type" className="font-medium text-xs text-muted px-1"> {t('request_form.space_type')} </label>
                             <SelectMenu
-                                options={spaceTypes.map(s => ({ label: s.display_name_en, value: s.id }))}
-                                placeholder="Select a Space Type"
+                                options={spaceTypes.map(s => ({ label: s[`display_name${langSuffix}`] || s.display_name_en, value: s.id }))}
+                                placeholder={t('request_form.space_type_placeholder')}
                                 id="select-service-space-type"
-                                value={spaceTypes.find(s => s.id === spaceType) ? { label: spaceTypes.find(s => s.id === spaceType)!.display_name_en, value: spaceType } : undefined}
+                                value={spaceTypes.find(s => s.id === spaceType) ? { label: spaceTypes.find(s => s.id === spaceType)![`display_name${langSuffix}`] || spaceTypes.find(s => s.id === spaceType)!.display_name_en, value: spaceType } : undefined}
                                 onChange={(option: any) => setSpaceType(option.value)}
                                 required
                             />
                         </div>
 
                         <div className="relative flex flex-col gap-2">
-                            <label htmlFor="select-service-design-style" className="group/date font-medium text-xs text-muted px-1"> When do you need this completed? </label>
+                            <label htmlFor="select-service-design-style" className="group/date font-medium text-xs text-muted px-1"> {t('request_form.completion_date')} </label>
                             <DateInput name="service-request-date" id="service-request-date"
                                 className="w-full p-2.5 text-sm text-muted bg-emphasis/75 rounded-lg cursor-text outline-1 outline-muted/15 hover:outline-muted/35 focus:outline-primary/45" />
 
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="request-location" className="font-medium text-xs text-muted px-1"> Location </label>
+                            <label htmlFor="request-location" className="font-medium text-xs text-muted px-1"> {t('request_form.location')} </label>
                             <Input
                                 id="request-location"
-                                placeholder="Enter physical location"
+                                placeholder={t('request_form.location_placeholder')}
                                 value={location}
                                 onChange={(e: any) => setLocation(e.target.value)}
                                 required
@@ -220,19 +223,19 @@ export default function RequestServiceLayout() {
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <label className="font-medium text-xs text-muted px-1"> Area Dimensions (m) </label>
+                            <label className="font-medium text-xs text-muted px-1"> {t('request_form.area_dimensions')} </label>
                             <div className="flex gap-4">
                                 <Input
                                     id="request-width"
                                     type="number"
-                                    placeholder="Width"
+                                    placeholder={t('request_form.width')}
                                     value={width}
                                     onChange={(e: any) => setWidth(e.target.value)}
                                 />
                                 <Input
                                     id="request-height"
                                     type="number"
-                                    placeholder="Height"
+                                    placeholder={t('request_form.height')}
                                     value={height}
                                     onChange={(e: any) => setHeight(e.target.value)}
                                 />
@@ -245,9 +248,9 @@ export default function RequestServiceLayout() {
                                 className="w-full h-fit"
                                 disabled={loading || !user?.phoneVerified}
                             >
-                                <Spinner status={loading}> Submit Request </Spinner>
+                                <Spinner status={loading}> {t('request_form.submit')} </Spinner>
                             </PButton>
-                            <SCTALink to={-1} className="w-full"> Cancel </SCTALink>
+                            <SCTALink to={-1} className="w-full"> {t('request_form.cancel')} </SCTALink>
                         </div>
 
                     </div>
@@ -256,12 +259,12 @@ export default function RequestServiceLayout() {
                     <div className="flex flex-col gap-6 w-full h-full">
 
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="request-service-description" className="font-medium text-xs text-muted px-1"> Description </label>
+                            <label htmlFor="request-service-description" className="font-medium text-xs text-muted px-1"> {t('request_form.description')} </label>
                             <textarea
                                 name="description"
                                 id="request-service-description"
                                 rows={6}
-                                placeholder='Write a description...'
+                                placeholder={t('request_form.description_placeholder')}
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                                 className="w-full p-2.5 text-sm bg-emphasis/75 rounded-lg outline-1 outline-muted/15 hover:outline-muted/35 focus:outline-primary/45"
