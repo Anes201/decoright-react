@@ -210,7 +210,7 @@ export function PublicMenu() {
 
                     {/* Context */}
                     <div className="w-full">
-                        <p className="text-2xs text-muted"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus culpa  </p>
+                        <p className="text-2xs text-muted"> Access your account and manage your projects </p>
                     </div>
                 </Link>
             </li>
@@ -226,7 +226,7 @@ export function PublicMenu() {
 
                     {/* Context */}
                     <div className="w-full">
-                        <p className="text-2xs text-muted"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus culpa  </p>
+                        <p className="text-2xs text-muted"> Join our community and start your design journey </p>
                     </div>
                 </Link>
             </li>
@@ -271,7 +271,7 @@ export function ClientMenu() {
 
                         {/* Context */}
                         <div className="w-full">
-                            <p className="text-2xs text-muted"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus culpa  </p>
+                            <p className="text-2xs text-muted"> {item.description} </p>
                         </div>
                     </Link>
                 </li>

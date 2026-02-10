@@ -4,7 +4,7 @@ import { PATHS } from "@/routers/Paths";
 import { Link } from "react-router-dom";
 
 
-export default function PasswordDone () {
+export default function PasswordDone() {
 
     return (
 
@@ -22,8 +22,8 @@ export default function PasswordDone () {
                         </div>
 
                         <div className="space-y-2 text-center">
-                            <h1 className="font-semibold text-xl md:text-3xl"> Forgot your password ? </h1>
-                            <p className="text-xs md:text-sm"> Lorem ipsum dolor sit amet consectetur adipisicing elit, unde sunt, sint suscipit est asperiores facere deleniti ipsa corrupti quo. </p>
+                            <h1 className="font-semibold text-xl md:text-3xl"> Password Reset Successful </h1>
+                            <p className="text-xs md:text-sm"> Your password has been successfully updated. You can now use your new password to access your account. </p>
                         </div>
                     </div>
 
@@ -31,11 +31,11 @@ export default function PasswordDone () {
                     <div className="flex items-center justify-center gap-4 w-full">
 
                         <Link to={PATHS.ROOT}
-                        className="flex items-center gap-2 font-medium text-xs md:text-sm text-center px-4 py-2 bg-emphasis rounded-lg"
+                            className="flex items-center gap-2 font-medium text-xs md:text-sm text-center px-4 py-2 bg-emphasis rounded-lg"
                         > <ICONS.home /> Home </Link>
 
                         <LogoutButton
-                        className="flex items-center gap-2 font-medium text-xs md:text-sm text-center px-3 py-2 border border-muted/25 rounded-lg"
+                            className="flex items-center gap-2 font-medium text-xs md:text-sm text-center px-3 py-2 border border-muted/25 rounded-lg"
                         > <span className="flex gap-4"> Logout <ICONS.arrowRightStartOnRectangle /></span> </LogoutButton>
 
                     </div>

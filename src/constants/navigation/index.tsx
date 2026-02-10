@@ -2,15 +2,18 @@ import { PATHS } from "@/routers/Paths"
 
 // Admin navigation item list for menu
 export const adminMenuNav = [
-    { id: '1', label: 'Dashboard', path: PATHS.ADMIN.ANALYTICS, icon: null, description: 'Overview metrics, KPIs and site analytics' },
+    { id: '1', label: 'Dashboard', path: PATHS.ADMIN.ROOT, icon: null, description: 'Main administrative overview' },
+    { id: '2', label: 'Analytics', path: PATHS.ADMIN.ANALYTICS, icon: null, description: 'Overview metrics, KPIs and site analytics' },
     { id: '3', label: 'Users & Activity', path: PATHS.ADMIN.USERS, icon: null, description: 'View and manage user accounts, roles and activity logs' },
     { id: '4', label: 'Service Requests', path: PATHS.ADMIN.REQUEST_SERVICE_LIST, icon: null, description: 'Browse, filter and update service requests' },
+    { id: '13', label: 'FAQ Management', path: PATHS.ADMIN.FAQ_LIST, icon: null, description: 'Manage frequently asked questions' },
     { id: '11', label: 'Settings', path: PATHS.ADMIN.SETTINGS, icon: null, description: 'Application settings, preferences and integrations' },
 ]
 
 // Admin Navigation Data (with support for nested items)
 export const adminSideMenuNav = [
-    { id: '1', label: 'Dashboard', path: PATHS.ADMIN.ANALYTICS, icon: null, description: 'Overview metrics, KPIs and site analytics' },
+    { id: '1', label: 'Dashboard', path: PATHS.ADMIN.ROOT, icon: null, description: 'Main administrative overview' },
+    { id: '2', label: 'Analytics', path: PATHS.ADMIN.ANALYTICS, icon: null, description: 'Overview metrics, KPIs and site analytics' },
 
     { id: '3', label: 'Users & Activity', path: PATHS.ADMIN.USERS, icon: null, description: 'View and manage user accounts, roles and activity logs' },
 
@@ -39,6 +42,13 @@ export const adminSideMenuNav = [
         id: '6', label: 'Services & Spaces', icon: null, children: [
             { id: '6.1', label: 'Service Types', path: PATHS.ADMIN.SERVICE_TYPES, icon: null, description: 'Manage generic service categories offered' },
             { id: '6.2', label: 'Space Types', path: PATHS.ADMIN.SPACE_TYPES, icon: null, description: 'Manage different space categories' },
+        ], description: ''
+    },
+
+    {
+        id: '13', label: 'FAQ Management', icon: null, children: [
+            { id: '13.1', label: 'FAQ List', path: PATHS.ADMIN.FAQ_LIST, icon: null, description: 'View and manage all your frequently asked questions.' },
+            { id: '13.2', label: 'Add FAQ', path: PATHS.ADMIN.FAQ_CREATE, icon: null, description: 'Add new frequently asked questions' },
         ], description: ''
     },
 

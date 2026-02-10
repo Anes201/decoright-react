@@ -10,7 +10,7 @@ import { EMAIL_REGEX } from "@/utils/validators"
 import { supabase } from "@/lib/supabase"
 
 
-export default function PasswordReset () {
+export default function PasswordReset() {
 
     const [email, setEmail] = useState('')
     const [emailValid, setEmailValid] = useState<boolean>(false)
@@ -36,7 +36,7 @@ export default function PasswordReset () {
         try {
             const { error: SubmitError } = await supabase.auth.resetPasswordForEmail(
                 email.trim(),
-                {redirectTo: redirectTo.toString()}
+                { redirectTo: redirectTo.toString() }
             )
 
             if (SubmitError) throw SubmitError
@@ -50,7 +50,7 @@ export default function PasswordReset () {
     }
 
     const navigate = useNavigate();
-    function handleGoBack(e:any){
+    function handleGoBack(e: any) {
         e.preventDefault();
         navigate(-1);
     }
@@ -70,17 +70,17 @@ export default function PasswordReset () {
                         </div>
 
                         <div className="space-y-2 text-center">
-                            <h1 className="font-semibold text-xl md:text-3xl"> Forgot your password ? </h1>
-                            <p className="text-xs md:text-sm"> Lorem ipsum dolor sit amet consectetur adipisicing elit, unde sunt, sint suscipit est asperiores facere deleniti ipsa corrupti quo. </p>
+                            <h1 className="font-semibold text-xl md:text-3xl"> Reset Your Password </h1>
+                            <p className="text-xs md:text-sm"> Enter the email address associated with your account and we'll send you a link to reset your password. </p>
                         </div>
                     </div>
 
                     <form onSubmit={handleSubmit} id="password-reset-form" className="w-full">
                         <div>
                             <label htmlFor="password"
-                            className="text-xs text-muted mx-1"
+                                className="text-xs text-muted mx-1"
                             > Email account </label>
-                            <EmailInput id="email" onChange={(e:any)=>(setEmail(e.target.value))} />
+                            <EmailInput id="email" onChange={(e: any) => (setEmail(e.target.value))} />
                         </div>
 
                         {error && <p className="text-xs text-danger text-center"> {error} </p>}
@@ -88,10 +88,10 @@ export default function PasswordReset () {
                         {/* CTA */}
                         <div className="flex max-xs:flex-col md:flex-row gap-3 md:gap-4 w-full md:w-fit mt-4">
                             <PButton type="submit" form="password-reset-form"
-                            className={`w-full h-fit ${!email && 'cursor-not-allowed'}`}
-                            disabled={ !emailValid || loading }
-                            area-label="send email to recover password"
-                            title={emailValid ? 'Send email to recover password' : 'Enter a valid email' }
+                                className={`w-full h-fit ${!email && 'cursor-not-allowed'}`}
+                                disabled={!emailValid || loading}
+                                area-label="send email to recover password"
+                                title={emailValid ? 'Send email to recover password' : 'Enter a valid email'}
                             >
                                 <Spinner status={loading} size="sm"> Send Email </Spinner>
                             </PButton>

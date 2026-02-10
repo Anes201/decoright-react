@@ -1,6 +1,8 @@
 
+import { useState, useEffect } from "react"
 import { ICONS } from "@/icons";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { AdminService } from "@/services/admin.service";
 
 export function ContactCard({ children }: any) {
     return (
@@ -70,6 +72,23 @@ export function ContactCardList() {
 }
 
 export default function Contact() {
+    const [settings, setSettings] = useState<Record<string, string>>({});
+
+    useEffect(() => {
+        async function fetchSettings() {
+            try {
+                const data = await AdminService.getSettings();
+                setSettings(data);
+            } catch (error) {
+                console.error("Failed to fetch site settings:", error);
+            }
+        }
+        fetchSettings();
+    }, []);
+
+    const pageTitle = settings.contact_page_title || "Get in Touch";
+    const pageDescription = settings.contact_page_description || "We'd love to hear from you. Whether you have a question about our services, pricing, or anything else, our team is ready to answer all your questions.";
+
     return (
         <main>
             <section className="h-hero min-h-hero content-container relative flex flex-col items-center justify-center space-y-8">
@@ -77,8 +96,12 @@ export default function Contact() {
 
                 {/* Section Header */}
                 <div className="flex flex-col gap-2 md:gap-4 w-full text-center">
-                    <h1 className="font-semibold text-xl sm:text-2xl md:text-4xl"> Lorem ipsum dolor sit amet consectetur adipisicing </h1>
-                    <p className="text-2xs sm:text-xs md:text-sm text-muted/75"> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam corrupti vero a enim harum molestias facilis, optio pariatur voluptate itaque nam obcaecati quas omnis reprehenderit doloribus perspiciatis. dolores enim harum molestias facilis, optio pariatur voluptate itaque nam obcaecati quas omnis reprehenderit doloribus perspiciatis. Qui, ex.  </p>
+                    <h1 className="font-semibold text-xl sm:text-2xl md:text-4xl">
+                        {pageTitle}
+                    </h1>
+                    <p className="text-2xs sm:text-xs md:text-sm text-muted/75">
+                        {pageDescription}
+                    </p>
                 </div>
 
                 <ContactCardList />

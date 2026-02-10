@@ -79,6 +79,11 @@ export const PATHS = {
         REQUEST_SERVICE_DETAIL: "/admin/service-request/:id/",
         requestServiceDetail: (id: string) => `/admin/service-request/${encodeURIComponent(id)}/`,
 
+        FAQ_LIST: "/admin/faq/list",
+        FAQ_CREATE: "/admin/faq/create",
+        FAQ_UPDATE: "/admin/faq/:id/edit",
+        faqUpdate: (id: string) => `/admin/faq/${encodeURIComponent(id)}/edit`,
+
         SETTINGS: "/admin/settings",
     },
 } as const;

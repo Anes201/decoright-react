@@ -50,6 +50,11 @@ const AdminGalleryUpdate = lazy(() => import('@/pages/Admin/gallery/GalleryUpdat
 
 const AdminServiceTypes = lazy(() => import('@/pages/Admin/ServiceTypes'));
 const AdminSpaceTypes = lazy(() => import('@/pages/Admin/SpaceTypes'));
+
+const AdminFAQList = lazy(() => import('@/pages/Admin/faqs/FAQList'));
+const AdminFAQCreate = lazy(() => import('@/pages/Admin/faqs/FAQCreate'));
+const AdminFAQUpdate = lazy(() => import('@/pages/Admin/faqs/FAQUpdate'));
+
 const AdminSettings = lazy(() => import('@/pages/Admin/Settings'));
 
 const router = createBrowserRouter([
@@ -241,7 +246,19 @@ const router = createBrowserRouter([
         element: <AdminSpaceTypes />,
       },
 
-
+      // FAQs
+      {
+        path: PATHS.ADMIN.FAQ_LIST,
+        element: <AdminFAQList />,
+      },
+      {
+        path: PATHS.ADMIN.FAQ_CREATE,
+        element: <AdminFAQCreate />,
+      },
+      {
+        path: PATHS.ADMIN.FAQ_UPDATE,
+        element: <AdminFAQUpdate />,
+      },
 
       // Settings
       {

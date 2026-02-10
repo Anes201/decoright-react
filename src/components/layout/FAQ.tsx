@@ -1,41 +1,74 @@
+import { useState, useEffect } from "react";
+import { AdminService, type FAQ } from "@/services/admin.service";
+import { useTranslation } from "react-i18next";
+import Spinner from "@/components/common/Spinner";
 
-import { useState } from "react";
-
-export function FAQList () {
-    const faqData = [
-        {
-            question: "What services do you offer?",
-            answer: "We offer a wide range of interior design services including residential, commercial, office, hospitality, and retail design."
-        },
-        {
-            question: "How can I get a quote for my project?",
-            answer: "You can contact us through our website or call us directly to discuss your project and receive a customized quote. contact us through our website or call us directly to discuss your project and receive a customized quote. contact us through our website or call us directly to discuss your project and receive a customized quote. contact us through our website or call us directly to discuss your project and receive a customized quote. contact us through our website or call us directly to discuss your project and receive a customized quote.contact us through our website or call us directly to discuss your project and receive a customized quote.contact us through our website or call us directly to discuss your project and receive a customized quote."
-        },
-        {
-            question: "What is your design process?",
-            answer: "Our design process includes an initial consultation, concept development, design presentation, revisions, and final implementation."
-        },
-        {
-            question: "Do you provide project management services?",
-            answer: "Yes, we offer comprehensive project management services to ensure your project is completed on time and within budget."
-        },
-        {
-            question: "Can you work within my budget?",
-            answer: "Absolutely! We tailor our services to meet your budget while still delivering high-quality design solutions."
-        },
-    ];
-
+export function FAQList() {
+    const { i18n } = useTranslation();
+    const [faqData, setFaqData] = useState<FAQ[]>([]);
+    const [loading, setLoading] = useState(true);
     const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+    useEffect(() => {
+        const fetchFaqs = async () => {
+            try {
+                const data = await AdminService.getFAQs({ is_active: true });
+                setFaqData(data);
+            } catch (error) {
+                console.error("Failed to fetch FAQs:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchFaqs();
+    }, []);
+
+    const getTranslatedContent = (faq: FAQ) => {
+        const currentLang = i18n.language.split('-')[0]; // Handle language variants like 'en-US'
+
+        switch (currentLang) {
+            case 'ar':
+                return {
+                    question: faq.question_ar || faq.question_en,
+                    answer: faq.answer_ar || faq.answer_en
+                };
+            case 'fr':
+                return {
+                    question: faq.question_fr || faq.question_en,
+                    answer: faq.answer_fr || faq.answer_en
+                };
+            default:
+                return {
+                    question: faq.question_en,
+                    answer: faq.answer_en
+                };
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="flex justify-center p-10">
+                <Spinner status={true} size="md" />
+            </div>
+        );
+    }
+
+    if (faqData.length === 0) {
+        return null;
+    }
 
     return (
         <ul className="flex flex-col gap-6 w-full">
             {faqData.map((faq, index) => {
+                const { question, answer } = getTranslatedContent(faq);
                 const isOpen = index === openIndex;
+
                 return (
-                    <li key={index} className="flex flex-col border-b border-muted/10 pb-2" onClick={() => setOpenIndex(isOpen ? null : index)}>
+                    <li key={faq.id} className="flex flex-col border-b border-muted/10 pb-2" onClick={() => setOpenIndex(isOpen ? null : index)}>
 
                         <div className="flex justify-between items-center mb-2 gap-2 cursor-pointer">
-                            <h4 className="font-medium text-muted text-xs md:text-sm mb-2"> {faq.question} </h4>
+                            <h4 className="font-medium text-muted text-xs md:text-sm mb-2"> {question} </h4>
                             <button
                                 type="button"
                                 className="transition-transform duration-300"
@@ -46,8 +79,8 @@ export function FAQList () {
                             </button>
                         </div>
 
-                        <div id={`faq-answer-${index}`} className={`overflow-hidden ${isOpen ? 'h-full' : 'h-0'}`}>
-                            <p className="text-sm text-foreground"> {faq.answer} </p>
+                        <div id={`faq-answer-${index}`} className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                            <p className="text-sm text-foreground mt-1 mb-4"> {answer} </p>
                         </div>
                     </li>
                 )

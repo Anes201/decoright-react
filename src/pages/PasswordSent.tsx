@@ -53,8 +53,8 @@ export default function PasswordSent() {
                         </div>
 
                         <div className="space-y-2">
-                            <h1 className="font-semibold text-xl md:text-3xl"> Forgot your password ? </h1>
-                            <p className="text-xs md:text-sm"> Lorem ipsum dolor sit amet consectetur adipisicing elit, unde sunt, sint suscipit est asperiores facere deleniti ipsa corrupti quo. </p>
+                            <h1 className="font-semibold text-xl md:text-3xl"> Check Your Email </h1>
+                            <p className="text-xs md:text-sm"> We've sent a password reset link to your email address. Please check your inbox and follow the instructions to reset your password. </p>
                         </div>
                     </div>
 

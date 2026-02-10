@@ -46,7 +46,7 @@ export function NavMenuItems() {
 
                         {/* Context */}
                         <div className="w-full">
-                            <p className="text-2xs text-muted"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus culpa  </p>
+                            <p className="text-2xs text-muted"> {item.description} </p>
                         </div>
                     </Link>
                 </li>

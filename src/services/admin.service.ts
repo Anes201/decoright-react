@@ -8,6 +8,9 @@ export type AdminActivity = Database['public']['Tables']['admin_activities']['Ro
 export type GalleryItem = Database['public']['Tables']['gallery_items']['Row']
 export type GalleryItemInsert = Database['public']['Tables']['gallery_items']['Insert']
 export type GalleryItemUpdate = Database['public']['Tables']['gallery_items']['Update']
+export type FAQ = any // Database['public']['Tables']['faqs']['Row']
+export type FAQInsert = any // Database['public']['Tables']['faqs']['Insert']
+export type FAQUpdate = any // Database['public']['Tables']['faqs']['Update']
 
 export const AdminService = {
     async getMorningCoffeeStats() {
@@ -481,6 +484,63 @@ export const AdminService = {
     async deleteGalleryItem(id: string) {
         const { error } = await supabase
             .from('gallery_items')
+            .delete()
+            .eq('id', id)
+
+        if (error) throw error
+    },
+
+    async deleteServiceRequest(id: string) {
+        const { error } = await supabase
+            .from('service_requests')
+            .delete()
+            .eq('id', id)
+
+        if (error) throw error
+    },
+
+    // FAQ Methods
+    async getFAQs(options?: { is_active?: boolean }) {
+        let query = supabase
+            .from('faqs')
+            .select('*')
+            .order('display_order', { ascending: true })
+
+        if (options?.is_active !== undefined) {
+            query = query.eq('is_active', options.is_active)
+        }
+
+        const { data, error } = await query
+        if (error) throw error
+        return data as FAQ[]
+    },
+
+    async createFAQ(faq: FAQInsert) {
+        const { data, error } = await supabase
+            .from('faqs')
+            .insert(faq)
+            .select()
+            .single()
+
+        if (error) throw error
+        return data as FAQ
+    },
+
+    async updateFAQ(id: string, updates: FAQUpdate) {
+        const { data, error } = await supabase
+            .from('faqs')
+            .update(updates)
+            .eq('id', id)
+            .select()
+            .single()
+
+        if (error) throw error
+        return data as FAQ
+    },
+
+    async deleteFAQ(id: string) {
+        const { error } = await supabase
+            .from('faqs')
             .delete()
             .eq('id', id)
 

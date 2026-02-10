@@ -11,7 +11,7 @@ import { PATHS } from "@/routers/Paths";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function PasswordSet () {
+export default function PasswordSet() {
 
     const navigate = useNavigate()
     const [newPassword, setNewPassword] = useState('')
@@ -29,20 +29,20 @@ export default function PasswordSet () {
     useEffect(() => {
         const checkSession = async () => {
             const {
-            data: { session },
+                data: { session },
             } = await supabase.auth.getSession();
 
             if (!session) {
-            setError("Invalid or expired password reset link.");
-            setPageLoading(false);
-            return;
+                setError("Invalid or expired password reset link.");
+                setPageLoading(false);
+                return;
             }
 
             // Recovery session (page refresh safe)
             if (session.user.recovery_sent_at) {
-            setAllowed(true);
-            setPageLoading(false);
-            return;
+                setAllowed(true);
+                setPageLoading(false);
+                return;
             }
 
             // Not a normal signed-in user
@@ -54,13 +54,13 @@ export default function PasswordSet () {
 
         const { data: listener } = supabase.auth.onAuthStateChange(
             (event, session) => {
-            if (
-                event === "PASSWORD_RECOVERY" &&
-                session?.user.recovery_sent_at
-            ) {
-                setAllowed(true);
-                setPageLoading(false);
-            }
+                if (
+                    event === "PASSWORD_RECOVERY" &&
+                    session?.user.recovery_sent_at
+                ) {
+                    setAllowed(true);
+                    setPageLoading(false);
+                }
             }
         );
 
@@ -86,7 +86,7 @@ export default function PasswordSet () {
         setError(null)
 
 
-        if(!passwordValid || !passwordsMatch) {
+        if (!passwordValid || !passwordsMatch) {
             setError("Invalid password or passwords does not match")
             return;
         }
@@ -124,7 +124,7 @@ export default function PasswordSet () {
             // Success: clear url (defensive)
             try {
                 history.replaceState(null, "", window.location.pathname);
-            } catch {}
+            } catch { }
 
 
             // Success "Password updated. You can now sign in with your new password."
@@ -157,8 +157,8 @@ export default function PasswordSet () {
                         </div>
 
                         <div className="space-y-2 text-center">
-                            <h1 className="font-semibold text-xl md:text-3xl"> Forgot your password ? </h1>
-                            <p className="text-xs md:text-sm"> Lorem ipsum dolor sit amet consectetur adipisicing elit, unde sunt, sint suscipit est asperiores facere deleniti ipsa corrupti quo. </p>
+                            <h1 className="font-semibold text-xl md:text-3xl"> Create New Password </h1>
+                            <p className="text-xs md:text-sm"> Please enter your new password below. Make sure it's secure and something you'll remember. </p>
                         </div>
                     </div>
 
@@ -167,39 +167,39 @@ export default function PasswordSet () {
                     <form onSubmit={handleSubmit} id="password-set-form">
                         <div>
                             <label htmlFor="password"
-                            className="font-medium text-xs text-muted"
+                                className="font-medium text-xs text-muted"
                             > Password </label>
                             <PasswordInput id="password" disabled={pageLoading}
-                            onChange={(e:React.ChangeEvent<HTMLInputElement>) => setNewPassword(e.target.value)} />
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewPassword(e.target.value)} />
                         </div>
                         <div>
                             <label htmlFor="confirm-password"
-                            className="font-medium text-xs text-muted"
+                                className="font-medium text-xs text-muted"
                             > Re-type Password </label>
                             <PasswordInput id="confirm-password" disabled={pageLoading}
-                            onChange={(e:React.ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)} />
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)} />
                         </div>
 
-                    <ul className="flex flex-col gap-2 ">
+                        <ul className="flex flex-col gap-2 ">
 
-                        <li className="flex items-center gap-2">
-                            { passwordValid ? <ICONS.checkCircle className="size-4 text-success"/> : <ICONS.informationCircle className="size-4"/> }
-                            <p className="text-xs text-muted">Password must be at least {PASSWORD_MIN_LENGTH} characters and contain no spaces.</p>
-                        </li>
+                            <li className="flex items-center gap-2">
+                                {passwordValid ? <ICONS.checkCircle className="size-4 text-success" /> : <ICONS.informationCircle className="size-4" />}
+                                <p className="text-xs text-muted">Password must be at least {PASSWORD_MIN_LENGTH} characters and contain no spaces.</p>
+                            </li>
 
-                        <li className="flex items-center gap-2">
-                            { passwordsMatch ? <ICONS.checkCircle className="size-4 text-success"/> : <ICONS.informationCircle className="size-4"/> }
-                            <p className="text-xs text-muted"> Passwords must have a match.</p>
-                        </li>
+                            <li className="flex items-center gap-2">
+                                {passwordsMatch ? <ICONS.checkCircle className="size-4 text-success" /> : <ICONS.informationCircle className="size-4" />}
+                                <p className="text-xs text-muted"> Passwords must have a match.</p>
+                            </li>
 
-                    </ul>
+                        </ul>
 
                         {/* CTA */}
                         <div className="flex max-xs:flex-col md:flex-row gap-3 md:gap-4 w-full md:w-fit mt-8">
                             <PButton type="submit" form="password-set-form"
-                            className="w-full h-fit"
-                            disabled={ !passwordValid || !passwordsMatch || loading || pageLoading }
-                            title="Set New Password"
+                                className="w-full h-fit"
+                                disabled={!passwordValid || !passwordsMatch || loading || pageLoading}
+                                title="Set New Password"
                             >
                                 <Spinner status={loading} size="sm"> Set Password </Spinner>
                             </PButton>

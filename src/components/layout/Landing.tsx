@@ -21,15 +21,27 @@ export function HeroContentCheckList() {
     )
 }
 
-export function HeroContent() {
+export function HeroContent({ settings }: { settings: Record<string, string> }) {
+    const heroSubtitle = settings.home_hero_subtitle || "Space & Decoration";
+    const heroTitle = settings.home_hero_title || "Interior Design That Elevates Everyday Living";
+    const heroDescription = settings.home_hero_description || "Welcome to Deco Right, your trusted partner for exquisite interior design and decor solutions. We bring your vision to life with creativity and style.";
+
     return (
         <div className="flex flex-col justify-center gap-8 h-full">
             <div className="flex flex-col gap-2">
-                <h3 className="font-medium text-xs md:text-sm"> Space & Decoration </h3>
-                <h1 className="font-semibold text-4xl md:text-5xl lg:text-6xl xl:text-7xl"> Interior <span className="text-primary"> Design </span> That Elevates Everyday Living </h1>
+                <h3 className="font-medium text-xs md:text-sm"> {heroSubtitle} </h3>
+                <h1 className="font-semibold text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
+                    {heroTitle.includes("Design") ? (
+                        <>
+                            {heroTitle.split("Design")[0]}
+                            <span className="text-primary"> Design </span>
+                            {heroTitle.split("Design")[1]}
+                        </>
+                    ) : heroTitle}
+                </h1>
             </div>
             <p className="text-2xs lg:text-xs text-muted/75 max-w-lg">
-                Welcome to Deco Right, your trusted partner for exquisite interior design and decor solutions. We bring your vision to life with creativity and style.
+                {heroDescription}
             </p>
 
             {/* Hero Check List */}
@@ -49,7 +61,7 @@ export function HeroCTA() {
                 :
                 <PCTALink to={PATHS.SERVICE_LIST}> Services </PCTALink>
             }
-            <SCTALink to={PATHS.PROJECT_LIST} className="flex items-center justify-center gap-2"> Projects & Categories <ICONS.arrowLongRight className="size-4 text-foreground"/> </SCTALink>
+            <SCTALink to={PATHS.PROJECT_LIST} className="flex items-center justify-center gap-2"> Projects & Categories <ICONS.arrowLongRight className="size-4 text-foreground" /> </SCTALink>
         </div>
     )
 }
@@ -83,7 +95,7 @@ export function HeroImg() {
     )
 }
 
-export function Hero() {
+export function Hero({ settings = {} }: { settings?: Record<string, string> }) {
     return (
 
         <section className="content-container relative flex items-center w-full">
@@ -99,7 +111,7 @@ export function Hero() {
                     <div className="flex flex-col justify-center gap-4 w-full p-4 md:p-8">
                         <div className="flex flex-col gap-8 h-full">
                             {/* Content */}
-                            <HeroContent />
+                            <HeroContent settings={settings} />
 
                             {/* CTA Buttons */}
                             <HeroCTA />

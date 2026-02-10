@@ -1,19 +1,40 @@
-
+import { useState, useEffect } from "react"
 import { Hero } from "@/components/layout/Landing"
 import { ServiceCardList } from "@components/layout/Services"
-
 import { FAQList } from "@components/layout/FAQ"
 import { SectionHeader } from "@/components/ui/SectionHeader"
 import { ShowcaseCardList } from "@/components/layout/Showcase"
 import { Link } from "react-router-dom"
 import { PATHS } from "@/routers/Paths"
 import { ICONS } from "@/icons"
+import { AdminService } from "@/services/admin.service"
 
 export default function Landing() {
+    const [settings, setSettings] = useState<Record<string, string>>({});
+
+    useEffect(() => {
+        async function fetchSettings() {
+            try {
+                const data = await AdminService.getSettings();
+                setSettings(data);
+            } catch (error) {
+                console.error("Failed to fetch site settings:", error);
+            }
+        }
+        fetchSettings();
+    }, []);
+
+    const servicesTitle = settings.home_services_section_title || "Explore our range of interior design services";
+    const servicesDescription = settings.home_services_section_description || "From concept to completion, we offer comprehensive design solutions tailored to meet your unique needs.";
+    const projectsTitle = settings.home_projects_section_title || "Browse our previous projects from our showcase";
+    const projectsDescription = settings.home_projects_section_description || "A curated selection of our finest interior design projects, highlighting our commitment to quality, creativity, and client satisfaction. Explore the diverse styles and innovative solutions that define our work.";
+    const faqTitle = settings.home_faq_title || "Most frequently asked questions by our users";
+    const faqDescription = settings.home_faq_description || "Find answers to common questions about our design services, process, and pricing.";
+
     return (
         <>
             <main className="bg-linear-0 from-transparent to-primary/4 overflow-y-clip">
-                <Hero />
+                <Hero settings={settings} />
             </main>
             <section className="relative my-8 py-12 px-3 sm:px-6 md:px-8">
 
@@ -22,8 +43,8 @@ export default function Landing() {
                 <div className="content-container flex flex-col gap-8 w-full">
                     {/* Section Header */}
                     <SectionHeader
-                        title="Explore our range of interior design services"
-                        desc="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus aperiam aspernatur, et repellendus facilis non dolore,  tailored to meet your unique needs."
+                        title={servicesTitle}
+                        desc={servicesDescription}
                     />
 
                     {/* Service Cards */}
@@ -35,8 +56,8 @@ export default function Landing() {
                 {/* Section Header */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                     <SectionHeader
-                        title='Browse our previous projects from our showcase'
-                        desc='A curated selection of our finest interior design projects, highlighting our commitment to quality, creativity, and client satisfaction. Explore the diverse styles and innovative solutions that define our work.'
+                        title={projectsTitle}
+                        desc={projectsDescription}
                     />
                     <Link to={PATHS.PROJECT_LIST} className="text-primary font-medium text-sm whitespace-nowrap hover:underline pb-2 flex items-center gap-1">
                         View All Projects {ICONS.chevronRight({ className: 'size-4' })}
@@ -52,8 +73,8 @@ export default function Landing() {
 
                 {/* Section Header */}
                 <SectionHeader
-                    title="Most frequently asked questions by our users"
-                    desc="A curated selection of our finest interior design projects, highlighting our commitment to quality, creativity, and client satisfaction. Explore the diverse styles and innovative solutions that define our work."
+                    title={faqTitle}
+                    desc={faqDescription}
                 />
 
                 {/* FAQ List */}

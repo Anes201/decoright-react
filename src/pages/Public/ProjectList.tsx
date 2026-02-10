@@ -1,9 +1,30 @@
-
+import { useState, useEffect } from "react"
 import { ProjectCardList } from "@/components/layout/ProjectList"
 import { PATHS } from "@/routers/Paths"
 import { PCTALink } from "@components/ui/CTA"
+import { AdminService } from "@/services/admin.service"
 
 export default function ProjectListPage() {
+    const [settings, setSettings] = useState<Record<string, string>>({});
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchSettings() {
+            try {
+                const data = await AdminService.getSettings();
+                setSettings(data);
+            } catch (error) {
+                console.error("Failed to fetch site settings:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchSettings();
+    }, []);
+
+    const pageTitle = settings.project_list_title || "Our Portfolio";
+    const pageDescription = settings.project_list_description || "Explore our collection of completed projects showcasing our design expertise across various spaces and styles.";
+
     return (
         <main>
             <section className="content-container relative px-4 sm:px-8 md:px-12 mb-16">
@@ -13,8 +34,12 @@ export default function ProjectListPage() {
                     <div className="flex flex-col gap-4 md:gap-8 md:p-8 md:border border-muted/15 rounded-4xl">
 
                         <div className="space-y-2 md:space-y-4">
-                            <h1 className="font-semibold text-lg sm:text-2xl md:text-3xl leading-6"> Lorem ipsum dolor sit amet consectetur adipisicing elit. </h1>
-                            <p className="text-2xs md:text-xs"> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam corrupti vero a enim harum molestias facilis, optio pariatur voluptate itaque nam obcaecati quas omnis reprehenderit doloribus perspiciatis. dolores enim harum molestias facilis, optio pariatur voluptate itaque nam obcaecati quas omnis reprehenderit doloribus perspiciatis. Qui, ex. </p>
+                            <h1 className="font-semibold text-lg sm:text-2xl md:text-3xl leading-6">
+                                {pageTitle}
+                            </h1>
+                            <p className="text-2xs md:text-xs">
+                                {pageDescription}
+                            </p>
                         </div>
 
                         {/* CTA */}
