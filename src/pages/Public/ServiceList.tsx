@@ -23,12 +23,6 @@ export default function ServiceList () {
                         <div className="flex gap-2">
                             <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE}> Request a Project </PCTALink>
                         </div>
-
-                    </div>
-
-                    {/* Hero Image */}
-                    <div>
-
                     </div>
                 </div>
 

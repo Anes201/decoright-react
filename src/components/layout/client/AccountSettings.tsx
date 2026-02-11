@@ -3,37 +3,32 @@ import useAuth from "@/hooks/useAuth";
 import Spinner from "@components/common/Spinner";
 import toast from "react-hot-toast";
 import React, { useCallback, useEffect, useState } from "react";
-import type { Database } from "@/types/database.types";
-import { images, Languages } from "@/constants";
+import { allowedLocales, images, Languages } from "@/constants";
 import { EmailInput, Input, PhoneInput } from "@components/ui/Input";
 import { supabase } from "@/lib/supabase";
 import { PATHS } from "@/routers/Paths";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { SelectMenu } from "@components/ui/Select";
 import { DEFAULT_AUTH_USER_LANGUAGE, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "@/config";
 import { ICONS } from "@/icons";
 import { PHONE_REGEX, USERNAME_REGEX } from "@/utils/validators";
+import { useTranslation } from "react-i18next";
 
-type ProfileData = Database['public']['Tables']['profiles']['Row'];
-
-type Settings = {
-    firstName: string;
-    lastName: string;
-    phone?: string;
-};
-
+// Unused types ProfileData and Settings removed to clear lint errors
 export type FieldKey = "firstName" | "lastName" | "phone";
 
-export default function AccountSettingsLayout () {
-    const navigate = useNavigate() // moved to top-level hook call
+export default function AccountSettingsLayout() {
+    // const navigate = useNavigate() - Removed unused variable to clear lint error
+
+
+    const { t, i18n } = useTranslation(['common']);
 
     const { user, loading: authLoading } = useAuth()
     const [settings, setSettings] = useState<Record<string, string>>({});
-    const [language, setLanguage] = useState(DEFAULT_AUTH_USER_LANGUAGE ?? 'en')
-    const [dataSaved, setDataSaved] = useState(false);
-
+    const [language, setLanguage] = useState<string | "en" | "fr" | "ar">(i18n.language || "en")
+    const [_dataSaved, setDataSaved] = useState(false);
     const [initializing, setInitializing] = useState(true);
-    const [loading, setLoading] = useState(false);
+    const [_loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null)
 
     // Custom debounce function to avoid lodash dependency
@@ -45,12 +40,11 @@ export default function AccountSettingsLayout () {
         };
     }
 
-    function handleChange (field:string, value:string) {
-        setSettings(prev => ({...prev, [field]: value}))
+    function handleChange(field: string, value: string) {
+        setSettings(prev => ({ ...prev, [field]: value }))
 
         // validate/local rules here if needed, e.g. don't save empty names
         if ((field === "first_name" || field === "last_name") && value.trim() === "") return;
-
         // save full_name only when user edits first/last
         if (field === "first_name" || field === "last_name") {
             const currentFirst = field === "first_name" ? value : settings.first_name;
@@ -58,6 +52,14 @@ export default function AccountSettingsLayout () {
             const fullName = `${currentFirst} ${currentLast}`.trim();
             debouncedSave('full_name', fullName);
         }
+
+        if ((field === "language") && allowedLocales.includes(value)) return;
+        if ((field === "language")) {
+            setLanguage(value)
+            i18n.changeLanguage(value); // This is the global trigger
+            // Save it to the db if needed
+        };
+
     };
 
     useEffect(() => {
@@ -81,8 +83,8 @@ export default function AccountSettingsLayout () {
                 setSettings(
                     {
                         first_name: first,
-                        last_name:rest.join(' '),
-                        phone:data?.phone ?? ''
+                        last_name: rest.join(' '),
+                        phone: data?.phone ?? ''
                     }
                 )
 
@@ -99,48 +101,48 @@ export default function AccountSettingsLayout () {
     }, [user, authLoading]);
 
     const debouncedSave = useCallback(
-    debounce(async (key: string, rawValue: string) => {
+        debounce(async (key: string, rawValue: string) => {
 
-        if (!user?.id) {
-            setError("Missing user.");
-            return;
-        }
-
-        setLoading(true);
-        try {
-
-            const value = (rawValue ?? "").trim();
-
-            switch (key) {
-                case "firstName":
-                case "lastName":
-                if (value.length < USERNAME_MIN_LENGTH) return "This field is required.";
-                if (value.length > USERNAME_MAX_LENGTH) return `Must be at most ${USERNAME_MAX_LENGTH} characters.`;
-                if (!USERNAME_REGEX.test(value)) return "Only letters, spaces, hyphens, and apostrophes allowed.";
-                return null;
-
-                case "phone":
-                // phone is optional — empty is allowed
-                if (value === "") return null;
-                if (!PHONE_REGEX.test(value)) return "Enter a valid phone number (e.g. 0123456789 or +213123456789)";
-                return null;
-
-                default: null;
+            if (!user?.id) {
+                setError("Missing user.");
+                return;
             }
 
-            const normalized = value.trim() === "" ? null : value.trim();
+            setLoading(true);
+            try {
 
-            console.log({[key]: normalized})
-            const { error } = await supabase
-            .from('profiles')
-            .update({ [key]: normalized })
-            .eq('id', user?.id);
+                const value = (rawValue ?? "").trim();
 
-            if (error) throw error
+                switch (key) {
+                    case "firstName":
+                    case "lastName":
+                        if (value.length < USERNAME_MIN_LENGTH) return "This field is required.";
+                        if (value.length > USERNAME_MAX_LENGTH) return `Must be at most ${USERNAME_MAX_LENGTH} characters.`;
+                        if (!USERNAME_REGEX.test(value)) return "Only letters, spaces, hyphens, and apostrophes allowed.";
+                        return null;
 
-            toast.success('Data saved successfully!')
-            setDataSaved(true);
-            setTimeout(() => setDataSaved(false), 2000);
+                    case "phone":
+                        // phone is optional — empty is allowed
+                        if (value === "") return null;
+                        if (!PHONE_REGEX.test(value)) return "Enter a valid phone number (e.g. 0123456789 or +213123456789)";
+                        return null;
+
+                    default: null;
+                }
+
+                const normalized = value.trim() === "" ? null : value.trim();
+
+                console.log({ [key]: normalized })
+                const { error } = await supabase
+                    .from('profiles')
+                    .update({ [key]: normalized })
+                    .eq('id', user?.id);
+
+                if (error) throw error
+
+                toast.success('Data saved successfully!')
+                setDataSaved(true);
+                setTimeout(() => setDataSaved(false), 2000);
 
             } catch (error) {
                 console.error("Failed to save setting:", error);
@@ -153,55 +155,13 @@ export default function AccountSettingsLayout () {
 
     if (!user) return <Navigate to={PATHS.LOGIN} replace />;
 
-    // const handleSubmit = async (e: React.FormEvent) => {
-    //     e.preventDefault()
-    //     if (!firstName || !lastName ) {
-    //         setError("First and Last name are required.")
-    //         return
-    //     }
 
-    //     setLoading(true)
-    //     setError(null)
-
-    //     try {
-    //         // checking for active requests with specific status
-    //         const CHECK_STATUS = 'in_progress';
-
-    //         // check if user has any request with that status to prevent phone update
-    //         const requests = await RequestService.getMyRequests();
-    //         const activeReq = requests?.find((req: any) => req.status === CHECK_STATUS);
-
-    //         if (activeReq) {
-    //             setError(`You have an active request with status "${CHECK_STATUS}". Cannot update phone while that request is active.`);
-    //             setLoading(false);
-    //             return;
-    //         }
-
-    //         const fullName = `${firstName} ${lastName}`.trim();
-    //         const { error } = await supabase
-    //             .from('profiles')
-    //             .update({ full_name: fullName, phone })
-    //             .eq('id', user?.id);
-
-    //         if (error) throw error;
-
-    //         // optional: navigate back to profile on success
-    //         navigate(PATHS.CLIENT.ACCOUNT_PROFILE);
-
-    //     } catch (err: any) {
-    //         console.error("Error updating profile:", err);
-    //         setError(err?.message ?? String(err));
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // }
-
-    function handleUploadProfilePicture(e:any){
+    function handleUploadProfilePicture(e: any) {
         e.preventDefault()
 
     }
 
-    function handleRemoveProfilePicture(e:any){
+    function handleRemoveProfilePicture(e: any) {
         e.preventDefault()
     }
 
@@ -217,14 +177,6 @@ export default function AccountSettingsLayout () {
     return (
 
         <div className="flex flex-col gap-16 w-full mb-16">
-
-            {/* toast message would do better */}
-            {/* {loading
-                ? <span className="font-medium text-xs text-foreground/75 animate-pulse"> <Spinner size="sm"/> Saving Data... </span>
-                : dataSaved
-                    ? <span className="font-medium text-xs text-success pulse"> ✓ Data-Saved </span>
-                    : <span className="font-medium text-xs text-muted/75"> Auto-Save enabled </span>
-            } */}
 
             {error && <p className="text-xs text-danger"> {error} </p>}
 
@@ -252,8 +204,8 @@ export default function AccountSettingsLayout () {
                             </div>
                             <div>
                                 <label htmlFor="remove-profile-picture"
-                                className="text-sm text-danger cursor-pointer hover:underline active:underline"
-                                > Remove </label>
+                                    className="text-sm text-danger cursor-pointer hover:underline active:underline"
+                                > {t('common:actions.remove')} </label>
                                 <input id="remove-profile-picture" className="hidden" onClick={handleRemoveProfilePicture} />
                             </div>
                         </div>
@@ -265,16 +217,16 @@ export default function AccountSettingsLayout () {
                             <div className="w-full">
                                 <label htmlFor="first-name-field" className="text-xs text-muted mx-1"> First name </label>
                                 <Input type="text" id="first-name-field" placeholder="First name" className="bg-emphasis/75"
-                                value={settings.first_name ?? ''}
-                                onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleChange('first_name', e.target.value)} />
+                                    value={settings.first_name ?? ''}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('first_name', e.target.value)} />
                             </div>
 
                             <div className="w-full">
                                 <label htmlFor="last-name-field" className="text-xs text-muted mx-1"> Last name </label>
                                 <Input type="text" id="last-name-field" placeholder="Last name"
-                                className="bg-emphasis/75"
-                                value={settings.last_name ?? ''}
-                                onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleChange('last_name', e.target.value)} />
+                                    className="bg-emphasis/75"
+                                    value={settings.last_name ?? ''}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('last_name', e.target.value)} />
                             </div>
                         </div>
 
@@ -285,10 +237,21 @@ export default function AccountSettingsLayout () {
 
                         <div>
                             <label htmlFor="phone-field" className="text-xs text-muted mx-1"> Phone </label>
-                            <PhoneInput id="phone-field"
-                            className="bg-emphasis/75"
-                            value={settings.phone ?? ''}
-                            onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleChange('phone', e.target.value)} />
+                            <div className="relative">
+                                <PhoneInput id="phone-field"
+                                    className="bg-emphasis/75 ltr:pr-9 rtl:pr-9"
+                                    value={settings.phone ?? ''}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('phone', e.target.value)} />
+                                { user.phoneVerified
+                                ? <button type="button" area-label="change phone number" className="absolute top-0 ltr:right-2 h-full text-sm"> <ICONS.pencilSquare className="size-5 text-muted"/> </button>
+                                : <button type="button" area-label="verify phone number" className="absolute top-0 ltr:right-2 h-full text-sm"> <ICONS.exclamationTriangle className="size-5 text-warning"/> </button>
+                                }
+
+                            </div>
+                            <p className="flex gap-2 mt-2">
+                                <ICONS.exclamationTriangle className="size-5 text-warning"/>
+                                <button type="button" className="text-xs text-muted decoration-warning hover:underline active:underline"> Phone number is set but its not verified! </button>
+                            </p>
                         </div>
 
                     </div>
@@ -314,7 +277,7 @@ export default function AccountSettingsLayout () {
                                 placeholder="Select a Language"
                                 id="select-language"
                                 value={Languages.find(s => s.value === language)}
-                                onChange={(option: any) => setLanguage(option.value)}
+                                onChange={(option: any) => handleChange('language', option.value)}
                                 isSearchable={false}
                                 required
                             />
@@ -336,17 +299,17 @@ export default function AccountSettingsLayout () {
 
                     <ul className="flex flex-col gap-4">
                         <li> <Link to={PATHS.CLIENT.PASSWORD_CHANGE}
-                        className="flex items-center gap-2 w-full h-full px-2.5 py-2 bg-surface border border-muted/15 rounded-lg hover:underline active:underline"
+                            className="flex items-center gap-2 w-full h-full px-2.5 py-2 bg-surface border border-muted/15 rounded-lg hover:underline active:underline"
                         > <ICONS.lockClosed className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> Change Password </span> </Link>
                         </li>
 
-                        <li> <Link to={PATHS.CLIENT.PASSWORD_CHANGE}
-                        className="flex items-center gap-2 w-full h-full px-2.5 py-2 bg-surface border border-muted/15 rounded-lg hover:underline active:underline"
+                        <li> <Link to={PATHS.PASSWORD_RESET}
+                            className="flex items-center gap-2 w-full h-full px-2.5 py-2 bg-surface border border-muted/15 rounded-lg hover:underline active:underline"
                         > <ICONS.questionMarkCircle className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> Forgot Password </span> </Link>
                         </li>
 
-                        <li> <Link to={PATHS.CLIENT.PASSWORD_CHANGE}
-                        className="flex items-center gap-2 w-full h-full px-2.5 py-2 bg-surface border border-muted/15 rounded-lg hover:underline active:underline"
+                        <li> <Link to={PATHS.PRIVACY_POLICY}
+                            className="flex items-center gap-2 w-full h-full px-2.5 py-2 bg-surface border border-muted/15 rounded-lg hover:underline active:underline"
                         > <ICONS.bookOpen className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> Privacy Policy </span> </Link>
                         </li>
 

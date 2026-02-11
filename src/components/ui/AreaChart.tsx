@@ -526,7 +526,7 @@ const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
       className,
       onValueChange,
       enableLegendSlider = false,
-      tickGap = 5,
+      tickGap = 60,
       xAxisLabel,
       yAxisLabel,
       type = "default",

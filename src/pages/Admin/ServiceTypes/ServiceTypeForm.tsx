@@ -147,7 +147,14 @@ export default function ServiceTypeForm({ isOpen, serviceType, onClose, onSucces
                         <input
                             type="text"
                             value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value.toUpperCase().replace(/[^A-Z_]/g, '') })}
+                            onChange={(e) => {
+                                const val = e.target.value
+                                    .trimStart()
+                                    .replace(/[\s-]+/g, '_') // Replace spaces and hyphens with underscores
+                                    .toUpperCase()
+                                    .replace(/[^A-Z0-9_]/g, ''); // Remove other non-alphanumeric characters
+                                setFormData({ ...formData, name: val });
+                            }}
                             placeholder="INTERIOR_DESIGN"
                             disabled={!!serviceType}
                             required

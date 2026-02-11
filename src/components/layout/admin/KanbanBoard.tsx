@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { ICONS } from '@/icons';
 
 interface KanbanBoardProps {

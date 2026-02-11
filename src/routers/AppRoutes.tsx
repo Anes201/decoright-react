@@ -14,6 +14,7 @@ const Contact = lazy(() => import('@/pages/public/Contact'));
 const ServiceList = lazy(() => import('@/pages/public/ServiceList'));
 const ProjectList = lazy(() => import('@/pages/public/ProjectList'));
 const ProjectDetail = lazy(() => import('@/pages/public/ProjectDetail'));
+const FAQList = lazy(() => import('@/pages/public/FAQList'));
 
 const Signup = lazy(() => import('@/pages/public/Signup'));
 const Login = lazy(() => import('@/pages/public/Login'));
@@ -21,7 +22,7 @@ const VerifyOTP = lazy(() => import('@/pages/VerifyOtp'));
 const PasswordReset = lazy(() => import('@/pages/PasswordReset'));
 const PasswordSent = lazy(() => import('@/pages/PasswordSent'));
 
-const ChatRoom = lazy(() => import('@components/chat/ChatRoom'));
+const ChatRoom = lazy(() => import('@/components/chat/ChatRoom'));
 
 const ClientHome = lazy(() => import('@/pages/client/GalleryPortfolioList'));
 const ClientChat = lazy(() => import('@/pages/client/Chat'));
@@ -40,18 +41,16 @@ const AdminChat = lazy(() => import('@/pages/Admin/Chat'));
 const AdminUsers = lazy(() => import('@/pages/Admin/Users'));
 const AdminServiceRequests = lazy(() => import('@/pages/Admin/requests/RequestServiceList'));
 const AdminServiceRequest = lazy(() => import('@/pages/Admin/requests/RequestService'));
-const AdminServiceList = lazy(() => import('@/pages/Admin/services/ServiceList'));
-const AdminServiceCreate = lazy(() => import('@/pages/Admin/services/ServiceCreate'));
-const AdminServiceUpdate = lazy(() => import('@/pages/Admin/services/ServiceUpdate'));
-const AdminServiceSpaceList = lazy(() => import('@/pages/Admin/services/ServiceSpaceList'));
-const AdminServiceSpaceCreate = lazy(() => import('@/pages/Admin/services/ServiceSpaceCreate'));
-const AdminServiceSpaceUpdate = lazy(() => import('@/pages/Admin/services/ServiceSpaceUpdate'));
-const AdminProjectCreate = lazy(() => import('@/pages/Admin/projects/ProjectCreate'));
 const AdminProjectList = lazy(() => import('@/pages/Admin/projects/ProjectList'));
+const AdminProjectCreate = lazy(() => import('@/pages/Admin/projects/ProjectCreate'));
 const AdminProjectUpdate = lazy(() => import('@/pages/Admin/projects/ProjectUpdate'));
-const AdminGalleryPortfolioList = lazy(() => import('@/pages/Admin/gallery/GalleryPortfolioList'));
-const AdminGalleryPortfolioCreate = lazy(() => import('@/pages/Admin/gallery/GalleryPortfolioCreate'));
-const AdminGalleryPortfolioUpdate = lazy(() => import('@/pages/Admin/gallery/GalleryPortfolioUpdate'));
+
+const AdminGalleryList = lazy(() => import('@/pages/Admin/gallery/GalleryList'));
+const AdminGalleryCreate = lazy(() => import('@/pages/Admin/gallery/GalleryCreate'));
+const AdminGalleryUpdate = lazy(() => import('@/pages/Admin/gallery/GalleryUpdate'));
+
+const AdminServiceTypes = lazy(() => import('@/pages/Admin/ServiceTypes'));
+const AdminSpaceTypes = lazy(() => import('@/pages/Admin/SpaceTypes'));
 const AdminSettings = lazy(() => import('@/pages/Admin/Settings'));
 
 const router = createBrowserRouter([
@@ -86,7 +85,11 @@ const router = createBrowserRouter([
         element: <ProjectDetail />,
       },
       {
-        path: PATHS.GALLERY_PORTFOLIO_LIST,
+        path: PATHS.FAQ_LIST,
+        element: <FAQList />,
+      },
+      {
+        path: PATHS.GALLERY_LIST,
         element: <ClientGalleryPortfolioList />,
       },
       {
@@ -132,7 +135,7 @@ const router = createBrowserRouter([
       {
         path: PATHS.CLIENT.CHAT,
         element: <ClientChat />,
-        children:[
+        children: [
           {
             path: PATHS.CLIENT.CHAT_ROOM,
             element: <ChatRoom />
@@ -184,6 +187,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: PATHS.ADMIN.CHAT_ROOM,
+            element: <ChatRoom />
           }
         ]
       },
@@ -204,31 +208,6 @@ const router = createBrowserRouter([
         element: <AdminServiceRequest />,
       },
 
-      // Services
-      {
-        path: PATHS.ADMIN.SERVICE_LIST,
-        element: <AdminServiceList />,
-      },
-      {
-        path: PATHS.ADMIN.SERVICE_CREATE,
-        element: <AdminServiceCreate />,
-      },
-      {
-        path: PATHS.ADMIN.SERVICE_UPDATE,
-        element: <AdminServiceUpdate />,
-      },
-      {
-        path: PATHS.ADMIN.SERVICE_SPACE_LIST,
-        element: <AdminServiceSpaceList />,
-      },
-      {
-        path: PATHS.ADMIN.SERVICE_SPACE_CREATE,
-        element: <AdminServiceSpaceCreate />,
-      },
-      {
-        path: PATHS.ADMIN.SERVICE_SPACE_UPDATE,
-        element: <AdminServiceSpaceUpdate />,
-      },
 
       // Projects
       {
@@ -246,17 +225,28 @@ const router = createBrowserRouter([
 
       // Gallery
       {
-        path: PATHS.ADMIN.GALLERY_PORTFOLIO_LIST,
-        element: <AdminGalleryPortfolioList />,
+        path: PATHS.ADMIN.GALLERY_LIST,
+        element: <AdminGalleryList />,
       },
       {
-        path: PATHS.ADMIN.GALLERY_PORTFOLIO_CREATE,
-        element: <AdminGalleryPortfolioCreate />,
+        path: PATHS.ADMIN.GALLERY_CREATE,
+        element: <AdminGalleryCreate />,
       },
       {
-        path: PATHS.ADMIN.GALLERY_PORTFOLIO_UPDATE,
-        element: <AdminGalleryPortfolioUpdate />,
+        path: PATHS.ADMIN.GALLERY_UPDATE,
+        element: <AdminGalleryUpdate />,
       },
+
+      {
+        path: PATHS.ADMIN.SERVICE_TYPES,
+        element: <AdminServiceTypes />,
+      },
+      {
+        path: PATHS.ADMIN.SPACE_TYPES,
+        element: <AdminSpaceTypes />,
+      },
+
+
 
       // Settings
       {
@@ -271,10 +261,10 @@ export default function AppRoutes() {
   return (
     <Suspense fallback={
       <div className="flex items-center justify-center w-full h-hero">
-        <Spinner size="lg"/>
+        <Spinner size="lg" />
       </div>
     }>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </Suspense>
   )
 }

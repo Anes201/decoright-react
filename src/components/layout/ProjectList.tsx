@@ -5,6 +5,7 @@ import { ICONS } from "@/icons";
 import { PATHS } from "@/routers/Paths";
 import { AdminService } from "@/services/admin.service";
 import Spinner from "@components/common/Spinner";
+import { useTranslation } from "react-i18next";
 
 export function ProjectCard({ project, index }: { project: any, index: number }) {
     return (
@@ -36,6 +37,8 @@ export function ProjectCardList() {
     const [projects, setProjects] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const { t } = useTranslation(['pages', 'nav', 'common'])
+
     useEffect(() => {
         async function fetchProjects() {
             try {
@@ -55,7 +58,7 @@ export function ProjectCardList() {
     }
 
     if (projects.length === 0) {
-        return <div className="text-center p-8 text-muted">No projects found.</div>;
+        return <div className="text-center p-8 text-muted"> { t('nav:project_list_empty') } </div>;
     }
 
     return (

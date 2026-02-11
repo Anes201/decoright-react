@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { ICONS } from '@/icons';
 import { AdminService, type UserProfile, type ServiceRequest } from '@/services/admin.service';
+import useAuth from '@/hooks/useAuth';
 
 interface UserDetailDrawerProps {
     user: (UserProfile & { total_requests?: number }) | null;
@@ -12,6 +13,7 @@ interface UserDetailDrawerProps {
 }
 
 export default function UserDetailDrawer({ user, isOpen, onClose, onUserUpdate, onRequestClick }: UserDetailDrawerProps) {
+    const { user: currentUser } = useAuth();
     const [activeTab, setActiveTab] = useState<'profile' | 'history' | 'actions'>('profile');
     const [requests, setRequests] = useState<(ServiceRequest & { service_types: { display_name_en: string } | null })[]>([]);
     const [isLoadingRequests, setIsLoadingRequests] = useState(false);

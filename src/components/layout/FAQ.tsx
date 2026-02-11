@@ -1,4 +1,5 @@
 
+import { ICONS } from "@/icons";
 import { useState } from "react";
 
 export function FAQList () {
@@ -32,21 +33,20 @@ export function FAQList () {
             {faqData.map((faq, index) => {
                 const isOpen = index === openIndex;
                 return (
-                    <li key={index} className="flex flex-col border-b border-muted/10 pb-2" onClick={() => setOpenIndex(isOpen ? null : index)}>
+                    <li key={index} className="flex flex-col border-b border-muted/15 pb-2" onClick={() => setOpenIndex(isOpen ? null : index)}>
 
                         <div className="flex justify-between items-center mb-2 gap-2 cursor-pointer">
-                            <h4 className="font-medium text-muted text-xs md:text-sm mb-2"> {faq.question} </h4>
+                            <h4 className="text-muted text-xs md:text-sm mb-2"> {faq.question} </h4>
                             <button
                                 type="button"
-                                className="transition-transform duration-300"
                                 aria-expanded={isOpen}
                                 aria-controls={`faq-answer-${index}`}
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`size-4 md:size-5 ${isOpen ? 'rotate-180' : ''}`}><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                            <ICONS.chevronDown className={`size-4 md:size-5 ${isOpen ? 'rotate-180' : ''}`}/>
                             </button>
                         </div>
 
-                        <div id={`faq-answer-${index}`} className={`overflow-hidden ${isOpen ? 'h-full' : 'h-0'}`}>
+                        <div id={`faq-answer-${index}`} className={`overflow-hidden ${isOpen ? 'max-h-full mb-2' : 'max-h-0'}`}>
                             <p className="text-sm text-foreground"> {faq.answer} </p>
                         </div>
                     </li>

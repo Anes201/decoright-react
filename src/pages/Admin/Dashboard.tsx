@@ -1,4 +1,3 @@
-
 import { AreaChart } from "@/components/ui/AreaChart";
 import { AdminService } from "@/services/admin.service";
 import { ICONS } from "@/icons";
@@ -6,36 +5,26 @@ import { useEffect, useState } from "react";
 import Spinner from "@/components/common/Spinner";
 
 export default function Dashboard() {
-    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [timeframe, setTimeframe] = useState<'30d' | '90d' | 'lifetime'>('30d');
     const [stats, setStats] = useState<any>(null);
     const [chartData, setChartData] = useState<any[]>([]);
     const [topServices, setTopServices] = useState<any[]>([]);
-    const [activities, setActivities] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-
-    const COLORS = {
-        primary: 'bg-primary',
-        secondary: 'bg-secondary',
-        success: 'bg-emerald-500',
-        warning: 'bg-amber-500',
-        info: 'bg-blue-500',
-        accent: 'bg-purple-500'
-    };
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
 
     useEffect(() => {
         async function loadDashboardData() {
+            setLoading(true);
             try {
-                const [dashboardStats, monthlyRequests, services, logs] = await Promise.all([
-                    AdminService.getDashboardStats(),
-                    AdminService.getRequestsByMonth(),
-                    AdminService.getTopServices(),
-                    AdminService.getUsersActivity()
+                const [dashboardStats, monthlyRequests, services] = await Promise.all([
+                    AdminService.getDashboardStats(timeframe),
+                    AdminService.getRequestsByMonth(timeframe),
+                    AdminService.getTopServices(timeframe),
                 ]);
 
                 setStats(dashboardStats);
                 setChartData(monthlyRequests);
                 setTopServices(services);
-                setActivities(logs);
             } catch (error) {
                 console.error("Failed to load dashboard data:", error);
             } finally {
@@ -44,16 +33,22 @@ export default function Dashboard() {
         }
 
         loadDashboardData();
-    }, []);
+    }, [timeframe]);
 
     const topKPICards = [
-        { id: '1', label: 'Total requests', value: stats?.totalRequests ?? '...', icon: ICONS.rectangleStack, color: 'from-blue-600 to-indigo-600', trend: '+12%' },
-        { id: '2', label: 'Total completed', value: stats?.completedRequests ?? '...', icon: ICONS.check, color: 'from-emerald-500 to-teal-500', trend: '+5%' },
-        { id: '3', label: 'Total unique clients', value: stats?.totalUsers ?? '...', icon: ICONS.userCircle, color: 'from-amber-500 to-orange-500', trend: '+8%' },
-        { id: '4', label: 'Completion rate', value: stats?.completionRate ?? '...', icon: ICONS.chartBar, color: 'from-purple-500 to-pink-500', trend: '+3%' },
+        { id: '1', label: 'Total requests', value: stats?.totalRequests ?? '...', icon: ICONS.rectangleStack, color: 'from-blue-600 to-indigo-600' },
+        { id: '2', label: 'Total completed', value: stats?.completedRequests ?? '...', icon: ICONS.check, color: 'from-emerald-500 to-teal-500' },
+        { id: '3', label: 'Total unique clients', value: stats?.totalUsers ?? '...', icon: ICONS.userCircle, color: 'from-amber-500 to-orange-500' },
+        { id: '4', label: 'Completion rate', value: stats?.completionRate ?? '...', icon: ICONS.chartBar, color: 'from-purple-500 to-pink-500' },
     ];
 
-    if (loading) {
+    const timeframeLabels = {
+        '30d': 'Last 30 days',
+        '90d': 'Last 90 days',
+        'lifetime': 'Lifetime'
+    };
+
+    if (loading && !stats) {
         return (
             <div className="flex items-center justify-center h-hero">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
@@ -76,13 +71,33 @@ export default function Dashboard() {
                                 <h1 className="font-semibold text-xl"> Analytics </h1>
                             </div>
                             <div className="relative flex items-center gap-4">
-                                <button id="dropdownDefaultButton" onClick={() => setDropdownOpen(v => !v)} type="button"
-                                    className="space-x-1 shrink-0 inline-flex items-center justify-center text-body bg-emphasis/75 box-border border border-muted/25 hover:text-heading shadow-xs focus:outline-1 outline-muted/45 font-medium leading-5 rounded-lg text-sm px-3 py-2"
-                                >
-                                    <ICONS.calendar className="size-4 text-muted" />
-                                    <span> Filter by </span>
-                                </button>
-                                <span className="text-xs"> Jan 13 - Feb 11 </span>
+                                <div className="relative">
+                                    <button
+                                        onClick={() => setIsFilterOpen(!isFilterOpen)}
+                                        className="space-x-1 shrink-0 inline-flex items-center justify-center text-body bg-emphasis/75 box-border border border-muted/25 hover:text-heading shadow-xs focus:outline-1 outline-muted/45 font-medium leading-5 rounded-lg text-sm px-3 py-2"
+                                    >
+                                        <ICONS.calendar className="size-4 text-muted" />
+                                        <span> {timeframeLabels[timeframe]} </span>
+                                        <ICONS.chevronDown className={`size-3 transition-transform ${isFilterOpen ? 'rotate-180' : ''}`} />
+                                    </button>
+
+                                    {isFilterOpen && (
+                                        <div className="absolute top-full left-0 mt-2 w-40 bg-surface border border-muted/15 rounded-xl shadow-xl z-50 overflow-hidden">
+                                            {(['30d', '90d', 'lifetime'] as const).map((option) => (
+                                                <button
+                                                    key={option}
+                                                    onClick={() => {
+                                                        setTimeframe(option);
+                                                        setIsFilterOpen(false);
+                                                    }}
+                                                    className={`w-full text-left px-4 py-2.5 text-sm hover:bg-emphasis transition-colors ${timeframe === option ? 'text-primary font-bold bg-primary/5' : 'text-body'}`}
+                                                >
+                                                    {timeframeLabels[option]}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
@@ -90,7 +105,7 @@ export default function Dashboard() {
                         <div className="flex flex-col">
                             <div className="flex items-center justify-between mb-4">
                                 <h3 className="font-bold text-lg text-heading"> Overall Performance </h3>
-                                <span className="text-xs text-muted bg-emphasis/50 px-2 py-1 rounded-full border border-muted/10"> Last 30 days </span>
+                                <span className="text-xs text-muted bg-emphasis/50 px-2 py-1 rounded-full border border-muted/10"> {timeframeLabels[timeframe]} </span>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
                                 {topKPICards.map((data) => (
@@ -100,9 +115,6 @@ export default function Dashboard() {
                                             <div className={`p-2.5 rounded-xl bg-gradient-to-br ${data.color} shadow-lg shadow-indigo-500/20`}>
                                                 <data.icon className="size-5 text-white" />
                                             </div>
-                                            <span className="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-1.5 py-0.5 rounded-md">
-                                                {data.trend}
-                                            </span>
                                         </div>
                                         <div>
                                             <h4 className="font-medium text-xs text-muted uppercase tracking-wider mb-1"> {data.label} </h4>
@@ -133,30 +145,41 @@ export default function Dashboard() {
                                     </div>
                                 </div>
                                 <div className="p-4 flex-1 min-h-[400px]">
-                                    <AreaChart
-                                        className="w-full h-full"
-                                        data={chartData}
-                                        index="date"
-                                        categories={["Requests", "Complete"]}
-                                        colors={["blue", "emerald"]}
-                                        showLegend={false}
-                                        showGridLines={true}
-                                        onValueChange={(v) => console.log(v)}
-                                        allowDecimals={false}
-                                        fill="gradient"
-                                    />
+                                    {loading ? (
+                                        <div className="flex items-center justify-center h-full w-full opacity-50">
+                                            <Spinner size="md" />
+                                        </div>
+                                    ) : (
+                                        <AreaChart
+                                            className="w-full h-full"
+                                            data={chartData}
+                                            index="date"
+                                            categories={["Requests", "Complete"]}
+                                            colors={["blue", "emerald"]}
+                                            showLegend={false}
+                                            showGridLines={true}
+                                            onValueChange={(v) => console.log(v)}
+                                            allowDecimals={false}
+                                            fill="gradient"
+                                            tickGap={80}
+                                        />
+                                    )}
                                 </div>
                             </div>
 
                             {/* Additional Metrics */}
-                            <div className="flex flex-col gap-6 h-full">
+                            <div className="flex flex-col gap-6 h-full min-h-[480px]">
                                 <div className="flex flex-col border border-muted/10 shadow-sm bg-surface rounded-2xl overflow-hidden h-full">
                                     <div className="p-6 border-b border-muted/5">
                                         <h3 className="font-bold text-heading text-sm"> Popular Services </h3>
                                         <p className="text-xs text-muted mt-1">Distribution by importance.</p>
                                     </div>
                                     <div className="p-6 flex flex-col gap-4 overflow-y-auto max-h-[400px]">
-                                        {topServices.length > 0 ? (
+                                        {loading && topServices.length === 0 ? (
+                                            <div className="flex items-center justify-center py-20 opacity-50">
+                                                <Spinner size="sm" />
+                                            </div>
+                                        ) : topServices.length > 0 ? (
                                             topServices.map((service, index) => (
                                                 <div key={index} className="group flex flex-col gap-2">
                                                     <div className="flex justify-between items-center text-xs font-semibold">
@@ -182,51 +205,6 @@ export default function Dashboard() {
 
                 </section>
             </main>
-
-            <section className="w-full h-fit mt-12 mb-40">
-                <div className="flex flex-col gap-4 w-full h-full p-6 border border-muted/10 shadow-sm bg-surface rounded-2xl">
-                    <div className="flex items-center justify-between pb-6 mb-2 border-b border-muted/5">
-                        <div className="flex items-center gap-3">
-                            <div className="p-2 rounded-lg bg-primary/10 text-primary">
-                                <ICONS.presentationChartLine className="size-5" />
-                            </div>
-                            <h2 className="font-bold text-xl text-heading"> Admin Activity </h2>
-                        </div>
-                        <button className="text-xs font-semibold text-primary hover:underline">View All Logs</button>
-                    </div>
-                    {/* Activity List */}
-                    <ul className="flex flex-col gap-6">
-                        {activities.map((activity) => (
-                            <li key={activity.id} className="group flex gap-4 w-full">
-                                <div className="flex-shrink-0 size-10 rounded-full bg-surface-tertiary flex items-center justify-center text-primary group-hover:bg-primary/10 transition-colors border border-muted/5">
-                                    <ICONS.user className="size-5" />
-                                </div>
-                                <div className="flex flex-col gap-1.5 w-full">
-                                    <div className="flex justify-between items-center">
-                                        <p className="font-bold text-sm text-heading flex items-center gap-2">
-                                            {activity.profiles?.full_name || 'System'}
-                                            <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emphasis text-muted uppercase tracking-wider">
-                                                {activity.action}
-                                            </span>
-                                        </p>
-                                        <span className="text-xs text-muted flex items-center gap-1">
-                                            <ICONS.calendar className="size-3" />
-                                            {new Date(activity.created_at).toLocaleDateString()}
-                                        </span>
-                                    </div>
-                                    <span className="text-xs text-body/80 leading-relaxed"> {activity.details} </span>
-                                </div>
-                            </li>
-                        ))}
-                        {activities.length === 0 && (
-                            <li className="text-sm text-center text-muted py-12 flex flex-col items-center gap-2">
-                                <ICONS.rectangleStack className="size-8 opacity-20" />
-                                <span>No recent activities found in the system.</span>
-                            </li>
-                        )}
-                    </ul>
-                </div >
-            </section >
         </>
     )
 }

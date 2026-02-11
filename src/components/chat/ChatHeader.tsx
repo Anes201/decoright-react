@@ -4,100 +4,59 @@ import { ICONS } from '@/icons';
 import { PATHS } from '@/routers/Paths';
 import { useChat } from '@/hooks/useChat';
 
-export default function ChatHeader() {
+export default function ChatHeader({ selected, rightActions }: { selected?: any, rightActions?: React.ReactNode } = {}) {
 
-    const { selectedRoom:contact } = useChat();
+    const { selectedRoom: hookContact } = useChat();
+    const contact = selected || hookContact;
+
+    // Determine the correct paths based on current route
+    const isAdminPath = window.location.pathname.startsWith('/admin');
+    const backPath = isAdminPath ? PATHS.ADMIN.CHAT : PATHS.CLIENT.CHAT;
+    const requestDetailsPath = isAdminPath && contact?.service_requests?.id
+        ? PATHS.ADMIN.requestServiceDetail(contact.service_requests.id)
+        : null;
 
     return (
-        <div className="flex items-center gap-3 w-full p-2 pb-4 border-b border-muted/15">
+        <div className="flex items-center gap-3 w-full p-2 pb-4 border-b border-muted/15 shrink-0">
             <nav className="w-fit h-fit">
-                <Link to={PATHS.CLIENT.CHAT} className="flex p-2 border border-muted/15 bg-surface/25 rounded-full">
-                    <ICONS.arrowLeft className="size-5 text-muted"/>
+                <Link to={backPath} className="flex p-2 border border-muted/15 bg-surface/25 rounded-full hover:bg-emphasis transition-colors">
+                    <ICONS.arrowLeft className="size-5 text-muted" />
                 </Link>
             </nav>
 
-            <div className="flex flex-col w-full h-fit">
-                <h3 className="font-medium text-sm"> {contact?.service_requests.request_code} </h3>
-                <p className="text-2xs text-muted"> {(contact?.service_requests.service_type_id || 'Unknown').replace(/_/g, ' ')} </p>
-                <span className="text-2xs text-muted"> {contact?.created_at} </span>
-                {/* <span className="text-2xs text-muted"> {new Date(selectedRoom?.created_at).toLocaleDateString()} </span> */}
+            <div className="flex flex-col w-full h-fit min-w-0">
+                <h3 className="font-medium text-sm truncate"> {contact?.service_requests?.request_code || 'Chat Room'} </h3>
+                <p className="text-2xs text-muted truncate">
+                    {contact?.service_requests?.service_types?.display_name_en || contact?.service_requests?.service_type_id?.replace(/_/g, ' ') || 'Unknown Service'}
+                </p>
+                {contact?.service_requests?.profiles?.full_name && (
+                    <span className="text-3xs text-muted">Client: {contact.service_requests.profiles.full_name}</span>
+                )}
             </div>
 
             {/* Right actions slot */}
-            <div className="flex flex-col items-end gap-1">
-                <span className={`px-2 py-0.5 rounded-full text-xs request-status-${contact?.service_requests.status.toLowerCase()}`}>
-                    {contact?.service_requests.status}
-                </span>
+            <div className="flex items-center gap-2 shrink-0">
+                {rightActions ? rightActions : (
+                    <>
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${contact?.service_requests?.status === 'Completed' ? 'bg-success/10 text-success' :
+                            contact?.service_requests?.status === 'Cancelled' ? 'bg-danger/10 text-danger' :
+                                'bg-primary/10 text-primary'
+                            }`}>
+                            {contact?.service_requests?.status}
+                        </span>
+                        {requestDetailsPath && (
+                            <Link
+                                to={requestDetailsPath}
+                                className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-primary border border-primary/20 rounded-lg hover:bg-primary/5 transition-colors"
+                                title="View Request Details"
+                            >
+                                <ICONS.eye className="size-4" />
+                                <span className="hidden sm:inline">View Request</span>
+                            </Link>
+                        )}
+                    </>
+                )}
             </div>
         </div>
     );
 }
-
-// INCOMING GIT CHANGES
-
-// export default function ChatHeader({
-//     selected,
-//     isAdmin = false,
-//     backTo,
-//     rightActions,
-// }: {
-//     selected: Contact | null;
-//     isAdmin?: boolean;
-//     backTo?: string; // optional route for the back button
-//     rightActions?: React.ReactNode;
-// }) {
-//     const profile = selected?.service_requests?.profiles;
-//     const requestCode = selected?.service_requests?.request_code;
-
-//     return (
-//         <div className="flex items-center gap-3 w-full p-2 pb-4 border-b border-muted/15">
-//             <nav className="w-fit h-fit">
-//                 {backTo ? (
-//                     <Link to={backTo} className="flex p-2 border border-muted/15 bg-surface/25 rounded-full">
-//                         {/** reuse your ICONS.arrowLeft in the parent scope when importing this file */}
-//                         {typeof window !== 'undefined' ? (null as any) : null}
-//                     </Link>
-//                 ) : null}
-//             </nav>
-
-
-//             <div className="flex items-center gap-2 w-full h-full">
-//                 {/* Avatar */}
-//                 <div className="w-12 aspect-square rounded-full border border-muted/45 overflow-hidden">
-//                     <img
-//                         src="/user.png"
-//                         alt="User Profile"
-//                         className="w-full h-full object-cover rounded-full"
-//                     />
-//                 </div>
-
-//                 {/* Context */}
-//                 <div className="flex flex-col w-full h-fit">
-//                     <h3 className="font-semibold text-sm">
-//                         {profile?.full_name || 'Chat Room'}
-//                         {isAdmin && requestCode ? <span className="text-3xs text-primary ml-2 uppercase">({requestCode})</span> : null}
-//                     </h3>
-//                     <span className="text-2xs text-muted">
-//                         {isAdmin ? (
-//                             <div className="flex items-center gap-1">
-//                                 <span>Client Profile</span>
-//                                 {selected?.request_id && (
-//                                     <Link
-//                                         to={`/admin/request-service/list/`}
-//                                         className="text-primary hover:underline ml-1 font-medium"
-//                                     >
-//                                         • Manage Request
-//                                     </Link>
-//                                 )}
-//                             </div>
-//                         ) : (selected?.service_requests?.status || 'Active')}
-//                     </span>
-//                 </div>
-
-
-//                 {/* Right actions slot */}
-//                 <div className="ml-auto flex items-center gap-2">{rightActions}</div>
-//             </div>
-//         </div>
-//     );
-// }

@@ -54,7 +54,7 @@ export default function ServiceRequestTable() {
 
     const handleStatusChange = async (id: string, newStatus: string) => {
         try {
-            await AdminService.updateRequestStatus(id, newStatus);
+            await AdminService.updateRequestStatus(id, newStatus as any);
             loadRequests(); // Reload data
         } catch (error) {
             console.error("Failed to update status:", error);

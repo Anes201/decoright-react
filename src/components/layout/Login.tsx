@@ -5,6 +5,7 @@ import { EmailInput, PasswordInput } from "../ui/Input"
 import { LegalLinks } from "../../constants"
 import Spinner from "@components/common/Spinner"
 import { PATHS } from "@/routers/Paths"
+import { Trans, useTranslation } from "react-i18next"
 
 export function LoginLayout() {
     const [email, setEmail] = useState("")
@@ -13,7 +14,9 @@ export function LoginLayout() {
     const [error, setError] = useState<string | null>(null)
     const navigate = useNavigate()
 
-    const handleLogin = async (e: React.FormEvent) => {
+    const { t } = useTranslation(['pages', 'nav'])
+
+    const handleLogin = async (e: React.SubmitEvent) => {
         e.preventDefault()
         setLoading(true)
         setError(null)
@@ -41,9 +44,11 @@ export function LoginLayout() {
         <div className="relative flex flex-col gap-8 w-full md:w-4/5 md:pt-8">
 
             {/* Form Header */}
-            <div className="flex flex-col items-center gap-3">
-                <h1 className="font-semibold text-2xl md:text-4xl"> Login to <span className="text-transparent bg-linear-to-br from-foreground to-primary to-65% bg-clip-text">DecoRight</span> </h1>
-                <p className="text-ellipsis-2line text-2xs md:text-xs text-muted">Enter your credentials to access your account and manage your design requests.</p>
+            <div className="flex flex-col items-center gap-4">
+                <h1 className="font-semibold text-2xl md:text-4xl">
+                    <Trans i18nKey="pages:login.header" components={[<span className="text-transparent bg-linear-to-br from-foreground to-primary to-65% bg-clip-text" />]} />
+                </h1>
+                <p className="text-ellipsis-2line text-2xs md:text-xs text-muted"> { t('pages:login.subheader') } </p>
             </div>
 
             <form onSubmit={handleLogin} className="flex flex-col items-center gap-8">
@@ -58,9 +63,11 @@ export function LoginLayout() {
                         {/* Save Log Info */}
                         <label className="inline-flex space-x-2 content-center cursor-pointer w-full">
                             <input type="checkbox" name="remember" className="accent-primary" />
-                            <span className="text-xs md:text-sm"> Remember me </span>
+                            <span className="text-xs md:text-sm"> { t('pages:login.remember_me_field_label') } </span>
                         </label>
-                        <Link to={PATHS.PASSWORD_RESET} className="min-w-max w-fit"> <p className="text-2xs md:text-xs hover:text-primary px-1 underline"> Forgot your password ? </p>  </Link>
+                        <Link to={PATHS.PASSWORD_RESET} className="min-w-max w-fit">
+                            <p className="text-2xs md:text-xs hover:text-primary px-1 underline"> { t('nav:auth_forgot_password_label') } </p>
+                        </Link>
                     </div>
                 </div>
 
@@ -69,12 +76,14 @@ export function LoginLayout() {
                     disabled={loading}
                     className="font-semibold text-white/95 w-full px-4 p-2 bg-primary rounded-xl disabled:opacity-50"
                 >
-                    <Spinner status={loading} size="sm"> Login </Spinner>
+                    <Spinner status={loading} size="sm"> { t('nav:auth_sign_in') } </Spinner>
                 </button>
             </form>
 
             <div className="flex flex-col items-center w-full">
-                <Link to={'/signup'}> <p className="text-xs text-muted"> Don't have an account yet? <span className="font-medium text-foreground hover:underline active:underline"> Sign up </span> </p> </Link>
+                <Link to={PATHS.LOGIN}>
+                    <p className="text-xs text-muted"> <Trans i18nKey="pages:login.no_account_label" components={[<span className="font-medium text-foreground hover:underline active:underline" />]} /></p>
+                </Link>
                 <hr className="w-full border-t border-muted/25 my-4 mask-x-to-transparent mask-x-from-45%" />
 
                 {/* Legal Links */}

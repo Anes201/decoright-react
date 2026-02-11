@@ -1,0 +1,23 @@
+
+{
+  "actions": {
+    "save": "حفظ",
+    "save_changes": "حفظ التغييرات",
+    "cancel": "إلغاء",
+    "remove": "الإزالة"
+  },
+
+  "nav": {
+    "request_service": "",
+    "request_service_list": "",
+
+    "project_list": "",
+    "project_create": "",
+    "project_edit": ""
+  },
+
+  "views_compact": "{{value, compact}} مشاهدة",
+  "views_label": "{{count}} مشاهدة",
+  "views_label_plural": "{{count}} مشاهدة"
+}
+

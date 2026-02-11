@@ -5,35 +5,35 @@ import { useChat } from '@/hooks/useChat';
 import { useCallback, useEffect, useRef } from 'react';
 import Spinner from '../common/Spinner';
 
-export default function ChatBody() {
+export default function ChatBody({ messages: propsMessages, messagesEndRef: propsRef, currentUserId }: { messages?: any[], messagesEndRef?: React.RefObject<HTMLDivElement>, currentUserId?: string } = {}) {
 
     const { user } = useAuth();
-    const { messages, loadingMessages } = useChat();
+    const { messages: hookMessages, loadingMessages } = useChat();
 
-    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const displayMessages = propsMessages || hookMessages;
+    const internalRef = useRef<HTMLDivElement>(null);
+    const messagesEndRef = propsRef || internalRef;
     const scrollToBottom = useCallback(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, []);
 
     useEffect(() => {
         scrollToBottom();
-    }, [messages, scrollToBottom]);
-
-    console.log(loadingMessages)
+    }, [displayMessages, scrollToBottom]);
 
     if (loadingMessages) return (
         <div className="flex flex-col items-center justify-center gap-2 w-full h-full ">
-            <Spinner status={loadingMessages}/>
+            <Spinner status={loadingMessages} />
             <span className="text-xs"> Getting Ready... </span>
         </div>
     )
 
     return (
-        <div className="relative flex flex-col gap-8 w-full h-full py-4 px-2 overflow-y-scroll min-scrollbar" role="list">
-            {messages.length > 0 ? (
-                messages.map((m) => (
+        <div className="flex flex-col gap-8 w-full h-full py-4 px-2" role="list">
+            {displayMessages.length > 0 ? (
+                displayMessages.map((m) => (
                     <div role="listitem" key={m.id}>
-                        <MessageItem message={m} currentUserId={user?.id} />
+                        <MessageItem message={m} currentUserId={currentUserId || user?.id} />
                     </div>
                 ))
             ) : (

@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react"
 import { RequestService } from "@/services/request.service"
-import { ICONS } from "../../icons"
+import { ICONS } from "@/icons"
 import { Link } from "react-router-dom"
 import { PATHS } from "@/routers/Paths"
 

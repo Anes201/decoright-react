@@ -1,0 +1,72 @@
+
+{
+
+  "appName": "Decoright",
+  "loading": "Loading...",
+  "loading_moment": "Just a moment...",
+  "notFound": {
+    "title": "Nothing found",
+    "description": "No items matched your search."
+  },
+
+  "actions": {
+    "save": "Save",
+    "save_changes": "Save Changes",
+    "cancel": "Cancel",
+    "remove": "Remove",
+    "resetFilters": "Reset filters",
+    "search": "Search",
+    "verify_otp": "Verify Code"
+  },
+
+  "languages":{
+    "english": "English",
+    "french": "French",
+    "arabic": "Arabic"
+  },
+
+
+  "footer":{
+
+    "company_name": "Deco Right",
+    "tagline": "Your partner for refined interior design and decor solutions.",
+    "short_description": "Deco Right is your trusted partner for exquisite interior design and decor solutions. We bring your vision to life with creativity and style.",
+
+    "contact": {
+      "title": "Contact",
+      "email": "hello@decoright.com",
+      "phone": "+1 (555) 123-4567",
+      "address_line1": "123 Design Lane",
+      "address_line2": "Suite 400, City, Country"
+    },
+
+    "social": {
+      "follow_us": "Follow us",
+      "aria_facebook": "Open Facebook",
+      "aria_instagram": "Open Instagram",
+      "aria_tiktok": "Open TikTok",
+      "aria_youtube": "Open YouTube",
+      "aria_whatsapp": "Open WhatsApp"
+    },
+
+    "legal": {
+      "title": "Legal",
+      "terms": "Terms of Service",
+      "privacy": "Privacy Policy",
+      "copyright_template": "© {{year}} {{company}}. All rights reserved."
+    }
+  },
+
+  "views_compact": "{{value, compact}} Views",
+  "views_label": "{{count}} view",
+  "views_label_plural": "{{count}} views",
+
+  "after":"After",
+  "before":"Before",
+
+  "location": "Location",
+  "floor_area": "Floor area"
+
+
+
+}

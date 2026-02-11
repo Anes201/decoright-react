@@ -1,27 +1,73 @@
-
-import { SCTALink } from "@/components/ui/CTA";
-import ProjectUpdateForm from "@/components/layout/admin/projects/ProjectUpdate";
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import ProjectForm from "@/components/layout/admin/projects/ProjectForm";
+import { AdminService } from "@/services/admin.service";
+import Spinner from "@/components/common/Spinner";
+import toast from "react-hot-toast";
 import { PATHS } from "@/routers/Paths";
+import { ICONS } from "@/icons";
 
-export default function AdminProjectUpdate() {
+export default function ProjectUpdatePage() {
+    const { id } = useParams();
+    const [project, setProject] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProject = async () => {
+            if (!id) return;
+            try {
+                // Fetch projects and find by id
+                const projects = await AdminService.getProjects();
+                const found = projects?.find((p: any) => p.id === id);
+                setProject(found);
+            } catch (error) {
+                console.error("Failed to fetch project:", error);
+                toast.error("Failed to load project details.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProject();
+    }, [id]);
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-[400px]">
+                <Spinner status={true} size="lg" />
+            </div>
+        );
+    }
+
+    if (!project) {
+        return (
+            <div className="flex flex-col items-center justify-center p-20 text-center">
+                <h3 className="font-semibold text-lg">Project Not Found</h3>
+                <p className="text-sm text-muted">The project you are looking for does not exist.</p>
+                <Link to={PATHS.ADMIN.PROJECT_LIST} className="mt-4 p-button">Back to Projects</Link>
+            </div>
+        );
+    }
+
     return (
-        <div className="flex flex-col gap-14 py-5 w-full">
-            {/* Header Section */}
-            <header className="flex flex-col gap-3">
-                <div className="flex flex-col gap-1.5">
-                    <h1 className="font-semibold text-xl md:text-2xl text-heading"> Edit Project </h1>
-                    <p className="text-sm font-medium text-muted/65">
-                        Modify the details and images of your project. All changes are reflected in the public showcase.
-                    </p>
-                </div>
+        <main className="min-h-screen">
+            <section className="relative flex flex-col w-full px-4 md:px-8 pt-6 pb-20">
+                <div className="flex flex-col gap-8 w-full max-w-5xl mx-auto">
+                    <div className="flex flex-col gap-1 border-b border-muted/10 pb-6">
+                        <div className="flex items-center gap-2 text-muted mb-2">
+                            <Link to={PATHS.ADMIN.PROJECT_LIST} className="hover:text-primary transition-colors">Projects</Link>
+                            <ICONS.chevronRight className="size-3" />
+                            <span>Edit</span>
+                        </div>
+                        <h1 className="font-bold text-2xl tracking-tight">Edit Project</h1>
+                        <p className="text-sm text-muted">Update technical details and imagery for this project.</p>
+                    </div>
 
-                <div className="flex items-center gap-4">
-                    <SCTALink to={PATHS.ADMIN.PROJECT_LIST} className="py-2.5 px-6"> Back to Projects </SCTALink>
+                    <div className="w-full">
+                        <ProjectForm project={project} />
+                    </div>
                 </div>
-            </header>
-
-            {/* Edit Form */}
-            <ProjectUpdateForm />
-        </div>
+            </section>
+        </main>
     );
 }

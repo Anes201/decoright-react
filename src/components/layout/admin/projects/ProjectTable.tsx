@@ -2,7 +2,7 @@ import Table from "@/components/ui/DataTable";
 import { AdminService } from "@/services/admin.service";
 import { useEffect, useState } from "react";
 import { ICONS } from "@/icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { PATHS } from "@/routers/Paths";
 import { useConfirm } from "@components/confirm";
 
@@ -10,7 +10,6 @@ export default function ProjectTable({ onEdit, refreshKey }: { onEdit: (project:
     const [projects, setProjects] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const confirm = useConfirm();
-    const navigate = useNavigate();
 
     const loadProjects = async () => {
         try {
@@ -31,8 +30,8 @@ export default function ProjectTable({ onEdit, refreshKey }: { onEdit: (project:
     const handleDelete = async (id: string) => {
         if (await confirm({
             title: 'Delete Project',
-            message: 'Are you sure you want to delete this project? This action cannot be undone.',
-            type: 'danger'
+            description: 'Are you sure you want to delete this project? This action cannot be undone.',
+            variant: 'destructive'
         })) {
             try {
                 await AdminService.deleteProject(id);

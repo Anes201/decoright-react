@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ICONS } from '@/icons';
 import { AdminService } from '@/services/admin.service';
 
@@ -27,7 +27,7 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
     const handleStatusChange = async (newStatus: string) => {
         try {
             setIsUpdating(true);
-            await AdminService.updateRequestStatus(request.id, newStatus);
+            await AdminService.updateRequestStatus(request.id, newStatus as any);
             onStatusUpdate();
             onClose();
         } catch (error) {
@@ -133,8 +133,8 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
                                 </div>
 
                                 <div className="p-4 rounded-xl bg-emphasis/30 border border-muted/10">
-                                    <span className="text-3xs uppercase font-bold text-muted mb-1 block">Area</span>
-                                    <p className="text-sm font-medium">{request.area_sqm || 0} m²</p>
+                                    <span className="text-3xs uppercase font-bold text-muted mb-1 block">Dimensions</span>
+                                    <p className="text-sm font-medium">{request.width || 0}m × {request.height || 0}m</p>
                                 </div>
 
                                 <div className="p-4 rounded-xl bg-emphasis/30 border border-muted/10">

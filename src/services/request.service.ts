@@ -2,7 +2,6 @@
 import { supabase } from '@/lib/supabase'
 import type { Database, Enums } from '@/types/database.types'
 
-type ServiceRequest = Database['public']['Tables']['service_requests']['Row']
 type CreateRequestInput = Database['public']['Tables']['service_requests']['Insert']
 
 export const RequestService = {

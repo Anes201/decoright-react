@@ -1,17 +1,28 @@
-import ProjectCreateLayout from "@/components/layout/admin/projects/ProjectCreate";
+import ProjectForm from "@/components/layout/admin/projects/ProjectForm";
+import { Link } from "react-router-dom";
+import { PATHS } from "@/routers/Paths";
+import { ICONS } from "@/icons";
 
-export default function ServiceCreate () {
+export default function ProjectCreatePage() {
     return (
+        <main className="min-h-screen">
+            <section className="relative flex flex-col w-full px-4 md:px-8 pt-6 pb-20">
+                <div className="flex flex-col gap-8 w-full max-w-5xl mx-auto">
+                    <div className="flex flex-col gap-1 border-b border-muted/10 pb-6">
+                        <div className="flex items-center gap-2 text-muted mb-2">
+                            <Link to={PATHS.ADMIN.PROJECT_LIST} className="hover:text-primary transition-colors">Projects</Link>
+                            <ICONS.chevronRight className="size-3" />
+                            <span>Create</span>
+                        </div>
+                        <h1 className="font-bold text-2xl tracking-tight">Create a Project</h1>
+                        <p className="text-sm text-muted">Add a new real-world project to your portfolio with all technical details.</p>
+                    </div>
 
-        <main>
-            <section className="h-hero min-h-hero relative flex flex-col w-full md:pt-8">
-                <div className="relative flex flex-col gap-8 h-full">
-                    <h1 className="font-semibold text-lg md:text-2xl w-fit"> Create a Project </h1>
-                    <div className="w-full lg:w-2/3 border border-red-400">
-                        <ProjectCreateLayout />
+                    <div className="w-full">
+                        <ProjectForm />
                     </div>
                 </div>
             </section>
         </main>
-    )
+    );
 }

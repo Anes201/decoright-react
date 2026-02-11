@@ -1,0 +1,57 @@
+
+{
+  "landing": {
+    "hero": {
+      "tag": "Space & Decoration",
+      "title": "Interior <0>Design</0> That Elevates Everyday Living",
+      "description": "Welcome to Decoright, your trusted partner for refined interior design and decor solutions. We bring your vision to life with creativity, functionality, and style.",
+
+      "features": {
+        "consultation": "Personalized Design Consultations",
+        "planning": "Space Planning",
+        "custom": "Custom Furniture & Decor"
+      },
+
+      "cta_request_service": "Request a Service",
+      "cta_service_list": "Services",
+      "cta_project_list": "Projects & Categories"
+    },
+
+    "services":{
+      "header":"Design & Decor Services",
+      "subheader":"From offices to living rooms, we craft layouts, finishes and custom pieces that reflect your lifestyle and improve how you use the space."
+    },
+
+    "showcases":{
+      "header":"Curated Showcases",
+      "subheader":"High-fidelity concept imagery and styled scenes that demonstrate our signature looks and design thinking."
+    },
+
+    "faqs":{
+      "header":"Frequently Asked Questions",
+      "subheader":"Common questions about our process and timelines simple, practical answers so you can decide with confidence."
+    }
+
+  },
+
+  "login":{
+    "header": "Login to <0>DecoRight</0>",
+    "subheader": "Enter your credentials to access your account and manage your design requests.",
+    "remember_me_field_label": "Remember me",
+    "no_account_label": "Don't have an account yet? <0>Sign up</0>"
+  },
+
+  "signup":{
+    "header": "Sign Up to <0>DecoRight</0>",
+    "subheader": "Create an account to start your design journey with us.",
+    "has_account_label": "Already have an account? <0>Login</0>"
+  },
+
+  "verify_otp": {
+    "header": "Verify your account",
+    "subheader": "A 6-digit verification code has been sent to <0>{{email}}</0>. Enter it below to complete your signup.",
+    "resend_label": "Didn't receive a code? Resend"
+  }
+
+
+}

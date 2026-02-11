@@ -1,0 +1,147 @@
+
+{
+  "warnings": {
+    "unsaved_changes": "You have unsaved changes. Do you want to discard them?",
+    "low_storage": "You're running low on storage. Clean up unused files.",
+    "beta_feature": "This feature is in beta. Expect bugs and breaking changes.",
+    "deprecated_feature": "This feature will be removed in a future update.",
+    "approaching_limit": "You're approaching your {resource} limit ({used}/{limit}).",
+    "email_not_verified": "Your email address is not verified. Check your inbox for a verification link.",
+    "experimental_setting": "Experimental setting enabled — use at your own risk."
+  },
+
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "Network error. Check your connection and try again.",
+    "timeout": "The request timed out. Try again or check your connection.",
+    "server": "Server error ({{code}}). Try again later.",
+    "not_found": "Item not found.",
+    "unauthorized": "You don't have permission to perform this action.",
+    "forbidden": "Access denied.",
+    "conflict": "Conflict detected. The resource was modified elsewhere.",
+    "invalid_token": "Invalid or expired token. Please sign in again.",
+    "invalid_otp": "Invalid or expired code. Please start over.",
+    "send_otp_field": "Failed to resend OTP code, Please try again.",
+    "rate_limited": "Too many requests. Please wait and try again.",
+    "upload_failed": "Upload failed. Please try again.",
+    "file_too_large": "File is too large. Max allowed size: {{maxSize}}.",
+    "unsupported_file_type": "Unsupported file type. Allowed: {{types}}.",
+    "image_too_small": "Image resolution is too low. Minimum: {{width}}×{{height}}.",
+    "preview_unavailable": "Preview unavailable for this file type."
+  },
+
+  "form": {
+    "required": "{{field}} is required.",
+    "required_short": "Required",
+    "invalid_email": "Enter a valid email address.",
+    "email_taken": "This email is already in use.",
+    "password_required": "Password is required.",
+    "password_min": "Password must be at least {{min}} characters.",
+    "password_max": "Password must be no more than {{max}} characters.",
+    "password_weak": "Password is too weak. Use letters, numbers, and symbols.",
+    "password_mismatch": "Passwords do not match.",
+    "invalid_number": "Enter a valid number.",
+    "invalid_integer": "Enter a valid integer.",
+    "min_value": "{{field}} must be at least {{min}}.",
+    "max_value": "{{field}} must be at most {{max}}.",
+    "min_length": "{{field}} must be at least {{min}} characters.",
+    "max_length": "{{field}} must be no more than {{max}} characters.",
+    "invalid_date": "Enter a valid date.",
+    "date_in_future": "{{field}} cannot be in the future.",
+    "invalid_url": "Enter a valid URL (include https://).",
+    "invalid_phone": "Enter a valid phone number.",
+    "pattern_mismatch": "{{field}} format is invalid.",
+    "terms_required": "You must accept the terms to continue.",
+    "captcha_required": "Please complete the CAPTCHA to continue.",
+    "too_many_attempts": "Too many attempts. Try again later."
+  },
+
+  "validation": {
+    "unique": "{{field}} must be unique.",
+    "exists": "{{field}} does not exist.",
+    "must_be_integer": "{{field}} must be an integer.",
+    "must_be_positive": "{{field}} must be a positive number.",
+    "invalid_selection": "Invalid selection.",
+    "file_count_exceeded": "You can upload up to {{max}} files.",
+    "otp_length": "Please enter a valid 6-digit code"
+  },
+
+  "confirm": {
+    "delete_title": "Confirm deletion",
+    "delete_message": "Are you sure you want to delete {{name}}? This action cannot be undone.",
+    "delete_cta": "Delete",
+    "delete_cancel": "Cancel",
+    "sign_out_title": "Sign out",
+    "sign_out_message": "Do you want to sign out from this device?",
+    "discard_changes_title": "Discard changes?",
+    "discard_changes_message": "You have unsaved changes. Discard them and continue?",
+    "overwrite_title": "Overwrite existing item?",
+    "overwrite_message": "An item with the same name exists. Overwrite it?"
+  },
+
+  "success": {
+    "saved": "Saved successfully.",
+    "created": "Created successfully.",
+    "updated": "Updated successfully.",
+    "deleted": "Deleted successfully.",
+    "uploaded": "Upload completed.",
+    "email_sent": "Email sent.",
+    "password_changed": "Password updated.",
+    "invited": "Invitation sent.",
+    "settings_saved": "Settings saved.",
+    "send_otp_sent": "Verification code resent to your email"
+  },
+
+  "info": {
+    "loading": "Loading…",
+    "no_results": "No results found.",
+    "no_activity": "No activity yet.",
+    "coming_soon": "Coming soon.",
+    "maintenance": "Service is under maintenance. Some features may be unavailable.",
+    "offline_mode": "You're offline. Changes will sync when you're back online.",
+    "beta_note": "You're running a beta version; expect small issues."
+  },
+
+  "tips": {
+    "password_hint": "Use at least 8 characters, a number and a special character.",
+    "image_recommendation": "Use images at least {{width}}×{{height}} for best quality.",
+    "search_hint": "Search by name, tag or ID.",
+    "keyboard_shortcut": "Tip: Press {{keys}} to {{action}}."
+  },
+
+  "accessibility": {
+    "form_error_aria": "Form has errors. Please review and fix the highlighted fields.",
+    "required_field_aria": "required field",
+    "invalid_field_aria": "invalid field",
+    "loading_aria": "Loading content",
+    "success_aria": "Operation successful"
+  },
+
+  "pagination": {
+    "page_of": "Page {{current}} of {{total}}",
+    "items_remaining": "{{count}} items remaining",
+    "load_more": "Load more"
+  },
+
+  "auth": {
+    "invalid_credentials": "Invalid email or password.",
+    "account_locked": "Account locked due to too many failed attempts.",
+    "password_reset_sent": "Password reset link sent to {{email}}.",
+    "magic_link_sent": "Sign-in link sent to {{email}}."
+  },
+
+  "upload": {
+    "drop_files_here": "Drop files here or click to browse.",
+    "drag_drop_hint": "You can drag & drop multiple files.",
+    "upload_progress": "Uploading {{file}} ({{percent}}%)",
+    "remove_file": "Remove file"
+  },
+
+  "misc": {
+    "try_again": "Try again",
+    "cancel": "Cancel",
+    "retry": "Retry",
+    "close": "Close",
+    "ok": "OK"
+  }
+}

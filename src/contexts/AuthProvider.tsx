@@ -3,10 +3,9 @@ import { supabase } from '@/lib/supabase';
 import { UserRoles } from '@/constants';
 
 type AuthContextValue = {
-  user: { id: string; email?: string; role?: string } | null;
+  user: { id: string; email?: string; role?: string; phoneVerified?: boolean } | null;
   loading: boolean;
   isAdmin: boolean;
-  // ...other fields if present...
 };
 
 export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -29,7 +28,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       const { data: profile, error } = await supabase
         .from('profiles')
-        .select('role,phone')
+        .select('role,phone,phone_verified')
         .eq('id', session.user.id)
         .maybeSingle();
 
@@ -44,7 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         id: session.user.id,
         email: session.user.email ?? undefined,
         role,
-        // phoneVerified: Boolean(profile?.phone && profile?.phone_verified),
+        phoneVerified: !!profile?.phone_verified,
       });
 
       setLoading(false);

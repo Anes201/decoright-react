@@ -4,9 +4,18 @@ import { Link } from "react-router-dom";
 import { PATHS } from "@/routers/Paths";
 import { ICONS } from "@/icons";
 import Spinner from "@components/common/Spinner";
+import { useTranslation } from "react-i18next";
+import i18n from "@/utils/i18n";
 
 export function ShowcaseCard({ project, index }: any) {
     const [hasError, setHasError] = useState(false);
+
+    const getLocalizedLabel = (data: any) => {
+        const lang = i18n.language
+        if (lang === "ar" && data.display_name_ar) return data.display_name_ar
+        if (lang === "fr" && data.display_name_fr) return data.display_name_fr
+        return data.display_name_en
+    }
 
     return (
         <li key={index} >
@@ -27,7 +36,7 @@ export function ShowcaseCard({ project, index }: any) {
                 </div>
 
                 <div className="px-1 mt-3">
-                    <h3 className="font-medium text-sm text-heading group-hover:text-primary transition-colors"> {project.title} </h3>
+                    <h3 className="font-medium text-sm text-heading group-hover:text-primary transition-colors"> { getLocalizedLabel(project) } </h3>
                 </div>
             </Link>
         </li>
@@ -37,6 +46,8 @@ export function ShowcaseCard({ project, index }: any) {
 export function ShowcaseCardList() {
     const [projects, setProjects] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+
+    const { t } = useTranslation(['nav'])
 
     useEffect(() => {
         async function fetchProjects() {
@@ -57,7 +68,7 @@ export function ShowcaseCardList() {
     }
 
     if (projects.length === 0) {
-        return <div className="text-center p-8 text-muted">No showcase projects available yet.</div>;
+        return <div className="text-center p-8 text-muted"> { t('nav:showcase_list_empty') } </div>;
     }
 
     return (

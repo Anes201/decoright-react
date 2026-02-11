@@ -5,7 +5,8 @@ import { useNavigate, Link } from "react-router-dom"
 import { PATHS } from "@/routers/Paths"
 import { EmailInput, Input, PasswordInput } from "../ui/Input"
 import { LegalLinks } from "../../constants"
-import Spinner from "../common/Spinner"
+import Spinner from "@components/common/Spinner"
+import { Trans, useTranslation } from "react-i18next"
 
 export function SignupLayout() {
     const [firstName, setFirstName] = useState("")
@@ -16,7 +17,9 @@ export function SignupLayout() {
     const [error, setError] = useState<string | null>(null)
     const navigate = useNavigate()
 
-    const handleSignup = async (e: React.FormEvent) => {
+    const { t } = useTranslation(['pages', 'nav'])
+
+    const handleSignup = async (e: React.SubmitEvent) => {
         e.preventDefault()
         setLoading(true)
         setError(null)
@@ -49,9 +52,11 @@ export function SignupLayout() {
         <div className="relative flex flex-col gap-8 w-full md:w-4/5 md:pt-8">
 
             {/* Form Header */}
-            <div className="flex flex-col items-center gap-3">
-                <h1 className="font-semibold text-2xl md:text-4xl"> Sign Up to <span className="text-transparent bg-linear-to-br from-foreground to-primary to-65% bg-clip-text">DecoRight</span> </h1>
-                <p className="text-ellipsis-2line text-2xs md:text-xs text-muted">Create an account to start your design journey with us.</p>
+            <div className="flex flex-col items-center gap-4">
+                <h1 className="font-semibold text-2xl md:text-4xl">
+                    <Trans i18nKey="pages:signup.header" components={[<span className="text-transparent bg-linear-to-br from-foreground to-primary to-65% bg-clip-text" />]} />
+                </h1>
+                <p className="text-ellipsis-2line text-2xs md:text-xs text-muted"> { t('pages:signup.subheader') } </p>
             </div>
 
             <form onSubmit={handleSignup} className="flex flex-col items-center gap-8">
@@ -73,13 +78,15 @@ export function SignupLayout() {
                         disabled={loading}
                         className="font-semibold text-white/95 w-full px-4 p-2 bg-primary rounded-xl disabled:opacity-50"
                     >
-                        <Spinner status={loading} size="sm"> Sign Up </Spinner>
+                        <Spinner status={loading} size="sm"> { t('nav:auth_sign_up') } </Spinner>
                     </button>
                 </div>
             </form>
 
             <div className="flex flex-col items-center w-full">
-                <Link to={'/login'}> <p className="text-xs text-muted"> Already have an account? <span className="font-medium text-foreground hover:underline active:underline"> Login </span> </p> </Link>
+                <Link to={PATHS.SIGNUP}>
+                    <p className="text-xs text-muted"> <Trans i18nKey="pages:signup.has_account_label" components={[<span className="font-medium text-foreground hover:underline active:underline" />]} /></p>
+                </Link>
                 <hr className="w-full border-t border-muted/25 my-4 mask-x-to-transparent mask-x-from-45%" />
                 {/* Legal Links */}
                 <nav className="flex flex-wrap items-center">

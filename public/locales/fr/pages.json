@@ -1,0 +1,33 @@
+{
+  "landing": {
+
+    "hero": {
+        "tag": "Espace & Décoration",
+        "title": "Design intérieur qui <0>sublime</0> le quotidien",
+        "description": "Bienvenue chez Decoright, votre partenaire de confiance pour le design d'intérieur raffiné et les solutions de décoration. Nous donnons vie à votre vision avec créativité, fonctionnalité et élégance.",
+        "features": {
+            "consultation": "Consultations de design personnalisées",
+            "planning": "Aménagement d'espace",
+            "custom": "Mobilier et décoration sur mesure"
+        },
+        "cta_request_service": "Demander un service",
+        "cta_service_list": "Services",
+        "cta_project_list": "Projets & catégories"
+        },
+
+        "services": {
+            "header": "Services de design et décoration",
+            "subheader": "Du bureau au salon, nous concevons des plans, des finitions et des pièces sur mesure qui reflètent votre style de vie et améliorent l’usage de vos espaces."
+        },
+
+        "showcases": {
+            "header": "Vitrines sélectionnées",
+            "subheader": "Images conceptuelles haute fidélité et mises en scène soignées qui illustrent nos esthétiques et notre démarche de conception."
+        },
+
+        "faqs": {
+            "header": "Questions fréquentes",
+            "subheader": "Questions courantes sur notre processus et nos délais — des réponses claires et pratiques pour vous aider à décider en toute confiance."
+        }
+    }
+}

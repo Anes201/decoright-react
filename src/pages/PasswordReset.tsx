@@ -21,7 +21,7 @@ export default function PasswordReset () {
         setEmailValid(EMAIL_REGEX.test(email.trim()))
     }, [email])
 
-    async function handleSubmit(e: React.FormEvent) {
+    async function handleSubmit(e: React.SubmitEvent) {
         e.preventDefault()
         if (!emailValid) {
             setError("Please enter a valid email")
@@ -70,8 +70,8 @@ export default function PasswordReset () {
                         </div>
 
                         <div className="space-y-2 text-center">
-                            <h1 className="font-semibold text-xl md:text-3xl"> Forgot your password ? </h1>
-                            <p className="text-xs md:text-sm"> Lorem ipsum dolor sit amet consectetur adipisicing elit, unde sunt, sint suscipit est asperiores facere deleniti ipsa corrupti quo. </p>
+                            <h1 className="font-semibold text-xl md:text-3xl"> Forgot your password? </h1>
+                            <p className="text-xs md:text-sm"> Enter the email associated with your account and we’ll send a secure reset link so you can set a new password. </p>
                         </div>
                     </div>
 
@@ -90,12 +90,12 @@ export default function PasswordReset () {
                             <PButton type="submit" form="password-reset-form"
                             className={`w-full h-fit ${!email && 'cursor-not-allowed'}`}
                             disabled={ !emailValid || loading }
-                            area-label="send email to recover password"
-                            title={emailValid ? 'Send email to recover password' : 'Enter a valid email' }
+                            area-label="Send password reset link to your email address"
+                            title={emailValid ? 'Send password reset link' : 'Email is not valid' }
                             >
-                                <Spinner status={loading} size="sm"> Send Email </Spinner>
+                                <Spinner status={loading} size="sm"> Send reset link </Spinner>
                             </PButton>
-                            <SCTALink to={PATHS.LOGIN} onClick={handleGoBack} className="w-full"> Cancel </SCTALink>
+                            <SCTALink to={PATHS.LOGIN} onClick={handleGoBack} className="w-full"> Go Back </SCTALink>
                         </div>
                     </form>
 

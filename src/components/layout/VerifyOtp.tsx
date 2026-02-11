@@ -6,6 +6,8 @@ import { LegalLinks } from "../../constants"
 import { PATHS } from "@/routers/Paths"
 import OtpInput from 'react-otp-input';
 import Spinner from "../common/Spinner"
+import { Trans, useTranslation } from "react-i18next"
+import toast from "react-hot-toast"
 
 export function VerifyOtp() {
     const navigate = useNavigate()
@@ -18,6 +20,8 @@ export function VerifyOtp() {
     // Get email from navigation state or query params
     const email = location.state?.email || new URLSearchParams(location.search).get('email')
 
+    const { t } = useTranslation(['pages', 'common', 'messages'])
+
     useEffect(() => {
         if (email) {
             setPageLoading(false)
@@ -29,7 +33,7 @@ export function VerifyOtp() {
     const handleVerifyToken = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!token || token.length < 6) {
-            setError("Please enter a valid 6-digit code")
+            setError(t('messages:validation.otp_length'))
             return
         }
 
@@ -47,7 +51,7 @@ export function VerifyOtp() {
 
             navigate(PATHS.ROOT)
         } catch (err: any) {
-            setError(err.message || "Invalid or expired code")
+            setError(err.message || t('messages:errors.invalid_otp'))
         } finally {
             setLoading(false)
         }
@@ -63,9 +67,9 @@ export function VerifyOtp() {
                 email: email,
             })
             if (resendError) throw resendError
-            alert("Verification code resent to your email")
+            toast.success(t('messages:success.send_otp_sent'))
         } catch (err: any) {
-            setError(err.message || "Failed to resend code")
+            setError(err.message || t('messages:errors.send_otp_field'))
         } finally {
             setLoading(false)
         }
@@ -79,14 +83,17 @@ export function VerifyOtp() {
             ?
                 <div className="flex flex-col gap-2">
                     <Spinner />
-                    <span className="text-sm"> Just a moment... </span>
+                    <span className="text-sm"> { t('common:loading_moment') } </span>
                 </div>
             :
                 <>
                     {/* Form Header */}
-                    <div className="text-center space-y-2 md:space-y-3">
-                        <h1 className="font-semibold text-2xl md:text-3xl"> Verify your account </h1>
-                        <p className="text-ellipsis-2line text-2xs md:text-xs text-muted">A 6-digit verification code has been sent to <b>{email}</b>. Enter it below to complete your signup.</p>
+                    <div className="flex flex-col gap-2 text-center">
+                        <h1 className="font-semibold text-2xl md:text-3xl mb-2"> { t('pages:verify_otp.header') } </h1>
+                        <p className="text-xs md:text-xs text-muted">
+                            <Trans i18nKey="pages:verify_otp.subheader" values={{'email':email}}
+                            components={[<span className="font-medium text-nowrap underline" />]} />
+                        </p>
                     </div>
 
                     <form onSubmit={handleVerifyToken} className="flex flex-col items-center gap-8">
@@ -109,7 +116,7 @@ export function VerifyOtp() {
                                 disabled={loading || token.length < 6}
                                 className="font-semibold text-white/95 w-full px-4 p-2 bg-primary rounded-xl disabled:opacity-50"
                             >
-                                <Spinner status={loading} size="sm"> Verify Code </Spinner>
+                                <Spinner status={loading} size="sm"> { t('common:action.verify_otp') } </Spinner>
                             </button>
                         </div>
                     </form>
@@ -121,7 +128,7 @@ export function VerifyOtp() {
                             disabled={loading}
                             className="text-xs text-muted hover:text-foreground underline"
                         >
-                            Didn't receive a code? Resend
+                            { t('pages:verify_otp.resend_label') }
                         </button>
 
                         <hr className="w-full border-t border-muted/25 my-4 mask-x-to-transparent mask-x-from-45%" />

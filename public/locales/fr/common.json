@@ -1,0 +1,13 @@
+
+{
+  "actions": {
+    "save": "Enregistrer",
+    "save_changes": "Enregistrer les modifications",
+    "cancel": "Annuler",
+    "remove": "Retirer"
+  },
+
+  "views_compact": "{{value, compact}} Vues",
+  "views_label": "{{count}} vue",
+  "views_label_plural": "{{count}} vues"
+}

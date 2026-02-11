@@ -1,19 +1,20 @@
 
-import { Hero } from "@/components/layout/Landing"
+import { HeroSection } from "@/components/layout/Landing"
 import { ServiceCardList } from "@components/layout/Services"
 
 import { FAQList } from "@components/layout/FAQ"
 import { SectionHeader } from "@/components/ui/SectionHeader"
 import { ShowcaseCardList } from "@/components/layout/Showcase"
-import { Link } from "react-router-dom"
-import { PATHS } from "@/routers/Paths"
-import { ICONS } from "@/icons"
+import { useTranslation } from "react-i18next"
 
-export default function Landing() {
+export default function LandingPage() {
+
+    const { t } = useTranslation('pages');
+
     return (
         <>
             <main className="bg-linear-0 from-transparent to-primary/4 overflow-y-clip">
-                <Hero />
+                <HeroSection />
             </main>
             <section className="relative my-8 py-12 px-3 sm:px-6 md:px-8">
 
@@ -22,8 +23,8 @@ export default function Landing() {
                 <div className="content-container flex flex-col gap-8 w-full">
                     {/* Section Header */}
                     <SectionHeader
-                        title="Explore our range of interior design services"
-                        desc="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus aperiam aspernatur, et repellendus facilis non dolore,  tailored to meet your unique needs."
+                        title={ t('pages:landing.services.header') }
+                        desc={ t('pages:landing.services.subheader') }
                     />
 
                     {/* Service Cards */}
@@ -35,15 +36,12 @@ export default function Landing() {
                 {/* Section Header */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                     <SectionHeader
-                        title='Browse our previous projects from our showcase'
-                        desc='A curated selection of our finest interior design projects, highlighting our commitment to quality, creativity, and client satisfaction. Explore the diverse styles and innovative solutions that define our work.'
+                        title={ t('pages:landing.showcases.header') }
+                        desc={ t('pages:landing.showcases.subheader') }
                     />
-                    <Link to={PATHS.PROJECT_LIST} className="text-primary font-medium text-sm whitespace-nowrap hover:underline pb-2 flex items-center gap-1">
-                        View All Projects {ICONS.chevronRight({ className: 'size-4' })}
-                    </Link>
                 </div>
 
-                {/* Project Cards */}
+                {/* Showcase Cards */}
                 <ShowcaseCardList />
 
             </section>
@@ -52,8 +50,8 @@ export default function Landing() {
 
                 {/* Section Header */}
                 <SectionHeader
-                    title="Most frequently asked questions by our users"
-                    desc="A curated selection of our finest interior design projects, highlighting our commitment to quality, creativity, and client satisfaction. Explore the diverse styles and innovative solutions that define our work."
+                    title={ t('pages:landing.faqs.header') }
+                    desc={ t('pages:landing.faqs.subheader') }
                 />
 
                 {/* FAQ List */}

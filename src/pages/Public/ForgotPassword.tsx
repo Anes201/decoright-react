@@ -18,7 +18,7 @@ export default function ForgotPassword() {
 
         try {
             const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: window.location.origin + PATHS.RESET_PASSWORD,
+                redirectTo: window.location.origin + PATHS.PASSWORD_RESET,
             });
 
             if (resetError) throw resetError;

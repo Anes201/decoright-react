@@ -1,16 +1,15 @@
 
 import useAuth from "@/hooks/useAuth";
 import FileUploadPanel from '@components/ui/FileUploadPanel'
-import Spinner from '@/components/common/Spinner'
+import Spinner from '@components/common/Spinner'
 import { useState, useEffect } from 'react'
 import { useStagedFiles } from '@/hooks/useStagedFiles'
-import { userPhoneIsVerified } from '@/constants'
 import { PButton } from '@components/ui/Button'
+import PhoneVerificationModal from '@components/ui/PhoneVerificationModal'
 import { SCTALink } from '@components/ui/CTA'
 import { SelectMenu } from '@components/ui/Select'
 import { DateInput, Input } from '@components/ui/Input'
 import { ICONS } from '@/icons'
-import { Link } from 'react-router-dom'
 import { RequestService as ReqSvc } from '@/services/request.service'
 import { ServiceTypesService, type ServiceType } from '@/services/service-types.service'
 import { SpaceTypesService, type SpaceType } from '@/services/space-types.service'
@@ -27,9 +26,11 @@ export default function RequestServiceLayout() {
     const [serviceType, setServiceType] = useState<string>("")
     const [description, setDescription] = useState("")
     const [location, setLocation] = useState("")
-    const [areaSqm, setAreaSqm] = useState("")
+    const [width, setWidth] = useState("")
+    const [height, setHeight] = useState("")
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const [showVerifyModal, setShowVerifyModal] = useState(false)
     const navigate = useNavigate()
 
     const stagedFiles = useStagedFiles(ReqSvc.uploadAttachment);
@@ -61,10 +62,10 @@ export default function RequestServiceLayout() {
         fetchOptions();
     }, []);
 
-    if (authLoading) return <div>Loading...</div>
+    if (authLoading) return <div className="flex flex-col gap-4"> <Spinner status={authLoading} /> <span className="text-sm">Just a moment...</span> </div>
     if (!user) return null
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault()
         if (!spaceType || !serviceType || !location) {
             setError("Please fill in all required fields (Space Type, Service Type, Location)")
@@ -89,7 +90,8 @@ export default function RequestServiceLayout() {
                 location: location,
             };
 
-            if (areaSqm) payload.area_sqm = parseFloat(areaSqm);
+            if (width) payload.width = parseFloat(width);
+            if (height) payload.height = parseFloat(height);
             if (description) payload.description = description;
 
             const request = await ReqSvc.createRequest(payload);
@@ -132,17 +134,16 @@ export default function RequestServiceLayout() {
                 {/* CTA */}
                 <div className="hidden md:flex max-xs:flex-col md:flex-row gap-3 md:gap-4 w-fit">
                     <PButton type="submit" form="service-request-form"
-                    disabled={loading || !userPhoneIsVerified}
-                    title={!userPhoneIsVerified ? 'Verify your phone to enable submission' : 'Submit request'}
-                    className="w-fit h-fit"
+                        disabled={loading || !user?.phoneVerified}
+                        title={!user?.phoneVerified ? 'Verify your phone to enable submission' : 'Submit request'}
+                        className="w-fit h-fit"
                     >
                         <Spinner status={loading}> Submit Request </Spinner>
                     </PButton>
                 </div>
             </div>
 
-            {!userPhoneIsVerified &&
-
+            {!user?.phoneVerified &&
                 <div className="group/hint flex max-md:flex-col gap-6 justify-center md:items-end p-3 md:p-4 border border-warning/75 bg-warning/8 rounded-xl">
                     <div className="w-full">
                         <div>
@@ -151,12 +152,21 @@ export default function RequestServiceLayout() {
                         </div>
                         <p className="text-xs md:text-sm text-warning group-hover/hint:text-foreground group-active/hint:text-foreground mix-blend-multiply"> Verify your phone to access this service request. We’ll send a code when you tap the button. </p>
                     </div>
-                    <Link to={PATHS.CLIENT.VERIFY_PHONE}
+                    <button
+                        onClick={() => setShowVerifyModal(true)}
                         className="font-medium text-sm text-center text-white min-w-max h-fit max-md:w-full px-3 py-1 border border-warning bg-warning/75 rounded-lg hover:text-white active:text-white hover:bg-warning active:bg-warning">
                         Get Verified
-                    </Link>
+                    </button>
                 </div>
             }
+
+            <PhoneVerificationModal
+                isOpen={showVerifyModal}
+                onClose={() => setShowVerifyModal(false)}
+                onSuccess={() => {
+                    window.location.reload();
+                }}
+            />
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-8 w-full h-fit" id="service-request-form">
 
@@ -209,22 +219,30 @@ export default function RequestServiceLayout() {
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="request-area" className="font-medium text-xs text-muted px-1"> Area (sqm) </label>
-                            <Input
-                                id="request-area"
-                                type="number"
-                                placeholder="Optional area in square meters"
-                                value={areaSqm}
-                                onChange={(e: any) => setAreaSqm(e.target.value)}
-                            />
+                            <label className="font-medium text-xs text-muted px-1"> Area Dimensions (m) </label>
+                            <div className="flex gap-4">
+                                <Input
+                                    id="request-width"
+                                    type="number"
+                                    placeholder="Width"
+                                    value={width}
+                                    onChange={(e: any) => setWidth(e.target.value)}
+                                />
+                                <Input
+                                    id="request-height"
+                                    type="number"
+                                    placeholder="Height"
+                                    value={height}
+                                    onChange={(e: any) => setHeight(e.target.value)}
+                                />
+                            </div>
                         </div>
 
                         {/* CTA */}
                         <div className="flex max-xs:flex-col md:flex-row gap-3 md:gap-4 w-full md:w-fit mt-4">
                             <PButton type="submit" form="service-request-form"
-                            className="w-full h-fit"
-                            disabled={loading || !userPhoneIsVerified}
-                            title={!userPhoneIsVerified ? 'Verify your phone to enable submission' : 'Submit request'}
+                                className="w-full h-fit"
+                                disabled={loading || !user?.phoneVerified}
                             >
                                 <Spinner status={loading}> Submit Request </Spinner>
                             </PButton>
@@ -260,4 +278,3 @@ export default function RequestServiceLayout() {
         </div>
     )
 }
-

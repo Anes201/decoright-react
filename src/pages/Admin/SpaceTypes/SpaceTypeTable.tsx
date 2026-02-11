@@ -40,7 +40,7 @@ export default function SpaceTypeTable({ spaceTypes, onEdit, onRefresh }: SpaceT
                     {spaceTypes.length === 0 ? (
                         <tr>
                             <td colSpan={6} className="px-4 py-12 text-center text-muted">
-                                <ICONS.inbox className="size-12 mx-auto mb-2 opacity-50" />
+                                <ICONS.folder className="size-12 mx-auto mb-2 opacity-50" />
                                 <p>No space types found</p>
                             </td>
                         </tr>

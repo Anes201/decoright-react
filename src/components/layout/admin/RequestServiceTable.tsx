@@ -43,7 +43,7 @@ export default function RequestServiceTable({ onRowClick, externalData, onRefres
     const handleStatusUpdate = async (id: string, newStatus: string) => {
         try {
             setUpdatingStatusId(id);
-            await AdminService.updateRequestStatus(id, newStatus);
+            await AdminService.updateRequestStatus(id, newStatus as any);
             if (onRefresh) onRefresh();
             else loadData();
         } catch (error) {
@@ -53,109 +53,61 @@ export default function RequestServiceTable({ onRowClick, externalData, onRefres
         }
     };
 
-    const displayData = (externalData || data).map((req: any) => ({
-        ...req,
-        full_name: req.profiles?.full_name || 'Anonymous',
-        status_label: req.status,
-        date: new Date(req.created_at).toLocaleDateString(),
-        chat_id: req.chat_rooms?.[0]?.id
-    }));
+    const displayData = (externalData || data).map((req: any) => {
+        // chat_id might be flattened in formattedData (RequestServiceList) or nested in chat_room (AdminService)
+        const chatId = req.chat_id || (Array.isArray(req.chat_room) ? req.chat_room[0]?.id : req.chat_room?.id);
+
+        return {
+            ...req,
+            full_name: req.profiles?.full_name || 'Anonymous',
+            status_label: req.status,
+            date: new Date(req.created_at).toLocaleDateString(),
+            chat_id: chatId
+        };
+    });
 
     const columns = [
         {
             key: 'request_code',
-            title: 'ID',
+            title: 'Identity',
             searchable: true,
-            className: 'w-16 hidden sm:table-cell text-xs',
+            sortable: true,
             render: (row: any) => (
-                <span className="font-medium uppercase" onClick={() => onRowClick?.(row)}>{row.request_code}</span>
-            )
-        },
-        // Mobile Stacked Column (Client + Status)
-        {
-            key: 'mobile_info',
-            title: 'Request',
-            className: 'md:hidden w-full min-w-[140px]',
-            render: (row: any) => (
-                <div className="flex flex-col gap-1.5 py-1">
-                    <span className="font-semibold text-body text-sm truncate block" title={row.full_name}>{row.full_name}</span>
-                    <div className="relative group w-full" onClick={(e) => e.stopPropagation()}>
-                        {updatingStatusId === row.id ? (
-                            <div className="flex items-center gap-2 text-xs text-muted">
-                                <ICONS.arrowPath className="size-3 animate-spin" /> Updating...
-                            </div>
-                        ) : (
-                            <select
-                                value={row.status}
-                                onChange={(e) => handleStatusUpdate(row.id, e.target.value)}
-                                className={`w-full appearance-none cursor-pointer pl-2 pr-6 py-1 text-xs font-bold rounded-md border-0 focus:ring-1 focus:ring-primary/20 outline-none
-                                    request-status-${row.status.toLowerCase().replace(/\s+/g, '-')}
-                                    hover:opacity-90 transition-opacity bg-right bg-no-repeat`}
-                                style={{
-                                    backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
-                                    backgroundPosition: 'right 0.2rem center',
-                                    backgroundSize: '1em'
-                                }}
-                            >
-                                {STATUS_OPTIONS.map(opt => (
-                                    <option key={opt} value={opt} className="bg-surface text-heading">
-                                        {opt}
-                                    </option>
-                                ))}
-                            </select>
-                        )}
+                <div className="flex items-center gap-3">
+                    <div className="size-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+                        {row.request_code?.[0] || 'R'}
+                    </div>
+                    <div className="flex flex-col">
+                        <div className="flex items-center gap-2">
+                            <span className="font-semibold text-heading text-sm uppercase">{row.request_code}</span>
+                            <span className="text-xs text-muted font-normal">• {row.service_type || 'Service'}</span>
+                        </div>
+                        <span className="text-xs text-muted truncate max-w-[150px]">{row.full_name || 'Unknown Client'}</span>
                     </div>
                 </div>
             )
         },
-        // Desktop Client Column
         {
-            key: 'full_name',
-            title: 'Client',
-            searchable: true,
-            className: 'hidden md:table-cell min-w-[120px] max-w-[180px] truncate',
-            render: (row: any) => <span className="font-medium text-body truncate block" title={row.full_name}>{row.full_name}</span>
-        },
-        // Direct Action Column for Chat (Visible on all)
-        {
-            key: 'chat_action',
-            title: 'Chat',
-            width: '48px',
-            className: 'w-12 px-0 text-center',
-            render: (row: any) => row.chat_id ? (
-                <Link
-                    to={`/admin/chats?room=${row.chat_id}`}
-                    className="inline-flex items-center justify-center size-8 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors"
-                    title="Open Chat"
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <ICONS.chatBubbleOvalLeftEllipsis className="size-4" />
-                </Link>
-            ) : (
-                <span title="No Chat Initiated" className="inline-flex items-center justify-center size-8 rounded-full bg-muted/10 text-muted cursor-not-allowed">
-                    <ICONS.chatBubbleOvalLeftEllipsis className="size-4 opacity-50" />
-                </span>
-            )
-        },
-        // Desktop Status Column
-        {
-            key: 'status', title: 'Status', className: 'hidden md:table-cell min-w-[190px] w-[200px]', render: (row: any) => (
+            key: 'status',
+            title: 'Status',
+            className: 'min-w-[140px]',
+            render: (row: any) => (
                 <div className="relative group w-full" onClick={(e) => e.stopPropagation()}>
                     {updatingStatusId === row.id ? (
-                        <div className="flex items-center justify-center gap-2 text-xs text-muted w-full py-1">
-                            <ICONS.arrowPath className="size-3 animate-spin" />
+                        <div className="flex items-center gap-2 text-xs text-muted">
+                            <ICONS.arrowPath className="size-3 animate-spin" /> Updating...
                         </div>
                     ) : (
                         <select
                             value={row.status}
                             onChange={(e) => handleStatusUpdate(row.id, e.target.value)}
-                            className={`w-full appearance-none cursor-pointer pl-3 pr-8 py-1 text-[11px] sm:text-xs font-bold rounded-full border-0 focus:ring-2 focus:ring-offset-1 focus:ring-primary/20 outline-none
-                            request-status-${row.status.toLowerCase().replace(/\s+/g, '-')}
-                            hover:opacity-90 transition-opacity bg-right bg-no-repeat truncate`}
+                            className={`w-full appearance-none cursor-pointer pl-3 pr-8 py-1.5 text-[11px] sm:text-xs font-bold rounded-full border-0 focus:ring-2 focus:ring-offset-1 focus:ring-primary/20 outline-none
+                                request-status-${row.status.toLowerCase().replace(/\s+/g, '-')}
+                                hover:opacity-90 transition-all bg-right bg-no-repeat truncate`}
                             style={{
                                 backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
-                                backgroundPosition: 'right 0.2rem center',
-                                backgroundSize: '1.2em'
+                                backgroundPosition: 'right 0.5rem center',
+                                backgroundSize: '1em'
                             }}
                         >
                             {STATUS_OPTIONS.map(opt => (
@@ -168,61 +120,109 @@ export default function RequestServiceTable({ onRowClick, externalData, onRefres
                 </div>
             )
         },
-        { key: 'service_type', title: 'Service', className: 'hidden md:table-cell text-muted' },
-        { key: 'space_type', title: 'Space', className: 'hidden lg:table-cell text-muted' },
-        { key: 'area_sqm', title: 'Area', className: 'hidden xl:table-cell text-end', render: (row: any) => (<span className="font-medium text-muted"> {row.area_sqm || 0} m² </span>) },
-        { key: 'date', title: 'Date', className: 'hidden lg:table-cell text-end text-muted' },
+        {
+            key: 'space_type',
+            title: 'Scope',
+            render: (row: any) => (
+                <div className="flex flex-col text-xs">
+                    <span className="font-medium text-body">{row.space_type || '-'}</span>
+                    <span className="text-muted">{row.width || 0}m × {row.height || 0}m</span>
+                </div>
+            )
+        },
+        {
+            key: 'chat_action',
+            title: 'Chat',
+            width: '60px',
+            className: 'text-center',
+            render: (row: any) => row.chat_id ? (
+                <Link
+                    to={PATHS.ADMIN.chatRoom(row.chat_id)}
+                    className="inline-flex items-center justify-center size-9 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all shadow-sm"
+                    title="Open Chat with Client"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <ICONS.chatBubbleOvalLeftEllipsis className="size-4.5" />
+                </Link>
+            ) : (
+                <span title="No Chat Available" className="inline-flex items-center justify-center size-9 rounded-full bg-muted/10 text-muted cursor-not-allowed">
+                    <ICONS.chatBubbleOvalLeftEllipsis className="size-4.5 opacity-40" />
+                </span>
+            )
+        },
+        {
+            key: 'date',
+            title: 'Submission',
+            sortable: true,
+            className: 'text-end',
+            render: (row: any) => (
+                <span className="text-xs text-muted">
+                    {new Date(row.created_at).toLocaleDateString()}
+                </span>
+            )
+        },
     ];
 
-    if (loading && displayData.length === 0) return <div className="p-8 text-center text-muted">Loading requests...</div>;
+    if (loading && displayData.length === 0) return (
+        <div className="p-20 text-center flex flex-col items-center gap-4 animate-pulse">
+            <ICONS.rectangleStack className="size-12 text-muted/20" />
+            <p className="text-muted font-medium">Loading requests...</p>
+        </div>
+    );
 
     return (
         <Table
             columns={columns}
             data={displayData}
             options={{
+                onRowClick: onRowClick,
                 selectable: true,
                 filterOptions: [
+                    { label: 'All Requests', value: '' },
                     { label: 'Submitted', value: 'Submitted' },
-                    { label: 'Under Review', value: 'Under Review' },
-                    { label: 'Approved', value: 'Approved' },
                     { label: 'In Progress', value: 'In Progress' },
                     { label: 'Completed', value: 'Completed' },
+                    { label: 'Under Review', value: 'Under Review' },
                     { label: 'Rejected', value: 'Rejected' },
-                    { label: 'Cancelled', value: 'Cancelled' },
                 ],
                 filterField: 'status',
+                searchPlaceholder: 'Search by ID or Client name...',
                 renderActions: (row: any) => (
-                    <div className="flex flex-col gap-2 w-full p-1">
+                    <div className="flex flex-col gap-1.5 w-full p-1">
                         <button
                             onClick={() => onRowClick?.(row)}
-                            className="px-2 py-1.5 w-full text-sm text-start hover:bg-emphasis rounded flex items-center gap-2 font-medium text-primary"
+                            className="px-2 py-2 w-full text-sm text-start hover:bg-emphasis rounded-lg flex items-center gap-2.5 font-medium text-primary transition-colors"
                         >
                             <ICONS.eye className="size-4" />
-                            Manage Request
+                            View Details
                         </button>
                         {row.chat_id && (
                             <Link
-                                to={PATHS.ADMIN.chatRoom(row.chat_id)} // to={`/admin/chats?room=${row.chat_id}`}
-                                className="px-2 py-1.5 w-full text-sm text-start hover:bg-emphasis rounded flex items-center gap-2"
+                                to={PATHS.ADMIN.chatRoom(row.chat_id)}
+                                className="px-2 py-2 w-full text-sm text-start hover:bg-emphasis rounded-lg flex items-center gap-2.5 font-medium transition-colors"
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <ICONS.chatBubbleOvalLeftEllipsis className="size-4" />
-                                Chat with Client
+                                Open Chat
                             </Link>
-                        )}
-                        <button className="px-2 py-1.5 w-full text-sm text-start hover:bg-emphasis rounded flex items-center gap-2 text-red-500">
+                        ) || (
+                                <button
+                                    disabled
+                                    className="px-2 py-2 w-full text-sm text-start opacity-50 cursor-not-allowed flex items-center gap-2.5 font-medium"
+                                >
+                                    <ICONS.chatBubbleOvalLeftEllipsis className="size-4" />
+                                    No Chat Room
+                                </button>
+                            )}
+                        <hr className="my-1 border-muted/10" />
+                        <button className="px-2 py-2 w-full text-sm text-start hover:bg-red-500/10 hover:text-red-600 rounded-lg flex items-center gap-2.5 font-medium transition-colors text-red-500/80">
                             <ICONS.trash className="size-4" />
-                            Delete
+                            Delete Request
                         </button>
                     </div>
                 ),
-                bulkActions: [
-                    { label: 'Export Selected', onClick: (selected) => console.log('export', selected) },
-                ],
-                searchPlaceholder: 'Search by names or codes',
             }}
-            className="cursor-pointer"
+            className="border-0 rounded-none shadow-none"
         />
     );
 }

@@ -4,9 +4,16 @@ import { Link } from "react-router-dom";
 import { publicMenuItems } from "@/constants/navigation";
 const Logo = "/vite.svg";
 import { ICONS } from "@/icons";
+import { useTranslation } from "react-i18next";
+import { PATHS } from "@/routers/Paths";
 
 
 export function Footer() {
+
+    const { t } = useTranslation('common');
+
+    const year = new Date().getFullYear();
+
     return (
         <div className="content-container">
             <div className="flex max-md:flex-col items-center md:justify-between gap-8">
@@ -15,16 +22,15 @@ export function Footer() {
 
                     {/* Logo */}
                     <div className="w-14 md:w-12">
-                        <Link to={'/'}>
+                        <Link to={PATHS.ROOT}>
                             <img src={Logo} alt="Deco Right Logo" className="w-full h-full" />
                         </Link>
                     </div>
 
                     <div className="max-sm:text-center">
-                        <h3 className="font-medium mb-2"> Deco Right </h3>
-                        <p className="text-2xs text-muted/75 max-w-xs">
-                            Deco Right is your trusted partner for exquisite interior design and decor solutions. We bring your vision to life with creativity and style.
-                        </p>
+                        <h4 className="font-medium mb-2"> { t('common:footer.company_name') } </h4>
+                        <h5 className="text-xs max-w-sm mb-2"> { t('common:footer.tagline') } </h5>
+                        <p className="text-2xs text-muted max-w-md"> { t('common:footer.short_description') } </p>
                     </div>
                 </div>
 
@@ -64,7 +70,7 @@ export function Footer() {
 
                     {/* Navigation Link List */}
                     <ul className="flex flex-wrap max-md:justify-center justify-end gap-4 md:gap-6">
-                        {publicMenuItems.map((item, index) => (
+                        {publicMenuItems().map((item, index) => (
                             <li key={index}>
                                 <Link to={item.path} className="text-xs hover:underline"> {item.label} </Link>
                             </li>
@@ -74,7 +80,7 @@ export function Footer() {
 
             </div>
             <div className="flex max-md:justify-center text-xs text-muted/75 border-t border-muted/15 my-4 pt-4">
-                <p>© 2025 Deco Right. All rights reserved.</p>
+                <p> { t('common:footer.legal.copyright_template', { year, company: t('common:footer.company_name')}) } </p>
             </div>
 
         </div>

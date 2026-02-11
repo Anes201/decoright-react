@@ -1,7 +1,7 @@
 
-import { RequestServiceList } from "@/components/layout/RequestServiceList"
+import { RequestServiceList } from "@/components/layout/client/RequestServiceList"
 
-export default function RequestServiceListPage () {
+export default function RequestServiceListPage() {
     return (
 
         <main>
@@ -15,7 +15,7 @@ export default function RequestServiceListPage () {
                 <div className="relative w-full h-full p-2 md:p-4">
                     <div className="absolute top-0 left-0 w-full h-full border border-muted/15 rounded-2xl -z-10 mask-b-to-transparent"></div>
 
-                    <RequestServiceList/>
+                    <RequestServiceList />
                 </div>
             </section>
 

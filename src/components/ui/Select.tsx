@@ -6,3 +6,9 @@ export function SelectMenu({...props}) {
         <Select classNamePrefix="react-select" classNames={{ menuList: () => "min-scrollbar"}} unstyled {...props} />
     )
 }
+
+export function SelectDropDownMenu({...props}) {
+    return (
+        <Select classNamePrefix="react-select-dropdown" classNames={{ menuList: () => "min-scrollbar"}} unstyled {...props} />
+    )
+}
