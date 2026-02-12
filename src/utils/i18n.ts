@@ -34,19 +34,19 @@ export default i18n;
 
 export const getLocalizedContent = (data: any, field: string, language: string) => {
   if (!data) return '';
-  const localizedField = `${field}_${language}`; // e.g., title_ar
 
-  // If the specific language field exists and is not empty, use it.
+  // Try specific language variant first (e.g., title_ar, display_name_ar)
+  const localizedField = `${field}_${language}`;
   if (data[localizedField]) {
     return data[localizedField];
   }
 
-  // Fallback logic:
-  // If language is English, prioritize base field.
-  if (language === 'en' || !language) {
-    return data[field] || '';
+  // If not found, try explicit English variant (e.g., title_en, display_name_en)
+  const enField = `${field}_en`;
+  if (data[enField]) {
+    return data[enField];
   }
 
-  // For other languages (fr, ar), if translation is missing, fallback to English/base field.
+  // Finally, try the base field itself (e.g., title, description)
   return data[field] || '';
 };

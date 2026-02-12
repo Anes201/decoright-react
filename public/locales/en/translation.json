@@ -29,7 +29,19 @@
     "faq_management": "FAQ Management",
     "faq_list": "FAQ List",
     "add_faq": "Add FAQ",
-    "settings": "Settings"
+    "settings": "Settings",
+    "home_desc": "Landing page and highlights",
+    "services_desc": "Learn about available services",
+    "projects_desc": "View public projects and case studies",
+    "gallery_desc": "Browse our gallery and past work",
+    "contact_us_desc": "Contact information and form",
+    "messages_desc": "View and continue your conversations",
+    "request_service_desc": "Start a new service request",
+    "your_requests_desc": "See the status of your service requests",
+    "login_desc": "Access your account and manage your projects",
+    "signup_desc": "Join our community and start your design journey",
+    "logout_desc": "Sign out of your account",
+    "dashboard_desc": "Admin dashboard & control panel"
   },
   "common": {
     "decor_agency": "Decor agency",
@@ -246,5 +258,17 @@
     "before": "Before",
     "after": "After",
     "no_items": "No showcase items available at the moment."
+  },
+  "chat": {
+    "requests": "Requests",
+    "select_request": "Select a Request",
+    "select_description": "Choose one of your service requests from the list to view its chat history and send messages."
+  },
+  "services_page": {
+    "title": "Our Services",
+    "description": "Discover our comprehensive range of interior design services tailored to transform your space into your dream environment.",
+    "faq_title": "Frequently Asked Questions",
+    "faq_description": "Find answers to common questions about our design services, process, and pricing.",
+    "request_project": "Request a Project"
   }
 }

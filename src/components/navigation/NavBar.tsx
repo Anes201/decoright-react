@@ -49,7 +49,7 @@ export function NavLinks() {
 }
 
 export function AuthenticatedUserActins() {
-
+    const { t } = useTranslation();
     const { user, isAdmin } = useContext(UserContext);
     if (!user) return;
 
@@ -63,11 +63,11 @@ export function AuthenticatedUserActins() {
                 {isAdmin ? <>
                     <LanguageSwitcher />
                     {/* Request Project */}
-                    <Link to={PATHS.ADMIN.PROJECT_CREATE} title="Create Project" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
-                        Create a Project
+                    <Link to={PATHS.ADMIN.PROJECT_CREATE} title={t('nav.add_project')} className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
+                        {t('nav.add_project')}
                     </Link>
 
-                    <Link to={PATHS.ADMIN.ROOT} title="Dashboard Panel" className="max-md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full">
+                    <Link to={PATHS.ADMIN.ROOT} title={t('nav.dashboard')} className="max-md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full">
                         <ICONS.presentationChartLine className="size-5 md:size-6" />
                     </Link>
 
@@ -86,12 +86,12 @@ export function AuthenticatedUserActins() {
                     : <>
                         <LanguageSwitcher />
                         {/* Request Project */}
-                        <Link to={PATHS.CLIENT.REQUEST_SERVICE} title="Request Service" className="max-md:hidden content-center p-2 min-w-max font-medium text-sm border border-primary/45 bg-surface/75 rounded-full">
-                            Request Service
+                        <Link to={PATHS.CLIENT.REQUEST_SERVICE} title={t('nav.request_service')} className="max-md:hidden content-center p-2 min-w-max font-medium text-sm border border-primary/45 bg-surface/75 rounded-full">
+                            {t('nav.request_service')}
                         </Link>
 
                         {/* Chat Nav Page */}
-                        <Link to={PATHS.CLIENT.CHAT} title="Chats" className="relative content-center p-1.5 md:p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
+                        <Link to={PATHS.CLIENT.CHAT} title={t('nav.messages')} className="relative content-center p-1.5 md:p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
                             <ICONS.chat className="size-5 md:size-6" />
 
                             <span className="absolute flex size-3 top-0 left-0">
@@ -105,7 +105,7 @@ export function AuthenticatedUserActins() {
                 }
 
                 {/* User Profile Nav Page */}
-                <Link to={PATHS.CLIENT.ACCOUNT_PROFILE} title="My Profile" className="max-md:hidden content-center p-1.5 md:p-2 border border-muted/15 bg-surface/75 rounded-full">
+                <Link to={PATHS.CLIENT.ACCOUNT_PROFILE} title={t('nav.profile')} className="max-md:hidden content-center p-1.5 md:p-2 border border-muted/15 bg-surface/75 rounded-full">
                     <ICONS.user className="size-5 md:size-6" />
                 </Link>
 
@@ -144,7 +144,7 @@ export function AuthenticatedUserActins() {
 }
 
 export function AnonymousUserActins() {
-
+    const { t } = useTranslation();
     const { user } = useContext(UserContext);
     if (user) return;
 
@@ -185,6 +185,7 @@ export function AnonymousUserActins() {
 }
 
 export function PublicMenu() {
+    const { t } = useTranslation();
     return (
         <>
             {publicMenuItems.map((item, index) => (
@@ -194,12 +195,12 @@ export function PublicMenu() {
                             {/* Icon */}
                             {/* { ICONS.informationCircle({}) } */}
                             {/* Label */}
-                            <h3 className="font-medium text-sm"> {item.label} </h3>
+                            <h3 className="font-medium text-sm"> {t(`nav.${item.key}`)} </h3>
                         </div>
 
                         {/* Description & Helper */}
                         <div className="w-full">
-                            <p className="text-2xs text-muted"> {item.description} </p>
+                            <p className="text-2xs text-muted"> {t(`nav.${item.key}_desc`)} </p>
                         </div>
                     </Link>
                 </li>
@@ -208,15 +209,13 @@ export function PublicMenu() {
             <li key="login" className="w-full">
                 <Link to={PATHS.LOGIN} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15">
                     <div className="flex content-center gap-2">
-                        {/* Icon */}
-                        {/* { ICONS.informationCircle({}) } */}
                         {/* Label */}
-                        <h3 className="font-medium text-sm"> Login </h3>
+                        <h3 className="font-medium text-sm"> {t('auth.login')} </h3>
                     </div>
 
                     {/* Context */}
                     <div className="w-full">
-                        <p className="text-2xs text-muted"> Access your account and manage your projects </p>
+                        <p className="text-2xs text-muted"> {t('nav.login_desc')} </p>
                     </div>
                 </Link>
             </li>
@@ -224,15 +223,13 @@ export function PublicMenu() {
             <li key="signup" className="w-full">
                 <Link to={PATHS.SIGNUP} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15">
                     <div className="flex content-center gap-2">
-                        {/* Icon */}
-                        {/* { ICONS.informationCircle({}) } */}
                         {/* Label */}
-                        <h3 className="font-medium text-sm"> Signup </h3>
+                        <h3 className="font-medium text-sm"> {t('auth.signup')} </h3>
                     </div>
 
                     {/* Context */}
                     <div className="w-full">
-                        <p className="text-2xs text-muted"> Join our community and start your design journey </p>
+                        <p className="text-2xs text-muted"> {t('nav.signup_desc')} </p>
                     </div>
                 </Link>
             </li>
@@ -241,7 +238,7 @@ export function PublicMenu() {
     )
 }
 export function ClientMenu() {
-
+    const { t } = useTranslation();
     const { isAdmin } = useContext(UserContext);
 
     return (
@@ -254,12 +251,12 @@ export function ClientMenu() {
                             {/* Icon */}
                             <ICONS.presentationChartLine />
                             {/* Label */}
-                            <span className="font-medium text-sm"> Dashboard </span>
+                            <span className="font-medium text-sm"> {t('nav.dashboard')} </span>
                         </div>
 
                         {/* Context */}
                         <div className="w-full">
-                            <p className="text-2xs text-muted"> Admin dashboard & control panel  </p>
+                            <p className="text-2xs text-muted"> {t('nav.dashboard_desc')} </p>
                         </div>
                     </Link>
                 </li>
@@ -272,12 +269,12 @@ export function ClientMenu() {
                             {/* Icon */}
                             {/* { ICONS.informationCircle({}) } */}
                             {/* Label */}
-                            <span className="font-medium text-sm"> {item.label} </span>
+                            <span className="font-medium text-sm"> {t(`nav.${item.key}`)} </span>
                         </div>
 
                         {/* Context */}
                         <div className="w-full">
-                            <p className="text-2xs text-muted"> {item.description} </p>
+                            <p className="text-2xs text-muted"> {t(`nav.${item.key}_desc`)} </p>
                         </div>
                     </Link>
                 </li>
@@ -289,7 +286,7 @@ export function ClientMenu() {
                         {/* Icon */}
                         <ICONS.arrowRightStartOnRectangle />
                         {/* Label */}
-                        <span className="font-medium text-sm"> Logout </span>
+                        <span className="font-medium text-sm"> {t('auth.logout')} </span>
                     </div>
                 </LogoutButton>
             </li>

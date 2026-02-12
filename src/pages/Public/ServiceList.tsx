@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useTranslation } from "react-i18next"
 import { ServiceCardList } from "@components/layout/Services"
 import { PCTALink } from "@components/ui/CTA"
 import { SectionHeader } from "@components/ui/SectionHeader"
@@ -7,6 +8,7 @@ import { PATHS } from "@/routers/Paths"
 import { AdminService } from "@/services/admin.service"
 
 export default function ServiceList() {
+    const { t } = useTranslation();
     const [settings, setSettings] = useState<Record<string, string>>({});
 
     useEffect(() => {
@@ -21,10 +23,10 @@ export default function ServiceList() {
         fetchSettings();
     }, []);
 
-    const pageTitle = settings.service_list_title || "Our Services";
-    const pageDescription = settings.service_list_description || "Discover our comprehensive range of interior design services tailored to transform your space into your dream environment.";
-    const faqTitle = settings.service_faq_title || "Frequently Asked Questions";
-    const faqDescription = settings.service_faq_description || "Find answers to common questions about our design services, process, and pricing.";
+    const pageTitle = settings.service_list_title || t('services_page.title');
+    const pageDescription = settings.service_list_description || t('services_page.description');
+    const faqTitle = settings.service_faq_title || t('services_page.faq_title');
+    const faqDescription = settings.service_faq_description || t('services_page.faq_description');
 
     return (
 
@@ -44,7 +46,7 @@ export default function ServiceList() {
 
                         {/* CTA */}
                         <div className="flex gap-2">
-                            <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE}> Request a Project </PCTALink>
+                            <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE}> {t('services_page.request_project')} </PCTALink>
                         </div>
 
                     </div>

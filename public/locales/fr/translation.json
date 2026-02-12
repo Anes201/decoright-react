@@ -29,7 +29,19 @@
     "faq_management": "Gestion des FAQ",
     "faq_list": "Liste des FAQ",
     "add_faq": "Ajouter une FAQ",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "home_desc": "Page d'accueil et points forts",
+    "services_desc": "En savoir plus sur les services disponibles",
+    "projects_desc": "Voir les projets publics et les études de cas",
+    "gallery_desc": "Parcourir notre galerie et nos travaux passés",
+    "contact_us_desc": "Informations de contact et formulaire",
+    "messages_desc": "Voir et continuer vos conversations",
+    "request_service_desc": "Démarrer une nouvelle demande de service",
+    "your_requests_desc": "Voir l'état de vos demandes de service",
+    "login_desc": "Accédez à votre compte et gérez vos projets",
+    "signup_desc": "Rejoignez notre communauté et commencez votre voyage design",
+    "logout_desc": "Se déconnecter de votre compte",
+    "dashboard_desc": "Tableau de bord administration et panneau de contrôle"
   },
   "common": {
     "decor_agency": "Agence de décoration",
@@ -246,5 +258,17 @@
     "before": "Avant",
     "after": "Après",
     "no_items": "Aucun élément de vitrine disponible pour le moment."
+  },
+  "chat": {
+    "requests": "Demandes",
+    "select_request": "Sélectionner une demande",
+    "select_description": "Choisissez l'une de vos demandes de service dans la liste pour voir son historique de discussion et envoyer des messages."
+  },
+  "services_page": {
+    "title": "Nos Services",
+    "description": "Découvrez notre gamme complète de services de design d'intérieur adaptés pour transformer votre espace en l'environnement de vos rêves.",
+    "faq_title": "Foire Aux Questions",
+    "faq_description": "Trouvez des réponses aux questions courantes sur nos services de design, notre processus et nos tarifs.",
+    "request_project": "Demander un projet"
   }
 }

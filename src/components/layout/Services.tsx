@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next"
 import { ServiceTypesService, type ServiceType } from "@/services/service-types.service"
 import ZoomImage from "../ui/ZoomImage"
 import { ICONS } from "@/icons"
+import { getLocalizedContent } from "@/utils/i18n"
 
 export function ServiceCardList() {
     const { i18n } = useTranslation()
@@ -23,13 +24,6 @@ export function ServiceCardList() {
         }
         fetchServices()
     }, [])
-
-    const getLocalizedLabel = (service: ServiceType) => {
-        const lang = i18n.language
-        if (lang === "ar" && service.display_name_ar) return service.display_name_ar
-        if (lang === "fr" && service.display_name_fr) return service.display_name_fr
-        return service.display_name_en
-    }
 
     if (loading) {
         return (
@@ -61,8 +55,8 @@ export function ServiceCardList() {
                         )}
                     </div>
 
-                    <h3 className="text-lg font-medium mb-0.5"> {getLocalizedLabel(service)} </h3>
-                    <p className="text-2xs md:text-xs text-muted/75"> {service.description} </p>
+                    <h3 className="text-lg font-medium mb-0.5"> {getLocalizedContent(service, 'display_name', i18n.language)} </h3>
+                    <p className="text-2xs md:text-xs text-muted/75"> {getLocalizedContent(service, 'description', i18n.language)} </p>
                 </li>
             ))}
 
