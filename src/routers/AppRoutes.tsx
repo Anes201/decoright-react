@@ -9,32 +9,32 @@ import RequireAuth from '@/components/auth/RequireAuth';
 import Spinner from '@/components/common/Spinner';
 import { useTranslation } from 'react-i18next';
 
-const Landing = lazy(() => import('@/pages/public/Landing'));
-const About = lazy(() => import('@/pages/public/About'));
-const Contact = lazy(() => import('@/pages/public/Contact'));
-const ServiceList = lazy(() => import('@/pages/public/ServiceList'));
-const ProjectList = lazy(() => import('@/pages/public/ProjectList'));
-const ProjectDetail = lazy(() => import('@/pages/public/ProjectDetail'));
-const FAQList = lazy(() => import('@/pages/public/FAQList'));
+const Landing = lazy(() => import('@/pages/Public/Landing'));
+const About = lazy(() => import('@/pages/Public/About'));
+const Contact = lazy(() => import('@/pages/Public/Contact'));
+const ServiceList = lazy(() => import('@/pages/Public/ServiceList'));
+const ProjectList = lazy(() => import('@/pages/Public/ProjectList'));
+const ProjectDetail = lazy(() => import('@/pages/Public/ProjectDetail'));
+const FAQList = lazy(() => import('@/pages/Public/FAQList'));
 
-const Signup = lazy(() => import('@/pages/public/Signup'));
-const Login = lazy(() => import('@/pages/public/Login'));
+const Signup = lazy(() => import('@/pages/Public/Signup'));
+const Login = lazy(() => import('@/pages/Public/Login'));
 const VerifyOTP = lazy(() => import('@/pages/VerifyOtp'));
 const PasswordReset = lazy(() => import('@/pages/PasswordReset'));
 const PasswordSent = lazy(() => import('@/pages/PasswordSent'));
 
 const ChatRoom = lazy(() => import('@/components/chat/ChatRoom'));
 
-const ClientHome = lazy(() => import('@/pages/public/GalleryList'));
-const ClientChat = lazy(() => import('@/pages/client/Chat'));
-const ClientGalleryPortfolioList = lazy(() => import('@/pages/public/GalleryList'));
-const ClientRequestList = lazy(() => import('@/pages/client/RequestServiceList'));
-const ClientRequestService = lazy(() => import('@/pages/client/RequestService'));
-const ClientAccountProfile = lazy(() => import('@/pages/client/AccountProfile'));
-const ClientAccountSettings = lazy(() => import('@/pages/client/AccountSettings'));
-const ClientPasswordChange = lazy(() => import('@/pages/client/PasswordChange'));
-const ClientPasswordSet = lazy(() => import('@/pages/client/PasswordSet'));
-const ClientPasswordDone = lazy(() => import('@/pages/client/PasswordDone'));
+const ClientHome = lazy(() => import('@/pages/Public/GalleryList'));
+const ClientChat = lazy(() => import('@/pages/Client/Chat'));
+const ClientGalleryPortfolioList = lazy(() => import('@/pages/Public/GalleryList'));
+const ClientRequestList = lazy(() => import('@/pages/Client/RequestServiceList'));
+const ClientRequestService = lazy(() => import('@/pages/Client/RequestService'));
+const ClientAccountProfile = lazy(() => import('@/pages/Client/AccountProfile'));
+const ClientAccountSettings = lazy(() => import('@/pages/Client/AccountSettings'));
+const ClientPasswordChange = lazy(() => import('@/pages/Client/PasswordChange'));
+const ClientPasswordSet = lazy(() => import('@/pages/Client/PasswordSet'));
+const ClientPasswordDone = lazy(() => import('@/pages/Client/PasswordDone'));
 
 const AdminDashboard = lazy(() => import('@/pages/Admin/Dashboard'));
 const AdminDashboardHome = lazy(() => import('@/pages/Admin/DashboardHome'));
@@ -283,7 +283,7 @@ export default function AppRoutes() {
     <Suspense fallback={
       <div className="flex flex-col items-center justify-center gap-2 w-full h-hero">
         <Spinner size="lg" />
-        <span className="text-sm"> { t('common.loading_moment') } </span>
+        <span className="text-sm"> {t('common.loading_moment')} </span>
       </div>
     }>
       <RouterProvider router={router} />
