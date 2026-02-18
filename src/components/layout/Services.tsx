@@ -149,7 +149,7 @@ export function ServiceCardList() {
                 className={"flex justify-center gap-2 border border-muted/25 rounded-xl " + (dummySpan >= 2 ? "flex-row-reverse" : "flex-col")}
                 >
                 <div className={"w-full rounded-lg overflow-hidden " + (dummySpan >= 2 ? "aspect-4/3" : "aspect-4/2")}>
-                    <img src={dummyCardImg} alt="" className="w-full h-full object-cover object-center" />
+                    <img src={dummyCardImg} alt="" className="w-full h-full object-cover object-center rtl:rotate-y-180" />
                 </div>
 
                 <div className="relative flex flex-col">
