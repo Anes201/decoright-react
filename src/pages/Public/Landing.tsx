@@ -43,9 +43,9 @@ export default function Landing() {
 
             <section className="content-container relative flex flex-col gap-8 w-full mt-16 pb-16 px-4 sm:px-6 md:px-8">
 
-                <hr className="absolute top-0 left-0 w-full h-full border-0 border-x border-muted/25" />
-                <hr className="absolute -top-2 -start-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs" />
-                <hr className="absolute -top-2 -end-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs" />
+                <hr className="absolute top-0 left-0 w-full h-full border-0 border-x border-muted/25 pointer-events-none" />
+                <hr className="absolute -top-2 -start-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs pointer-events-none" />
+                <hr className="absolute -top-2 -end-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs pointer-events-none" />
 
                 <div className="content-container flex flex-col gap-8 w-full">
                     {/* Section Header */}
@@ -61,7 +61,7 @@ export default function Landing() {
             </section>
             <section className="content-container relative flex flex-col gap-6 w-full px-3 sm:px-6 md:px-8">
 
-                <div className="absolute top-0 left-0 w-full h-full border-x border-muted/25" />
+                <div className="absolute top-0 left-0 w-full h-full border-x border-muted/25 pointer-events-none" />
 
                 {/* Section Header */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
@@ -70,7 +70,7 @@ export default function Landing() {
                         desc={projectsDescription}
                     />
                     <Link to={PATHS.PROJECT_LIST} className="flex items-center gap-1 text-primary font-medium text-sm whitespace-nowrap hover:underline">
-                        {t('common.view_all_projects')} <ICONS.chevronRight className="size-4 rtl:rotate-180"/>
+                        {t('common.view_all_projects')} <ICONS.chevronRight className="size-4 rtl:rotate-180" />
                     </Link>
                 </div>
 
@@ -80,9 +80,9 @@ export default function Landing() {
             </section>
             <section className="content-container relative flex flex-col gap-8 w-full mb-16 pt-16 px-4 sm:px-6 md:px-8">
 
-                <hr className="absolute top-0 left-0 w-full h-full border-0 border-x border-muted/25" />
-                <hr className="absolute -bottom-2 -start-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs" />
-                <hr className="absolute -bottom-2 -end-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs" />
+                <hr className="absolute top-0 left-0 w-full h-full border-0 border-x border-muted/25 pointer-events-none" />
+                <hr className="absolute -bottom-2 -start-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs pointer-events-none" />
+                <hr className="absolute -bottom-2 -end-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs pointer-events-none" />
 
 
                 {/* Section Header */}
