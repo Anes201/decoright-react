@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { PATHS } from "@/routers/Paths";
 import { useTranslation } from "react-i18next";
 import Spinner from "../common/Spinner";
+import useAuth from "@/hooks/useAuth";
 
 
 export function ShowcaseCard({ project }: { project: any }) {
@@ -59,13 +60,19 @@ export function ShowcaseCardList() {
     const [projects, setProjects] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const { t } = useTranslation();
+    const { isAdmin, user } = useAuth();
 
     useEffect(() => {
         async function fetchShowcase() {
             try {
-                // Fetch projects with PUBLIC visibility, limit to 6 for the homepage
+                // Determine visibility filter based on user role
+                const visibility: any[] = ['PUBLIC'];
+                if (user) visibility.push('AUTHENTICATED_ONLY');
+                if (isAdmin) visibility.push('HIDDEN');
+
+                // Fetch projects with determined visibility, limit to 6 for the homepage
                 const data = await AdminService.getProjects({
-                    visibility: ['PUBLIC'],
+                    visibility,
                     limit: 6
                 });
                 setProjects(data);
@@ -76,7 +83,7 @@ export function ShowcaseCardList() {
             }
         }
         fetchShowcase();
-    }, []);
+    }, [isAdmin, user]);
 
     if (loading) {
         return (
