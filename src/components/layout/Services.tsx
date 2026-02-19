@@ -11,14 +11,14 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { PCTALink } from '../ui/CTA';
 import { PATHS } from '@/routers/Paths';
 
-const dummyCardImg = "/public/living-room.png";
-const dummyCardLamps = "/public/ceiling-lamps.svg";
+const dummyCardImg = "/living-room.png";
+const dummyCardLamps = "/ceiling-lamps.svg";
 
-export function ServiceCardItem({service}:{service:ServiceType}) {
+export function ServiceCardItem({ service }: { service: ServiceType }) {
 
     const { i18n } = useTranslation()
 
-    const getLocalizedLabel = (service:ServiceType) => {
+    const getLocalizedLabel = (service: ServiceType) => {
         const lang = i18n.language
         if (lang === "ar" && service.display_name_ar) return service.display_name_ar
         if (lang === "fr" && service.display_name_fr) return service.display_name_fr
@@ -101,10 +101,10 @@ export function ServiceCardList() {
         if (!lg.addEventListener) lg.addListener?.(handler);
 
         return () => {
-        sm.removeEventListener?.("change", handler);
-        lg.removeEventListener?.("change", handler);
-        if (!sm.removeEventListener) sm.removeListener?.(handler);
-        if (!lg.removeEventListener) lg.removeListener?.(handler);
+            sm.removeEventListener?.("change", handler);
+            lg.removeEventListener?.("change", handler);
+            if (!sm.removeEventListener) sm.removeListener?.(handler);
+            if (!lg.removeEventListener) lg.removeListener?.(handler);
         };
     }, []);
 
@@ -137,46 +137,46 @@ export function ServiceCardList() {
             <ul className="max-md:hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full h-full">
                 {services.map((service) => (
                     <li key={(service as any).id}>
-                    <ServiceCardItem service={service} />
+                        <ServiceCardItem service={service} />
                     </li>
                 ))}
 
                 {showDummy && (
-                <li
-                aria-hidden
-                // use inline style so grid span is always correct regardless of Tailwind classes
-                style={{ gridColumn: `span ${Math.max(1, Math.min(dummySpan, cols))}` }}
-                className={"flex justify-center gap-2 border border-muted/25 rounded-xl " + (dummySpan >= 2 ? "flex-row-reverse" : "flex-col")}
-                >
-                <div className={"w-full rounded-lg overflow-hidden " + (dummySpan >= 2 ? "aspect-4/3" : "aspect-4/2")}>
-                    <img src={dummyCardImg} alt="" className="w-full h-full object-cover object-center rtl:rotate-y-180" />
-                </div>
-
-                <div className="relative flex flex-col">
-
-                    { dummySpan >= 2 &&
-                        <div className="max-xl:hidden absolute top-0 start-0 w-55">
-                            <img src={dummyCardLamps} alt="" className="w-full h-full object-center object-cover rtl:rotate-y-180" />
+                    <li
+                        aria-hidden
+                        // use inline style so grid span is always correct regardless of Tailwind classes
+                        style={{ gridColumn: `span ${Math.max(1, Math.min(dummySpan, cols))}` }}
+                        className={"flex justify-center gap-2 border border-muted/25 rounded-xl " + (dummySpan >= 2 ? "flex-row-reverse" : "flex-col")}
+                    >
+                        <div className={"w-full rounded-lg overflow-hidden " + (dummySpan >= 2 ? "aspect-4/3" : "aspect-4/2")}>
+                            <img src={dummyCardImg} alt="" className="w-full h-full object-cover object-center rtl:rotate-y-180" />
                         </div>
-                    }
 
-                    <div className="flex flex-col gap-4 p-4 justify-end h-full">
-                        <h4 className={`font-medium ${dummySpan >= 2 ? "text-2xl lg:text-4xl" : "text-lg"}`}>
-                            {t("services.service_card_title")}
-                        </h4>
+                        <div className="relative flex flex-col">
 
-                        <p className={`text-muted/75 ${dummySpan >= 2 ? "text-xs md:text-sm" : "text-2xs md:text-xs"}`}>
-                            {t("services.service_card_description")}
-                        </p>
-                    </div>
+                            {dummySpan >= 2 &&
+                                <div className="max-xl:hidden absolute top-0 start-0 w-55">
+                                    <img src={dummyCardLamps} alt="" className="w-full h-full object-center object-cover rtl:rotate-y-180" />
+                                </div>
+                            }
 
-                    <div className="relative flex w-full p-4">
+                            <div className="flex flex-col gap-4 p-4 justify-end h-full">
+                                <h4 className={`font-medium ${dummySpan >= 2 ? "text-2xl lg:text-4xl" : "text-lg"}`}>
+                                    {t("services.service_card_title")}
+                                </h4>
 
-                        <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE} className="w-full">{t("services.service_card_cta")}</PCTALink>
-                    </div>
-                </div>
-                </li>
-            )}
+                                <p className={`text-muted/75 ${dummySpan >= 2 ? "text-xs md:text-sm" : "text-2xs md:text-xs"}`}>
+                                    {t("services.service_card_description")}
+                                </p>
+                            </div>
+
+                            <div className="relative flex w-full p-4">
+
+                                <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE} className="w-full">{t("services.service_card_cta")}</PCTALink>
+                            </div>
+                        </div>
+                    </li>
+                )}
             </ul>
             <Swiper
                 hidden={isMdSize}
@@ -186,7 +186,7 @@ export function ServiceCardList() {
                 className="w-full h-full rounded-xl overflow-hidden"
                 style={{ '--swiper-navigation-size': '30px', '--swiper-navigation-color': 'var(--acme-primary)', '--swiper-pagination-color': 'var(--acme-primary)' } as CSSProperties}
             >
-                {services.map((service:ServiceType) => (
+                {services.map((service: ServiceType) => (
                     <SwiperSlide key={service.id} className="mr-2">
                         <ServiceCardItem service={service} />
                     </SwiperSlide>

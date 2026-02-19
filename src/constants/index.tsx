@@ -1,7 +1,7 @@
 
 import { ICONS } from "@/icons"
 
-const userProfile = "/public/user.png"
+const userProfile = "/user.png"
 // const SpacesPlaning = "/services/IMG_3766.jpg";
 // const ColorConsultation = "/services/IMG_3767.jpg";
 // const InteriorDesign = "/services/IMG_20260116_230617.jpg";
@@ -295,7 +295,7 @@ export const SocialMediaPhoneFields = [
 export const allowedLocales = ['en', 'fr', 'ar']
 
 export const languageChoices = [
-    { id:'en', label: 'English', key:'english', value: 'en', icon: null, },
-    { id:'fr', label: 'French', key:'french', value: 'fr', icon: null, },
-    { id:'ar', label: 'Arabic', key:'arabic', value: 'ar', icon: null, },
+    { id: 'en', label: 'English', key: 'english', value: 'en', icon: null, },
+    { id: 'fr', label: 'French', key: 'french', value: 'fr', icon: null, },
+    { id: 'ar', label: 'Arabic', key: 'arabic', value: 'ar', icon: null, },
 ]

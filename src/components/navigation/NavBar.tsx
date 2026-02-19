@@ -1,6 +1,6 @@
 
 import useAuth from "@/hooks/useAuth"
-import Logo from "/public/vite.svg"
+const Logo = "/vite.svg"
 import i18n from "@/utils/i18n"
 
 import { Link } from "react-router-dom"
@@ -65,7 +65,7 @@ export function AuthenticatedUserActins() {
         <>
             <div className="flex items-center gap-2 md:gap-4">
 
-                { isAdmin
+                {isAdmin
                     ? <>
                         {/* Request Project */}
                         <Link to={PATHS.ADMIN.PROJECT_CREATE} title="Create Project" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
@@ -90,20 +90,20 @@ export function AuthenticatedUserActins() {
 
                     : <>
 
-                    {/* Request Project */}
-                    <Link to={PATHS.CLIENT.REQUEST_SERVICE} title="Request Service" className="max-md:hidden content-center p-2 min-w-max font-medium text-sm border border-primary/45 bg-surface/75 rounded-full">
-                        Request Service
-                    </Link>
+                        {/* Request Project */}
+                        <Link to={PATHS.CLIENT.REQUEST_SERVICE} title="Request Service" className="max-md:hidden content-center p-2 min-w-max font-medium text-sm border border-primary/45 bg-surface/75 rounded-full">
+                            Request Service
+                        </Link>
 
-                    {/* Chat Nav Page */}
-                    <Link to={PATHS.CLIENT.CHAT} title="Chats" className="relative content-center p-1.5 md:p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
-                        <ICONS.chat className="size-5 md:size-6" />
+                        {/* Chat Nav Page */}
+                        <Link to={PATHS.CLIENT.CHAT} title="Chats" className="relative content-center p-1.5 md:p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
+                            <ICONS.chat className="size-5 md:size-6" />
 
-                        <span className="absolute flex size-3 top-0 left-0">
-                            <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
-                            <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
-                        </span>
-                    </Link>
+                            <span className="absolute flex size-3 top-0 left-0">
+                                <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
+                                <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
+                            </span>
+                        </Link>
 
                     </>
                 }
@@ -122,7 +122,7 @@ export function AuthenticatedUserActins() {
             </div>
 
             {chatMenuOpen &&
-                <MenuCard title={ t('common.menu_chat') } open={chatMenuOpen} setOpen={setChatMenuOpen}>
+                <MenuCard title={t('common.menu_chat')} open={chatMenuOpen} setOpen={setChatMenuOpen}>
                     {/* Mobile Nav Menu */}
                     <ul className="flex flex-col w-full h-full gap-2 border border-muted/15 p-2 rounded-lg overflow-y-auto min-scrollbar">
                     </ul>
@@ -131,7 +131,7 @@ export function AuthenticatedUserActins() {
 
             {/* Mobile Nav Menu Card Overlay */}
             {navMenuOpen &&
-                <MenuCard title={ t('common.menu_navigation') } open={navMenuOpen} setOpen={setNavMenuOpen}>
+                <MenuCard title={t('common.menu_navigation')} open={navMenuOpen} setOpen={setNavMenuOpen}>
                     {/* Mobile Nav Menu */}
                     <ul className="flex flex-col w-full h-full gap-2 border border-muted/15 p-2 rounded-lg overflow-y-auto min-scrollbar">
                         <ClientMenu />
@@ -170,7 +170,7 @@ export function AnonymousUserActins() {
                         options={languageChoices}
                         placeholder="Select a Language"
                         id="select-language"
-                        value={languageChoices.find((s:any) => s.value === i18n.language)}
+                        value={languageChoices.find((s: any) => s.value === i18n.language)}
                         onChange={(option: any) => handleChange(option.value)}
                         isSearchable={false}
                         required
@@ -192,7 +192,7 @@ export function AnonymousUserActins() {
 
             {/* Mobile Nav Menu Card Overlay */}
             {navMenuOpen &&
-                <MenuCard title={ t('common.menu_navigation') } open={navMenuOpen} setOpen={setNavMenuOpen}>
+                <MenuCard title={t('common.menu_navigation')} open={navMenuOpen} setOpen={setNavMenuOpen}>
                     {/* Mobile Nav Menu */}
                     <ul className="flex flex-col w-full h-full gap-2 border border-muted/15 p-2 rounded-lg overflow-y-auto min-scrollbar">
                         <PublicMenu />
@@ -215,14 +215,14 @@ export function PublicMenu() {
                     <Link to={item.path} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75">
                         <div className="flex content-center gap-2">
                             {/* Icon */}
-                            { item.icon ?? <ICONS.folder /> }
+                            {item.icon ?? <ICONS.folder />}
                             {/* Label */}
-                            <h3 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> { t(`nav.${item.key}`) } </h3>
+                            <h3 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> {t(`nav.${item.key}`)} </h3>
                         </div>
 
                         {/* Description & Helper */}
                         <div className="w-full">
-                            <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> { t(`nav.${item.key}_description`) } </p>
+                            <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> {t(`nav.${item.key}_description`)} </p>
                         </div>
                     </Link>
                 </li>
@@ -230,16 +230,16 @@ export function PublicMenu() {
 
             <li key="menu_language_settings" className="group/menuitem w-full">
                 {/* Language Menu Trigger */}
-                <button type="button" title={ t('nav.language_area') }
-                onClick={() => setLangMenuOpen(!langMenuOpen)}
-                className="flex items-center w-full text-start p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75"
+                <button type="button" title={t('nav.language_area')}
+                    onClick={() => setLangMenuOpen(!langMenuOpen)}
+                    className="flex items-center w-full text-start p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75"
                 >
                     <div className="flex flex-col gap-1 w-full">
                         <div className="flex gap-2 w-full">
                             <ICONS.language />
-                            <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> { t('nav.language') } </h4>
+                            <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> {t('nav.language')} </h4>
                         </div>
-                        <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> { t('nav.language_description') } </p>
+                        <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> {t('nav.language_description')} </p>
                     </div>
                     <ICONS.chevronRight className="rtl:rotate-180 size-4" />
                 </button>
@@ -249,12 +249,12 @@ export function PublicMenu() {
                 <Link to={PATHS.LOGIN} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75">
                     <div className="flex content-center gap-2">
                         <ICONS.arrowRightEndOnRectangle />
-                        <h3 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> { t('auth.login') } </h3>
+                        <h3 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> {t('auth.login')} </h3>
                     </div>
 
                     {/* Context */}
                     <div className="w-full">
-                        <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> { t('auth.login_description') } </p>
+                        <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> {t('auth.login_description')} </p>
                     </div>
                 </Link>
             </li>
@@ -263,12 +263,12 @@ export function PublicMenu() {
                 <Link to={PATHS.SIGNUP} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75 ">
                     <div className="flex content-center gap-2">
                         <ICONS.userPlus />
-                        <h3 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> { t('auth.signup') }  </h3>
+                        <h3 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> {t('auth.signup')}  </h3>
                     </div>
 
                     {/* Context */}
                     <div className="w-full">
-                        <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> { t('auth.signup_description') } </p>
+                        <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> {t('auth.signup_description')} </p>
                     </div>
                 </Link>
             </li>
@@ -292,12 +292,12 @@ export function ClientMenu() {
                             {/* Icon */}
                             <ICONS.presentationChartLine />
                             {/* Label */}
-                            <span className="font-medium text-sm"> { t('nav.dashboard') } </span>
+                            <span className="font-medium text-sm"> {t('nav.dashboard')} </span>
                         </div>
 
                         {/* Context */}
                         <div className="w-full">
-                            <p className="text-2xs text-muted"> { t('nav.dashboard_description') }  </p>
+                            <p className="text-2xs text-muted"> {t('nav.dashboard_description')}  </p>
                         </div>
                     </Link>
                 </li>
@@ -308,14 +308,14 @@ export function ClientMenu() {
                     <Link to={item.path} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75">
                         <div className="flex content-center gap-2">
                             {/* Icon */}
-                            { item.icon ?? <ICONS.folder /> }
+                            {item.icon ?? <ICONS.folder />}
                             {/* Label */}
-                            <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> { t(`nav.${item.key}`) } </h4>
+                            <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> {t(`nav.${item.key}`)} </h4>
                         </div>
 
                         {/* Context */}
                         <div className="w-full">
-                            <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> { t(`nav.${item.key}_description`) } </p>
+                            <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> {t(`nav.${item.key}_description`)} </p>
                         </div>
                     </Link>
                 </li>
@@ -323,16 +323,16 @@ export function ClientMenu() {
 
             <li key="menu_language_settings" className="group/menuitem w-full">
                 {/* Language Menu Trigger */}
-                <button type="button" title={ t('nav.language_area') }
-                onClick={() => setLangMenuOpen(!langMenuOpen)}
-                className="flex items-center w-full text-start p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75"
+                <button type="button" title={t('nav.language_area')}
+                    onClick={() => setLangMenuOpen(!langMenuOpen)}
+                    className="flex items-center w-full text-start p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75"
                 >
                     <div className="flex flex-col gap-1 w-full">
                         <div className="flex gap-2 w-full">
                             <ICONS.language />
-                            <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> { t('nav.language') } </h4>
+                            <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> {t('nav.language')} </h4>
                         </div>
-                        <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> { t('nav.language_description') } </p>
+                        <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> {t('nav.language_description')} </p>
                     </div>
                     <ICONS.chevronRight className="rtl:rotate-180 size-4" />
                 </button>
@@ -344,7 +344,7 @@ export function ClientMenu() {
                         {/* Icon */}
                         <ICONS.arrowRightStartOnRectangle />
                         {/* Label */}
-                        <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> { t('auth.logout') } </h4>
+                        <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> {t('auth.logout')} </h4>
                     </div>
                 </LogoutButton>
             </li>
@@ -360,17 +360,17 @@ export function NavActions() {
     const { t } = useTranslation()
 
     const languageChoices = [
-        { id:'en', label: t('common.english'), value: 'en', icon: null, },
-        { id:'fr', label: t('common.french'), value: 'fr', icon: null, },
-        { id:'ar', label: t('common.arabic'), value: 'ar', icon: null, },
+        { id: 'en', label: t('common.english'), value: 'en', icon: null, },
+        { id: 'fr', label: t('common.french'), value: 'fr', icon: null, },
+        { id: 'ar', label: t('common.arabic'), value: 'ar', icon: null, },
     ]
 
     return (
 
-        <MenuContext.Provider value={{langMenuOpen, setLangMenuOpen, languageChoices}}>
+        <MenuContext.Provider value={{ langMenuOpen, setLangMenuOpen, languageChoices }}>
             <AuthenticatedUserActins />
             <AnonymousUserActins />
-            <MenuLanguageSelectorModal isOpen={langMenuOpen} onClose={() => {setLangMenuOpen(false)}} onSuccess={() => {setLangMenuOpen(false)}} />
+            <MenuLanguageSelectorModal isOpen={langMenuOpen} onClose={() => { setLangMenuOpen(false) }} onSuccess={() => { setLangMenuOpen(false) }} />
 
         </MenuContext.Provider>
     )

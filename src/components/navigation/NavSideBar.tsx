@@ -1,5 +1,5 @@
 
-import Logo from "/public/vite.svg"
+const Logo = "/vite.svg"
 import type { SideNavItem } from "@/types/nav"
 import { LogoutButton } from "@components/common/Confirm"
 import { adminSideMenuNav } from "@/constants/navigation"
@@ -26,53 +26,53 @@ function findParentIdsForPath(items: SideNavItem[], target: string): string[] | 
 
 
 function NavLogo() {
-    return (
-        <div className="flex items-center gap-2 md:gap-4 min-w-max w-full h-fit py-2 px-4">
-            <div className="w-8 md:w-10 aspect-square">
-                <img src={Logo} alt="logo" height="40" width="40" className="w-full object-cover rounded-lg" loading="lazy" />
-            </div>
-            <div className="flex flex-col">
-                <h3 className="text-sm md:text-base font-medium"> Deco Right </h3>
-                <span className="text-3xs md:text-2xs text-muted hover:text-foreground" title="Decor agency">
-                    Admin Panel
-                </span>
-            </div>
-        </div>
-    )
+  return (
+    <div className="flex items-center gap-2 md:gap-4 min-w-max w-full h-fit py-2 px-4">
+      <div className="w-8 md:w-10 aspect-square">
+        <img src={Logo} alt="logo" height="40" width="40" className="w-full object-cover rounded-lg" loading="lazy" />
+      </div>
+      <div className="flex flex-col">
+        <h3 className="text-sm md:text-base font-medium"> Deco Right </h3>
+        <span className="text-3xs md:text-2xs text-muted hover:text-foreground" title="Decor agency">
+          Admin Panel
+        </span>
+      </div>
+    </div>
+  )
 }
 
 function NavLinkList() {
 
-    const location = useLocation();
-    const [openSet, setOpenSet] = useState<Set<string>>(new Set());
+  const location = useLocation();
+  const [openSet, setOpenSet] = useState<Set<string>>(new Set());
 
-    // initialize open groups based on current path
-    useEffect(() => {
-        const parents = findParentIdsForPath(adminSideMenuNav, location.pathname) ?? [];
-        setOpenSet(new Set(parents));
-    }, [location.pathname]);
+  // initialize open groups based on current path
+  useEffect(() => {
+    const parents = findParentIdsForPath(adminSideMenuNav, location.pathname) ?? [];
+    setOpenSet(new Set(parents));
+  }, [location.pathname]);
 
-    const toggle = (id: string) => {
-        setOpenSet((prev) => {
-        const next = new Set(prev);
-        if (next.has(id)) next.delete(id);
-        else next.add(id);
-        return next;
-        });
-    };
+  const toggle = (id: string) => {
+    setOpenSet((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
-    return (
+  return (
 
-        <ul className="flex flex-col gap-2 w-full h-full">
-            {adminSideMenuNav.map((item) => (
-                // <li key={index}>
-                //     <NavLink to={item.path} className="flex font-medium text-sm px-4 py-2 border border-transparent hover:border-muted/15 hover:bg-emphasis/50 rounded-lg"> {item.label} </NavLink>
-                // </li>
-                <NavItem key={item.id} item={item} openSet={openSet} toggle={toggle} />
-            ))}
-        </ul>
+    <ul className="flex flex-col gap-2 w-full h-full">
+      {adminSideMenuNav.map((item) => (
+        // <li key={index}>
+        //     <NavLink to={item.path} className="flex font-medium text-sm px-4 py-2 border border-transparent hover:border-muted/15 hover:bg-emphasis/50 rounded-lg"> {item.label} </NavLink>
+        // </li>
+        <NavItem key={item.id} item={item} openSet={openSet} toggle={toggle} />
+      ))}
+    </ul>
 
-    )
+  )
 }
 
 function NavItem({
@@ -101,17 +101,17 @@ function NavItem({
         <ul id={`children-${item.id}`} role="group"
           className={`relative px-1 space-y-2 overflow-clip transition-[max-height] duration-150 ${isOpen ? "max-h-96" : "max-h-0"}`}
         >
-            {item.children.map((child) => (
-                <li key={child.id} className="flex items-center last:mb-2">
-                    <NavLink
-                        to={child.path ?? "#"}
-                        className="text-xs w-full p-2 hover:bg-emphasis active:hover:bg-emphasis rounded-lg cursor-pointer"
-                        aria-current={undefined}
-                    >
-                      {child.label}
-                    </NavLink>
-                </li>
-            ))}
+          {item.children.map((child) => (
+            <li key={child.id} className="flex items-center last:mb-2">
+              <NavLink
+                to={child.path ?? "#"}
+                className="text-xs w-full p-2 hover:bg-emphasis active:hover:bg-emphasis rounded-lg cursor-pointer"
+                aria-current={undefined}
+              >
+                {child.label}
+              </NavLink>
+            </li>
+          ))}
         </ul>
       </li>
     );
@@ -131,38 +131,38 @@ function NavItem({
 }
 
 function NavActionList() {
-    return (
+  return (
 
-        <ul className="flex flex-col gap-2 w-full h-fit p-2">
-            <li key={'action-item-logout'}>
-                <LogoutButton className="flex justify-between font-medium text-sm p-2 w-full border border-muted/15 hover:bg-emphasis rounded-lg">
-                    <div className="flex content-center gap-2">
-                        {/* Icon */}
-                        <ICONS.arrowRightStartOnRectangle />
-                        {/* Label */}
-                        <span className="font-medium text-sm"> Logout </span>
-                    </div>
-                </LogoutButton>
-            </li>
-        </ul>
+    <ul className="flex flex-col gap-2 w-full h-fit p-2">
+      <li key={'action-item-logout'}>
+        <LogoutButton className="flex justify-between font-medium text-sm p-2 w-full border border-muted/15 hover:bg-emphasis rounded-lg">
+          <div className="flex content-center gap-2">
+            {/* Icon */}
+            <ICONS.arrowRightStartOnRectangle />
+            {/* Label */}
+            <span className="font-medium text-sm"> Logout </span>
+          </div>
+        </LogoutButton>
+      </li>
+    </ul>
 
-    )
+  )
 }
 
-export function NavSideBar () {
+export function NavSideBar() {
 
-    return (
+  return (
 
-        <div className="flex flex-col gap-4 w-full h-full px-2 py-4 bg-surface">
-            <NavLogo/>
-            <nav className="p-2 border-y border-muted/15 h-full overflow-y-auto min-scrollbar">
-                <NavLinkList />
-            </nav>
+    <div className="flex flex-col gap-4 w-full h-full px-2 py-4 bg-surface">
+      <NavLogo />
+      <nav className="p-2 border-y border-muted/15 h-full overflow-y-auto min-scrollbar">
+        <NavLinkList />
+      </nav>
 
-            <NavActionList />
+      <NavActionList />
 
-        </div>
+    </div>
 
 
-    )
+  )
 }
