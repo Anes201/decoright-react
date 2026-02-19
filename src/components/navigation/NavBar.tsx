@@ -1,6 +1,6 @@
 
 import useAuth from "@/hooks/useAuth"
-const Logo = "/vite.svg"
+const Logo = "/decoright.jpeg"
 import i18n from "@/utils/i18n"
 
 import { Link } from "react-router-dom"

@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 
 import { publicMenuItems } from "@/constants/navigation";
-const Logo = "/vite.svg";
+const Logo = "/decoright.jpeg";
 import { ICONS } from "@/icons";
 import { useTranslation } from "react-i18next";
 
