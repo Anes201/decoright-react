@@ -24,7 +24,7 @@ export default function PasswordReset() {
         setEmailValid(EMAIL_REGEX.test(email.trim()))
     }, [email])
 
-    async function handleSubmit(e: React.SubmitEvent) {
+    async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         if (!emailValid) {
             setError(t('errors.invalid_email'))
@@ -73,8 +73,8 @@ export default function PasswordReset() {
                         </div>
 
                         <div className="space-y-2 text-center">
-                            <h1 className="font-semibold text-xl md:text-3xl"> { t('password.reset_title') } </h1>
-                            <p className="text-xs md:text-sm"> { t('password.reset_description') } </p>
+                            <h1 className="font-semibold text-xl md:text-3xl"> {t('password.reset_title')} </h1>
+                            <p className="text-xs md:text-sm"> {t('password.reset_description')} </p>
                         </div>
                     </div>
 
@@ -82,7 +82,7 @@ export default function PasswordReset() {
                         <div>
                             <label htmlFor="password"
                                 className="text-xs text-muted mx-1"
-                            > { t('auth.email') } </label>
+                            > {t('auth.email')} </label>
                             <EmailInput id="email" onChange={(e: any) => (setEmail(e.target.value))} />
                         </div>
 
@@ -96,9 +96,9 @@ export default function PasswordReset() {
                                 area-label="send email to recover password"
                                 title={emailValid ? 'Send email to recover password' : 'Enter a valid email'}
                             >
-                                <Spinner status={loading} size="sm"> { t('password.cta_send_reset_link') } </Spinner>
+                                <Spinner status={loading} size="sm"> {t('password.cta_send_reset_link')} </Spinner>
                             </PButton>
-                            <SCTALink to={PATHS.LOGIN} onClick={handleGoBack} className="w-full"> { t('common.go_back') } </SCTALink>
+                            <SCTALink to={PATHS.LOGIN} onClick={handleGoBack} className="w-full"> {t('common.go_back')} </SCTALink>
                         </div>
                     </form>
 

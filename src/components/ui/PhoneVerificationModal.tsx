@@ -23,7 +23,7 @@ export default function PhoneVerificationModal({ isOpen, onClose, onSuccess }: P
 
     if (!isOpen) return null;
 
-    const handleSendOTP = async (e: React.SubmitEvent) => {
+    const handleSendOTP = async (e: React.FormEvent) => {
         e.preventDefault();
         e.stopPropagation();
         setLoading(true);
@@ -44,7 +44,7 @@ export default function PhoneVerificationModal({ isOpen, onClose, onSuccess }: P
         }
     };
 
-    const handleVerifyOTP = async (e: React.SubmitEvent) => {
+    const handleVerifyOTP = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
@@ -87,7 +87,7 @@ export default function PhoneVerificationModal({ isOpen, onClose, onSuccess }: P
                 {error && (
                     <div className="flex items-center gap-3 mb-4 p-3 bg-warning/10 border border-warning/20 rounded-xl">
                         <ICONS.exclamationTriangle className="size-4 text-warning shrink-0" />
-                        <p className="text-xs text-warning font-medium"> { t('phone_verification.error_verify') } ({error}) </p>
+                        <p className="text-xs text-warning font-medium"> {t('phone_verification.error_verify')} ({error}) </p>
                     </div>
                 )}
 

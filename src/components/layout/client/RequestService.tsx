@@ -68,7 +68,7 @@ export default function RequestServiceLayout() {
     if (authLoading) return <div className="flex flex-col gap-4"> <Spinner status={authLoading} /> <span className="text-sm">{t('common.loading')}</span> </div>
     if (!user) return null
 
-    const handleSubmit = async (e: React.SubmitEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!spaceType || !serviceType || !location) {
             setError(t('request_form.error_fields'))

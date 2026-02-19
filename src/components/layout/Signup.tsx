@@ -18,7 +18,7 @@ export function SignupLayout() {
     const navigate = useNavigate()
     const { t } = useTranslation()
 
-    const handleSignup = async (e: React.SubmitEvent) => {
+    const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
         setError(null)
