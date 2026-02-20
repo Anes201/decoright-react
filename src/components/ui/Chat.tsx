@@ -1,7 +1,7 @@
 import type { Message, TextMsg, VoiceMsg, FileMsg } from "@/types/chat";
 
 /** ---- Text message component ---- */
-export function TextMessage({ message, currentUserId, ...props }: { message: TextMsg, currentUserId: string, props?: any }) {
+export function TextMessage({ message, currentUserId, ...props }: { message: TextMsg, currentUserId: string, [key: string]: any }) {
 
   const messageFrom = message.sender_id === currentUserId ? 'send' : 'received'
 
@@ -18,7 +18,7 @@ export function TextMessage({ message, currentUserId, ...props }: { message: Tex
 /** ---- Voice message component ----
  *  Using a native <audio> control keeps it tiny and functional.
  */
-export function VoiceMessage({ message, currentUserId, ...props }: { message: VoiceMsg, currentUserId: string, props?: any }) {
+export function VoiceMessage({ message, currentUserId, ...props }: { message: VoiceMsg, currentUserId: string, [key: string]: any }) {
 
   const messageFrom = message.sender_id === currentUserId ? 'send' : 'received'
 
@@ -42,7 +42,7 @@ function isImageFile(filename: string) {
 }
 
 /** ---- File / upload message component ---- */
-export function FileMessage({ message, currentUserId }: { message: FileMsg, currentUserId: string }) {
+export function FileMessage({ message, currentUserId, ...props }: { message: FileMsg, currentUserId: string, [key: string]: any }) {
   const { media_url: url, content: filename, attachments } = message;
   const size = attachments?.size; // Assuming size is in attachments jsonb if available
   const messageFrom = message.sender_id === currentUserId ? 'send' : 'received'
@@ -53,7 +53,7 @@ export function FileMessage({ message, currentUserId }: { message: FileMsg, curr
   if (isImageFile(filename)) {
     // Image preview
     return (
-      <div className={`message message--${messageFrom}`} data-kind="file" data-id={message.id}>
+      <div className={`message message--${messageFrom}`} data-kind="file" data-id={message.id} {...props}>
         <div className="message__bubble">
           <img
             src={url}
@@ -69,7 +69,7 @@ export function FileMessage({ message, currentUserId }: { message: FileMsg, curr
 
   // Non-image file fallback
   return (
-    <div className={`message message--${messageFrom}`} data-kind="file" data-id={message.id}>
+    <div className={`message message--${messageFrom}`} data-kind="file" data-id={message.id} {...props}>
       <div className="message__bubble">
         <a href={url} target="_blank" rel="noopener noreferrer">
           <div>{filename}</div>

@@ -206,5 +206,42 @@ export const ChatService = {
                 (payload) => onNewMessage(payload.new as Message)
             )
             .subscribe();
+    },
+
+    async deleteMessage(messageId: string) {
+        // 1. Get message info to check for media
+        const { data: message, error: fetchError } = await supabase
+            .from('messages')
+            .select('*')
+            .eq('id', messageId)
+            .single();
+
+        if (fetchError) throw fetchError;
+
+        // 2. Delete media if exists
+        if (message.media_url) {
+            try {
+                // Extract path from public URL
+                // Format: .../storage/v1/object/public/request-attachments/room_id/filename.ext
+                const urlParts = message.media_url.split('/request-attachments/');
+                if (urlParts.length > 1) {
+                    const storagePath = urlParts[1];
+                    await supabase.storage
+                        .from('request-attachments')
+                        .remove([storagePath]);
+                }
+            } catch (storageErr) {
+                console.error("Failed to delete storage file:", storageErr);
+                // Continue with message deletion even if storage fails
+            }
+        }
+
+        // 3. Delete message record
+        const { error: deleteError } = await supabase
+            .from('messages')
+            .delete()
+            .eq('id', messageId);
+
+        if (deleteError) throw deleteError;
     }
 };

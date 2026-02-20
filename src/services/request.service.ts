@@ -53,6 +53,9 @@ export const RequestService = {
             .from('service_requests')
             .select(`
                 *,
+                chat_rooms (
+                    id
+                ),
                 service_types (
                     name,
                     display_name_en,

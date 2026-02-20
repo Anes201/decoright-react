@@ -1,14 +1,17 @@
-
 import { memo } from 'react';
 import type { Message } from '@/types/chat';
 import ZoomImage from '@components/ui/ZoomImage';
 import VoiceMessagePlayer from '../ui/VoiceMessagePlayer';
+import { useChat } from '@/hooks/useChat';
+import useAuth from '@/hooks/useAuth';
+import useConfirm from '@components/confirm/useConfirm';
+import { Trash2 } from 'lucide-react';
 
 
 // src/utils/formatMessageTime.ts
 export type FormatOptions = {
-  locale?: string;    // e.g. 'en-GB' or undefined to use user locale
-  hour12?: boolean;   // true = 12h (AM/PM), false = 24h, undefined = browser default
+    locale?: string;    // e.g. 'en-GB' or undefined to use user locale
+    hour12?: boolean;   // true = 12h (AM/PM), false = 24h, undefined = browser default
 };
 
 /**
@@ -19,59 +22,77 @@ export type FormatOptions = {
  * - Different year -> "2025 Feb 11, 07:19 PM"
  */
 export function formatMessageTime(
-  dateInput: string | number | Date,
-  opts: FormatOptions = {}
+    dateInput: string | number | Date,
+    opts: FormatOptions = {}
 ): string {
-  const { locale, hour12 } = opts;
-  const d = new Date(dateInput);
-  if (isNaN(d.getTime())) return '';
+    const { locale, hour12 } = opts;
+    const d = new Date(dateInput);
+    if (isNaN(d.getTime())) return '';
 
-  const now = new Date();
+    const now = new Date();
 
-  // start of day helpers (local)
-  const startOfDay = (dt: Date) => new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
-  const msPerDay = 24 * 60 * 60 * 1000;
-  const diffDays = Math.round((startOfDay(now).getTime() - startOfDay(d).getTime()) / msPerDay);
+    // start of day helpers (local)
+    const startOfDay = (dt: Date) => new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
+    const msPerDay = 24 * 60 * 60 * 1000;
+    const diffDays = Math.round((startOfDay(now).getTime() - startOfDay(d).getTime()) / msPerDay);
 
-  const timeOptions: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit', hour12 };
-  const timePart = d.toLocaleTimeString(locale, timeOptions);
+    const timeOptions: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit', hour12 };
+    const timePart = d.toLocaleTimeString(locale, timeOptions);
 
-  if (diffDays === 0) {
-    // today -> show only time
-    return timePart;
-  }
+    if (diffDays === 0) {
+        // today -> show only time
+        return timePart;
+    }
 
-  if (diffDays === 1) {
-    // yesterday -> localized "Yesterday" fallback
-    // Many locales don't have a built-in "Yesterday" label, so keep English default.
-    // If you want localized "yesterday", integrate with your i18n library.
-    return `Yesterday, ${timePart}`;
-  }
+    if (diffDays === 1) {
+        // yesterday -> localized "Yesterday" fallback
+        // Many locales don't have a built-in "Yesterday" label, so keep English default.
+        // If you want localized "yesterday", integrate with your i18n library.
+        return `Yesterday, ${timePart}`;
+    }
 
-  // same year? omit year
-  const sameYear = d.getFullYear() === now.getFullYear();
-  const dateOptions: Intl.DateTimeFormatOptions = sameYear
-    ? { month: 'short', day: '2-digit', ...timeOptions }               // "Feb 11, 07:19 PM"
-    : { year: 'numeric', month: 'short', day: '2-digit', ...timeOptions }; // "2025 Feb 11, 07:19 PM"
+    // same year? omit year
+    const sameYear = d.getFullYear() === now.getFullYear();
+    const dateOptions: Intl.DateTimeFormatOptions = sameYear
+        ? { month: 'short', day: '2-digit', ...timeOptions }               // "Feb 11, 07:19 PM"
+        : { year: 'numeric', month: 'short', day: '2-digit', ...timeOptions }; // "2025 Feb 11, 07:19 PM"
 
-  return d.toLocaleString(locale, dateOptions);
+    return d.toLocaleString(locale, dateOptions);
 }
 
 
 export default memo(function MessageItem({ message, currentUserId }:
     { message: Message; currentUserId?: string }) {
+    const { isAdmin } = useAuth();
+    const { deleteMessage } = useChat();
+    const confirm = useConfirm();
+
     const isMe = message.sender_id === currentUserId;
     const isSystem = message.message_type === 'SYSTEM';
+    const canDelete = (isMe || isAdmin) && !isSystem;
 
 
-    const containerClass = `flex flex-col ${isSystem ? 'items-center' : isMe ? 'items-end' : 'items-start'}`;
+    const containerClass = `flex flex-col group ${isSystem ? 'items-center' : isMe ? 'items-end' : 'items-start'}`;
     const bubbleClass = isSystem
         ? 'bg-muted/10 text-muted px-4 py-1.5 rounded-full text-2xs font-medium border border-muted/20'
-        : `max-w-[75%] rounded-2xl
+        : `max-w-[75%] rounded-2xl relative
         ${isMe
             ? 'text-muted border border-muted/30 bg-surface'
             : 'text-foreground border border-muted/10 bg-emphasis'
         }`;
+
+    const handleDelete = async () => {
+        const ok = await confirm({
+            title: 'Delete Message',
+            description: 'Are you sure you want to delete this message? This action cannot be undone.',
+            confirmText: 'Delete',
+            variant: 'destructive'
+        });
+
+        if (ok) {
+            deleteMessage(message.id);
+        }
+    };
 
 
     return (
@@ -110,6 +131,16 @@ export default memo(function MessageItem({ message, currentUserId }:
                             </div>
                         )}
                     </>
+                )}
+
+                {canDelete && (
+                    <button
+                        onClick={handleDelete}
+                        className={`absolute top-0 ${isMe ? '-left-8' : '-right-8'} p-1.5 text-muted opacity-0 group-hover:opacity-100 hover:text-destructive transition-all duration-200`}
+                        title="Delete message"
+                    >
+                        <Trash2 size={14} />
+                    </button>
                 )}
 
             </div>

@@ -32,7 +32,7 @@ export function RequestServiceItem({ request }: any) {
                     <div className="flex max-md:flex-col justify-between gap-2 w-2/3">
 
                         <Link
-                            to={PATHS.CLIENT.chatRoom(request.id)}
+                            to={PATHS.CLIENT.chatRoom(request.chat_rooms?.[0]?.id || request.id)}
                             className="col col-id hover:underline text-primary font-semibold"
                         >
                             #{request.request_code || request.id.slice(0, 8)}
@@ -51,7 +51,7 @@ export function RequestServiceItem({ request }: any) {
 
                 {/* CTA */}
                 <Link
-                    to={PATHS.CLIENT.chatRoom(request.id)}
+                    to={PATHS.CLIENT.chatRoom(request.chat_rooms?.[0]?.id || request.id)}
                     className="col flex items-center justify-between md:justify-end gap-8 w-full md:w-1/2 min-w-max hover:text-primary transition-colors"
                 >
                     <span className="flex gap-2 items-center">

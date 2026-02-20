@@ -4,11 +4,8 @@ import { ServiceCardList } from "@components/layout/Services"
 import { FAQList } from "@components/layout/FAQ"
 import { SectionHeader } from "@/components/ui/SectionHeader"
 import { ShowcaseCardList } from "@/components/layout/Showcase"
-import { Link } from "react-router-dom"
-import { PATHS } from "@/routers/Paths"
 import { AdminService } from "@/services/admin.service"
 import { useTranslation } from "react-i18next"
-import { ICONS } from "@/icons"
 
 export default function Landing() {
     const [settings, setSettings] = useState<Record<string, string>>({});
@@ -69,9 +66,6 @@ export default function Landing() {
                         title={projectsTitle}
                         desc={projectsDescription}
                     />
-                    <Link to={PATHS.PROJECT_LIST} className="flex items-center gap-1 text-primary font-medium text-sm whitespace-nowrap hover:underline">
-                        {t('common.view_all_projects')} <ICONS.chevronRight className="size-4 rtl:rotate-180" />
-                    </Link>
                 </div>
 
                 {/* Showcase Cards */}

@@ -17,6 +17,7 @@ interface ChatContextType {
     setFilter: (filter: 'all' | 'unread') => void;
     sendMessage: (e?: React.FormEvent) => Promise<void>;
     sendMedia: (file: File | Blob, type: MessageType) => Promise<void>;
+    deleteMessage: (messageId: string) => Promise<void>;
     roomIdFromUrl: string | undefined;
 }
 
@@ -144,6 +145,10 @@ export function ChatProvider({ children }: { children: ReactNode }) {
                 } else if (payload.eventType === 'INSERT') {
                     // Only refetch for new rooms (rare event)
                     loadRooms();
+                } else if (payload.eventType === 'DELETE') {
+                    // Better to refetch rooms to ensure correct unread counts and last messages
+                    loadRoomsCalledRef.current = false;
+                    loadRooms();
                 }
             })
             .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
@@ -249,6 +254,18 @@ export function ChatProvider({ children }: { children: ReactNode }) {
                             .update({ is_read: true })
                             .eq('id', newMsg.id);
                     }
+                }
+            )
+            .on('postgres_changes',
+                {
+                    event: 'DELETE',
+                    schema: 'public',
+                    table: 'messages',
+                    filter: `chat_room_id=eq.${selectedRoom.id}`
+                },
+                (payload) => {
+                    const deletedId = payload.old.id;
+                    setMessages(prev => prev.filter(m => m.id !== deletedId));
                 }
             )
             .subscribe();
@@ -357,6 +374,37 @@ export function ChatProvider({ children }: { children: ReactNode }) {
         return true;
     });
 
+    const deleteMessage = useCallback(async (messageId: string) => {
+        try {
+            // Optimistic update
+            setMessages(prev => prev.filter(m => m.id !== messageId));
+
+            const { data: message } = await supabase
+                .from('messages')
+                .select('*')
+                .eq('id', messageId)
+                .single();
+
+            if (message?.media_url) {
+                const urlParts = message.media_url.split('/request-attachments/');
+                if (urlParts.length > 1) {
+                    await supabase.storage
+                        .from('request-attachments')
+                        .remove([urlParts[1]]);
+                }
+            }
+
+            const { error } = await supabase
+                .from('messages')
+                .delete()
+                .eq('id', messageId);
+
+            if (error) throw error;
+        } catch (error) {
+            console.error("Failed to delete message:", error);
+        }
+    }, []);
+
     return (
         <ChatContext.Provider value={{
             rooms: filteredRooms,
@@ -371,6 +419,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
             setFilter,
             sendMessage,
             sendMedia,
+            deleteMessage,
             roomIdFromUrl
         }}>
             {children}
