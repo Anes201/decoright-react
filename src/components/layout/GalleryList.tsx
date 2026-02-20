@@ -25,7 +25,7 @@ export function GalleryItemCard({ item, lang }: { item: GalleryItem, lang: strin
     }, []);
 
     return (
-    <li className="group/card relative flex flex-col gap-2 w-full h-full rounded-2xl cursor-pointer px-3 md:px-4 border border-muted/20 bg-surface overflow-clip">
+    <li className="group/card relative flex flex-col gap-2 w-full h-full rounded-2xl cursor-pointer px-3 border border-muted/20 bg-surface overflow-clip">
         {/* <div className='primary-gallery-card absolute top-0 left-0 w-full h-full border hover:bg-primary/10 rounded-2xl -z-10 mask-b-to-transparent mask-b-to-100%'></div> */}
         <div className="h-full border-x border-muted/20">
             <div className="flex flex-col gap-4 p-2.5 md:p-4">
@@ -41,18 +41,18 @@ export function GalleryItemCard({ item, lang }: { item: GalleryItem, lang: strin
                 </div>
             </div>
 
-            <div className="relative flex flex-col gap-2 w-full pb-0 xs:p-3 md:p-4">
+            <div className="relative flex flex-col gap-2 w-full max-xs:pb-0 p-3">
 
                 {/* Details & Checklist */}
 
-                <div className="flex items-center justify-between max-xs:px-3">
+                <div dir="ltr" className="flex items-center justify-between">
                     <div className="flex items-center">
                         <div className="absolute -start-1 w-1.5 md:w-2 aspect-square border border-muted/45 rounded-full bg-emphasis group-hover/before:bg-primary" />
-                        <span className="font-medium text-3xs sm:text-xs uppercase"> { t('gallery.before', 'Before') } </span>
+                        <span className="font-medium text-2xs sm:text-xs uppercase"> { t('gallery.before', 'Before') } </span>
                     </div>
                     <div className="flex items-center">
                         <div className="absolute -end-1 w-1.5 md:w-2 aspect-square border border-muted/45 rounded-full bg-emphasis group-hover/after:bg-primary" />
-                        <span className="font-medium text-3xs sm:text-xs uppercase"> { t('gallery.after', 'After') } </span>
+                        <span className="font-medium text-2xs sm:text-xs uppercase"> { t('gallery.after', 'After') } </span>
                     </div>
                 </div>
 
@@ -86,12 +86,12 @@ export function GalleryItemCard({ item, lang }: { item: GalleryItem, lang: strin
                     className="w-full h-full overflow-hidden"
                     style={{ '--swiper-navigation-size': '15px', '--swiper-navigation-color': 'var(--acme-primary)', '--swiper-pagination-color': 'var(--acme-primary)' } as CSSProperties}
                 >
-                    <SwiperSlide dir="auto" className="px-3">
+                    <SwiperSlide dir="auto" className="pr-px">
                         <div className="flex flex-col w-full">
-                            <ZoomImage src={item.before_image_url || ""} className="group/before aspect-video object-cover w-full rounded-lg  mb-6" />
+                            <ZoomImage src={item.before_image_url || ""} className="group/before aspect-video object-cover w-full rounded-lg mb-6" loading="lazy" />
                         </div>
                     </SwiperSlide>
-                    <SwiperSlide dir="auto" className="px-3">
+                    <SwiperSlide dir="auto" className="pl-px">
                         <div className="flex flex-col w-full">
                             <ZoomImage src={item.after_image_url || ""} className="group/after aspect-video object-cover w-full rounded-lg" loading="lazy" />
                         </div>
@@ -145,7 +145,7 @@ export default function GalleryListLayout() {
     }
 
     return (
-        <ul className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+        <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
             {items.map((item) => (
                 <GalleryItemCard key={item.id} item={item} lang={i18n.language} />
             ))}

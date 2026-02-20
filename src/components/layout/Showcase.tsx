@@ -19,7 +19,7 @@ export function ShowcaseCard({ showcase }: { showcase: any }) {
         <li className="group/item">
             <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-muted/5 border border-muted/10">
                 {!imgLoaded &&
-                    <div className="w-full h-full flex flex-col items-center justify-center gap-2 animate-[pulse_2s_ease-in-out_infinite]">
+                    <div className="flex items-center justify-center w-full h-full animate-[pulse_2s_ease-in-out_infinite]">
                         <ICONS.photo className="size-12" />
                     </div>
                 }

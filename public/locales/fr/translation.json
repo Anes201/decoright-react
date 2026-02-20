@@ -59,6 +59,7 @@
     "signup_desc": "Rejoignez notre communauté et commencez votre voyage design",
     "logout_desc": "Se déconnecter de votre compte",
     "dashboard_desc": "Tableau de bord administration et panneau de contrôle",
+    "profile": "Profil",
 
     "account_settings": "Paramètres du compte",
     "account_settings_description": "Gérez votre profil, vos préférences et les paramètres du compte."

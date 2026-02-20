@@ -11,10 +11,10 @@ export function Input({ className, children, ...props }: any) {
     <div dir={ props.dir } className="relative flex flex-col gap-1 w-full">
       <div className="relative flex items-center">
         <input dir={ props.dir }
-          className={`content-center text-sm h-10 w-full px-2 py-1.5 md:py-2 border border-muted/15
+          className={`content-center text-sm h-12 w-full px-2 py-1.5 md:py-2 border border-muted/15
           ${props.readOnly && 'ltr:pr-8 ltr:sm:pr-10 rtl:pl-8 rtl:sm:pl-10'}
           ${props.value && props.error ? 'outline-danger/45' : 'outline-muted/15'}
-          bg-emphasis/75 rounded-lg outline-0 focus:outline-1 placeholder:max-md:text-xs
+          bg-emphasis/75 rounded-lg outline-0 focus:outline-1 placeholder:max-md:text-sm
           border ${props.error ? 'border-danger/45' : 'border-muted/15'}
           ${className}`}
 
@@ -37,7 +37,7 @@ export function EmailInput({ id = 'email_field', label, className, ...props }: a
   return (
     <Input id={id} type="email" placeholder={t('auth.placeholders.email')} className={`${className} text-left ltr:pl-8 ltr:sm:pl-10 rtl:pr-8 rtl:sm:pr-10`} {...props}>
       {/* Email Icon Placeholder */}
-      <span className="absolute px-1.5 start-1 sm:start-1.5"> <ICONS.envelope className="size-4 text-muted/75"/> </span>
+      <span className="absolute px-1.5 start-1 sm:start-1.5"> <ICONS.envelope className="size-5 text-muted/75"/> </span>
     </Input>
   );
 }
@@ -47,7 +47,7 @@ export function PhoneInput({ id = 'phone_field', label, className, ...props }: a
   return (
     <Input id={id} type="tel" placeholder="+213 123456789" className={`${className} ltr:pl-8 ltr:sm:pl-10 rtl:pr-8 rtl:sm:pr-10 lang-ar:placeholder:text-left`} {...props}>
       {/* Password Icon Placeholder */}
-      <span className="absolute px-1.5 start-1 sm:start-1.5"> <ICONS.phone className="size-4 text-muted/75"/> </span>
+      <span className="absolute px-1.5 start-1 sm:start-1.5"> <ICONS.phone className="size-5 text-muted/75"/> </span>
       {/* ltr:left-1 ltr:sm:left-1.5 rtl:right-1 rtl:sm:right-1.5 */}
     </Input>
   );
@@ -70,7 +70,7 @@ export function PasswordInput({ id = 'password_field', label, value, onChange, e
       {...props}
     >
       {/* Password Icon Placeholder */}
-      <span className="absolute px-2 start-1 sm:start-1.5"> <ICONS.key className="size-4 text-muted/75"/> </span>
+      <span className="absolute px-2 start-1 sm:start-1.5"> <ICONS.key className="size-5 text-muted/75"/> </span>
 
       {/* Show/Hide Icon Placeholder */}
       <button type="button" onClick={() => setShow(s => !s)}
@@ -90,7 +90,7 @@ export function EmailOrPhoneInput({ id = 'email_or_phone_field', label = 'Email 
     const phonePattern = /^\+?[0-9]*$/;
     // Basic check for '@' for Email
     const isEmail = val.includes('@');
-    const iconProps = { className: 'size-4 text-muted/75' };
+    const iconProps = { className: 'size-5 text-muted/75' };
 
     if (isEmail) return ICONS.envelope(iconProps);
     if (val.length > 0 && phonePattern.test(val)) return ICONS.phone(iconProps);

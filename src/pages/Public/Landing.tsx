@@ -1,14 +1,19 @@
-import { useState, useEffect } from "react"
-import { Hero } from "@/components/layout/Landing"
-import { ServiceCardList } from "@components/layout/Services"
-import { FAQList } from "@components/layout/FAQ"
+import { useState, useEffect, lazy } from "react"
 import { SectionHeader } from "@/components/ui/SectionHeader"
-import { ShowcaseCardList } from "@/components/layout/Showcase"
 import { Link } from "react-router-dom"
 import { PATHS } from "@/routers/Paths"
 import { AdminService } from "@/services/admin.service"
 import { useTranslation } from "react-i18next"
-import { ICONS } from "@/icons"
+import { Hero } from "@/components/layout/Landing"
+
+const ICONS = {
+    chevronRight: lazy(() => import("@/icons").then(module => ({ default: module.ICONS.chevronRight }))),
+    photo: lazy(() => import("@/icons").then(module => ({ default: module.ICONS.photo }))),
+};
+
+const ServiceCardList = lazy(() => import("@components/layout/Services").then(module => ({ default: module.ServiceCardList })));
+const FAQList = lazy(() => import("@components/layout/FAQ").then(module => ({ default: module.FAQList })));
+const ShowcaseCardList = lazy(() => import("@components/layout/Showcase").then(module => ({ default: module.ShowcaseCardList })));
 
 export default function Landing() {
     const [settings, setSettings] = useState<Record<string, string>>({});
@@ -43,11 +48,11 @@ export default function Landing() {
 
             <section className="content-container relative flex flex-col gap-8 w-full mt-16 pb-16 px-4 sm:px-6 md:px-8">
 
-                <hr className="absolute top-0 left-0 w-full h-full border-0 border-x border-muted/25" />
-                <hr className="absolute -top-2 -start-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs" />
-                <hr className="absolute -top-2 -end-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs" />
+                <hr className="absolute top-0 left-0 w-full h-full border-0 border-x border-muted/25 -z-10" />
+                <hr className="absolute -top-2 -start-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs -z-10" />
+                <hr className="absolute -top-2 -end-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs -z-10" />
 
-                <div className="content-container flex flex-col gap-8 w-full">
+                <div className="content-container flex flex-col gap-4 md:gap-6 w-full">
                     {/* Section Header */}
                     <SectionHeader
                         title={servicesTitle}
@@ -80,9 +85,9 @@ export default function Landing() {
             </section>
             <section className="content-container relative flex flex-col gap-8 w-full mb-16 pt-16 px-4 sm:px-6 md:px-8">
 
-                <hr className="absolute top-0 left-0 w-full h-full border-0 border-x border-muted/25" />
-                <hr className="absolute -bottom-2 -start-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs" />
-                <hr className="absolute -bottom-2 -end-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs" />
+                <hr className="absolute top-0 left-0 w-full h-full border-0 border-x border-muted/25 -z-10" />
+                <hr className="absolute -bottom-2 -start-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs -z-10" />
+                <hr className="absolute -bottom-2 -end-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs -z-10" />
 
 
                 {/* Section Header */}

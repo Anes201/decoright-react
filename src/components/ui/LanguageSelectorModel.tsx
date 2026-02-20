@@ -17,9 +17,9 @@ export default function MenuLanguageSelectorModal({ isOpen, onClose, onSuccess }
     const { t } = useTranslation()
 
     const languageChoices = [
-        { id:'en', label: t('common.english'), value: 'en', icon: null, },
-        { id:'fr', label: t('common.french'), value: 'fr', icon: null, },
-        { id:'ar', label: t('common.arabic'), value: 'ar', icon: null, },
+        { label: t('common.english'), value: 'en', icon: null, },
+        { label: t('common.french'), value: 'fr', icon: null, },
+        { label: t('common.arabic'), value: 'ar', icon: null, },
     ]
 
     function handleChange(value: string) {
@@ -46,7 +46,7 @@ export default function MenuLanguageSelectorModal({ isOpen, onClose, onSuccess }
                     {/* Card Content */}
                     <ul className="flex flex-col w-full h-full border border-muted/15 rounded-lg overflow-auto">
                         { languageChoices.map((lang) => (
-                            <li onClick={() => handleChange(lang.value)}
+                            <li key={lang.value} onClick={() => handleChange(lang.value)}
                                 className="flex items-center justify-between font-medium px-2 py-4 border-b border-b-muted/15 cursor-pointer hover:bg-emphasis active:bg-emphasis"
                                 > <span> { lang.label } </span> <ICONS.chevronRight className="size-4 rtl:rotate-180" />
                             </li>

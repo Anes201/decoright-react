@@ -60,6 +60,7 @@
     "signup_desc": "Join our community and start your design journey",
     "logout_desc": "Sign out of your account",
     "dashboard_desc": "Admin dashboard & control panel",
+    "profile": "Profile",
 
     "account_settings": "Account Settings",
     "account_settings_description": "Manage your profile, preferences, and account settings."

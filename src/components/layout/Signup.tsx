@@ -52,7 +52,7 @@ export function SignupLayout() {
 
             {/* Form Header */}
             <div className="flex flex-col items-center gap-3">
-                <h1 className="font-semibold text-2xl md:text-4xl"> {t('auth.signup_to')} <span className="text-transparent bg-linear-to-br from-foreground to-primary to-65% bg-clip-text">DecoRight</span> </h1>
+                <h1 className="font-semibold text-center text-lg xs:text-2xl md:text-4xl"> {t('auth.signup_to')} <span className="text-transparent bg-linear-to-br from-foreground to-primary to-65% bg-clip-text">DecoRight</span> </h1>
                 <p className="text-ellipsis-2line text-2xs md:text-xs text-muted">{t('auth.signup_description')}</p>
             </div>
 

@@ -1,6 +1,5 @@
 
 import useAuth from "@/hooks/useAuth"
-import Logo from "/public/vite.svg"
 import i18n from "@/utils/i18n"
 
 import { Link } from "react-router-dom"
@@ -16,6 +15,8 @@ import { SelectDropDownMenu } from "@components/ui/Select"
 import { allowedLocales } from "@/constants"
 import { useTranslation } from "react-i18next"
 import MenuLanguageSelectorModal from "@components/ui/LanguageSelectorModel"
+
+const Logo = "/public/logo.jpeg";
 
 const UserContext = createContext<any>(null);
 const MenuContext = createContext<any>(undefined);
@@ -181,7 +182,7 @@ export function AnonymousUserActins() {
                 <SCTALink to={PATHS.LOGIN} title={t('auth.login')} className="max-md:hidden"> {t('auth.login')} </SCTALink>
 
                 {/* Sign Up */}
-                <PCTALink to={PATHS.SIGNUP} title={t('auth.signup')}> {t('auth.signup')} </PCTALink>
+                <PCTALink to={PATHS.SIGNUP} title={t('auth.signup')} className="max-2xs:hidden"> {t('auth.signup')} </PCTALink>
 
                 {/* Menu Trigger */}
                 <button type="button" title={t('common.menu')} className="content-center p-2 border border-muted/15 bg-surface/75 rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>

@@ -1,6 +1,7 @@
 
 const HeroImgSrc = "/hero-image.jpg";
 import useAuth from "@/hooks/useAuth";
+import { useImageLoaded } from "@/hooks/useImageLoaded";
 import { ICONS } from "@/icons"
 import { PATHS } from "@/routers/Paths"
 import { PCTALink, SCTALink } from "@components/ui/CTA"
@@ -8,7 +9,9 @@ import { useTranslation } from "react-i18next";
 
 export function HeroContentCheckListItem({ content }: { content: string }) {
     return (
-        <li className="text-2xs lg:text-xs text-muted/75 px-1 py-0.5 lg:px-2 lg:py-1 w-fit bg-surface/75 rounded-full"> ✓ {content} </li>
+        <li className="flex gap-2 text-2xs lg:text-xs text-muted/75 px-1.5 py-0.5 lg:px-2.5 lg:py-1.5 w-fit bg-emphasis rounded-full shadow-xs hover:text-foreground">
+            <span> ✓ </span> {content}
+        </li>
     )
 }
 
@@ -21,7 +24,7 @@ export function HeroContent({ settings }: { settings: Record<string, string> }) 
     const heroDescription = settings[`home_hero_description${lang}`] || settings.home_hero_description || t('landing.hero.description');
 
     return (
-        <div className="flex flex-col justify-center gap-8 h-full">
+        <div className="flex flex-col justify-center max-md:p-2 gap-8 h-full">
             <div className="flex flex-col gap-2">
                 <h3 className="font-medium text-xs md:text-sm"> {heroSubtitle} </h3>
                 <h1 className="font-semibold text-4xl/12 md:text-5xl/16 lg:text-6xl/18 xl:text-7xl/22">
@@ -59,7 +62,7 @@ export function HeroCTA() {
                 ? <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE}> { t('landing.hero.cta.request_service') } </PCTALink>
                 : <PCTALink to={PATHS.SERVICE_LIST}> { t('landing.hero.cta.services') }  </PCTALink>
             }
-            <SCTALink to={PATHS.PROJECT_LIST} className="flex items-center justify-center gap-2">
+            <SCTALink to={PATHS.PROJECT_LIST} className="flex items-center justify-center gap-2 ring-1 ring-muted/15">
                 <span> { t('landing.hero.cta.projects') } </span>
                 <ICONS.arrowLongRight className="rtl:rotate-180 size-4 text-foreground"/>
             </SCTALink>
@@ -91,35 +94,41 @@ export function HeroMetrics() {
 
 
 export function Hero({ settings = {} }: { settings?: Record<string, string> }) {
+
+    const { loaded } = useImageLoaded(HeroImgSrc);
+
     return (
 
         <section className="content-container relative flex items-center w-full">
 
             {/* <div className="absolute right-full w-full h-[calc(100svh-20rem)] md:h-[calc(100svh-18rem)] bg-primary/10 rounded-4xl mask-l-to-transparent mask-l-to-10% overflow-hidden"></div> */}
             <div className="absolute right-full w-full h-[calc(100svh-20rem)] md:h-[calc(100svh-18rem)] border border-muted/20 rounded-4xl mask-l-to-transparent mask-l-to-10% overflow-hidden" />
-            <div className="relative flex max-lg:flex-col w-full border border-muted/25 rounded-4xl overflow-hidden">
+
+            <div className="relative flex max-lg:flex-col w-full border border-muted/25 rounded-4xl bg-surface overflow-clip">
 
                 <div className="flex w-full rounded-4xl overflow-hidden">
 
-                    {/* <div className="flex flex-col justify-center gap-4 w-full p-4 md:p-8 bg-linear-0 from-surface/15 to-primary/25 rounded-3xl md:rounded-s-3xl md:rounded-e-none"> */}
-                <div className="flex flex-col justify-center gap-4 w-full">
-                    <div className="flex flex-col gap-8 w-full h-full p-4 md:p-8">
-                            {/* Content */}
-                            <HeroContent settings={settings} />
+                    <div className="flex flex-col justify-center gap-8 w-full h-full p-4 md:p-8">
+                        {/* Content */}
+                        <HeroContent settings={settings} />
 
-                            {/* CTA Buttons */}
-                            <HeroCTA />
-                        </div>
-
-                        {/* Metrics data & Ratings */}
-                        {/* <HeroMetrics /> */}
+                        {/* CTA Buttons */}
+                        <HeroCTA />
                     </div>
                 </div>
 
 
                 {/* Hero Image */}
-                <div className="flex p-2 lg:w-2/3 w-full max-lg:aspect-video rounded-2xl overflow-hidden">
-                    <img src={HeroImgSrc} alt="Hero Image" className="object-cover w-full h-full rounded-2xl" />
+                <div className="flex lg:w-2/3 w-full pl-0 p-2 max-lg:aspect-video overflow-hidden ">
+
+                    {!loaded &&
+                        <div className="flex w-full h-full items-center justify-center animate-[pulse_2s_ease-in-out_infinite]">
+                            <ICONS.photo className="size-16" />
+                        </div>
+                    }
+                    {/* Hero img must not be lazy loaded */}
+                    <img src={HeroImgSrc} alt="Hero Image"
+                    className={`${loaded ? 'opacity-100' : 'absolute opacity-0'} pl-0 p-2 object-cover w-full h-full border-l-0 border border-muted/25 transition-opacity duration-600 ease-out`} />
                 </div>
 
             </div>

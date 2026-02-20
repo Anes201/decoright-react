@@ -26,11 +26,9 @@ export function ServiceCardItem({service}:{service:ServiceType}) {
     }
 
     return (
-        <li key={service.id} className="relative p-4 rounded-xl overflow-hidden max-md:mb-10">
-            <div className="absolute top-0 right-0 w-full h-full bg-surface shadow-xs mask-t-to-transparent -z-10 rounded-xl" />
-            <div className="absolute top-0 right-0 w-full h-full border border-muted/20 mask-b-to-transparent -z-10 rounded-xl" />
+        <li key={service.id} className="relative flex flex-col gap-3 px-3 border border-muted/25 rounded-xl bg-surface overflow-hidden max-md:mb-10">
 
-            <div className="w-full aspect-4/3 mb-4 shadow-sm rounded-lg overflow-hidden">
+            <div className="w-full aspect-4/3 border-t-0 border border-muted/25 rounded-b-lg overflow-clip">
                 {service.image_url ? (
                     <ZoomImage src={service.image_url} alt={service.display_name_en} />
                 ) : (
@@ -40,8 +38,10 @@ export function ServiceCardItem({service}:{service:ServiceType}) {
                 )}
             </div>
 
-            <h3 className="text-lg font-medium mb-0.5"> {getLocalizedLabel(service)} </h3>
-            <p className="text-2xs md:text-xs text-muted/75"> {service.description} </p>
+            <div className="flex flex-col p-2 border-b-0 border border-muted/25 rounded-t-lg">
+                <h3 className="text-lg font-medium mb-0.5"> {getLocalizedLabel(service)} </h3>
+                <p className="text-2xs md:text-xs text-muted/75 pb-2"> {service.description} </p>
+            </div>
         </li>
 
     )
@@ -136,45 +136,41 @@ export function ServiceCardList() {
         <>
             <ul className="max-md:hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full h-full">
                 {services.map((service) => (
-                    <li key={(service as any).id}>
-                    <ServiceCardItem service={service} />
-                    </li>
+                    <ServiceCardItem key={service.id} service={service} />
                 ))}
 
                 {showDummy && (
-                <li
-                aria-hidden
-                // use inline style so grid span is always correct regardless of Tailwind classes
-                style={{ gridColumn: `span ${Math.max(1, Math.min(dummySpan, cols))}` }}
-                className={"flex justify-center gap-2 border border-muted/25 rounded-xl " + (dummySpan >= 2 ? "flex-row-reverse" : "flex-col")}
+                <li aria-hidden
+                    // use inline style so grid span is always correct regardless of Tailwind classes
+                    style={{ gridColumn: `span ${Math.max(1, Math.min(dummySpan, cols))}` }}
+                    className={"flex justify-center gap-2 border border-muted/25 rounded-xl bg-surface " + (dummySpan >= 2 ? "flex-row-reverse" : "flex-col")}
                 >
-                <div className={"w-full rounded-lg overflow-hidden " + (dummySpan >= 2 ? "aspect-4/3" : "aspect-4/2")}>
-                    <img src={dummyCardImg} alt="" className="w-full h-full object-cover object-center rtl:rotate-y-180" />
-                </div>
+                    <div className={"w-full rounded-lg overflow-hidden " + (dummySpan >= 2 ? "aspect-4/3" : "aspect-4/2")}>
+                        <img src={dummyCardImg} alt="" className="w-full h-full object-cover object-center rtl:rotate-y-180" />
+                    </div>
 
-                <div className="relative flex flex-col">
+                    <div className="relative flex flex-col">
 
-                    { dummySpan >= 2 &&
-                        <div className="max-xl:hidden absolute top-0 start-0 w-55">
-                            <img src={dummyCardLamps} alt="" className="w-full h-full object-center object-cover rtl:rotate-y-180" />
+                        { dummySpan >= 2 &&
+                            <div className="max-xl:hidden absolute top-0 start-0 w-55">
+                                <img src={dummyCardLamps} alt="" className="w-full h-full object-center object-cover rtl:rotate-y-180" />
+                            </div>
+                        }
+
+                        <div className="flex flex-col gap-4 p-4 justify-end h-full">
+                            <h4 className={`font-medium ${dummySpan >= 2 ? "text-2xl lg:text-4xl" : "text-lg"}`}>
+                                {t("services.service_card_title")}
+                            </h4>
+
+                            <p className={`text-muted/75 ${dummySpan >= 2 ? "text-xs md:text-sm" : "text-2xs md:text-xs"}`}>
+                                {t("services.service_card_description")}
+                            </p>
                         </div>
-                    }
 
-                    <div className="flex flex-col gap-4 p-4 justify-end h-full">
-                        <h4 className={`font-medium ${dummySpan >= 2 ? "text-2xl lg:text-4xl" : "text-lg"}`}>
-                            {t("services.service_card_title")}
-                        </h4>
-
-                        <p className={`text-muted/75 ${dummySpan >= 2 ? "text-xs md:text-sm" : "text-2xs md:text-xs"}`}>
-                            {t("services.service_card_description")}
-                        </p>
+                        <div className="relative flex w-full p-4">
+                            <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE} className="w-full">{t("services.service_card_cta")}</PCTALink>
+                        </div>
                     </div>
-
-                    <div className="relative flex w-full p-4">
-
-                        <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE} className="w-full">{t("services.service_card_cta")}</PCTALink>
-                    </div>
-                </div>
                 </li>
             )}
             </ul>
@@ -187,7 +183,7 @@ export function ServiceCardList() {
                 style={{ '--swiper-navigation-size': '30px', '--swiper-navigation-color': 'var(--acme-primary)', '--swiper-pagination-color': 'var(--acme-primary)' } as CSSProperties}
             >
                 {services.map((service:ServiceType) => (
-                    <SwiperSlide key={service.id} className="mr-2">
+                    <SwiperSlide key={service.id} className="pr-2">
                         <ServiceCardItem service={service} />
                     </SwiperSlide>
                 ))}
