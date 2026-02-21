@@ -12,6 +12,7 @@ export function SignupLayout() {
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [email, setEmail] = useState("")
+    const [phone, setPhone] = useState("")
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -24,12 +25,23 @@ export function SignupLayout() {
         setError(null)
 
         try {
+            // Normalize Algerian phone number to international format (+213...)
+            let normalizedPhone = phone.trim().replace(/\s+/g, '');
+            if (normalizedPhone.startsWith('05') || normalizedPhone.startsWith('06') || normalizedPhone.startsWith('07')) {
+                normalizedPhone = '+213' + normalizedPhone.slice(1);
+            } else if (normalizedPhone.startsWith('5') || normalizedPhone.startsWith('6') || normalizedPhone.startsWith('7')) {
+                normalizedPhone = '+213' + normalizedPhone;
+            } else if (normalizedPhone.startsWith('213')) {
+                normalizedPhone = '+' + normalizedPhone;
+            }
+
             const { data, error: signupError } = await supabase.auth.signUp({
                 email,
                 password,
                 options: {
                     data: {
                         full_name: `${firstName} ${lastName}`.trim(),
+                        phone: normalizedPhone
                     }
                 }
             })
@@ -63,6 +75,7 @@ export function SignupLayout() {
                         <Input type="text" placeholder={t('auth.placeholders.first_name')} value={firstName} onChange={(e: any) => setFirstName(e.target.value)} required />
                         <Input type="text" placeholder={t('auth.placeholders.last_name')} value={lastName} onChange={(e: any) => setLastName(e.target.value)} required />
                     </div>
+                    <Input type="tel" placeholder={t('auth.placeholders.phone')} value={phone} onChange={(e: any) => setPhone(e.target.value)} required />
                     <EmailInput value={email} onChange={(e: any) => setEmail(e.target.value)} required />
                     <PasswordInput value={password} onChange={(e: any) => setPassword(e.target.value)} required />
                 </div>

@@ -134,7 +134,7 @@
     "phone": "Phone Number",
     "placeholders": {
       "email": "email@example.com",
-      "phone": "Phone Number",
+      "phone": "05 50 12 34 56",
       "email_or_phone": "Enter email or phone",
       "first_name": "First name",
       "last_name": "Last name"
