@@ -6,7 +6,7 @@ import { LegalLinks } from "../../constants"
 import { PATHS } from "@/routers/Paths"
 import OtpInput from 'react-otp-input';
 import Spinner from "../common/Spinner"
-import { useTranslation } from "react-i18next"
+import { useTranslation, Trans } from "react-i18next"
 import toast from "react-hot-toast"
 
 export function VerifyOtp() {
@@ -87,9 +87,18 @@ export function VerifyOtp() {
                 :
                 <>
                     {/* Form Header */}
-                    <div className="text-center space-y-2 md:space-y-3">
+                    <div className="text-center space-y-3 md:space-y-4">
+                        <div className="flex justify-center mb-2">
+                            <span className="text-4xl">📬</span>
+                        </div>
                         <h1 className="font-semibold text-2xl md:text-3xl"> {t('auth.otp.verify_account')} </h1>
-                        <p className="text-ellipsis-2line text-2xs md:text-xs text-muted">{t('auth.otp.description', { email })}</p>
+                        <p className="text-2xs md:text-xs text-muted max-w-xs mx-auto leading-5">
+                            <Trans
+                                i18nKey="auth.otp.description"
+                                values={{ email }}
+                                components={{ b: <span className="font-semibold text-foreground" /> }}
+                            />
+                        </p>
                     </div>
 
                     <form onSubmit={handleVerifyToken} className="flex flex-col items-center gap-8">
@@ -117,17 +126,18 @@ export function VerifyOtp() {
                         </div>
                     </form>
 
-                    <div className="flex flex-col items-center w-full">
+                    <div className="flex flex-col items-center gap-3 w-full">
+                        <p className="text-2xs text-muted">{t('auth.otp.resend_prompt')}</p>
                         <button
                             type="button"
                             onClick={handleResend}
                             disabled={loading}
-                            className="text-xs text-muted hover:text-foreground underline"
+                            className="text-xs font-medium text-primary hover:underline disabled:opacity-50"
                         >
-                            {t('auth.otp.resend_prompt')} {t('auth.otp.resend_button')}
+                            {t('auth.otp.resend_button')}
                         </button>
 
-                        <hr className="w-full border-t border-muted/25 my-4 mask-x-to-transparent mask-x-from-45%" />
+                        <hr className="w-full border-t border-muted/25 my-2 mask-x-to-transparent mask-x-from-45%" />
                         {/* Legal Links */}
                         <nav className="flex flex-wrap items-center">
                             {LegalLinks.map((item, index) => (
