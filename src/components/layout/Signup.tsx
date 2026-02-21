@@ -19,22 +19,51 @@ export function SignupLayout() {
     const navigate = useNavigate()
     const { t } = useTranslation()
 
+    // Normalizes Algerian local phone formats to international E.164 format
+    const normalizePhone = (raw: string): string => {
+        let p = raw.trim().replace(/[\s\-().]/g, '');
+        if (p.startsWith('05') || p.startsWith('06') || p.startsWith('07')) {
+            return '+213' + p.slice(1);
+        } else if (/^[567]\d{8}$/.test(p)) {
+            return '+213' + p;
+        } else if (p.startsWith('00213')) {
+            return '+' + p.slice(2);
+        } else if (p.startsWith('213') && p.length === 12) {
+            return '+' + p;
+        }
+        return p; // already international or unknown format
+    };
+
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
         setError(null)
 
         try {
-            // Normalize Algerian phone number to international format (+213...)
-            let normalizedPhone = phone.trim().replace(/\s+/g, '');
-            if (normalizedPhone.startsWith('05') || normalizedPhone.startsWith('06') || normalizedPhone.startsWith('07')) {
-                normalizedPhone = '+213' + normalizedPhone.slice(1);
-            } else if (normalizedPhone.startsWith('5') || normalizedPhone.startsWith('6') || normalizedPhone.startsWith('7')) {
-                normalizedPhone = '+213' + normalizedPhone;
-            } else if (normalizedPhone.startsWith('213')) {
-                normalizedPhone = '+' + normalizedPhone;
+            // --- Client-side validation ---
+            if (!firstName.trim() || !lastName.trim()) {
+                throw new Error(t('auth.error_name_required') || 'Please enter your full name.')
             }
 
+            const phoneDigits = phone.trim().replace(/[\s\-().]/g, '')
+            if (phoneDigits.length < 9) {
+                throw new Error(t('auth.error_invalid_phone') || 'Please enter a valid phone number.')
+            }
+
+            const normalizedPhone = normalizePhone(phone)
+
+            // --- Check for duplicate phone number ---
+            const { data: existingPhone } = await supabase
+                .from('profiles')
+                .select('id')
+                .eq('phone', normalizedPhone)
+                .maybeSingle()
+
+            if (existingPhone) {
+                throw new Error(t('auth.error_phone_taken') || 'This phone number is already linked to an account.')
+            }
+
+            // --- Attempt signup (Supabase handles duplicate email) ---
             const { data, error: signupError } = await supabase.auth.signUp({
                 email,
                 password,
@@ -46,12 +75,23 @@ export function SignupLayout() {
                 }
             })
 
-            if (signupError) throw signupError
-            if (!data.user) throw new Error("Signup failed")
+            if (signupError) {
+                // Map Supabase errors to human-readable messages
+                if (signupError.message.toLowerCase().includes('already registered') ||
+                    signupError.message.toLowerCase().includes('user already exists')) {
+                    throw new Error(t('auth.error_email_taken') || 'An account with this email already exists. Try logging in.')
+                }
+                if (signupError.message.toLowerCase().includes('password')) {
+                    throw new Error(t('auth.error_weak_password') || 'Password must be at least 6 characters.')
+                }
+                throw signupError
+            }
+
+            if (!data.user) throw new Error(t('auth.error_failed_signup'))
 
             navigate(PATHS.VERIFY_OTP, { state: { email } })
         } catch (err: any) {
-            console.error("Signup error details:", err)
+            console.error("Signup error:", err)
             setError(err.message || t('auth.error_failed_signup'))
         } finally {
             setLoading(false)
