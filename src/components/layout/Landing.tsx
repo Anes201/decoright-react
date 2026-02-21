@@ -58,13 +58,13 @@ export function HeroCTA() {
     return (
 
         <div className="flex max-md:flex-col gap-4 h-fit">
-            { user
-                ? <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE}> { t('landing.hero.cta.request_service') } </PCTALink>
-                : <PCTALink to={PATHS.SERVICE_LIST}> { t('landing.hero.cta.services') }  </PCTALink>
+            {user
+                ? <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE} className="w-fit"> {t('landing.hero.cta.request_service')} </PCTALink>
+                : <PCTALink to={PATHS.SERVICE_LIST} className="w-fit"> {t('landing.hero.cta.services')}  </PCTALink>
             }
             <SCTALink to={PATHS.PROJECT_LIST} className="flex items-center justify-center gap-2 ring-1 ring-muted/15">
-                <span> { t('landing.hero.cta.projects') } </span>
-                <ArrowLongRight className="rtl:rotate-180 size-4 text-foreground"/>
+                <span> {t('landing.hero.cta.projects')} </span>
+                <ArrowLongRight className="rtl:rotate-180 size-4 text-foreground" />
             </SCTALink>
 
         </div>
@@ -128,10 +128,10 @@ export function Hero({ settings = {} }: { settings?: Record<string, string> }) {
                     }
                     {/* Hero img must not be lazy loaded */}
                     <img src={HeroImgSrc} alt="Hero Image"
-                    className={
-                        `${loaded ? 'opacity-100' : 'absolute opacity-0'}
+                        className={
+                            `${loaded ? 'opacity-100' : 'absolute opacity-0'}
                         max-lg:pb-0 lg:pl-0 object-cover w-full h-full ring-1 ring-muted/15 max-lg:rounded-t-xl lg:rounded-r-xl transition-opacity duration-200 ease-out`
-                    } />
+                        } />
                 </div>
 
             </div>
