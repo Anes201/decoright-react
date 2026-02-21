@@ -119,7 +119,7 @@ export function Hero({ settings = {} }: { settings?: Record<string, string> }) {
 
 
                 {/* Hero Image */}
-                <div className="flex max-lg:pb-0 lg:pl-0 p-3 w-full max-lg:h-full aspect-video overflow-clip">
+                <div className="flex max-lg:pb-0 lg:pe-0 p-3 w-full max-lg:h-full aspect-video overflow-clip">
 
                     {!loaded &&
                         <div className="flex w-full h-full items-center justify-center animate-[pulse_2s_ease-in-out_infinite]">
@@ -130,7 +130,7 @@ export function Hero({ settings = {} }: { settings?: Record<string, string> }) {
                     <img src={HeroImgSrc} alt="Hero Image"
                         className={
                             `${loaded ? 'opacity-100' : 'absolute opacity-0'}
-                        max-lg:pb-0 lg:pl-0 object-cover w-full h-full ring-1 ring-muted/15 max-lg:rounded-t-xl lg:rounded-r-xl transition-opacity duration-200 ease-out`
+                        max-lg:pb-0 lg:pl-0 object-cover w-full h-full ring-1 ring-muted/15 max-lg:rounded-t-xl lg:rounded-s-xl transition-opacity duration-200 ease-out`
                         } />
                 </div>
 
