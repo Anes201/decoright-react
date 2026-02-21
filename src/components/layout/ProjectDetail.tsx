@@ -6,78 +6,32 @@ import { useEffect, useState, type CSSProperties } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Zoom } from 'swiper/modules';
 import { AdminService } from "@/services/admin.service";
+import { ProjectService } from "@/services/project.service";
 import { getLocalizedContent } from "@/utils/i18n";
 import { useTimeAgo } from "@/hooks/useTimeAgo";
 import { useTranslation } from "react-i18next";
-import { MapPin, Layout, Heart, ChevronUp, ChevronDown } from "@/icons";
+import { MapPin, Layout, Heart, Eye, ChevronUp, ChevronDown } from "@/icons";
+import useAuth from "@/hooks/useAuth";
 import 'swiper/swiper.css';
 import 'swiper/swiper-bundle.css';
-
-// export function ProjectCardItem({ project, index, lang }: { project: any, index: number, lang: string }) {
-//     return (
-//         <li key={index}>
-//             <Link to={PATHS.projectDetail(project.slug || project.id)} className="flex max-md:flex-col gap-1 h-full">
-//                 <div className="w-fit h-30 aspect-video rounded-lg overflow-hidden shrink-0">
-//                     <img src={project.thumbnail_url} alt={project.title} className="w-full h-full object-cover" />
-//                 </div>
-//                 <div className="flex flex-col gap-1 w-full h-full overflow-hidden">
-//                     <h3 className="font-medium text-xs md:text-2xs h-full text-ellipsis-3line"> {getLocalizedContent(project, 'title', lang)} </h3>
-//                     <div className="flex md:flex-col">
-//                         <p className="font-medium text-2xs md:text-3xs text-muted/75"> View Project </p>
-//                     </div>
-//                 </div>
-//             </Link>
-//         </li>
-//     )
-// }
-
-// export function ProjectSimilarList() {
-//     const [projects, setProjects] = useState<any[]>([]);
-//     const [loading, setLoading] = useState(true);
-//     const { user, isAdmin } = useAuth();
-//     const { i18n } = useTranslation();
-
-//     useEffect(() => {
-//         async function fetchSimilar() {
-//             try {
-//                 const visibility: any[] = ['PUBLIC'];
-//                 if (user) visibility.push('AUTHENTICATED_ONLY');
-//                 if (isAdmin) visibility.push('HIDDEN');
-
-//                 const data = await AdminService.getProjects({ visibility, limit: 5 });
-//                 setProjects(data || []);
-//             } catch (err) {
-//                 console.error("Failed to fetch similar projects:", err);
-//             } finally {
-//                 setLoading(false);
-//             }
-//         }
-//         fetchSimilar();
-//     }, [user]);
-
-//     if (loading) return <div className="p-4 flex justify-center"><Spinner className="w-6 h-6" /></div>;
-
-//     return (
-//         <ul className="space-y-6 md:space-y-2">
-//             {projects.map((project, index) => (
-//                 <ProjectCardItem key={project.id} project={project} index={index} lang={i18n.language} />
-//             ))}
-//         </ul>
-//     )
-// }
 
 export function ProjectDetail() {
     const { slug } = useParams<{ slug: string }>();
     const { i18n } = useTranslation();
     const lang = i18n.language;
+    const { user } = useAuth();
+
     const [project, setProject] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [liked, setLiked] = useState(false);
+    const [likesCount, setLikesCount] = useState(0);
+    const [likeLoading, setLikeLoading] = useState(false);
     const [descOpen, setDescOpen] = useState(false);
 
     const { t } = useTranslation()
     const created_ago = useTimeAgo(project?.created_at);
 
+    // Fetch project + likes state
     useEffect(() => {
         async function fetchProject() {
             if (!slug) return;
@@ -85,7 +39,21 @@ export function ProjectDetail() {
                 setLoading(true);
                 const data = await AdminService.getProjects({ slug });
                 if (data && data.length > 0) {
-                    setProject(data[0]);
+                    const p = data[0];
+                    setProject(p);
+
+                    // Get likes count
+                    const count = await ProjectService.getLikesCount(p.id)
+                    setLikesCount(count)
+
+                    // Check if current user liked it
+                    if (user) {
+                        const userLiked = await ProjectService.hasUserLiked(p.id, user.id)
+                        setLiked(userLiked)
+                    }
+
+                    // Increment view count (fire-and-forget)
+                    ProjectService.incrementViewCount(p.id)
                 }
             } catch (err) {
                 console.error("Failed to fetch project detail:", err);
@@ -95,7 +63,26 @@ export function ProjectDetail() {
         }
         fetchProject();
         window.scrollTo(0, 0);
-    }, [slug]);
+    }, [slug, user]);
+
+    async function handleLikeToggle() {
+        if (!user || !project || likeLoading) return
+        setLikeLoading(true)
+        // Optimistic update
+        const newLiked = !liked
+        setLiked(newLiked)
+        setLikesCount(prev => newLiked ? prev + 1 : Math.max(0, prev - 1))
+        try {
+            await ProjectService.toggleLike(project.id, user.id)
+        } catch (err) {
+            // Revert on failure
+            setLiked(!newLiked)
+            setLikesCount(prev => newLiked ? Math.max(0, prev - 1) : prev + 1)
+            console.error('Failed to toggle like:', err)
+        } finally {
+            setLikeLoading(false)
+        }
+    }
 
     if (loading) {
         return <div className="min-h-hero flex items-center justify-center"><Spinner status={loading} size="lg"/></div>;
@@ -150,30 +137,43 @@ export function ProjectDetail() {
                             <span className="text-xs font-medium">{getLocalizedContent(project, 'location', lang) || 'N/A'}</span>
                         </div>
                         <div className="flex items-center gap-2 text-muted">
-                            {/* {ICONS.layout({ className: 'size-4' })} */}
                             <span className="text-xs font-medium">{project.width && project.height ? `${project.width}m × ${project.height}m` : 'N/A'}</span>
                         </div>
                     </div>
 
                     <div className="flex flex-wrap w-full gap-4 items-center">
                         <Link to={PATHS.CLIENT.REQUEST_SERVICE} className="font-semibold text-xs text-center text-white min-w-max px-3 py-2 bg-primary rounded-full"
-                        > { t('nav:service_request_similar_project') } </Link> {/* Set Initial Form Data If Needed */}
+                        > { t('nav:service_request_similar_project') } </Link>
 
+                        {/* Like button — disabled for guests */}
                         <button
-                            onClick={() => setLiked(!liked)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 bg-muted/5 border border-muted/15 rounded-full hover:bg-muted/10 transition-colors"
+                            onClick={handleLikeToggle}
+                            disabled={!user || likeLoading}
+                            title={!user ? t('auth:login_to_like') : undefined}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-colors
+                                ${liked
+                                    ? 'bg-primary/8 border-primary/20 hover:bg-primary/12'
+                                    : 'bg-muted/5 border-muted/15 hover:bg-muted/10'
+                                }
+                                ${(!user || likeLoading) ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}
+                            `}
                         >
-                            <Heart className={`size-5 ${liked ? 'fill-primary text-primary/75' : 'text-muted/75'}`} />
-                            <span className="font-medium text-sm text-muted/75"> {liked ? 1 : 0} </span>
+                            <Heart className={`size-4.5 transition-colors ${liked ? 'fill-primary text-primary' : 'text-muted/75'}`} />
+                            <span className={`font-medium text-sm transition-colors ${liked ? 'text-primary' : 'text-muted/75'}`}>
+                                {likesCount}
+                            </span>
                         </button>
                     </div>
 
                     <div className="flex flex-col gap-4 p-4 bg-muted/5 border border-muted/15 rounded-2xl">
                         <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                                <p className="font-medium text-2xs md:text-xs text-muted/75 after:content-['•'] after:mx-2 last:after:content-none">
-                                    { t('common.views_compact', {value: 44187, format: 'compact' }) }
-                                </p>
+                            <div className="flex items-center gap-0">
+                                <div className="flex items-center gap-1 text-muted/75 after:content-['•'] after:mx-2 last:after:content-none">
+                                    <Eye className="size-3.5" />
+                                    <span className="font-medium text-2xs md:text-xs">
+                                        {t('common.views_compact', { value: project.view_count ?? 0, format: 'compact' })}
+                                    </span>
+                                </div>
                                 <p className="font-medium text-2xs md:text-xs text-muted/75 after:content-['•'] after:mx-2 last:after:content-none">
                                     { created_ago }
                                 </p>
@@ -207,7 +207,6 @@ export function ProjectDetail() {
                             }
                         </div>
                         <div onClick={() => setDescOpen(!descOpen)}>
-
                             <p className={`text-xs text-body leading-relaxed ${!descOpen && 'line-clamp-2'}`}>
                                 {getLocalizedContent(project, 'description', lang)}
                             </p>

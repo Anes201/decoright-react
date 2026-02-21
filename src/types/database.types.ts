@@ -393,62 +393,65 @@ export type Database = {
                     title_fr: string | null
                     description_ar: string | null
                     description_fr: string | null
-                    location_ar: string | null
-                    location_fr: string | null
-                }
-                Insert: {
-                    id?: string
-                    title: string
-                    description?: string | null
-                    space_type?: Database["public"]["Enums"]["space_type"] | null
-                    location?: string | null
-                    main_image_url?: string | null
-                    visibility?: Database["public"]["Enums"]["project_visibility"] | null
-                    construction_start_date?: string | null
-                    construction_end_date?: string | null
-                    created_at?: string | null
-                    updated_at?: string | null
-                    service_type_id?: string | null
-                    space_type_id?: string | null
-                    slug?: string | null
-                    thumbnail_url?: string | null
-                    width?: number | null
-                    height?: number | null
-                    title_ar?: string | null
-                    title_fr?: string | null
-                    description_ar?: string | null
+                     location_ar: string | null
+                     location_fr: string | null
+                     view_count: number
+                 }
+                 Insert: {
+                     id?: string
+                     title: string
+                     description?: string | null
+                     space_type?: Database["public"]["Enums"]["space_type"] | null
+                     location?: string | null
+                     main_image_url?: string | null
+                     visibility?: Database["public"]["Enums"]["project_visibility"] | null
+                     construction_start_date?: string | null
+                     construction_end_date?: string | null
+                     created_at?: string | null
+                     updated_at?: string | null
+                     service_type_id?: string | null
+                     space_type_id?: string | null
+                     slug?: string | null
+                     thumbnail_url?: string | null
+                     width?: number | null
+                     height?: number | null
+                     title_ar?: string | null
+                     title_fr?: string | null
+                     description_ar?: string | null
+                     description_fr?: string | null
+                     location_ar?: string | null
+                     location_fr?: string | null
+                     view_count?: number
+                 }
+                 Update: {
+                     id?: string
+                     title?: string
+                     description?: string | null
+                     space_type?: Database["public"]["Enums"]["space_type"] | null
+                     location?: string | null
+                     main_image_url?: string | null
+                     visibility?: Database["public"]["Enums"]["project_visibility"] | null
+                     construction_start_date?: string | null
+                     construction_end_date?: string | null
+                     created_at?: string | null
+                     updated_at?: string | null
+                     service_type_id?: string | null
+                     space_type_id?: string | null
+                     slug?: string | null
+                     thumbnail_url?: string | null
+                     width?: number | null
+                     height?: number | null
+                     title_ar?: string | null
+                     title_fr?: string | null
+                     description_ar?: string | null
                     description_fr?: string | null
-                    location_ar?: string | null
-                    location_fr?: string | null
-                }
-                Update: {
-                    id?: string
-                    title?: string
-                    description?: string | null
-                    space_type?: Database["public"]["Enums"]["space_type"] | null
-                    location?: string | null
-                    main_image_url?: string | null
-                    visibility?: Database["public"]["Enums"]["project_visibility"] | null
-                    construction_start_date?: string | null
-                    construction_end_date?: string | null
-                    created_at?: string | null
-                    updated_at?: string | null
-                    service_type_id?: string | null
-                    space_type_id?: string | null
-                    slug?: string | null
-                    thumbnail_url?: string | null
-                    width?: number | null
-                    height?: number | null
-                    title_ar?: string | null
-                    title_fr?: string | null
-                    description_ar?: string | null
-                    description_fr?: string | null
-                    location_ar?: string | null
-                    location_fr?: string | null
-                }
-                Relationships: [
-                    {
-                        foreignKeyName: "projects_service_type_id_fkey"
+                     location_ar?: string | null
+                     location_fr?: string | null
+                     view_count?: number
+                 }
+                 Relationships: [
+                     {
+                         foreignKeyName: "projects_service_type_id_fkey"
                         columns: ["service_type_id"]
                         isOneToOne: false
                         referencedRelation: "service_types"
@@ -717,7 +720,10 @@ export type Database = {
             [_ in never]: never
         }
         Functions: {
-            [_ in never]: never
+            increment_project_view_count: {
+                Args: { project_id: string }
+                Returns: undefined
+            }
         }
         Enums: {
             admin_action: "STATUS_CHANGE" | "PROJECT_PUBLISH" | "SETTINGS_UPDATE"

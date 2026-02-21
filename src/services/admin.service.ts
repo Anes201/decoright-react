@@ -314,7 +314,8 @@ export const AdminService = {
                 *,
                 service_types(display_name_en, display_name_ar, display_name_fr),
                 space_types(display_name_en, display_name_ar, display_name_fr),
-                project_images(*)
+                project_images(*),
+                likes(count)
             `)
             .order('created_at', { ascending: false })
 
