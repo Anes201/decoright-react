@@ -7,9 +7,9 @@ export function Input({ className, children, ...props }: any) {
 
   return (
 
-    <div dir={ props.dir } className="relative flex flex-col gap-1 w-full">
+    <div dir={props.dir} className="relative flex flex-col gap-1 w-full">
       <div className="relative flex items-center">
-        <input dir={ props.dir }
+        <input dir={props.dir}
           className={`content-center text-sm h-12 w-full px-2 py-1.5 md:py-2 border border-muted/15
           ${props.readOnly && 'ltr:pr-8 ltr:sm:pr-10 rtl:pl-8 rtl:sm:pl-10'}
           ${props.value && props.error ? 'outline-danger/45' : 'outline-muted/15'}
@@ -18,7 +18,7 @@ export function Input({ className, children, ...props }: any) {
           ${className}`}
 
           {...props} />
-          {children}
+        {children}
       </div>
       {props.readOnly &&
         <span title="Locked for viewing only" aria-label="error" className="absolute content-center end-2 h-full">
@@ -36,7 +36,7 @@ export function EmailInput({ id = 'email_field', label, className, ...props }: a
   return (
     <Input id={id} type="email" placeholder={t('auth.placeholders.email')} className={`${className} text-left ltr:pl-8 ltr:sm:pl-10 rtl:pr-8 rtl:sm:pr-10`} {...props}>
       {/* Email Icon Placeholder */}
-      <span className="absolute px-1.5 start-1 sm:start-1.5"> <Envelope className="size-5 text-muted/75"/> </span>
+      <span className="absolute px-1.5 start-1 sm:start-1.5"> <Envelope className="size-5 text-muted/75" /> </span>
     </Input>
   );
 }
@@ -46,7 +46,7 @@ export function PhoneInput({ id = 'phone_field', label, className, ...props }: a
   return (
     <Input id={id} type="tel" placeholder="+213 123456789" className={`${className} ltr:pl-8 ltr:sm:pl-10 rtl:pr-8 rtl:sm:pr-10 lang-ar:placeholder:text-left`} {...props}>
       {/* Password Icon Placeholder */}
-      <span className="absolute px-1.5 start-1 sm:start-1.5"> <Phone className="size-5 text-muted/75"/> </span>
+      <span className="absolute px-1.5 start-1 sm:start-1.5"> <Phone className="size-5 text-muted/75" /> </span>
       {/* ltr:left-1 ltr:sm:left-1.5 rtl:right-1 rtl:sm:right-1.5 */}
     </Input>
   );
@@ -69,7 +69,7 @@ export function PasswordInput({ id = 'password_field', label, value, onChange, e
       {...props}
     >
       {/* Password Icon Placeholder */}
-      <span className="absolute px-2 start-1 sm:start-1.5"> <Key className="size-5 text-muted/75"/> </span>
+      <span className="absolute px-2 start-1 sm:start-1.5"> <Key className="size-5 text-muted/75" /> </span>
 
       {/* Show/Hide Icon Placeholder */}
       <button type="button" onClick={() => setShow(s => !s)}
@@ -97,7 +97,7 @@ export function EmailOrPhoneInput({ id = 'email_or_phone_field', label = 'Email 
   }
 
   return (
-    <Input id={id} type="text" placeholder={ t('auth.placeholders.email_or_phone') } value={value} onChange={onChange} className="px-9 sm:px-10 md:pr-12" error={error} {...props}>
+    <Input id={id} type="text" placeholder={t('auth.placeholders.email_or_phone')} value={value} onChange={onChange} className="px-9 sm:px-10 md:pr-12" error={error} {...props}>
       <span className="absolute px-2 ltr:left-1 ltr:sm:left-1.5 rtl:right-1 rtl:sm:right-1.5"> {getIcon(value)} </span>
     </Input>
   );
@@ -181,13 +181,13 @@ export function AutoResizeTextarea({
 }
 
 export function DateInput({ ...props }) {
-  // Function to get today's date in 'YYYY-MM-DD' format
+  // Get today's date as the minimum selectable date (can't pick the past)
   const getTodayDateString = () => {
     const today = new Date();
     return today.toLocaleDateString('en-CA');
   };
 
   return (
-    <input type="date" defaultValue={getTodayDateString()} {...props} />
+    <input type="date" min={getTodayDateString()} {...props} />
   )
 }
