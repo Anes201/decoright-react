@@ -2,7 +2,6 @@ import useAuth from "@/hooks/useAuth";
 import Spinner from "@/components/common/Spinner";
 import type { Database } from "@/types/database.types";
 import { Link, Navigate } from "react-router-dom";
-import { images } from "@/constants";
 import { Envelope, Phone, UserCircle, PencilSquare } from "@/icons";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
@@ -11,23 +10,32 @@ import { useTranslation } from "react-i18next";
 
 type ProfileData = Database['public']['Tables']['profiles']['Row'];
 
+// Returns capitalized initials from a full name string
+function getInitials(name: string): string {
+    return name
+        .trim()
+        .split(' ')
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(n => n[0].toUpperCase())
+        .join('');
+}
+
 export default function AccountProfileLayout() {
     const { user, loading: authLoading } = useAuth();
     const [profile, setProfile] = useState<ProfileData | null>(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const { t, i18n } = useTranslation();
 
     useEffect(() => {
         const fetchProfile = async () => {
             if (!user) return;
-
             try {
                 const { data, error } = await supabase
                     .from('profiles')
                     .select('*')
                     .eq('id', user.id)
                     .single();
-
                 if (error) throw error;
                 setProfile(data);
             } catch (err) {
@@ -36,90 +44,95 @@ export default function AccountProfileLayout() {
                 setLoading(false);
             }
         };
-
-        if (!authLoading) {
-            fetchProfile();
-        }
+        if (!authLoading) fetchProfile();
     }, [user, authLoading]);
 
     if (authLoading || loading) {
         return (
-            <div className="flex items-center justify-center h-hero">
-                <Spinner className="w-80 h-80"> {t('profile.loading')} </Spinner>
+            <div className="flex flex-col items-center justify-center gap-3 h-64">
+                <Spinner className="w-8 h-8" />
+                <span className="text-xs text-muted">{t('profile.loading')}</span>
             </div>
         );
     }
 
-    if (!user) {
-        return <Navigate to={PATHS.LOGIN} replace />;
-    }
+    if (!user) return <Navigate to={PATHS.LOGIN} replace />;
 
     const joinDate = profile?.created_at
         ? new Date(profile.created_at).toLocaleDateString(i18n.language, { month: 'short', day: 'numeric', year: 'numeric' })
         : t('profile.not_provided');
 
+    const displayName = profile?.full_name || t('profile.anonymous');
+    const initials = getInitials(displayName);
+
+    const infoItems = [
+        {
+            icon: <Envelope className="size-5" />,
+            label: t('auth.email'),
+            value: user.email || t('profile.not_provided'),
+            id: 'email-info',
+        },
+        {
+            icon: <Phone className="size-5" />,
+            label: t('auth.phone'),
+            value: profile?.phone || t('profile.not_provided'),
+            id: 'phone-info',
+        },
+        {
+            icon: <UserCircle className="size-5" />,
+            label: t('profile.role'),
+            value: profile?.role ? (profile.role.charAt(0).toUpperCase() + profile.role.slice(1)) : t('profile.client'),
+            id: 'role-info',
+        },
+    ];
+
     return (
+        <div className="flex flex-col gap-8">
 
-        <div className="flex flex-col gap-8 max-md:flex-col">
-
-            <div className="flex flex-col items-center gap-2">
-                {/* Profile Image */}
-                <div className="w-fit h-25 md:h-40 p-1 md:p-2 aspect-square border border-muted/15 rounded-full bg-background overflow-hidden">
-                    <img src={images[7]} alt="Avatar" className="w-full h-full object-cover rounded-full" />
+            {/* ── Avatar + Name ─────────────────────────────────── */}
+            <div className="flex flex-col items-center gap-3">
+                <div className="w-fit h-25 md:h-36 p-1 md:p-1.5 aspect-square border border-muted/20 rounded-full bg-background overflow-hidden">
+                    {/* Initials fallback — replace with real avatar when available */}
+                    <div className="w-full h-full rounded-full bg-primary/15 flex items-center justify-center">
+                        <span className="font-bold text-2xl md:text-3xl text-primary select-none">{initials}</span>
+                    </div>
                 </div>
 
-                <div className="flex flex-col text-center">
-                    <h4 className="font-semibold text-lg"> {profile?.full_name || t('profile.anonymous')} </h4>
-                    <p className="text-2xs md:text-xs"> {t('profile.joined_at', { date: joinDate })} </p>
+                <div className="flex flex-col items-center text-center gap-0.5">
+                    <h4 className="font-semibold text-lg leading-tight">{displayName}</h4>
+                    <p className="text-2xs text-muted">{t('profile.joined_at', { date: joinDate })}</p>
                 </div>
             </div>
 
-            {/* User Information */}
-
-            <div className="space-y-8">
-
-                <div className="flex items-center gap-4">
-                    <h3 className="font-semibold text-2xs md:text-xs text-foreground/75 min-w-max"> {t('profile.personal_info')} </h3>
+            {/* ── Personal Info ─────────────────────────────────── */}
+            <div className="space-y-5">
+                <div className="flex items-center gap-3">
+                    <h3 className="font-medium text-2xs text-muted min-w-max tracking-wide uppercase">{t('profile.personal_info')}</h3>
                     <hr className="w-full border-0 border-b border-muted/15" />
-                    <Link to={PATHS.CLIENT.ACCOUNT_SETTINGS} className="p-2 border border-muted/15 bg-surface/75 rounded-lg"> <PencilSquare /> </Link>
+                    <Link
+                        to={PATHS.CLIENT.ACCOUNT_SETTINGS}
+                        title="Edit profile"
+                        className="shrink-0 p-2 border border-muted/15 bg-surface/75 rounded-lg hover:border-primary/30 transition-colors"
+                    >
+                        <PencilSquare className="size-4" />
+                    </Link>
                 </div>
-                <ul className="flex flex-col gap-6 w-full">
 
-                    <li className="flex items-center w-full gap-4 p-3 border border-muted/15 bg-surface rounded-xl">
-                        <div className="h-full aspect-square p-2 border border-muted/25 bg-surface rounded-lg">
-                            <Envelope className="size-6" />
-                        </div>
-
-                        <div className="flex flex-col gap-1">
-                            <label htmlFor="email-info" className="font-medium text-xs"> {t('auth.email')} </label>
-                            <p id="email-info" className="font-medium text-xs text-foreground"> {user.email} </p>
-                        </div>
-                    </li>
-                    <li className="flex items-center w-full gap-4 p-3 border border-muted/15 bg-surface rounded-xl">
-                        <div className="h-full aspect-square p-2 border border-muted/25 bg-surface rounded-lg">
-                            <Phone className="size-6" />
-                        </div>
-
-                        <div className="flex flex-col gap-1">
-                            <label htmlFor="phone-info" className="font-medium text-xs"> {t('auth.phone')} </label>
-                            <p id="phone-info" className="font-medium text-xs text-foreground"> {profile?.phone || t('profile.not_provided')} </p>
-                        </div>
-                    </li>
-                    <li className="flex items-center w-full gap-4 p-3 border border-muted/15 bg-surface rounded-xl">
-                        <div className="h-full aspect-square p-2 border border-muted/25 bg-surface rounded-lg">
-                            <UserCircle className="size-6" />
-                        </div>
-
-                        <div className="flex flex-col gap-1">
-                            <label htmlFor="role-info" className="font-medium text-xs"> {t('profile.role')} </label>
-                            <p id="role-info" className="font-medium text-xs text-foreground"> {profile?.role || t('profile.client')} </p>
-                        </div>
-                    </li>
-
+                <ul className="flex flex-col gap-3">
+                    {infoItems.map(item => (
+                        <li key={item.id} className="flex items-center gap-4 p-3 border border-muted/15 bg-surface rounded-xl">
+                            <div className="shrink-0 p-2 border border-muted/20 bg-emphasis rounded-lg text-muted">
+                                {item.icon}
+                            </div>
+                            <div className="flex flex-col gap-0.5 min-w-0">
+                                <span className="text-2xs text-muted">{item.label}</span>
+                                <p id={item.id} className="font-medium text-sm truncate">{item.value}</p>
+                            </div>
+                        </li>
+                    ))}
                 </ul>
             </div>
 
         </div>
-
     );
 }
