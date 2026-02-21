@@ -3,14 +3,14 @@ import useAuth from "@/hooks/useAuth";
 import Spinner from "@components/common/Spinner";
 import toast from "react-hot-toast";
 import React, { useEffect, useState } from "react";
-import { allowedLocales, images } from "@/constants";
+import { allowedLocales } from "@/constants";
 import { EmailInput, Input, PhoneInput } from "@components/ui/Input";
 import { supabase } from "@/lib/supabase";
 import { PATHS } from "@/routers/Paths";
 import { Link, Navigate } from "react-router-dom";
 import { SelectDropDownMenu } from "@components/ui/Select";
 import { useTranslation } from "react-i18next";
-import { BookOpen, CheckCircle, LockClosed, QuestionMarkCircle } from "@/icons";
+import { CheckCircle, LockClosed, QuestionMarkCircle } from "@/icons";
 
 // Normalize Algerian phone numbers to E.164 international format
 function normalizePhone(raw: string): string {
@@ -146,8 +146,6 @@ export default function AccountSettingsLayout() {
         i18n.changeLanguage(option.value);
     }
 
-    function handleUploadProfilePicture(e: any) { e.preventDefault(); }
-    function handleRemoveProfilePicture(e: any) { e.preventDefault(); }
 
     const languageChoices = [
         { id: 'en', label: t('common.english'), value: 'en', icon: null },
@@ -173,26 +171,6 @@ export default function AccountSettingsLayout() {
                         <hr className="w-full border-0 border-b border-b-muted/15" />
                     </div>
 
-                    {/* Avatar */}
-                    <div className="flex max-sm:flex-col items-center gap-6 w-full">
-                        <div className="group/item relative w-fit h-30 md:h-35 p-1 md:p-2 aspect-square border border-muted/15 rounded-full bg-background overflow-hidden">
-                            <img src={images[7]} alt="Avatar" className="w-full h-full object-cover rounded-full" />
-                        </div>
-                        <div className="flex flex-col max-sm:items-center justify-center gap-2">
-                            <div>
-                                <label htmlFor="upload-profile-picture" className="text-xs text-muted cursor-pointer hover:underline active:underline">
-                                    {t('settings.upload_picture')}
-                                </label>
-                                <input type="file" id="upload-profile-picture" className="hidden" onClick={handleUploadProfilePicture} />
-                            </div>
-                            <div>
-                                <label htmlFor="remove-profile-picture" className="text-sm text-danger cursor-pointer hover:underline active:underline">
-                                    {t('settings.remove_picture')}
-                                </label>
-                                <input id="remove-profile-picture" className="hidden" onClick={handleRemoveProfilePicture} />
-                            </div>
-                        </div>
-                    </div>
 
                     {/* Fields */}
                     <div className="flex flex-col w-full gap-4 lg:w-3/5">
@@ -327,18 +305,6 @@ export default function AccountSettingsLayout() {
                                 <div className="flex flex-col">
                                     <span className="font-medium text-sm">{t('settings.forgot_password')}</span>
                                     <span className="text-2xs text-muted">Reset via email link</span>
-                                </div>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to={PATHS.PRIVACY_POLICY}
-                                className="flex items-center gap-3 w-full px-3 py-2.5 bg-surface border border-muted/15 rounded-xl hover:border-muted/30 transition-colors"
-                            >
-                                <BookOpen className="size-5 text-muted shrink-0" />
-                                <div className="flex flex-col">
-                                    <span className="font-medium text-sm">{t('settings.privacy_policy')}</span>
-                                    <span className="text-2xs text-muted">Read our privacy policy</span>
                                 </div>
                             </Link>
                         </li>
