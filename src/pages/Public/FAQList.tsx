@@ -1,9 +1,8 @@
 import { FAQList } from "@/components/layout/FAQ";
 import { PCTALink } from "@/components/ui/CTA";
-import { ICONS } from "@/icons";
 import { PATHS } from "@/routers/Paths";
 import { useTranslation } from "react-i18next";
-
+import { Phone } from "@/icons";
 
 export default function FAQListPage(){
 
@@ -25,7 +24,7 @@ export default function FAQListPage(){
                         </div>
                         {/* CTA */}
                         <PCTALink to={PATHS.CONTACT} className="flex items-center gap-2 w-full md:w-fit"
-                        > <ICONS.phone className="size-5 text-white rtl:rotate-y-180"/> { t('nav.request_service') }
+                        > <Phone className="size-5 text-white rtl:rotate-y-180"/> { t('nav.request_service') }
                         </PCTALink>
 
                     </div>

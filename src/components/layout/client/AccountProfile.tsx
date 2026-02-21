@@ -3,7 +3,7 @@ import Spinner from "@/components/common/Spinner";
 import type { Database } from "@/types/database.types";
 import { Link, Navigate } from "react-router-dom";
 import { images } from "@/constants";
-import { ICONS } from "@/icons";
+import { Envelope, Phone, UserCircle, PencilSquare } from "@/icons";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { PATHS } from "@/routers/Paths";
@@ -81,13 +81,13 @@ export default function AccountProfileLayout() {
                 <div className="flex items-center gap-4">
                     <h3 className="font-semibold text-2xs md:text-xs text-foreground/75 min-w-max"> {t('profile.personal_info')} </h3>
                     <hr className="w-full border-0 border-b border-muted/15" />
-                    <Link to={PATHS.CLIENT.ACCOUNT_SETTINGS} className="p-2 border border-muted/15 bg-surface/75 rounded-lg"> <ICONS.pencilSquare /> </Link>
+                    <Link to={PATHS.CLIENT.ACCOUNT_SETTINGS} className="p-2 border border-muted/15 bg-surface/75 rounded-lg"> <PencilSquare /> </Link>
                 </div>
                 <ul className="flex flex-col gap-6 w-full">
 
                     <li className="flex items-center w-full gap-4 p-3 border border-muted/15 bg-surface rounded-xl">
                         <div className="h-full aspect-square p-2 border border-muted/25 bg-surface rounded-lg">
-                            <ICONS.envelope className="size-6" />
+                            <Envelope className="size-6" />
                         </div>
 
                         <div className="flex flex-col gap-1">
@@ -97,7 +97,7 @@ export default function AccountProfileLayout() {
                     </li>
                     <li className="flex items-center w-full gap-4 p-3 border border-muted/15 bg-surface rounded-xl">
                         <div className="h-full aspect-square p-2 border border-muted/25 bg-surface rounded-lg">
-                            <ICONS.phone className="size-6" />
+                            <Phone className="size-6" />
                         </div>
 
                         <div className="flex flex-col gap-1">
@@ -107,7 +107,7 @@ export default function AccountProfileLayout() {
                     </li>
                     <li className="flex items-center w-full gap-4 p-3 border border-muted/15 bg-surface rounded-xl">
                         <div className="h-full aspect-square p-2 border border-muted/25 bg-surface rounded-lg">
-                            <ICONS.userCircle className="size-6" />
+                            <UserCircle className="size-6" />
                         </div>
 
                         <div className="flex flex-col gap-1">

@@ -1,12 +1,12 @@
+import Spinner from "@/components/common/Spinner";
+import GalleryForm from "@/components/layout/admin/gallery/GalleryForm";
+import toast from "react-hot-toast";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import GalleryForm from "@/components/layout/admin/gallery/GalleryForm";
 import { AdminService, type GalleryItem } from "@/services/admin.service";
-import Spinner from "@/components/common/Spinner";
-import toast from "react-hot-toast";
 import { useConfirm } from "@/components/confirm";
 import { PATHS } from "@/routers/Paths";
-import { ICONS } from "@/icons";
+import { Trash, ChevronRight } from "@/icons";
 
 
 function DeleteButton({ id }: { id: string }) {
@@ -44,7 +44,7 @@ function DeleteButton({ id }: { id: string }) {
             disabled={deleting}
             className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-50 rounded-lg transition-colors border border-red-200"
         >
-            {deleting ? <Spinner status={true} size="sm" /> : <ICONS.trash className="size-4" />}
+            {deleting ? <Spinner status={true} size="sm" /> : <Trash className="size-4" />}
             Delete
         </button>
     );
@@ -98,7 +98,7 @@ export default function GalleryUpdatePage() {
                             <div className="flex flex-col gap-1">
                                 <div className="flex items-center gap-2 text-muted mb-2">
                                     <Link to={PATHS.ADMIN.GALLERY_LIST} className="hover:text-primary transition-colors">Gallery</Link>
-                                    <ICONS.chevronRight className="size-3" />
+                                    <ChevronRight className="size-3" />
                                     <span>Edit</span>
                                 </div>
                                 <h1 className="font-bold text-2xl tracking-tight">Edit Gallery Item</h1>

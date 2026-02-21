@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AdminService } from "@/services/admin.service";
-import { ICONS } from "@/icons";
+import { Plus, Cog } from "@/icons";
 import { PATHS } from "@/routers/Paths";
 import { Link } from "react-router-dom";
 
@@ -63,15 +63,15 @@ export default function DashboardHome() {
                 <h2 className="text-xl font-semibold">Quick Actions</h2>
                 <div className="flex flex-wrap gap-4">
                     <Link to={PATHS.ADMIN.GALLERY_CREATE} className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-colors">
-                        <ICONS.plus className="size-5" />
+                        <Plus className="size-5" />
                         Add Gallery Item
                     </Link>
                     <Link to={PATHS.ADMIN.PROJECT_CREATE} className="flex items-center gap-2 px-6 py-3 bg-surface border border-primary/20 text-primary rounded-xl font-medium hover:bg-primary/5 transition-colors">
-                        <ICONS.plus className="size-5" />
+                        <Plus className="size-5" />
                         Create Project
                     </Link>
                     <Link to={PATHS.ADMIN.SETTINGS} className="flex items-center gap-2 px-6 py-3 bg-surface border border-muted/15 rounded-xl font-medium hover:bg-emphasis/5 transition-colors">
-                        <ICONS.cog className="size-5" />
+                        <Cog className="size-5" />
                         Update Contact Info
                     </Link>
                 </div>

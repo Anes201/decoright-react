@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import ZoomImage from "@components/ui/ZoomImage";
-import { PATHS } from "@/routers/Paths";
-import { ICONS } from "@/icons";
-import { AdminService, type GalleryItem } from "@/services/admin.service";
 import toast from "react-hot-toast";
 import Spinner from "@/components/common/Spinner";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { PATHS } from "@/routers/Paths";
+import { AdminService, type GalleryItem } from "@/services/admin.service";
 import { useConfirm } from "@/components/confirm";
+import { Photo, Plus, PencilSquare, Trash } from "@/icons";
 
 export function GalleryItemRow({ item, onDelete }: { item: GalleryItem, onDelete: (id: string) => void }) {
     return (
@@ -36,14 +36,14 @@ export function GalleryItemRow({ item, onDelete }: { item: GalleryItem, onDelete
                         className="p-1.5 text-muted hover:text-primary hover:bg-primary/10 rounded-md transition-colors"
                         title="Edit Item"
                     >
-                        <ICONS.pencilSquare className="size-4" />
+                        <PencilSquare className="size-4" />
                     </Link>
                     <button
                         onClick={() => onDelete(item.id)}
                         className="p-1.5 text-muted hover:text-red-500 hover:bg-red-500/10 rounded-md transition-colors"
                         title="Delete Item"
                     >
-                        <ICONS.trash className="size-4" />
+                        <Trash className="size-4" />
                     </button>
                 </div>
             </div>
@@ -105,14 +105,14 @@ export default function GalleryListLayout() {
         return (
             <div className="flex flex-col items-center justify-center p-20 border-2 border-dashed border-muted/10 rounded-2xl bg-surface/50 text-center">
                 <div className="p-4 bg-primary/10 rounded-full mb-4">
-                    <ICONS.photo className="size-10 text-primary" />
+                    <Photo className="size-10 text-primary" />
                 </div>
                 <h3 className="font-semibold text-lg mb-1">No Gallery Items Yet</h3>
                 <p className="text-sm text-muted max-w-[300px] mb-6">
                     Start by creating your first marketing showcase item.
                 </p>
                 <Link to={PATHS.ADMIN.GALLERY_CREATE} className="p-button">
-                    <ICONS.plus className="size-4 mr-2" />
+                    <Plus className="size-4 mr-2" />
                     Create Gallery Item
                 </Link>
             </div>

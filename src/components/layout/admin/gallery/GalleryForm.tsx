@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Spinner from "@/components/common/Spinner";
+import ProgressBar from "@/components/ui/ProgressBar";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { PButton } from "@/components/ui/Button";
-import { ICONS } from "@/icons";
 import { SelectMenu } from "@/components/ui/Select";
 import { projectVisibilityStags } from "@/constants";
 import { AdminService, type GalleryItem } from "@/services/admin.service";
 import { PATHS } from "@/routers/Paths";
 import { useStagedFiles } from "@/hooks/useStagedFiles";
-import ProgressBar from "@/components/ui/ProgressBar";
+import { Photo, XMark, ArrowPath } from "@/icons";
 
 interface GalleryFormProps {
     initialData?: GalleryItem;
@@ -211,7 +211,7 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
                                     onClick={() => beforeUpload.setFiles([])}
                                     className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
                                 >
-                                    <ICONS.xMark className="size-4" />
+                                    <XMark className="size-4" />
                                 </button>
                                 {beforeFile?.status === 'failed' && (
                                     <button
@@ -220,13 +220,13 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
                                         className="absolute bottom-2 right-2 p-1.5 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
                                         title="Retry Upload"
                                     >
-                                        <ICONS.arrowPath className="size-4" />
+                                        <ArrowPath className="size-4" />
                                     </button>
                                 )}
                             </div>
                         ) : (
                             <div className="aspect-video rounded-lg border-2 border-dashed border-muted/10 flex flex-col items-center justify-center text-muted">
-                                <ICONS.photo className="size-8 mb-2 opacity-20" />
+                                <Photo className="size-8 mb-2 opacity-20" />
                                 <span className="text-3xs uppercase tracking-widest font-bold">No Image selected</span>
                             </div>
                         )}
@@ -254,7 +254,7 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
                                     onClick={() => afterUpload.setFiles([])}
                                     className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
                                 >
-                                    <ICONS.xMark className="size-4" />
+                                    <XMark className="size-4" />
                                 </button>
                                 {afterFile?.status === 'failed' && (
                                     <button
@@ -263,13 +263,13 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
                                         className="absolute bottom-2 right-2 p-1.5 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
                                         title="Retry Upload"
                                     >
-                                        <ICONS.arrowPath className="size-4" />
+                                        <ArrowPath className="size-4" />
                                     </button>
                                 )}
                             </div>
                         ) : (
                             <div className="aspect-video rounded-lg border-2 border-dashed border-muted/10 flex flex-col items-center justify-center text-muted">
-                                <ICONS.photo className="size-8 mb-2 opacity-20" />
+                                <Photo className="size-8 mb-2 opacity-20" />
                                 <span className="text-3xs uppercase tracking-widest font-bold">No Image selected</span>
                             </div>
                         )}

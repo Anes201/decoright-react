@@ -1,8 +1,8 @@
 import Table from "@/components/ui/DataTable";
+import UserDetailDrawer from "./UserDetailDrawer";
 import { AdminService, type UserProfile } from "@/services/admin.service";
 import { useEffect, useState } from "react";
-import { ICONS } from "@/icons";
-import UserDetailDrawer from "./UserDetailDrawer";
+import { RectangleStack } from "@/icons";
 
 
 const columns = [
@@ -64,7 +64,7 @@ const columns = [
     width: '100px',
     render: (row: any) => (
       <div className="flex items-center gap-2">
-        <ICONS.rectangleStack className="size-4 text-muted" />
+        <RectangleStack className="size-4 text-muted" />
         <span className="font-semibold text-heading">{row.total_requests || 0}</span>
       </div>
     )

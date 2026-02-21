@@ -1,9 +1,8 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { AutoResizeTextarea } from "@components/ui/Input";
-import { ICONS } from "@/icons";
 import { useChat } from '@/hooks/useChat';
-
-
+import { Photo, Microphone, PaperAirplane } from '@/icons';
 
 interface ChatFormProps {
     message?: string;
@@ -156,7 +155,7 @@ export default function ChatForm({ message, setMessage, onSend, onSendMedia }: C
                                 className="p-2 hover:bg-emphasis rounded-lg text-muted transition-colors disabled:opacity-50"
                                 title="Upload Image"
                             >
-                                <ICONS.photo className="size-5" />
+                                <Photo className="size-5" />
                             </button>
                             <button
                                 type="button"
@@ -165,7 +164,7 @@ export default function ChatForm({ message, setMessage, onSend, onSendMedia }: C
                                 className="p-2 hover:bg-emphasis rounded-lg text-muted transition-colors disabled:opacity-50"
                                 title="Record Voice"
                             >
-                                <ICONS.microphone className="size-5" />
+                                <Microphone className="size-5" />
                             </button>
                         </>
                     )}
@@ -176,7 +175,7 @@ export default function ChatForm({ message, setMessage, onSend, onSendMedia }: C
                             onClick={() => stopRecording(false)}
                             className="p-2.5 bg-primary text-white rounded-lg shadow-sm hover:scale-105 transition-all"
                         >
-                            <ICONS.paperAirplane className="size-5" />
+                            <PaperAirplane className="size-5" />
                         </button>
                     ) : (
                         <button
@@ -184,7 +183,7 @@ export default function ChatForm({ message, setMessage, onSend, onSendMedia }: C
                             disabled={!displayMessage.trim() || isUploading}
                             className={`${(!displayMessage.trim() || isUploading) ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'} p-2.5 bg-primary text-white rounded-lg shadow-sm transition-all`}
                         >
-                            <ICONS.paperAirplane className="size-5" />
+                            <PaperAirplane className="size-5" />
                         </button>
                     )}
                 </div>

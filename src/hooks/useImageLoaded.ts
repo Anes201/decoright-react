@@ -29,7 +29,7 @@ export function useImageLoaded(src?: string) {
       if (!mounted) return;
       setLoaded(false);
       setError(new Error("Image failed to load"));
-      // optional: console.warn(ev);
+      console.warn(ev);
     };
 
     img.addEventListener("load", onLoad);

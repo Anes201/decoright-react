@@ -1,7 +1,7 @@
 import { useChat } from "@/hooks/useChat";
 import type { ChatRoom } from "@/types/chat";
 import Spinner from "@components/common/Spinner";
-import { ICONS } from "@/icons";
+import { PencilSquare } from "@/icons";
 import { Link } from "react-router-dom";
 import { PATHS } from "@/routers/Paths";
 
@@ -55,7 +55,7 @@ export default function ChatList({
               <div className="flex items-center gap-2 w-full h-fit p-2">
                 {/* Avatar */}
                 <div className="h-fit w-12 aspect-square rounded-full border border-muted/45 overflow-hidden bg-emphasis flex items-center justify-center shrink-0">
-                  <ICONS.pencilSquare className="size-6 text-muted" />
+                  <PencilSquare className="size-6 text-muted" />
                 </div>
 
                 {/* Context */}

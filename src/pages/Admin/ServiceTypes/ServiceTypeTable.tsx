@@ -1,8 +1,9 @@
 import { ServiceTypesService, type ServiceType } from '@/services/service-types.service';
-import { ICONS } from '@/icons';
 import { useState } from 'react';
 import { useConfirm } from '@/components/confirm';
+import { Cog, Folder, PencilSquare, Photo, Trash } from '@/icons';
 import toast from 'react-hot-toast';
+
 
 interface ServiceTypeTableProps {
     serviceTypes: ServiceType[];
@@ -64,7 +65,7 @@ export default function ServiceTypeTable({ serviceTypes, onEdit, onRefresh }: Se
                     {serviceTypes.length === 0 ? (
                         <tr>
                             <td colSpan={6} className="px-4 py-12 text-center text-muted">
-                                <ICONS.folder className="size-12 mx-auto mb-2 opacity-50" />
+                                <Folder className="size-12 mx-auto mb-2 opacity-50" />
                                 <p>No service types found</p>
                             </td>
                         </tr>
@@ -76,7 +77,7 @@ export default function ServiceTypeTable({ serviceTypes, onEdit, onRefresh }: Se
                                         {serviceType.image_url ? (
                                             <img src={serviceType.image_url} alt="" className="w-full h-full object-cover" />
                                         ) : (
-                                            <ICONS.photo className="size-8 text-muted/20" />
+                                            <Photo className="size-8 text-muted/20" />
                                         )}
                                     </div>
                                 </td>
@@ -93,7 +94,7 @@ export default function ServiceTypeTable({ serviceTypes, onEdit, onRefresh }: Se
                                             } ${togglingId === serviceType.id ? 'opacity-50 cursor-not-allowed' : ''}`}
                                     >
                                         {togglingId === serviceType.id ? (
-                                            <ICONS.cog className="size-3 animate-spin inline" />
+                                            <Cog className="size-3 animate-spin inline" />
                                         ) : serviceType.is_active ? (
                                             'Active'
                                         ) : (
@@ -108,14 +109,14 @@ export default function ServiceTypeTable({ serviceTypes, onEdit, onRefresh }: Se
                                             className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
                                             title="Edit"
                                         >
-                                            <ICONS.pencilSquare className="size-4" />
+                                            <PencilSquare className="size-4" />
                                         </button>
                                         <button
                                             onClick={() => handleDelete(serviceType)}
                                             className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
                                             title="Delete"
                                         >
-                                            <ICONS.trash className="size-4" />
+                                            <Trash className="size-4" />
                                         </button>
                                     </div>
                                 </td>

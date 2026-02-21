@@ -1,7 +1,6 @@
 import Spinner from "@components/common/Spinner";
 import ZoomImage from "@components/ui/ZoomImage";
 import { PATHS } from "@/routers/Paths";
-import { ICONS } from "@/icons"
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState, type CSSProperties } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -10,6 +9,7 @@ import { AdminService } from "@/services/admin.service";
 import { getLocalizedContent } from "@/utils/i18n";
 import { useTimeAgo } from "@/hooks/useTimeAgo";
 import { useTranslation } from "react-i18next";
+import { MapPin, Layout, Heart, ChevronUp, ChevronDown } from "@/icons";
 import 'swiper/swiper.css';
 import 'swiper/swiper-bundle.css';
 
@@ -146,7 +146,7 @@ export function ProjectDetail() {
                     {/* Location and Area Info */}
                     <div className="flex items-center gap-6 py-2 px-1 border-b border-muted/10">
                         <div className="flex items-center gap-2 text-muted">
-                            <ICONS.mapPin className="size-4"/>
+                            <MapPin className="size-4"/>
                             <span className="text-xs font-medium">{getLocalizedContent(project, 'location', lang) || 'N/A'}</span>
                         </div>
                         <div className="flex items-center gap-2 text-muted">
@@ -163,7 +163,7 @@ export function ProjectDetail() {
                             onClick={() => setLiked(!liked)}
                             className="flex items-center gap-1.5 px-3 py-1.5 bg-muted/5 border border-muted/15 rounded-full hover:bg-muted/10 transition-colors"
                         >
-                            <ICONS.heart className={`size-5 ${liked ? 'fill-primary text-primary/75' : 'text-muted/75'}`} />
+                            <Heart className={`size-5 ${liked ? 'fill-primary text-primary/75' : 'text-muted/75'}`} />
                             <span className="font-medium text-sm text-muted/75"> {liked ? 1 : 0} </span>
                         </button>
                     </div>
@@ -182,14 +182,14 @@ export function ProjectDetail() {
                                 className="font-medium text-xs text-primary cursor-pointer"
                                 onClick={() => setDescOpen(!descOpen)}
                             >
-                                {descOpen ? <ICONS.chevronUp /> : <ICONS.chevronDown />}
+                                {descOpen ? <ChevronUp /> : <ChevronDown />}
                             </button>
                         </div>
                         <div className="flex flex-wrap items-center gap-6">
                             {project.location &&
                                 <div className="flex items-center gap-2 text-muted">
                                     <div className="flex gap-1">
-                                        <ICONS.mapPin className="size-4" />
+                                        <MapPin className="size-4" />
                                         <h5 className="text-xs text-muted"> { t('common.location') } </h5>
                                     </div>
                                     <span className="text-xs font-medium"> {getLocalizedContent(project, 'location', lang) || 'N/A'} </span>
@@ -199,7 +199,7 @@ export function ProjectDetail() {
                             {project.area_sqm &&
                                 <div className="flex items-center gap-2 text-muted">
                                     <div className="flex gap-1">
-                                        <ICONS.layout className="size-4" />
+                                        <Layout className="size-4" />
                                         <h5 className="text-xs text-muted"> { t('common.floor_area') } </h5>
                                     </div>
                                     <span className="text-xs font-medium"> {project.area_sqm ? `${project.area_sqm} m²` : 'N/A'} </span>

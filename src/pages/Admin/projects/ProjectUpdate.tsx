@@ -1,13 +1,12 @@
+import toast from "react-hot-toast";
+import ProjectForm from "@/components/layout/admin/projects/ProjectForm";
+import Spinner from "@/components/common/Spinner";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import ProjectForm from "@/components/layout/admin/projects/ProjectForm";
 import { AdminService } from "@/services/admin.service";
-import Spinner from "@/components/common/Spinner";
-import toast from "react-hot-toast";
 import { PATHS } from "@/routers/Paths";
-import { ICONS } from "@/icons";
 import { useConfirm } from "@/components/confirm";
-
+import { Trash, ChevronRight } from "@/icons";
 
 function DeleteButton({ id }: { id: string }) {
     const confirm = useConfirm();
@@ -44,7 +43,7 @@ function DeleteButton({ id }: { id: string }) {
             disabled={deleting}
             className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-50 rounded-lg transition-colors border border-red-200"
         >
-            {deleting ? <Spinner status={true} size="sm" /> : <ICONS.trash className="size-4" />}
+            {deleting ? <Spinner status={true} size="sm" /> : <Trash className="size-4" />}
             Delete
         </button>
     );
@@ -101,7 +100,7 @@ export default function ProjectUpdatePage() {
                             <div className="flex flex-col gap-1">
                                 <div className="flex items-center gap-2 text-muted mb-2">
                                     <Link to={PATHS.ADMIN.PROJECT_LIST} className="hover:text-primary transition-colors">Projects</Link>
-                                    <ICONS.chevronRight className="size-3" />
+                                    <ChevronRight className="size-3" />
                                     <span>Edit</span>
                                 </div>
                                 <h1 className="font-bold text-2xl tracking-tight">Edit Project</h1>

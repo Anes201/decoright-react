@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
-import { ICONS } from '@/icons';
+import { Check, ChevronDown } from '@/icons';
 
 export default function LanguageSwitcher() {
     const { i18n } = useTranslation();
@@ -24,7 +24,7 @@ export default function LanguageSwitcher() {
             <button className="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-muted/10 transition-colors border border-muted/20">
                 <span className="text-xs font-bold">{currentLang.flag}</span>
                 <span className="text-xs font-medium hidden sm:inline">{currentLang.label}</span>
-                {ICONS.chevronDown({ className: 'size-3 text-muted/60' })}
+                <ChevronDown className="size-3 text-muted/60" />
             </button>
 
             {/* Dropdown */}
@@ -38,7 +38,7 @@ export default function LanguageSwitcher() {
                                 }`}
                         >
                             {lang.label}
-                            {i18n.language.startsWith(lang.code) && ICONS.check({ className: 'size-3' })}
+                            {i18n.language.startsWith(lang.code) && Check({ className: 'size-3' })}
                         </button>
                     ))}
                 </div>

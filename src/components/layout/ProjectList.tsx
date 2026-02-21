@@ -1,7 +1,7 @@
 import useAuth from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom"
-import { ICONS } from "@/icons";
+import { Eye } from "@/icons";
 import { PATHS } from "@/routers/Paths";
 import { AdminService } from "@/services/admin.service";
 import Spinner from "@components/common/Spinner";
@@ -22,7 +22,7 @@ export function ProjectCard({ project, index, lang }: { project: any, index: num
                         <h3 className="font-medium text-xs px-0.5"> {getLocalizedContent(project, 'title', lang)} </h3>
                         <div className="flex h-fit gap-1 text-muted">
                             <div className="flex items-center gap-0.5 pt-0.5">
-                                <ICONS.eye className="size-4" />
+                                <Eye className="size-4" />
                                 <span className="text-2xs"> 0 </span>
                             </div>
                         </div>

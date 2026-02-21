@@ -5,11 +5,9 @@ import Spinner from '@components/common/Spinner'
 import { useState, useEffect } from 'react'
 import { useStagedFiles } from '@/hooks/useStagedFiles'
 import { PButton } from '@components/ui/Button'
-import PhoneVerificationModal from '@components/ui/PhoneVerificationModal'
 import { SCTALink } from '@components/ui/CTA'
 import { SelectMenu } from '@components/ui/Select'
 import { DateInput, Input } from '@components/ui/Input'
-import { ICONS } from '@/icons'
 import { RequestService as ReqSvc } from '@/services/request.service'
 import { ServiceTypesService, type ServiceType } from '@/services/service-types.service'
 import { SpaceTypesService, type SpaceType } from '@/services/space-types.service'
@@ -31,7 +29,6 @@ export default function RequestServiceLayout() {
     const [height, setHeight] = useState("")
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
-    const [showVerifyModal, setShowVerifyModal] = useState(false)
     const navigate = useNavigate()
     const { t, i18n } = useTranslation();
     const langSuffix = i18n.language.startsWith('ar') ? '_ar' : i18n.language.startsWith('fr') ? '_fr' : '_en';
@@ -68,7 +65,7 @@ export default function RequestServiceLayout() {
     if (authLoading) return <div className="flex flex-col gap-4"> <Spinner status={authLoading} /> <span className="text-sm">{t('common.loading')}</span> </div>
     if (!user) return null
 
-    const handleSubmit = async (e: React.SubmitEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!spaceType || !serviceType || !location) {
             setError(t('request_form.error_fields'))
@@ -137,8 +134,8 @@ export default function RequestServiceLayout() {
                 {/* CTA */}
                 <div className="hidden md:flex max-xs:flex-col md:flex-row gap-3 md:gap-4 w-fit">
                     <PButton type="submit" form="service-request-form"
-                        disabled={loading || !user?.phoneVerified}
-                        title={!user?.phoneVerified ? t('request_form.submit_hint') : t('request_form.submit')}
+                        disabled={loading}
+                        title={t('request_form.submit')}
                         className="w-fit h-fit"
                     >
                         <Spinner status={loading}> {t('request_form.submit')} </Spinner>
@@ -146,30 +143,6 @@ export default function RequestServiceLayout() {
                 </div>
             </div>
 
-            {!user?.phoneVerified &&
-                <div className="group/hint flex max-md:flex-col gap-6 justify-center md:items-end p-3 md:p-4 border border-warning/75 bg-warning/8 rounded-xl">
-                    <div className="w-full">
-                        <div>
-                            <ICONS.exclamationTriangle className="size-6 text-warning" />
-                            <span className="font-medium text-lg text-warning group-hover/hint:text-foreground group-active/hint:text-foreground"> {t('request_form.verification_required')} </span>
-                        </div>
-                        <p className="text-xs md:text-sm text-warning group-hover/hint:text-foreground group-active/hint:text-foreground mix-blend-multiply"> {t('request_form.verification_description')} </p>
-                    </div>
-                    <button
-                        onClick={() => setShowVerifyModal(true)}
-                        className="font-medium text-sm text-center text-white min-w-max h-fit max-md:w-full px-3 py-1 border border-warning bg-warning/75 rounded-lg hover:text-white active:text-white hover:bg-warning active:bg-warning">
-                        {t('request_form.get_verified')}
-                    </button>
-                </div>
-            }
-
-            <PhoneVerificationModal
-                isOpen={showVerifyModal}
-                onClose={() => setShowVerifyModal(false)}
-                onSuccess={() => {
-                    window.location.reload();
-                }}
-            />
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-8 w-full h-fit" id="service-request-form">
 
@@ -245,7 +218,7 @@ export default function RequestServiceLayout() {
                         <div className="flex max-xs:flex-col md:flex-row gap-3 md:gap-4 w-full md:w-fit mt-4">
                             <PButton type="submit" form="service-request-form"
                                 className="w-full h-fit"
-                                disabled={loading || !user?.phoneVerified}
+                                disabled={loading}
                             >
                                 <Spinner status={loading}> {t('request_form.submit')} </Spinner>
                             </PButton>

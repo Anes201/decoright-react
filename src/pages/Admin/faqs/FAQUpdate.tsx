@@ -1,10 +1,10 @@
+import Spinner from "@/components/common/Spinner";
+import FAQForm from "@/components/layout/admin/faqs/FAQForm";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import FAQForm from "@/components/layout/admin/faqs/FAQForm";
 import { PATHS } from "@/routers/Paths";
-import { ICONS } from "@/icons";
 import { AdminService, type FAQ } from "@/services/admin.service";
-import Spinner from "@/components/common/Spinner";
+import { ChevronRight } from "@/icons";
 
 export default function FAQUpdatePage() {
     const { id } = useParams();
@@ -34,7 +34,7 @@ export default function FAQUpdatePage() {
                     <div className="flex flex-col gap-1 border-b border-muted/10 pb-6">
                         <div className="flex items-center gap-2 text-muted mb-2">
                             <Link to={PATHS.ADMIN.FAQ_LIST} className="hover:text-primary transition-colors text-sm">FAQ Management</Link>
-                            <ICONS.chevronRight className="size-3" />
+                            <ChevronRight className="size-3" />
                             <span className="text-sm">Edit</span>
                         </div>
                         <h1 className="font-bold text-2xl tracking-tight">Update FAQ Item</h1>

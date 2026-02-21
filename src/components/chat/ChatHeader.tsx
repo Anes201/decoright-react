@@ -1,8 +1,8 @@
 
 import { Link } from 'react-router-dom';
-import { ICONS } from '@/icons';
 import { PATHS } from '@/routers/Paths';
 import { useChat } from '@/hooks/useChat';
+import { ArrowLeft, Eye } from '@/icons';
 
 export default function ChatHeader({ selected, rightActions }: { selected?: any, rightActions?: React.ReactNode } = {}) {
 
@@ -20,7 +20,7 @@ export default function ChatHeader({ selected, rightActions }: { selected?: any,
         <div className="flex items-center gap-3 w-full p-2 pb-4 border-b border-muted/15 shrink-0">
             <nav className="w-fit h-fit">
                 <Link to={backPath} className="flex p-2 border border-muted/15 bg-surface/25 rounded-full hover:bg-emphasis transition-colors">
-                    <ICONS.arrowLeft className="size-5 text-muted" />
+                    <ArrowLeft className="size-5 text-muted" />
                 </Link>
             </nav>
 
@@ -52,7 +52,7 @@ export default function ChatHeader({ selected, rightActions }: { selected?: any,
                                 className="flex items-center gap-1.5 px-2.5 p-1 md:py-1.5 text-xs font-medium border border-muted/25 rounded-full hover:bg-emphasis transition-colors"
                                 title="View Request Details"
                             >
-                                <ICONS.eye className="size-4" />
+                                <Eye className="size-4" />
                                 <span className="hidden sm:inline">View Request</span>
                             </Link>
                         )}

@@ -1,9 +1,9 @@
 
 import { useState, useEffect } from "react"
-import { ICONS } from "@/icons";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { AdminService } from "@/services/admin.service";
 import { useTranslation } from "react-i18next";
+import { Phone, Envelope, MapPin } from "@/icons";
 
 export function ContactCard({ children }: any) {
     return (
@@ -25,7 +25,7 @@ export function ContactCardList() {
             <ContactCard>
                 {/* Card Icon */}
                 <div className="p-2 ring-1 ring-muted/15 rounded-lg w-fit bg-surface">
-                    {ICONS.phone({ className: 'size-6' })}
+                    <Phone className="size-6" />
                 </div>
 
                 <a href={`tel:${primaryPhone}`} className="space-y-3">
@@ -42,7 +42,7 @@ export function ContactCardList() {
             <ContactCard>
                 {/* Card Icon */}
                 <div className="p-2 ring-1 ring-muted/15 rounded-lg w-fit bg-surface">
-                    {ICONS.envelope({ className: 'size-6' })}
+                    <Envelope className="size-6" />
                 </div>
 
                 <a href={`mailto:${primaryEmail}`} className="space-y-3">
@@ -58,7 +58,7 @@ export function ContactCardList() {
             <ContactCard>
                 {/* Card Icon */}
                 <div className="p-2 ring-1 ring-muted/15 rounded-lg w-fit bg-surface">
-                    {ICONS.mapPin({ className: 'size-6' })}
+                    <MapPin className="size-6" />
                 </div>
 
                 <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer" className="space-y-3">

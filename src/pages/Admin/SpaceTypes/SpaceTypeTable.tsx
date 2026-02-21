@@ -1,7 +1,7 @@
 import { SpaceTypesService, type SpaceType } from '@/services/space-types.service';
-import { ICONS } from '@/icons';
 import { useState } from 'react';
 import { useConfirm } from '@/components/confirm';
+import { Cog, Folder, PencilSquare, Trash } from '@/icons';
 import toast from 'react-hot-toast';
 
 interface SpaceTypeTableProps {
@@ -64,7 +64,7 @@ export default function SpaceTypeTable({ spaceTypes, onEdit, onRefresh }: SpaceT
                     {spaceTypes.length === 0 ? (
                         <tr>
                             <td colSpan={5} className="px-4 py-12 text-center text-muted">
-                                <ICONS.folder className="size-12 mx-auto mb-2 opacity-50" />
+                                <Folder className="size-12 mx-auto mb-2 opacity-50" />
                                 <p>No space types found</p>
                             </td>
                         </tr>
@@ -84,7 +84,7 @@ export default function SpaceTypeTable({ spaceTypes, onEdit, onRefresh }: SpaceT
                                             } ${togglingId === spaceType.id ? 'opacity-50 cursor-not-allowed' : ''}`}
                                     >
                                         {togglingId === spaceType.id ? (
-                                            <ICONS.cog className="size-3 animate-spin inline" />
+                                            <Cog className="size-3 animate-spin inline" />
                                         ) : spaceType.is_active ? (
                                             'Active'
                                         ) : (
@@ -98,14 +98,14 @@ export default function SpaceTypeTable({ spaceTypes, onEdit, onRefresh }: SpaceT
                                             onClick={() => onEdit(spaceType)}
                                             className="inline-flex items-center gap-1 px-3 py-1 text-sm font-medium text-primary hover:bg-primary/10 rounded-lg transition-colors"
                                         >
-                                            <ICONS.pencilSquare className="size-4" />
+                                            <PencilSquare className="size-4" />
                                             Edit
                                         </button>
                                         <button
                                             onClick={() => handleDelete(spaceType)}
                                             className="inline-flex items-center gap-1 px-3 py-1 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                                         >
-                                            <ICONS.trash className="size-4" />
+                                            <Trash className="size-4" />
                                             Delete
                                         </button>
                                     </div>

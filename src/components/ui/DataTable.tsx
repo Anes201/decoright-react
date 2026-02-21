@@ -1,7 +1,6 @@
 
 
-import { ICONS } from '@/icons';
-// components/Table.tsx
+import { Funnel, ChevronDown, EllipsisHorizontal, MagnifyingGlass } from '@/icons';
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 
 type Column<T = any> = {
@@ -217,7 +216,7 @@ export default function Table<T extends Record<string, any>>(props: {
           title="Row actions"
         >
           {/* simple 3-dot icon */}
-          <ICONS.ellipsisHorizontal className="size-5 text-muted" />
+          <EllipsisHorizontal className="size-5 text-muted" />
         </button>
 
         {isOpen && (
@@ -310,7 +309,7 @@ export default function Table<T extends Record<string, any>>(props: {
           <label htmlFor="table-search" className="sr-only">Search</label>
           <div className="relative">
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <ICONS.magnifyingGlass className=" size-4 text-muted" />
+              <MagnifyingGlass className=" size-4 text-muted" />
             </div>
             <input
               id="table-search" value={search} onChange={(e) => setSearch(e.target.value)} type="text" placeholder={searchPlaceholder}
@@ -326,9 +325,9 @@ export default function Table<T extends Record<string, any>>(props: {
               <button id="dropdownDefaultButton" onClick={() => setDropdownOpen(v => !v)} type="button"
                 className="space-x-1 shrink-0 inline-flex items-center justify-center text-body bg-emphasis/75 box-border border border-muted/25 hover:text-heading shadow-xs focus:outline-1 outline-muted/45 font-medium leading-5 rounded-lg text-sm px-3 py-2"
               >
-                <ICONS.funnel className="size-4 text-muted" />
+                <Funnel className="size-4 text-muted" />
                 <span className="max-md:hidden"> Filter by </span>
-                <ICONS.chevronDown className="size-4 text-muted" />
+                <ChevronDown className="size-4 text-muted" />
               </button>
 
               {dropdownOpen && (

@@ -1,5 +1,5 @@
 
-import { ICONS } from '@/icons';
+import { ChevronRight, XMark } from '@/icons';
 import { useTranslation } from 'react-i18next';
 import { allowedLocales } from '@/constants';
 import i18n from '@/utils/i18n';
@@ -39,7 +39,7 @@ export default function MenuLanguageSelectorModal({ isOpen, onClose, onSuccess }
                     <div className="flex justify-between w-full h-fit border border-muted/15 p-2 rounded-lg">
                         <h2 className="text-sm font-semibold"> { t('nav.language') } </h2>
                         <button type="button" title={ t('common.exit') } area-label={ t('common.exit') } onClick={onClose}>
-                            <ICONS.xMark />
+                            <XMark />
                         </button>
                     </div>
 
@@ -48,7 +48,7 @@ export default function MenuLanguageSelectorModal({ isOpen, onClose, onSuccess }
                         { languageChoices.map((lang) => (
                             <li key={lang.value} onClick={() => handleChange(lang.value)}
                                 className="flex items-center justify-between font-medium px-2 py-4 border-b border-b-muted/15 cursor-pointer hover:bg-emphasis active:bg-emphasis"
-                                > <span> { lang.label } </span> <ICONS.chevronRight className="size-4 rtl:rotate-180" />
+                                > <span> { lang.label } </span> <ChevronRight className="size-4 rtl:rotate-180" />
                             </li>
                         ))}
                     </ul>

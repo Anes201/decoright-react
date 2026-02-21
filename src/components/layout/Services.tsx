@@ -1,25 +1,25 @@
+import 'swiper/swiper.css';
+import 'swiper/swiper-bundle.css';
+
+import ZoomImage from "@components/ui/ZoomImage"
 import { useEffect, useState, type CSSProperties } from 'react';
 import { useTranslation } from "react-i18next"
 import { ServiceTypesService, type ServiceType } from "@/services/service-types.service"
-import ZoomImage from "@components/ui/ZoomImage"
-import { ICONS } from "@/icons"
 import { Navigation, Pagination } from 'swiper/modules';
-
-import 'swiper/swiper.css';
-import 'swiper/swiper-bundle.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { PCTALink, SCTALink } from '../ui/CTA';
 import { PATHS } from '@/routers/Paths';
+import { Cog, Photo } from '@/icons';
 
-const dummyCardImg = "/public/living-room.png";
-const dummyCardLamps = "/public/ceiling-lamps.svg";
+const dummyCardImg = "/living-room.png";
+const dummyCardLamps = "/ceiling-lamps.svg";
 
-export function ServiceCardItem({service}:{service:ServiceType}) {
+export function ServiceCardItem({ service }: { service: ServiceType }) {
 
     const { i18n } = useTranslation();
     const { t } = useTranslation();
 
-    const getLocalizedLabel = (service:ServiceType) => {
+    const getLocalizedLabel = (service: ServiceType) => {
         const lang = i18n.language
         if (lang === "ar" && service.display_name_ar) return service.display_name_ar
         if (lang === "fr" && service.display_name_fr) return service.display_name_fr
@@ -35,7 +35,7 @@ export function ServiceCardItem({service}:{service:ServiceType}) {
                         <ZoomImage src={service.image_url} alt={service.display_name_en} />
                     ) : (
                         <div className="w-full h-full flex items-center justify-center opacity-10">
-                            <ICONS.photo className="size-12" />
+                            <Photo className="size-12" />
                         </div>
                     )}
                 </div>
@@ -111,17 +111,17 @@ export function ServiceCardList() {
         if (!lg.addEventListener) lg.addListener?.(handler);
 
         return () => {
-        sm.removeEventListener?.("change", handler);
-        lg.removeEventListener?.("change", handler);
-        if (!sm.removeEventListener) sm.removeListener?.(handler);
-        if (!lg.removeEventListener) lg.removeListener?.(handler);
+            sm.removeEventListener?.("change", handler);
+            lg.removeEventListener?.("change", handler);
+            if (!sm.removeEventListener) sm.removeListener?.(handler);
+            if (!lg.removeEventListener) lg.removeListener?.(handler);
         };
     }, []);
 
     if (loading) {
         return (
             <div className="w-full flex justify-center py-20 text-muted">
-                <ICONS.cog className="size-10 animate-spin" />
+                <Cog className="size-10 animate-spin" />
             </div>
         )
     }

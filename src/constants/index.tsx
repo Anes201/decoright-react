@@ -1,7 +1,7 @@
 
-import { ICONS } from "@/icons"
+import { Facebook, Instagram, Pinterest, Tiktok, Telegram, Whatsapp, XTwitter, Youtube } from "@/icons";
 
-const userProfile = "/public/user.png"
+const userProfile = "/user.png"
 // const SpacesPlaning = "/services/IMG_3766.jpg";
 // const ColorConsultation = "/services/IMG_3767.jpg";
 // const InteriorDesign = "/services/IMG_20260116_230617.jpg";
@@ -279,23 +279,23 @@ export const showcases = [
 
 
 export const SocialMediaUrlFields = [
-    { id: '1', label: 'Facebook', placeholder: 'https://facebook.com/@example/', icon: <ICONS.facebook className="size-6" /> },
-    { id: '2', label: 'Tiktok', placeholder: 'https://tiktok.com/@example/', icon: <ICONS.tiktok className="size-6" /> },
-    { id: '3', label: 'Instagram', placeholder: 'https://instagram.com/example/', icon: <ICONS.instagram className="size-6" /> },
-    { id: '4', label: 'Youtube', placeholder: 'https://youtube.com/@example/', icon: <ICONS.youtube className="size-6" /> },
-    { id: '5', label: 'Pinterest', placeholder: 'https://pinterest.com/example/', icon: <ICONS.pinterest className="size-6" /> },
-    { id: '8', label: 'X (Twitter)', placeholder: 'https://x.com/@example/', icon: <ICONS.xTwitter className="size-6" /> },
+    { id: '1', label: 'Facebook', placeholder: 'https://facebook.com/@example/', icon: Facebook  },
+    { id: '2', label: 'Tiktok', placeholder: 'https://tiktok.com/@example/', icon: Tiktok  },
+    { id: '3', label: 'Instagram', placeholder: 'https://instagram.com/example/', icon: Instagram  },
+    { id: '4', label: 'Youtube', placeholder: 'https://youtube.com/@example/', icon: Youtube  },
+    { id: '5', label: 'Pinterest', placeholder: 'https://pinterest.com/example/', icon: Pinterest  },
+    { id: '8', label: 'X (Twitter)', placeholder: 'https://x.com/@example/', icon: XTwitter  },
 ]
 
 export const SocialMediaPhoneFields = [
-    { id: '6', label: 'Whatsapp', placeholder: '+213123456789', icon: <ICONS.whatsapp className="size-6" /> },
-    { id: '7', label: 'Telegram', placeholder: '+213123456789', icon: <ICONS.telegram className="size-6" /> },
+    { id: '6', label: 'Whatsapp', placeholder: '+213123456789', icon: Whatsapp  },
+    { id: '7', label: 'Telegram', placeholder: '+213123456789', icon: Telegram  },
 ]
 
 export const allowedLocales = ['en', 'fr', 'ar']
 
 export const languageChoices = [
-    { id:'en', label: 'English', key:'english', value: 'en', icon: null, },
-    { id:'fr', label: 'French', key:'french', value: 'fr', icon: null, },
-    { id:'ar', label: 'Arabic', key:'arabic', value: 'ar', icon: null, },
+    { id: 'en', label: 'English', key: 'english', value: 'en', icon: null, },
+    { id: 'fr', label: 'French', key: 'french', value: 'fr', icon: null, },
+    { id: 'ar', label: 'Arabic', key: 'arabic', value: 'ar', icon: null, },
 ]

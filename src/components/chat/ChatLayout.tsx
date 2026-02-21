@@ -2,13 +2,10 @@
 // ChatLayout.tsx - Main layout for chat pages
 import ChatList from '@components/chat/ChatList';
 import { Outlet } from 'react-router-dom';
-import { ICONS } from '@/icons';
 import { useChat } from "@/hooks/useChat";
 import { ChatProvider } from '@/contexts/ChatContext';
-
-
+import { ChatBubbleOvalLeftEllipsis } from '@/icons';
 import { useTranslation } from 'react-i18next';
-
 
 function ChatLayoutInner() {
   const { selectedRoom, roomIdFromUrl } = useChat();
@@ -34,7 +31,7 @@ function ChatLayoutInner() {
           :
           <div className="flex flex-col items-center justify-center w-full h-full text-center">
             <div className="p-6 rounded-full bg-primary/5 mb-6">
-              <ICONS.chatBubbleOvalLeftEllipsis className="size-16 text-primary/40" />
+              <ChatBubbleOvalLeftEllipsis className="size-16 text-primary/40" />
             </div>
             <h3 className="text-xl font-semibold mb-2"> {t('chat.select_request')} </h3>
             <p className="text-muted text-sm max-w-xs">{t('chat.select_description')}</p>

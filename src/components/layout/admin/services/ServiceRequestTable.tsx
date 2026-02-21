@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
 import Table from "@/components/ui/DataTable";
+import { Link } from 'react-router-dom';
 import { AdminService } from "@/services/admin.service";
 import { useEffect, useState } from "react";
-import { ICONS } from "@/icons";
+import { ChatBubbleOvalLeftEllipsis } from "@/icons";
 
 const columns = [
     {
@@ -24,7 +24,7 @@ const columns = [
                     to={`/admin/chats?room=${chat_id}`}
                     className="flex items-center gap-1 text-primary hover:underline font-medium"
                 >
-                    <ICONS.chatBubbleOvalLeftEllipsis className="size-4" />
+                    <ChatBubbleOvalLeftEllipsis className="size-4" />
                     Open Chat
                 </Link>
             ) : <span className="text-muted text-xs italic">No chat room</span>;
@@ -84,7 +84,7 @@ export default function ServiceRequestTable() {
                     <div className="flex flex-col gap-2 w-full p-2">
                         {chat_id && (
                             <Link to={`/admin/chats?room=${chat_id}`} className="px-2 py-1.5 w-full text-sm text-start hover:bg-emphasis/10 rounded flex items-center gap-2 text-primary font-medium">
-                                <ICONS.chatBubbleOvalLeftEllipsis className="size-4" />
+                                <ChatBubbleOvalLeftEllipsis className="size-4" />
                                 Chat with Client
                             </Link>
                         )}

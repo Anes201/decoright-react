@@ -1,8 +1,8 @@
 
-import { useEffect, useState } from 'react';
-import { ICONS } from '@/icons';
-import { AdminService, type UserProfile, type ServiceRequest } from '@/services/admin.service';
 import useAuth from '@/hooks/useAuth';
+import { useEffect, useState } from 'react';
+import { AdminService, type UserProfile, type ServiceRequest } from '@/services/admin.service';
+import { User, Calendar, Cog, XMark, ArrowPath, RectangleStack, MapPin, ExclamationTriangle } from '@/icons';
 
 interface UserDetailDrawerProps {
     user: (UserProfile & { total_requests?: number }) | null;
@@ -121,9 +121,9 @@ export default function UserDetailDrawer({ user, isOpen, onClose, onUserUpdate, 
     if (!user) return null;
 
     const tabs = [
-        { id: 'profile', label: 'Profile Info', icon: ICONS.user },
-        { id: 'history', label: 'Request History', icon: ICONS.calendar },
-        { id: 'actions', label: 'Admin Actions', icon: ICONS.cog },
+        { id: 'profile', label: 'Profile Info', icon: User },
+        { id: 'history', label: 'Request History', icon: Calendar },
+        { id: 'actions', label: 'Admin Actions', icon: Cog },
     ] as const;
 
     return (
@@ -156,7 +156,7 @@ export default function UserDetailDrawer({ user, isOpen, onClose, onUserUpdate, 
                                 </div>
                             </div>
                             <button onClick={onClose} className="p-2 hover:bg-emphasis rounded-full transition-colors">
-                                <ICONS.xMark className="size-6 text-muted" />
+                                <XMark className="size-6 text-muted" />
                             </button>
                         </div>
 
@@ -266,7 +266,7 @@ export default function UserDetailDrawer({ user, isOpen, onClose, onUserUpdate, 
                                 >
                                     {isSaving ? (
                                         <>
-                                            <ICONS.arrowPath className="size-4 animate-spin" />
+                                            <ArrowPath className="size-4 animate-spin" />
                                             Saving...
                                         </>
                                     ) : (
@@ -283,7 +283,7 @@ export default function UserDetailDrawer({ user, isOpen, onClose, onUserUpdate, 
                                     <div className="py-10 text-center text-muted animate-pulse">Loading history...</div>
                                 ) : requests.length === 0 ? (
                                     <div className="py-10 text-center text-muted border border-dashed border-muted/20 rounded-xl">
-                                        <ICONS.rectangleStack className="size-8 mx-auto mb-2 opacity-50" />
+                                        <RectangleStack className="size-8 mx-auto mb-2 opacity-50" />
                                         <p>No requests found for this user.</p>
                                     </div>
                                 ) : (
@@ -309,11 +309,11 @@ export default function UserDetailDrawer({ user, isOpen, onClose, onUserUpdate, 
                                                 </div>
                                                 <div className="flex items-center gap-4 text-xs text-muted">
                                                     <span className="flex items-center gap-1">
-                                                        <ICONS.calendar className="size-3" />
+                                                        <Calendar className="size-3" />
                                                         {new Date(req.created_at!).toLocaleDateString()}
                                                     </span>
                                                     <span className="flex items-center gap-1">
-                                                        <ICONS.mapPin className="size-3" />
+                                                        <MapPin className="size-3" />
                                                         {req.location}
                                                     </span>
                                                 </div>
@@ -329,7 +329,7 @@ export default function UserDetailDrawer({ user, isOpen, onClose, onUserUpdate, 
                             <div className="space-y-6">
                                 <div className="p-4 rounded-xl bg-red-500/5 border border-red-500/10 space-y-4">
                                     <h3 className="text-sm font-bold text-red-600 uppercase tracking-wide flex items-center gap-2">
-                                        <ICONS.exclamationTriangle className="size-4" />
+                                        <ExclamationTriangle className="size-4" />
                                         Danger Zone
                                     </h3>
 

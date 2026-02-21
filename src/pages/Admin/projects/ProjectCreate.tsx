@@ -1,7 +1,7 @@
 import ProjectForm from "@/components/layout/admin/projects/ProjectForm";
 import { Link } from "react-router-dom";
 import { PATHS } from "@/routers/Paths";
-import { ICONS } from "@/icons";
+import { ChevronRight } from "@/icons";
 
 export default function ProjectCreatePage() {
     return (
@@ -11,7 +11,7 @@ export default function ProjectCreatePage() {
                     <div className="flex flex-col gap-1 border-b border-muted/10 pb-6">
                         <div className="flex items-center gap-2 text-muted mb-2">
                             <Link to={PATHS.ADMIN.PROJECT_LIST} className="hover:text-primary transition-colors">Projects</Link>
-                            <ICONS.chevronRight className="size-3" />
+                            <ChevronRight className="size-3" />
                             <span>Create</span>
                         </div>
                         <h1 className="font-bold text-2xl tracking-tight">Create a Project</h1>

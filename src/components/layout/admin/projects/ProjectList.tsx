@@ -1,14 +1,14 @@
+import toast from "react-hot-toast";
+import ZoomImage from "@/components/ui/ZoomImage";
+import Spinner from "@/components/common/Spinner";
+import type { SpaceType } from "@/services/space-types.service";
+import type { ServiceType } from "@/services/service-types.service";
 import { Link } from "react-router-dom"
 import { useState, useEffect, useRef } from "react";
 import { PATHS } from "@/routers/Paths";
-import ZoomImage from "@/components/ui/ZoomImage";
 import { AdminService } from "@/services/admin.service";
-import { ICONS } from "@/icons";
-import Spinner from "@/components/common/Spinner";
-import toast from "react-hot-toast";
 import { useConfirm } from "@components/confirm";
-import type { ServiceType } from "@/services/service-types.service";
-import type { SpaceType } from "@/services/space-types.service";
+import { MagnifyingGlass, AdjustmentsHorizontal, ArrowDownWideShort, ArrowUpWideShort, CaretDown, ChevronUp, EllipsisVertical, Folder, InformationCircle, PencilSquare, Plus, Trash } from "@/icons";
 
 
 export type ProjectAction = "edit" | "publish" | "private" | "hide" | "delete";
@@ -168,7 +168,7 @@ export default function ProjectCardListLayout ({projects, onAction, serviceTypes
         <div className="flex max-xl:flex-col items-center gap-2 mb-2 sm:mb-4 w-full h-fit">
             <div className="flex gap-2 w-full">
                 <div className="flex items-center min-w-40 w-full rounded-full border border-muted/15 bg-surface">
-                    <span className="p-2"> <ICONS.magnifyingGlass className="size-5 text-muted" /> </span>
+                    <span className="p-2"> <MagnifyingGlass className="size-5 text-muted" /> </span>
                     <input
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
@@ -181,7 +181,7 @@ export default function ProjectCardListLayout ({projects, onAction, serviceTypes
                 onClick={() => {setFiltersOpen(!filtersOpen)}}
                 area-label="Search filters"
                 className="md:hidden p-2 w-fit h-fit rounded-full border border-muted/15 bg-surface"
-                > {filtersOpen ? <ICONS.chevronUp/> : <ICONS.adjustmentsHorizontal/> } </button>
+                > {filtersOpen ? <ChevronUp/> : <AdjustmentsHorizontal/> } </button>
             </div>
 
             <div
@@ -199,7 +199,7 @@ export default function ProjectCardListLayout ({projects, onAction, serviceTypes
                             <option key={s?.id} value={s?.display_name_en}>{s?.display_name_en}</option>
                         ))}
                     </select>
-                    <span className="absolute flex items-center px-2 pointer-events-none inset-y-0 right-0"> <ICONS.caretDown className="size-4"/> </span>
+                    <span className="absolute flex items-center px-2 pointer-events-none inset-y-0 right-0"> <CaretDown className="size-4"/> </span>
                 </div>
 
                 <div className="relative flex items-center max-xs:w-full h-fit rounded-full border border-muted/15 bg-surface">
@@ -212,7 +212,7 @@ export default function ProjectCardListLayout ({projects, onAction, serviceTypes
                             <option key={s?.id} value={s?.display_name_en}>{s?.display_name_en}</option>
                         ))}
                     </select>
-                    <span className="absolute flex items-center px-2 pointer-events-none inset-y-0 right-0"> <ICONS.caretDown className="size-4"/> </span>
+                    <span className="absolute flex items-center px-2 pointer-events-none inset-y-0 right-0"> <CaretDown className="size-4"/> </span>
                 </div>
 
                 <div className="relative flex items-center max-xs:w-full h-fit rounded-full border border-muted/15 bg-surface">
@@ -226,13 +226,13 @@ export default function ProjectCardListLayout ({projects, onAction, serviceTypes
                         ))}
 
                     </select>
-                    <span className="absolute flex items-center px-2 pointer-events-none inset-y-0 right-0"> <ICONS.caretDown className="size-4"/> </span>
+                    <span className="absolute flex items-center px-2 pointer-events-none inset-y-0 right-0"> <CaretDown className="size-4"/> </span>
                 </div>
 
                 <div className="relative flex items-center max-xs:w-full h-fit rounded-full border border-muted/15 bg-surface">
                     <button className="px-2 md:px-3 py-2 border-r border-r-muted/25"
                         title={sortDir === "desc" ? 'Descending Sort' : 'Ascending Sort'} onClick={() => setSortDir(d => d === "desc" ? "asc" : "desc")} >
-                        {sortDir === "desc" ? <ICONS.arrowDownWideShort className="size-4 md:size-5"/> : <ICONS.arrowUpWideShort className="size-4 md:size-5"/>}
+                        {sortDir === "desc" ? <ArrowDownWideShort className="size-4 md:size-5"/> : <ArrowUpWideShort className="size-4 md:size-5"/>}
                     </button>
                     <div className="relative flex items-center w-full">
                         <select value={sortBy} onChange={e => setSortBy(e.target.value as any)}
@@ -241,7 +241,7 @@ export default function ProjectCardListLayout ({projects, onAction, serviceTypes
                             <option value="likes">Most liked</option>
                             <option value="views">Most viewed</option>
                         </select>
-                        <span className="absolute flex items-center px-2 pointer-events-none inset-y-0 right-0"> <ICONS.caretDown className="size-4"/> </span>
+                        <span className="absolute flex items-center px-2 pointer-events-none inset-y-0 right-0"> <CaretDown className="size-4"/> </span>
                     </div>
                 </div>
             </div>
@@ -286,7 +286,7 @@ export default function ProjectCardListLayout ({projects, onAction, serviceTypes
                                     onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleMenu(project.id); }}
                                     className="relative inline-flex items-center justify-center sm:p-2 rounded-full ring-muted/15 hover:ring-1 focus:ring-1 hover:bg-surface active:bg-surface focus:outline-none"
                                     title="Actions"
-                                    >   <ICONS.ellipsisVertical/>
+                                    >   <EllipsisVertical/>
                                         {openId === project.id && (
                                         <div role="menu" aria-label={`Actions for ${project.title}`}
                                             className={"absolute right-0 w-45 rounded-md border border-muted/25 bg-surface shadow-xs z-20 overflow-hidden " + (placement === "bottom" ? "top-full mt-2" : "bottom-full mb-2")}
@@ -313,7 +313,7 @@ export default function ProjectCardListLayout ({projects, onAction, serviceTypes
         </ul>
         :
         <div className="flex items-center justify-center gap-2 w-full h-full border border-red-400">
-            <ICONS.informationCircle className="size-6" />
+            <InformationCircle className="size-6" />
             <p> No projects match your current search or filters. </p>
             <button type="button" onClick={handleResetFilters} className="font-medium underline"> Reset filters </button>
         </div>
@@ -342,14 +342,14 @@ export function ProjectCard({ project, onDelete }: { project: any, onDelete: (id
                                 className="p-2 text-muted hover:text-primary hover:bg-primary/10 rounded-lg transition-all"
                                 title="Edit Project"
                             >
-                                <ICONS.pencilSquare className="size-4" />
+                                <PencilSquare className="size-4" />
                             </Link>
                             <button
                                 onClick={() => onDelete(project.id)}
                                 className="p-2 text-muted hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
                                 title="Delete Project"
                             >
-                                <ICONS.trash className="size-4" />
+                                <Trash className="size-4" />
                             </button>
                         </div>
                     </div>
@@ -426,14 +426,14 @@ export function ProjectCardList() {
         return (
             <div className="flex flex-col items-center justify-center p-20 border-2 border-dashed border-muted/10 rounded-2xl bg-surface/50 text-center">
                 <div className="p-4 bg-primary/10 rounded-full mb-4">
-                    <ICONS.folder className="size-10 text-primary" />
+                    <Folder className="size-10 text-primary" />
                 </div>
                 <h3 className="font-semibold text-lg mb-1">No Projects Found</h3>
                 <p className="text-sm text-muted max-w-[300px] mb-6">
                     You haven't added any real-world projects yet.
                 </p>
                 <Link to={PATHS.ADMIN.PROJECT_CREATE} className="p-button">
-                    <ICONS.plus className="size-4 mr-2" />
+                    <Plus className="size-4 mr-2" />
                     Create Your First Project
                 </Link>
             </div>

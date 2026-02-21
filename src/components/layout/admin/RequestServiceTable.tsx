@@ -1,11 +1,11 @@
+import Table from "@/components/ui/DataTable";
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Table from "@/components/ui/DataTable";
 import { AdminService } from "@/services/admin.service";
-import { ICONS } from "@/icons";
 import { PATHS } from '@/routers/Paths';
 import { useConfirm } from "@components/confirm";
 import { toast } from 'react-hot-toast';
+import { ChatBubbleOvalLeftEllipsis, ArrowPath, Eye, Trash, RectangleStack } from "@/icons";
 
 interface RequestServiceTableProps {
     externalData?: any[];
@@ -120,7 +120,7 @@ export default function RequestServiceTable({ externalData, onRefresh }: Request
                 <div className="relative group w-full" onClick={(e) => e.stopPropagation()}>
                     {updatingStatusId === row.id ? (
                         <div className="flex items-center gap-2 text-xs text-muted">
-                            <ICONS.arrowPath className="size-3 animate-spin" /> Updating...
+                            <ArrowPath className="size-3 animate-spin" /> Updating...
                         </div>
                     ) : (
                         <select
@@ -167,11 +167,11 @@ export default function RequestServiceTable({ externalData, onRefresh }: Request
                     title="Open Chat with Client"
                     onClick={(e) => e.stopPropagation()}
                 >
-                    <ICONS.chatBubbleOvalLeftEllipsis className="size-4.5" />
+                    <ChatBubbleOvalLeftEllipsis className="size-4.5" />
                 </Link>
             ) : (
                 <span title="No Chat Available" className="inline-flex items-center justify-center size-9 rounded-full bg-muted/10 text-muted cursor-not-allowed">
-                    <ICONS.chatBubbleOvalLeftEllipsis className="size-4.5 opacity-40" />
+                    <ChatBubbleOvalLeftEllipsis className="size-4.5 opacity-40" />
                 </span>
             )
         },
@@ -194,7 +194,7 @@ export default function RequestServiceTable({ externalData, onRefresh }: Request
 
     if (loading && displayData.length === 0) return (
         <div className="p-20 text-center flex flex-col items-center gap-4 animate-pulse">
-            <ICONS.rectangleStack className="size-12 text-muted/20" />
+            <RectangleStack className="size-12 text-muted/20" />
             <p className="text-muted font-medium">Loading requests...</p>
         </div>
     );
@@ -222,7 +222,7 @@ export default function RequestServiceTable({ externalData, onRefresh }: Request
                             onClick={() => handleRowClick(row)}
                             className="px-2 py-2 w-full text-sm text-start hover:bg-emphasis rounded-lg flex items-center gap-2.5 font-medium text-primary transition-colors"
                         >
-                            <ICONS.eye className="size-4" />
+                            <Eye className="size-4" />
                             View Details
                         </button>
                         {row.chat_id && (
@@ -231,7 +231,7 @@ export default function RequestServiceTable({ externalData, onRefresh }: Request
                                 className="px-2 py-2 w-full text-sm text-start hover:bg-emphasis rounded-lg flex items-center gap-2.5 font-medium transition-colors"
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <ICONS.chatBubbleOvalLeftEllipsis className="size-4" />
+                                <ChatBubbleOvalLeftEllipsis className="size-4" />
                                 Open Chat
                             </Link>
                         ) || (
@@ -239,7 +239,7 @@ export default function RequestServiceTable({ externalData, onRefresh }: Request
                                     disabled
                                     className="px-2 py-2 w-full text-sm text-start opacity-50 cursor-not-allowed flex items-center gap-2.5 font-medium"
                                 >
-                                    <ICONS.chatBubbleOvalLeftEllipsis className="size-4" />
+                                    <ChatBubbleOvalLeftEllipsis className="size-4" />
                                     No Chat Room
                                 </button>
                             )}
@@ -251,7 +251,7 @@ export default function RequestServiceTable({ externalData, onRefresh }: Request
                             }}
                             className="px-2 py-2 w-full text-sm text-start hover:bg-red-500/10 hover:text-red-600 rounded-lg flex items-center gap-2.5 font-medium transition-colors text-red-500/80"
                         >
-                            <ICONS.trash className="size-4" />
+                            <Trash className="size-4" />
                             Delete Request
                         </button>
                     </div>

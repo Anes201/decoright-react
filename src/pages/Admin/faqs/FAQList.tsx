@@ -2,7 +2,7 @@
 import FAQList from "@/components/layout/admin/faqs/FAQList";
 import { Link } from "react-router-dom";
 import { PATHS } from "@/routers/Paths";
-import { ICONS } from "@/icons";
+import { Plus } from "@/icons";
 
 export default function FAQListPage() {
     return (
@@ -15,7 +15,7 @@ export default function FAQListPage() {
                             <p className="text-sm text-muted">Manage the frequently asked questions displayed on the public site.</p>
                         </div>
                         <Link to={PATHS.ADMIN.FAQ_CREATE} className="p-button">
-                            <ICONS.plus className="size-4 mr-2" />
+                            <Plus className="size-4 mr-2" />
                             Add FAQ Item
                         </Link>
                     </div>

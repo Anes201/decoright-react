@@ -1,12 +1,11 @@
 
 
 import ZoomImage from "@/components/ui/ZoomImage";
+import type { ServiceType } from "@/services/service-types.service";
 import { Link } from "react-router-dom"
 import { PATHS } from "@/routers/Paths";
 import { useEffect, useRef, useState } from "react";
-import { ICONS } from "@/icons";
-import type { ServiceType } from "@/services/service-types.service";
-
+import { AdjustmentsHorizontal, ArrowDownWideShort, ArrowUpWideShort, CaretDown, ChevronUp, EllipsisVertical, InformationCircle, MagnifyingGlass, Photo } from "@/icons";
 
 type visibilityStag = {
     id:string;
@@ -145,7 +144,7 @@ if (sortDir === "asc") sorted.reverse();
             <div className="flex max-lg:flex-col items-center gap-2 mb-2 sm:mb-4 w-full h-fit">
                 <div className="flex gap-2 w-full">
                     <div className="flex items-center min-w-40 w-full rounded-full border border-muted/15 bg-surface">
-                        <span className="p-2"> <ICONS.magnifyingGlass className="size-5 text-muted" /> </span>
+                        <span className="p-2"> <MagnifyingGlass className="size-5 text-muted" /> </span>
                         <input
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
@@ -158,7 +157,7 @@ if (sortDir === "asc") sorted.reverse();
                 onClick={() => {setFiltersOpen(!filtersOpen)}}
                 area-label="Search filters"
                 className="md:hidden p-2 w-fit h-fit rounded-full border border-muted/15 bg-surface"
-                > {filtersOpen ? <ICONS.chevronUp/> : <ICONS.adjustmentsHorizontal/> } </button>
+                > {filtersOpen ? <ChevronUp/> : <AdjustmentsHorizontal/> } </button>
                 </div>
 
                 <div
@@ -177,20 +176,20 @@ if (sortDir === "asc") sorted.reverse();
                             ))}
 
                         </select>
-                        <span className="absolute flex items-center px-2 pointer-events-none inset-y-0 right-0"> <ICONS.caretDown className="size-4"/> </span>
+                        <span className="absolute flex items-center px-2 pointer-events-none inset-y-0 right-0"> <CaretDown className="size-4"/> </span>
                     </div>
 
                     <div className="relative flex items-center max-xs:w-full h-fit rounded-full border border-muted/15 bg-surface">
                         <button className="px-2 md:px-3 py-2 border-r border-r-muted/25"
                          title={sortDir === "desc" ? 'Descending Sort' : 'Ascending Sort'} onClick={() => setSortDir(d => d === "desc" ? "asc" : "desc")} >
-                            {sortDir === "desc" ? <ICONS.arrowDownWideShort className="size-4 md:size-5"/> : <ICONS.arrowUpWideShort className="size-4 md:size-5"/>}
+                            {sortDir === "desc" ? <ArrowDownWideShort className="size-4 md:size-5"/> : <ArrowUpWideShort className="size-4 md:size-5"/>}
                         </button>
                         <div className="relative flex items-center w-full">
                             <select value={sortBy} onChange={e => setSortBy(e.target.value as any)}
                             className="flex appearance-none text-xs md:text-sm py-2 pl-2 pr-12 min-w-max w-full cursor-pointer focus:outline-0">
                                 <option value="newest">Newest</option>
                             </select>
-                            <span className="absolute flex items-center px-2 pointer-events-none inset-y-0 right-0"> <ICONS.caretDown className="size-4"/> </span>
+                            <span className="absolute flex items-center px-2 pointer-events-none inset-y-0 right-0"> <CaretDown className="size-4"/> </span>
                         </div>
                     </div>
                 </div>
@@ -208,7 +207,7 @@ if (sortDir === "asc") sorted.reverse();
                                     <div className="xs:min-w-max xs:h-28 aspect-video overflow-hidden">
                                         { service.image_url
                                             ? <ZoomImage src={service.image_url} alt="" className="object-cover h-full w-full rounded-md" />
-                                            : <div className="flex items-center justify-center w-full h-full border border-muted/15 rounded-md"> <ICONS.photo className="size-16 text-muted/30" /> </div>
+                                            : <div className="flex items-center justify-center w-full h-full border border-muted/15 rounded-md"> <Photo className="size-16 text-muted/30" /> </div>
                                         }
                                     </div>
 
@@ -237,7 +236,7 @@ if (sortDir === "asc") sorted.reverse();
                                                 title="Actions"
 
                                             >
-                                                <ICONS.ellipsisVertical/>
+                                                <EllipsisVertical/>
                                                 {openId === service.id && (
                                                     <div role="menu"
                                                         aria-label={`Actions for ${service.display_name_en}`}
@@ -287,7 +286,7 @@ if (sortDir === "asc") sorted.reverse();
                 </ul>
             :
                 <div className="flex items-center justify-center gap-2 w-full h-full">
-                    <ICONS.informationCircle className="size-6" />
+                    <InformationCircle className="size-6" />
                     <p>
                         No services match your current search or filters.
                     </p>

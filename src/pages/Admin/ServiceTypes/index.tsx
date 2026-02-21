@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { ServiceTypesService, type ServiceType } from '@/services/service-types.service';
-import { ICONS } from '@/icons';
-import ServiceTypeTable from './ServiceTypeTable';
-import ServiceTypeForm from './ServiceTypeForm';
+import ServiceTypeTable from '@/pages/Admin/ServiceTypes/ServiceTypeTable';
+import ServiceTypeForm from '@/pages/Admin/ServiceTypes/ServiceTypeForm';
+import { ArrowPath, Cog, Plus } from '@/icons';
 
 export default function ServiceTypes() {
     const [serviceTypes, setServiceTypes] = useState<ServiceType[]>([]);
@@ -61,14 +61,14 @@ export default function ServiceTypes() {
                             onClick={loadServiceTypes}
                             className="px-4 py-2 bg-emphasis text-body rounded-lg hover:bg-neutral-tertiary-medium transition-colors flex items-center gap-2 text-sm font-semibold"
                         >
-                            <ICONS.arrowPath className={`size-4 ${loading ? 'animate-spin' : ''}`} />
+                            <ArrowPath className={`size-4 ${loading ? 'animate-spin' : ''}`} />
                             Refresh
                         </button>
                         <button
                             onClick={handleAdd}
                             className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 text-sm font-semibold"
                         >
-                            <ICONS.plus className="size-4" />
+                            <Plus className="size-4" />
                             Add Service Type
                         </button>
                     </div>
@@ -78,7 +78,7 @@ export default function ServiceTypes() {
                 <div className="flex-1 min-h-0 overflow-hidden">
                     {loading && serviceTypes.length === 0 ? (
                         <div className="h-full flex flex-col items-center justify-center text-muted animate-pulse">
-                            <ICONS.cog className="size-12 animate-spin mb-4" />
+                            <Cog className="size-12 animate-spin mb-4" />
                             <p className="font-medium">Loading service types...</p>
                         </div>
                     ) : (

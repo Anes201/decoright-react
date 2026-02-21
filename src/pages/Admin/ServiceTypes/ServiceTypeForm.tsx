@@ -1,6 +1,7 @@
+
 import { useState, useEffect } from 'react';
 import { ServiceTypesService, type ServiceType, type ServiceTypeInsert, type ServiceTypeUpdate } from '@/services/service-types.service';
-import { ICONS } from '@/icons';
+import { Cog, Photo, XMark } from '@/icons';
 
 interface ServiceTypeFormProps {
     isOpen: boolean;
@@ -127,7 +128,7 @@ export default function ServiceTypeForm({ isOpen, serviceType, onClose, onSucces
                         onClick={onClose}
                         className="p-2 hover:bg-surface/50 rounded-lg transition-colors"
                     >
-                        <ICONS.xMark className="size-5" />
+                        <XMark className="size-5" />
                     </button>
                 </div>
 
@@ -221,7 +222,7 @@ export default function ServiceTypeForm({ isOpen, serviceType, onClose, onSucces
                                 {imagePreview ? (
                                     <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                                 ) : (
-                                    <ICONS.photo className="size-8 text-muted/30" />
+                                    <Photo className="size-8 text-muted/30" />
                                 )}
                             </div>
                             <div className="flex-1">
@@ -287,7 +288,7 @@ export default function ServiceTypeForm({ isOpen, serviceType, onClose, onSucces
                         disabled={loading}
                         className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
                     >
-                        {(loading || uploading) && <ICONS.cog className="size-4 animate-spin" />}
+                        {(loading || uploading) && <Cog className="size-4 animate-spin" />}
                         {uploading ? 'Uploading...' : serviceType ? 'Update' : 'Create'}
                     </button>
                 </div>

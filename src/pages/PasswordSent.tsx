@@ -1,9 +1,9 @@
 
 import HeroImg from "/password/password-sent.svg"
-import { ICONS } from "@/icons";
 import { PATHS } from "@/routers/Paths";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "@/icons";
 
 
 export default function PasswordSent() {
@@ -69,7 +69,7 @@ export default function PasswordSent() {
 
                         <Link to={PATHS.PASSWORD_RESET} onClick={handleGoBack}
                             className="flex items-center gap-2 font-medium text-xs md:text-sm text-center w-fit hover:underline active:underline"
-                        > <ICONS.arrowLeft className="size-4" /> { t('common.go_back') } </Link>
+                        > <ArrowLeft className="size-4" /> { t('common.go_back') } </Link>
 
                         {/* <button
                             type="button"

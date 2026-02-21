@@ -1,15 +1,8 @@
 import { useState, useEffect, lazy } from "react"
 import { SectionHeader } from "@/components/ui/SectionHeader"
-import { Link } from "react-router-dom"
-import { PATHS } from "@/routers/Paths"
 import { AdminService } from "@/services/admin.service"
 import { useTranslation } from "react-i18next"
 import { Hero } from "@/components/layout/Landing"
-
-const ICONS = {
-    chevronRight: lazy(() => import("@/icons").then(module => ({ default: module.ICONS.chevronRight }))),
-    photo: lazy(() => import("@/icons").then(module => ({ default: module.ICONS.photo }))),
-};
 
 const ServiceCardList = lazy(() => import("@components/layout/Services").then(module => ({ default: module.ServiceCardList })));
 const FAQList = lazy(() => import("@components/layout/FAQ").then(module => ({ default: module.FAQList })));
@@ -66,7 +59,7 @@ export default function Landing() {
             </section>
             <section className="content-container relative flex flex-col gap-6 w-full px-3 sm:px-6 md:px-8">
 
-                <div className="absolute top-0 left-0 w-full h-full border-x border-muted/25" />
+                <div className="absolute top-0 left-0 w-full h-full border-x border-muted/25 pointer-events-none" />
 
                 {/* Section Header */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
@@ -74,9 +67,6 @@ export default function Landing() {
                         title={projectsTitle}
                         desc={projectsDescription}
                     />
-                    <Link to={PATHS.PROJECT_LIST} className="flex items-center gap-1 text-primary font-medium text-sm whitespace-nowrap hover:underline">
-                        {t('common.view_all_projects')} <ICONS.chevronRight className="size-4 rtl:rotate-180"/>
-                    </Link>
                 </div>
 
                 {/* Showcase Cards */}

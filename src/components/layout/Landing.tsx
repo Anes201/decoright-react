@@ -2,10 +2,10 @@
 const HeroImgSrc = "/hero-image.jpg";
 import useAuth from "@/hooks/useAuth";
 import { useImageLoaded } from "@/hooks/useImageLoaded";
-import { ICONS } from "@/icons"
 import { PATHS } from "@/routers/Paths"
 import { PCTALink, SCTALink } from "@components/ui/CTA"
 import { useTranslation } from "react-i18next";
+import { ArrowLongRight, Photo } from "@/icons";
 
 export function HeroContentCheckListItem({ content }: { content: string }) {
     return (
@@ -64,7 +64,7 @@ export function HeroCTA() {
             }
             <SCTALink to={PATHS.PROJECT_LIST} className="flex items-center justify-center gap-2 ring-1 ring-muted/15">
                 <span> { t('landing.hero.cta.projects') } </span>
-                <ICONS.arrowLongRight className="rtl:rotate-180 size-4 text-foreground"/>
+                <ArrowLongRight className="rtl:rotate-180 size-4 text-foreground"/>
             </SCTALink>
 
         </div>
@@ -123,14 +123,14 @@ export function Hero({ settings = {} }: { settings?: Record<string, string> }) {
 
                     {!loaded &&
                         <div className="flex w-full h-full items-center justify-center animate-[pulse_2s_ease-in-out_infinite]">
-                            <ICONS.photo className="size-16" />
+                            <Photo className="size-16" />
                         </div>
                     }
                     {/* Hero img must not be lazy loaded */}
                     <img src={HeroImgSrc} alt="Hero Image"
                     className={
                         `${loaded ? 'opacity-100' : 'absolute opacity-0'}
-                        max-lg:pb-0 lg:pl-0 object-cover w-full h-full max-lg:rounded-t-lg lg:rounded-r-xl transition-opacity duration-200 ease-out`
+                        max-lg:pb-0 lg:pl-0 object-cover w-full h-full ring-1 ring-muted/15 max-lg:rounded-t-xl lg:rounded-r-xl transition-opacity duration-200 ease-out`
                     } />
                 </div>
 

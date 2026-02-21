@@ -2,6 +2,7 @@
 import { EmailInput, Input, PhoneInput } from "@/components/ui/Input";
 import { images, SocialMediaPhoneFields, SocialMediaUrlFields } from "@/constants";
 import { companyNameTitle } from "@/constants/company";
+import { Folder } from "@/icons";
 import { SiteSettingsService } from "@/services/site-settings.service";
 import { useEffect, useState, useCallback } from "react";
 
@@ -155,7 +156,7 @@ export default function Settings() {
                                     value={settings[social.label.toLowerCase()] || ''}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(social.label.toLowerCase(), e.target.value)}
                                 >
-                                    <span className="absolute px-1.5 left-0.5 md:left-1"> {social.icon} </span>
+                                    <span className="absolute px-1.5 left-0.5 md:left-1"> {social.icon ? <social.icon /> : <Folder />} </span>
                                 </Input>
                             ))}
 
@@ -169,7 +170,7 @@ export default function Settings() {
                                     value={settings[social.label.toLowerCase()] || ''}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(social.label.toLowerCase(), e.target.value)}
                                 >
-                                    <span className="absolute px-1.5 left-0.5 md:left-1"> {social.icon} </span>
+                                    <span className="absolute px-1.5 left-0.5 md:left-1"> {social.icon ? <social.icon /> : <Folder />} </span>
                                 </Input>
                             ))}
                         </div>

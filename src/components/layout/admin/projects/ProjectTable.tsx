@@ -1,10 +1,10 @@
 import Table from "@/components/ui/DataTable";
 import { AdminService } from "@/services/admin.service";
 import { useEffect, useState } from "react";
-import { ICONS } from "@/icons";
 import { Link } from "react-router-dom";
 import { PATHS } from "@/routers/Paths";
 import { useConfirm } from "@components/confirm";
+import { Photo, ArrowPath, Eye, PencilSquare, Trash } from "@/icons";
 
 export default function ProjectTable({ onEdit, refreshKey }: { onEdit: (project: any) => void, refreshKey?: number }) {
     const [projects, setProjects] = useState<any[]>([]);
@@ -65,7 +65,7 @@ export default function ProjectTable({ onEdit, refreshKey }: { onEdit: (project:
                             <img src={row.thumbnail_url} alt="" className="size-full object-cover" />
                         ) : (
                             <div className="size-full flex items-center justify-center">
-                                <ICONS.photo className="size-5 text-muted" />
+                                <Photo className="size-5 text-muted" />
                             </div>
                         )}
                     </div>
@@ -133,25 +133,25 @@ export default function ProjectTable({ onEdit, refreshKey }: { onEdit: (project:
                 renderActions: (row) => (
                     <div className="flex flex-col gap-2 w-full">
                         <Link to={PATHS.projectDetail(row.slug || row.id)} target="_blank" className="px-2 py-1.5 w-full text-xs text-start hover:bg-emphasis/10 rounded font-medium flex items-center gap-2">
-                            <ICONS.eye className="size-3.5" /> View Public
+                            <Eye className="size-3.5" /> View Public
                         </Link>
                         <button
                             className="px-2 py-1.5 w-full text-xs text-start hover:bg-emphasis/10 rounded font-medium flex items-center gap-2"
                             onClick={() => onEdit(row)}
                         >
-                            <ICONS.pencilSquare className="size-3.5" /> Edit Project
+                            <PencilSquare className="size-3.5" /> Edit Project
                         </button>
                         <button
                             className="px-2 py-1.5 w-full text-xs text-start hover:bg-emphasis/10 rounded font-medium flex items-center gap-2"
                             onClick={() => toggleVisibility(row.id, row.visibility)}
                         >
-                            <ICONS.arrowPath className="size-3.5" /> {row.visibility === 'PUBLIC' ? 'Move to Hidden' : 'Make Public'}
+                            <ArrowPath className="size-3.5" /> {row.visibility === 'PUBLIC' ? 'Move to Hidden' : 'Make Public'}
                         </button>
                         <button
                             className="px-2 py-1.5 w-full text-xs text-start hover:bg-red-500/5 text-red-500 rounded font-medium flex items-center gap-2"
                             onClick={() => handleDelete(row.id)}
                         >
-                            <ICONS.trash className="size-3.5 text-current" /> Delete Project
+                            <Trash className="size-3.5 text-current" /> Delete Project
                         </button>
                     </div>
                 )

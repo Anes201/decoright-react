@@ -1,9 +1,9 @@
+import Spinner from "@/components/common/Spinner";
 import { useState, useEffect } from "react";
 import { AdminService, type FAQ } from "@/services/admin.service";
 import { useTranslation } from "react-i18next";
 import { getLocalizedContent } from "@/utils/i18n";
-import Spinner from "@/components/common/Spinner";
-import { ICONS } from "@/icons";
+import { ChevronDown } from "@/icons";
 
 export function FAQList() {
     const { i18n } = useTranslation();
@@ -63,7 +63,7 @@ export function FAQList() {
                                 aria-controls={`faq-answer-${index}`}
                                 className="p-2 ring-muted/15 rounded-full group-hover/item:ring-1"
                             >
-                            <ICONS.chevronDown className={`size-4 md:size-5 ${isOpen ? 'rotate-180' : ''}`}/>
+                            <ChevronDown className={`size-4 md:size-5 ${isOpen ? 'rotate-180' : ''}`}/>
                             </button>
                         </div>
 

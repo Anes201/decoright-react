@@ -1,8 +1,8 @@
+import Spinner from "@/components/common/Spinner";
 import { AreaChart } from "@/components/ui/AreaChart";
 import { AdminService } from "@/services/admin.service";
-import { ICONS } from "@/icons";
 import { useEffect, useState } from "react";
-import Spinner from "@/components/common/Spinner";
+import { Calendar, ChartBar, Check, ChevronDown, RectangleStack, UserCircle } from "@/icons";
 
 export default function Dashboard() {
     const [timeframe, setTimeframe] = useState<'30d' | '90d' | 'lifetime'>('30d');
@@ -36,10 +36,10 @@ export default function Dashboard() {
     }, [timeframe]);
 
     const topKPICards = [
-        { id: '1', label: 'Total requests', value: stats?.totalRequests ?? '...', icon: ICONS.rectangleStack, color: 'from-blue-600 to-indigo-600' },
-        { id: '2', label: 'Total completed', value: stats?.completedRequests ?? '...', icon: ICONS.check, color: 'from-emerald-500 to-teal-500' },
-        { id: '3', label: 'Total unique clients', value: stats?.totalUsers ?? '...', icon: ICONS.userCircle, color: 'from-amber-500 to-orange-500' },
-        { id: '4', label: 'Completion rate', value: stats?.completionRate ?? '...', icon: ICONS.chartBar, color: 'from-purple-500 to-pink-500' },
+        { id: '1', label: 'Total requests', value: stats?.totalRequests ?? '...', icon: RectangleStack, color: 'from-blue-600 to-indigo-600' },
+        { id: '2', label: 'Total completed', value: stats?.completedRequests ?? '...', icon: Check, color: 'from-emerald-500 to-teal-500' },
+        { id: '3', label: 'Total unique clients', value: stats?.totalUsers ?? '...', icon: UserCircle, color: 'from-amber-500 to-orange-500' },
+        { id: '4', label: 'Completion rate', value: stats?.completionRate ?? '...', icon: ChartBar, color: 'from-purple-500 to-pink-500' },
     ];
 
     const timeframeLabels = {
@@ -67,7 +67,7 @@ export default function Dashboard() {
                             <div className="absolute -bottom-4 w-full border-b border-muted/75 mask-x-to-transparent"></div>
                             {/* Page Header */}
                             <div className="flex items-center gap-2">
-                                <ICONS.chartBar className="size-6" />
+                                <ChartBar className="size-6" />
                                 <h1 className="font-semibold text-xl"> Analytics </h1>
                             </div>
                             <div className="relative flex items-center gap-4">
@@ -76,9 +76,9 @@ export default function Dashboard() {
                                         onClick={() => setIsFilterOpen(!isFilterOpen)}
                                         className="space-x-1 shrink-0 inline-flex items-center justify-center text-body bg-emphasis/75 box-border border border-muted/25 hover:text-heading shadow-xs focus:outline-1 outline-muted/45 font-medium leading-5 rounded-lg text-sm px-3 py-2"
                                     >
-                                        <ICONS.calendar className="size-4 text-muted" />
+                                        <Calendar className="size-4 text-muted" />
                                         <span> {timeframeLabels[timeframe]} </span>
-                                        <ICONS.chevronDown className={`size-3 transition-transform ${isFilterOpen ? 'rotate-180' : ''}`} />
+                                        <ChevronDown className={`size-3 transition-transform ${isFilterOpen ? 'rotate-180' : ''}`} />
                                     </button>
 
                                     {isFilterOpen && (
@@ -110,9 +110,9 @@ export default function Dashboard() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
                                 {topKPICards.map((data) => (
                                     <div key={data.id} className="relative group overflow-hidden flex flex-col justify-between p-5 border border-muted/10 shadow-sm bg-surface rounded-2xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                                        <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 bg-gradient-to-br ${data.color} opacity-10 rounded-full blur-2xl group-hover:opacity-20 transition-opacity`}></div>
+                                        <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 bg-linear-to-br ${data.color} opacity-10 rounded-full blur-2xl group-hover:opacity-20 transition-opacity`}></div>
                                         <div className="flex items-start justify-between mb-4">
-                                            <div className={`p-2.5 rounded-xl bg-gradient-to-br ${data.color} shadow-lg shadow-indigo-500/20`}>
+                                            <div className={`p-2.5 rounded-xl bg-linear-to-br ${data.color} shadow-lg shadow-indigo-500/20`}>
                                                 <data.icon className="size-5 text-white" />
                                             </div>
                                         </div>

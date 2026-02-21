@@ -1,16 +1,16 @@
 
 import Spinner from "@/components/common/Spinner";
-import { useConfirm } from "@/components/confirm";
 import ProjectCardList, { type ProjectAction }  from "@/components/layout/admin/projects/ProjectList";
-import { ICONS } from "@/icons";
+import toast from "react-hot-toast";
+import { useConfirm } from "@/components/confirm";
 import { PATHS } from "@/routers/Paths";
 import { AdminService } from "@/services/admin.service";
 import { ServiceTypesService, type ServiceType } from "@/services/service-types.service";
 import { SpaceTypesService, type SpaceType } from "@/services/space-types.service";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { Folder, Plus } from "@/icons";
 
 export default function ProjectList () {
 
@@ -86,14 +86,14 @@ export default function ProjectList () {
         return (
             <div className="flex flex-col items-center justify-center p-20 border-2 border-dashed border-muted/10 rounded-2xl bg-surface/50 text-center">
                 <div className="p-4 bg-primary/10 rounded-full mb-4">
-                    <ICONS.folder className="size-10 text-primary" />
+                    <Folder className="size-10 text-primary" />
                 </div>
                 <h3 className="font-semibold text-lg mb-1">No Projects Found</h3>
                 <p className="text-sm text-muted max-w-100 mb-6">
                     You haven't added any real-world projects yet.
                 </p>
                 <Link to={PATHS.ADMIN.PROJECT_CREATE} className="p-button">
-                    <ICONS.plus className="size-4 mr-2" />
+                    <Plus className="size-4 mr-2" />
                     Create Your First Project
                 </Link>
             </div>

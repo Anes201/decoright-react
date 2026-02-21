@@ -1,12 +1,10 @@
 
 import useAuth from "@/hooks/useAuth"
 import i18n from "@/utils/i18n"
-
+import MenuLanguageSelectorModal from "@components/ui/LanguageSelectorModel"
 import { Link } from "react-router-dom"
 import { createContext, useContext, useState } from "react"
-
 import { LogoutButton } from "@components/common/Confirm"
-import { ICONS } from "@/icons"
 import { publicMenuItems, clientMenuItems } from "@/constants/navigation"
 import { MenuCard } from "@components/ui/MenuCard"
 import { PCTALink, SCTALink } from "@components/ui/CTA"
@@ -14,7 +12,7 @@ import { PATHS } from "@/routers/Paths"
 import { SelectDropDownMenu } from "@components/ui/Select"
 import { allowedLocales } from "@/constants"
 import { useTranslation } from "react-i18next"
-import MenuLanguageSelectorModal from "@components/ui/LanguageSelectorModel"
+import { ArrowRightEndOnRectangle, ArrowRightStartOnRectangle, Chat, ChevronRight, Folder, Language, Menu, PresentationChartLine, User, UserPlus } from "@/icons";
 
 const Logo = "/public/logo.jpeg";
 
@@ -66,7 +64,7 @@ export function AuthenticatedUserActins() {
         <>
             <div className="flex items-center gap-2 md:gap-4">
 
-                { isAdmin
+                {isAdmin
                     ? <>
                         {/* Request Project */}
                         <Link to={PATHS.ADMIN.PROJECT_CREATE} title="Create Project" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
@@ -74,13 +72,13 @@ export function AuthenticatedUserActins() {
                         </Link>
 
                         <Link to={PATHS.ADMIN.ANALYTICS} title="Dashboard Panel" className="max-md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full">
-                            <ICONS.presentationChartLine className="size-5 md:size-6" />
+                            <PresentationChartLine className="size-5 md:size-6" />
                         </Link>
 
                         {/* Chat Menu Card */}
                         <button type="button" title="Chat Menu" onClick={() => setChatMenuOpen(!chatMenuOpen)}
                             className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
-                            <ICONS.chat className="size-5 md:size-6" />
+                            <Chat className="size-5 md:size-6" />
 
                             <span className="absolute flex size-3 top-0 left-0">
                                 <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
@@ -91,39 +89,39 @@ export function AuthenticatedUserActins() {
 
                     : <>
 
-                    {/* Request Project */}
-                    <Link to={PATHS.CLIENT.REQUEST_SERVICE} title="Request Service" className="max-md:hidden content-center p-2 min-w-max font-medium text-sm border border-primary/45 bg-surface/75 rounded-full">
-                        Request Service
-                    </Link>
+                        {/* Request Project */}
+                        <Link to={PATHS.CLIENT.REQUEST_SERVICE} title="Request Service" className="max-md:hidden content-center p-2 min-w-max font-medium text-sm border border-primary/45 bg-surface/75 rounded-full">
+                            Request Service
+                        </Link>
 
-                    {/* Chat Nav Page */}
-                    <Link to={PATHS.CLIENT.CHAT} title="Chats" className="relative content-center p-1.5 md:p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
-                        <ICONS.chat className="size-5 md:size-6" />
+                        {/* Chat Nav Page */}
+                        <Link to={PATHS.CLIENT.CHAT} title="Chats" className="relative content-center p-1.5 md:p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
+                            <Chat className="size-5 md:size-6" />
 
-                        <span className="absolute flex size-3 top-0 left-0">
-                            <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
-                            <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
-                        </span>
-                    </Link>
+                            <span className="absolute flex size-3 top-0 left-0">
+                                <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
+                                <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
+                            </span>
+                        </Link>
 
                     </>
                 }
 
                 {/* User Profile Nav Page */}
                 <Link to={PATHS.CLIENT.ACCOUNT_PROFILE} title={t('nav.profile')} className="max-md:hidden content-center p-1.5 md:p-2 border border-muted/15 bg-surface/75 rounded-full">
-                    <ICONS.user className="size-5 md:size-6" />
+                    <User className="size-5 md:size-6" />
                 </Link>
 
                 {/* Menu Trigger */}
                 <button type="button" title="Menu" onClick={() => setNavMenuOpen(!navMenuOpen)}
                     className="content-center p-1.5 md:p-2 border border-muted/15 bg-surface/75 rounded-full">
-                    <ICONS.menu className="size-5 md:size-6" />
+                    <Menu className="size-5 md:size-6" />
                 </button>
 
             </div>
 
             {chatMenuOpen &&
-                <MenuCard title={ t('common.menu_chat') } open={chatMenuOpen} setOpen={setChatMenuOpen}>
+                <MenuCard title={t('common.menu_chat')} open={chatMenuOpen} setOpen={setChatMenuOpen}>
                     {/* Mobile Nav Menu */}
                     <ul className="flex flex-col w-full h-full gap-2 border border-muted/15 p-2 rounded-lg overflow-y-auto min-scrollbar">
                     </ul>
@@ -132,7 +130,7 @@ export function AuthenticatedUserActins() {
 
             {/* Mobile Nav Menu Card Overlay */}
             {navMenuOpen &&
-                <MenuCard title={ t('common.menu_navigation') } open={navMenuOpen} setOpen={setNavMenuOpen}>
+                <MenuCard title={t('common.menu_navigation')} open={navMenuOpen} setOpen={setNavMenuOpen}>
                     {/* Mobile Nav Menu */}
                     <ul className="flex flex-col w-full h-full gap-2 border border-muted/15 p-2 rounded-lg overflow-y-auto min-scrollbar">
                         <ClientMenu />
@@ -171,7 +169,7 @@ export function AnonymousUserActins() {
                         options={languageChoices}
                         placeholder="Select a Language"
                         id="select-language"
-                        value={languageChoices.find((s:any) => s.value === i18n.language)}
+                        value={languageChoices.find((s: any) => s.value === i18n.language)}
                         onChange={(option: any) => handleChange(option.value)}
                         isSearchable={false}
                         required
@@ -186,14 +184,14 @@ export function AnonymousUserActins() {
 
                 {/* Menu Trigger */}
                 <button type="button" title={t('common.menu')} className="content-center p-1.5 border border-emphasis bg-surface rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>
-                    <ICONS.menu className="size-6" />
+                    <Menu className="size-6" />
                 </button>
 
             </div>
 
             {/* Mobile Nav Menu Card Overlay */}
             {navMenuOpen &&
-                <MenuCard title={ t('common.menu_navigation') } open={navMenuOpen} setOpen={setNavMenuOpen}>
+                <MenuCard title={t('common.menu_navigation')} open={navMenuOpen} setOpen={setNavMenuOpen}>
                     {/* Mobile Nav Menu */}
                     <ul className="flex flex-col w-full h-full gap-2 border border-muted/15 p-2 rounded-lg overflow-y-auto min-scrollbar">
                         <PublicMenu />
@@ -215,15 +213,14 @@ export function PublicMenu() {
                 <li key={index} className="group/menuitem w-full">
                     <Link to={item.path} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75">
                         <div className="flex content-center gap-2">
-                            {/* Icon */}
-                            { item.icon ?? <ICONS.folder /> }
+                            {item.icon ? <item.icon /> : <Folder />}
                             {/* Label */}
-                            <h3 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> { t(`nav.${item.key}`) } </h3>
+                            <h3 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> {t(`nav.${item.key}`)} </h3>
                         </div>
 
                         {/* Description & Helper */}
                         <div className="w-full">
-                            <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> { t(`nav.${item.key}_description`) } </p>
+                            <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> {t(`nav.${item.key}_description`)} </p>
                         </div>
                     </Link>
                 </li>
@@ -231,31 +228,31 @@ export function PublicMenu() {
 
             <li key="menu_language_settings" className="group/menuitem w-full">
                 {/* Language Menu Trigger */}
-                <button type="button" title={ t('nav.language_area') }
-                onClick={() => setLangMenuOpen(!langMenuOpen)}
-                className="flex items-center w-full text-start p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75"
+                <button type="button" title={t('nav.language_area')}
+                    onClick={() => setLangMenuOpen(!langMenuOpen)}
+                    className="flex items-center w-full text-start p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75"
                 >
                     <div className="flex flex-col gap-1 w-full">
                         <div className="flex gap-2 w-full">
-                            <ICONS.language />
-                            <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> { t('nav.language') } </h4>
+                            <Language />
+                            <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> {t('nav.language')} </h4>
                         </div>
-                        <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> { t('nav.language_description') } </p>
+                        <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> {t('nav.language_description')} </p>
                     </div>
-                    <ICONS.chevronRight className="rtl:rotate-180 size-4" />
+                    <ChevronRight className="rtl:rotate-180 size-4" />
                 </button>
             </li>
 
             <li key="login" className="group/menuitem w-full">
                 <Link to={PATHS.LOGIN} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75">
                     <div className="flex content-center gap-2">
-                        <ICONS.arrowRightEndOnRectangle />
-                        <h3 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> { t('auth.login') } </h3>
+                        <ArrowRightEndOnRectangle />
+                        <h3 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> {t('auth.login')} </h3>
                     </div>
 
                     {/* Context */}
                     <div className="w-full">
-                        <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> { t('auth.login_description') } </p>
+                        <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> {t('auth.login_description')} </p>
                     </div>
                 </Link>
             </li>
@@ -263,13 +260,13 @@ export function PublicMenu() {
             <li key="signup" className="group/menuitem w-full">
                 <Link to={PATHS.SIGNUP} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75 ">
                     <div className="flex content-center gap-2">
-                        <ICONS.userPlus />
-                        <h3 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> { t('auth.signup') }  </h3>
+                        <UserPlus />
+                        <h3 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> {t('auth.signup')}  </h3>
                     </div>
 
                     {/* Context */}
                     <div className="w-full">
-                        <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> { t('auth.signup_description') } </p>
+                        <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> {t('auth.signup_description')} </p>
                     </div>
                 </Link>
             </li>
@@ -291,14 +288,14 @@ export function ClientMenu() {
                     <Link to={PATHS.ADMIN.ANALYTICS} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15 hover:border-primary">
                         <div className="flex content-center gap-2">
                             {/* Icon */}
-                            <ICONS.presentationChartLine />
+                            <PresentationChartLine />
                             {/* Label */}
-                            <span className="font-medium text-sm"> { t('nav.dashboard') } </span>
+                            <span className="font-medium text-sm"> {t('nav.dashboard')} </span>
                         </div>
 
                         {/* Context */}
                         <div className="w-full">
-                            <p className="text-2xs text-muted"> { t('nav.dashboard_description') }  </p>
+                            <p className="text-2xs text-muted"> {t('nav.dashboard_description')}  </p>
                         </div>
                     </Link>
                 </li>
@@ -309,14 +306,14 @@ export function ClientMenu() {
                     <Link to={item.path} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75">
                         <div className="flex content-center gap-2">
                             {/* Icon */}
-                            { item.icon ?? <ICONS.folder /> }
+                            { item.icon ? <item.icon /> : <Folder /> }
                             {/* Label */}
-                            <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> { t(`nav.${item.key}`) } </h4>
+                            <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> {t(`nav.${item.key}`)} </h4>
                         </div>
 
                         {/* Context */}
                         <div className="w-full">
-                            <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> { t(`nav.${item.key}_description`) } </p>
+                            <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> {t(`nav.${item.key}_description`)} </p>
                         </div>
                     </Link>
                 </li>
@@ -324,18 +321,18 @@ export function ClientMenu() {
 
             <li key="menu_language_settings" className="group/menuitem w-full">
                 {/* Language Menu Trigger */}
-                <button type="button" title={ t('nav.language_area') }
-                onClick={() => setLangMenuOpen(!langMenuOpen)}
-                className="flex items-center w-full text-start p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75"
+                <button type="button" title={t('nav.language_area')}
+                    onClick={() => setLangMenuOpen(!langMenuOpen)}
+                    className="flex items-center w-full text-start p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75"
                 >
                     <div className="flex flex-col gap-1 w-full">
                         <div className="flex gap-2 w-full">
-                            <ICONS.language />
-                            <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> { t('nav.language') } </h4>
+                            <Language />
+                            <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> {t('nav.language')} </h4>
                         </div>
-                        <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> { t('nav.language_description') } </p>
+                        <p className="text-2xs text-muted group-hover/menuitem:text-foreground"> {t('nav.language_description')} </p>
                     </div>
-                    <ICONS.chevronRight className="rtl:rotate-180 size-4" />
+                    <ChevronRight className="rtl:rotate-180 size-4" />
                 </button>
             </li>
 
@@ -343,9 +340,9 @@ export function ClientMenu() {
                 <LogoutButton className="flex w-full h-full px-2 py-4 border-b border-muted/15 group-hover/menuitem:border-primary/75">
                     <div className="flex content-center gap-2">
                         {/* Icon */}
-                        <ICONS.arrowRightStartOnRectangle />
+                        <ArrowRightStartOnRectangle />
                         {/* Label */}
-                        <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> { t('auth.logout') } </h4>
+                        <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> {t('auth.logout')} </h4>
                     </div>
                 </LogoutButton>
             </li>
@@ -361,17 +358,17 @@ export function NavActions() {
     const { t } = useTranslation()
 
     const languageChoices = [
-        { id:'en', label: t('common.english'), value: 'en', icon: null, },
-        { id:'fr', label: t('common.french'), value: 'fr', icon: null, },
-        { id:'ar', label: t('common.arabic'), value: 'ar', icon: null, },
+        { id: 'en', label: t('common.english'), value: 'en', icon: null, },
+        { id: 'fr', label: t('common.french'), value: 'fr', icon: null, },
+        { id: 'ar', label: t('common.arabic'), value: 'ar', icon: null, },
     ]
 
     return (
 
-        <MenuContext.Provider value={{langMenuOpen, setLangMenuOpen, languageChoices}}>
+        <MenuContext.Provider value={{ langMenuOpen, setLangMenuOpen, languageChoices }}>
             <AuthenticatedUserActins />
             <AnonymousUserActins />
-            <MenuLanguageSelectorModal isOpen={langMenuOpen} onClose={() => {setLangMenuOpen(false)}} onSuccess={() => {setLangMenuOpen(false)}} />
+            <MenuLanguageSelectorModal isOpen={langMenuOpen} onClose={() => { setLangMenuOpen(false) }} onSuccess={() => { setLangMenuOpen(false) }} />
 
         </MenuContext.Provider>
     )

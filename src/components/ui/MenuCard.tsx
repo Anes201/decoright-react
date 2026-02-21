@@ -1,8 +1,9 @@
-import { ICONS } from "@/icons";
+
 import React, { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
-// ...existing code...
+import { XMark } from "@/icons";
+
 export function MenuCard({title, children, open, setOpen}: {title: string, children:any, open:boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>}) {
 
     const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -70,7 +71,7 @@ export function MenuCard({title, children, open, setOpen}: {title: string, child
                         <div className="flex justify-between w-full h-fit border border-muted/15 p-2 rounded-lg">
                             <h2 className="text-sm font-semibold">{ title }</h2>
                             <button type="button" title={ t('common.exit') } area-label={ t('common.exit') } onClick={() => setOpen(!open)}>
-                                <ICONS.xMark />
+                                <XMark />
                             </button>
                         </div>
 

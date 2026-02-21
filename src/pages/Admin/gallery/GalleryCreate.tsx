@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import GalleryForm from "@/components/layout/admin/gallery/GalleryForm";
 import { PATHS } from "@/routers/Paths";
-import { ICONS } from "@/icons";
+import { ChevronRight } from "@/icons";
 
 export default function GalleryCreatePage() {
     return (
@@ -11,7 +11,7 @@ export default function GalleryCreatePage() {
                     <div className="flex flex-col gap-1 border-b border-muted/10 pb-6">
                         <div className="flex items-center gap-2 text-muted mb-2">
                             <Link to={PATHS.ADMIN.GALLERY_LIST} className="hover:text-primary transition-colors">Gallery</Link>
-                            <ICONS.chevronRight className="size-3" />
+                            <ChevronRight className="size-3" />
                             <span>Create</span>
                         </div>
                         <h1 className="font-bold text-2xl tracking-tight">Add Gallery Item</h1>

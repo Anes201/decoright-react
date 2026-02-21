@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { PATHS } from "@/routers/Paths";
 import { AdminService, type FAQ } from "@/services/admin.service";
-import { ICONS } from "@/icons";
+import { InformationCircle, Plus, PencilSquare, Trash } from "@/icons";
 import Spinner from "@/components/common/Spinner";
 import toast from "react-hot-toast";
 import { useConfirm } from "@/components/confirm";
@@ -30,14 +30,14 @@ export function FAQRow({ faq, onDelete }: { faq: FAQ, onDelete: (id: string) => 
                         className="p-1.5 text-muted hover:text-primary hover:bg-primary/10 rounded-md transition-colors"
                         title="Edit FAQ"
                     >
-                        <ICONS.pencilSquare className="size-4" />
+                        <PencilSquare className="size-4" />
                     </Link>
                     <button
                         onClick={() => onDelete(faq.id)}
                         className="p-1.5 text-muted hover:text-red-500 hover:bg-red-500/10 rounded-md transition-colors"
                         title="Delete FAQ"
                     >
-                        <ICONS.trash className="size-4" />
+                        <Trash className="size-4" />
                     </button>
                 </div>
             </div>
@@ -106,14 +106,14 @@ export default function FAQList() {
         return (
             <div className="flex flex-col items-center justify-center p-20 border-2 border-dashed border-muted/10 rounded-2xl bg-surface/50 text-center">
                 <div className="p-4 bg-primary/10 rounded-full mb-4">
-                    <ICONS.informationCircle className="size-10 text-primary" />
+                    <InformationCircle className="size-10 text-primary" />
                 </div>
                 <h3 className="font-semibold text-lg mb-1">No FAQs Found</h3>
                 <p className="text-sm text-muted max-w-[300px] mb-6">
                     Add frequently asked questions to help your customers understand your services better.
                 </p>
                 <Link to={PATHS.ADMIN.FAQ_CREATE} className="p-button">
-                    <ICONS.plus className="size-4 mr-2" />
+                    <Plus className="size-4 mr-2" />
                     Add Your First FAQ
                 </Link>
             </div>

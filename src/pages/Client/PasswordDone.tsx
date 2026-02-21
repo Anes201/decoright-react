@@ -1,9 +1,8 @@
 import { LogoutButton } from "@/components/common/Confirm";
-import { ICONS } from "@/icons";
 import { PATHS } from "@/routers/Paths";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-
+import { ArrowRightStartOnRectangle, Home } from "@/icons";
 
 export default function PasswordDone() {
 
@@ -35,11 +34,11 @@ export default function PasswordDone() {
 
                         <Link to={PATHS.ROOT}
                             className="flex items-center gap-2 font-medium text-xs md:text-sm text-center px-4 py-2 bg-emphasis rounded-lg"
-                        > <ICONS.home /> { t('nav.home_welcome_back') } </Link>
+                        > <Home /> { t('nav.home_welcome_back') } </Link>
 
                         <LogoutButton
                             className="flex items-center gap-2 font-medium text-xs md:text-sm text-center px-3 py-2 border border-muted/25 rounded-lg"
-                        > <span className="flex gap-4"> { t('auth.logout') } <ICONS.arrowRightStartOnRectangle /></span> </LogoutButton>
+                        > <span className="flex gap-4"> { t('auth.logout') } <ArrowRightStartOnRectangle /></span> </LogoutButton>
 
                     </div>
 

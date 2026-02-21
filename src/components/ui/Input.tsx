@@ -1,7 +1,6 @@
 
 import { useLayoutEffect, useRef, useState } from "react";
-
-import { ICONS } from "@/icons";
+import { Envelope, Key, LockClosed, Phone, User, Eye, EyeSlash } from "@/icons";
 import { useTranslation } from "react-i18next";
 
 export function Input({ className, children, ...props }: any) {
@@ -23,7 +22,7 @@ export function Input({ className, children, ...props }: any) {
       </div>
       {props.readOnly &&
         <span title="Locked for viewing only" aria-label="error" className="absolute content-center end-2 h-full">
-          <ICONS.lockClosed className="size-5 text-muted" />
+          <LockClosed className="size-5 text-muted" />
         </span>}
 
       {props.error && <p title={props.error} aria-label="error" className="text-xs text-danger/75 px-0.5"> {props.error} </p>}
@@ -37,7 +36,7 @@ export function EmailInput({ id = 'email_field', label, className, ...props }: a
   return (
     <Input id={id} type="email" placeholder={t('auth.placeholders.email')} className={`${className} text-left ltr:pl-8 ltr:sm:pl-10 rtl:pr-8 rtl:sm:pr-10`} {...props}>
       {/* Email Icon Placeholder */}
-      <span className="absolute px-1.5 start-1 sm:start-1.5"> <ICONS.envelope className="size-5 text-muted/75"/> </span>
+      <span className="absolute px-1.5 start-1 sm:start-1.5"> <Envelope className="size-5 text-muted/75"/> </span>
     </Input>
   );
 }
@@ -47,7 +46,7 @@ export function PhoneInput({ id = 'phone_field', label, className, ...props }: a
   return (
     <Input id={id} type="tel" placeholder="+213 123456789" className={`${className} ltr:pl-8 ltr:sm:pl-10 rtl:pr-8 rtl:sm:pr-10 lang-ar:placeholder:text-left`} {...props}>
       {/* Password Icon Placeholder */}
-      <span className="absolute px-1.5 start-1 sm:start-1.5"> <ICONS.phone className="size-5 text-muted/75"/> </span>
+      <span className="absolute px-1.5 start-1 sm:start-1.5"> <Phone className="size-5 text-muted/75"/> </span>
       {/* ltr:left-1 ltr:sm:left-1.5 rtl:right-1 rtl:sm:right-1.5 */}
     </Input>
   );
@@ -70,14 +69,14 @@ export function PasswordInput({ id = 'password_field', label, value, onChange, e
       {...props}
     >
       {/* Password Icon Placeholder */}
-      <span className="absolute px-2 start-1 sm:start-1.5"> <ICONS.key className="size-5 text-muted/75"/> </span>
+      <span className="absolute px-2 start-1 sm:start-1.5"> <Key className="size-5 text-muted/75"/> </span>
 
       {/* Show/Hide Icon Placeholder */}
       <button type="button" onClick={() => setShow(s => !s)}
         aria-pressed={show} aria-label={show ? t('auth.hide_password') : t('auth.show_password')}
         className="absolute w-fit px-2 end-1 sm:end-1.5 border-s border-muted/15"
       >
-        {!show ? <ICONS.eyeSlash className='size-5 text-muted/75' /> : <ICONS.eye className='size-5 text-muted/75' />}
+        {!show ? <EyeSlash className='size-5 text-muted/75' /> : <Eye className='size-5 text-muted/75' />}
       </button>
     </Input>
   );
@@ -92,9 +91,9 @@ export function EmailOrPhoneInput({ id = 'email_or_phone_field', label = 'Email 
     const isEmail = val.includes('@');
     const iconProps = { className: 'size-5 text-muted/75' };
 
-    if (isEmail) return ICONS.envelope(iconProps);
-    if (val.length > 0 && phonePattern.test(val)) return ICONS.phone(iconProps);
-    return ICONS.user(iconProps);
+    if (isEmail) return Envelope(iconProps);
+    if (val.length > 0 && phonePattern.test(val)) return Phone(iconProps);
+    return User(iconProps);
   }
 
   return (

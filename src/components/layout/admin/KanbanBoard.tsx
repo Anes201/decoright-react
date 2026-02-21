@@ -1,5 +1,5 @@
 
-import { ICONS } from '@/icons';
+import { Bell, Check, ChevronRight, Eye, PencilSquare, RectangleStack, Star, Tag } from "@/icons";
 
 interface KanbanBoardProps {
     requests: any[];
@@ -7,11 +7,11 @@ interface KanbanBoardProps {
 }
 
 const COLUMNS = [
-    { key: 'Submitted', label: 'New / Pending', icon: ICONS.bell, color: 'text-blue-500 bg-blue-500/10' },
-    { key: 'Under Review', label: 'Under Review', icon: ICONS.eye, color: 'text-amber-500 bg-amber-500/10' },
-    { key: 'Approved', label: 'Approved', icon: ICONS.check, color: 'text-emerald-500 bg-emerald-500/10' },
-    { key: 'In Progress', label: 'In Progress', icon: ICONS.pencilSquare, color: 'text-indigo-500 bg-indigo-500/10' },
-    { key: 'Completed', label: 'Completed', icon: ICONS.star, color: 'text-purple-500 bg-purple-500/10' },
+    { key: 'Submitted', label: 'New / Pending', icon: Bell, color: 'text-blue-500 bg-blue-500/10' },
+    { key: 'Under Review', label: 'Under Review', icon: Eye, color: 'text-amber-500 bg-amber-500/10' },
+    { key: 'Approved', label: 'Approved', icon: Check, color: 'text-emerald-500 bg-emerald-500/10' },
+    { key: 'In Progress', label: 'In Progress', icon: PencilSquare, color: 'text-indigo-500 bg-indigo-500/10' },
+    { key: 'Completed', label: 'Completed', icon: Star, color: 'text-purple-500 bg-purple-500/10' },
 ];
 
 export default function KanbanBoard({ requests, onCardClick }: KanbanBoardProps) {
@@ -61,11 +61,11 @@ export default function KanbanBoard({ requests, onCardClick }: KanbanBoardProps)
 
                                     <div className="flex flex-col gap-1.5 mt-3">
                                         <div className="flex items-center gap-1.5 text-3xs text-muted">
-                                            <ICONS.tag className="size-3" />
+                                            <Tag className="size-3" />
                                             <span>{request.service_types?.display_name_en || 'Unknown'}</span>
                                         </div>
                                         <div className="flex items-center gap-1.5 text-3xs text-muted">
-                                            <ICONS.rectangleStack className="size-3" />
+                                            <RectangleStack className="size-3" />
                                             <span>{request.space_type}</span>
                                         </div>
                                     </div>
@@ -73,7 +73,7 @@ export default function KanbanBoard({ requests, onCardClick }: KanbanBoardProps)
                                     <div className="mt-4 pt-3 border-t border-muted/5 flex items-center justify-between text-[10px]">
                                         <span className="text-muted italic">{new Date(request.created_at).toLocaleDateString()}</span>
                                         <button className="text-primary font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                                            Manage <ICONS.chevronRight className="size-3" />
+                                            Manage <ChevronRight className="size-3" />
                                         </button>
                                     </div>
                                 </div>

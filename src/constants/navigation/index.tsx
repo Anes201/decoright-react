@@ -1,6 +1,6 @@
 
-import { ICONS } from "@/icons"
 import { PATHS } from "@/routers/Paths"
+import { Chat, Cog, DocumentPlus, Home, PaintBrush, Phone, PuzzlePiece, QuestionMarkCircle, RectangleStack, Squares2x2 } from "@/icons";
 
 // Admin navigation item list for menu
 export const adminMenuNav = [
@@ -60,25 +60,25 @@ export const adminSideMenuNav = [
 
 
 export const clientMenuItems = [
-    { label: 'Home', key: 'home', path: PATHS.CLIENT.ROOT, icon: <ICONS.home />, description: 'Return to the homepage' },
-    { label: 'Messages', key: 'messages', path: PATHS.CLIENT.CHAT, icon: <ICONS.chat />, description: 'View and continue your conversations' },
-    { label: 'Request Service', key: 'request_service', path: PATHS.CLIENT.REQUEST_SERVICE, icon: <ICONS.documentPlus />, description: 'Start a new service request' },
-    { label: 'My Requests', key: 'my_requests', path: PATHS.CLIENT.REQUEST_SERVICE_LIST, icon: <ICONS.rectangleStack />, description: 'See the status of your service requests' },
-    { label: 'Services', key: 'services', path: PATHS.SERVICE_LIST, icon: <ICONS.puzzlePiece />, description: 'Explore services we offer' },
-    { label: 'Projects', key: 'projects', path: PATHS.PROJECT_LIST, icon: <ICONS.paintBrush />, description: 'Explore completed projects and case studies' },
-    { label: 'Gallery', key: 'gallery', path: PATHS.GALLERY_LIST, icon: <ICONS.squares2x2 />, description: 'Browse our gallery and past work' },
-    { label: 'FAQs', key: 'faqs', path: PATHS.FAQ_LIST, icon: <ICONS.questionMarkCircle />, description: 'Frequently Asked Questions and support resources' },
-    { label: 'Contact Us', key: 'contact_us', path: PATHS.CONTACT, icon: <ICONS.phone />, description: 'Get in touch with our team' },
-    { label: 'Account Settings', key: 'account_settings', path: PATHS.CLIENT.ACCOUNT_SETTINGS, icon: <ICONS.cog />, description: 'Manage your profile, preferences, and account settings' },
+    { label: 'Home', key: 'home', path: PATHS.CLIENT.ROOT, icon: Home , description: 'Return to the homepage' },
+    { label: 'Messages', key: 'messages', path: PATHS.CLIENT.CHAT, icon: Chat , description: 'View and continue your conversations' },
+    { label: 'Request Service', key: 'request_service', path: PATHS.CLIENT.REQUEST_SERVICE, icon: DocumentPlus , description: 'Start a new service request' },
+    { label: 'My Requests', key: 'my_requests', path: PATHS.CLIENT.REQUEST_SERVICE_LIST, icon: RectangleStack , description: 'See the status of your service requests' },
+    { label: 'Services', key: 'services', path: PATHS.SERVICE_LIST, icon: PuzzlePiece , description: 'Explore services we offer' },
+    { label: 'Projects', key: 'projects', path: PATHS.PROJECT_LIST, icon: PaintBrush , description: 'Explore completed projects and case studies' },
+    { label: 'Gallery', key: 'gallery', path: PATHS.GALLERY_LIST, icon: Squares2x2 , description: 'Browse our gallery and past work' },
+    { label: 'FAQs', key: 'faqs', path: PATHS.FAQ_LIST, icon: QuestionMarkCircle , description: 'Frequently Asked Questions and support resources' },
+    { label: 'Contact Us', key: 'contact_us', path: PATHS.CONTACT, icon: Phone , description: 'Get in touch with our team' },
+    { label: 'Account Settings', key: 'account_settings', path: PATHS.CLIENT.ACCOUNT_SETTINGS, icon: Cog , description: 'Manage your profile, preferences, and account settings' },
 ]
 
 export const publicMenuItems = [
-    { label: 'Home', key: 'home', path: PATHS.ROOT, icon: <ICONS.home />, description: 'Landing page and highlights' },
-    { label: 'Services', key: 'services', path: PATHS.SERVICE_LIST, icon: <ICONS.puzzlePiece />, description: 'Learn about available services' },
-    { label: 'Projects', key: 'projects', path: PATHS.PROJECT_LIST, icon: <ICONS.paintBrush />, description: 'View public projects and case studies' },
-    { label: 'Gallery', key: 'gallery', path: PATHS.GALLERY_LIST, icon: <ICONS.puzzlePiece />, description: 'View images and designs associated with projects.' },
-    { label: 'FAQs', key: 'faqs', path: PATHS.FAQ_LIST, icon: <ICONS.questionMarkCircle />, description: 'Frequently Asked Questions and support resources' },
-    { label: 'Contact Us', key: 'contact_us', path: PATHS.CONTACT, icon: <ICONS.phone />, description: 'Contact information and form' },
+    { label: 'Home', key: 'home', path: PATHS.ROOT, icon: Home , description: 'Landing page and highlights' },
+    { label: 'Services', key: 'services', path: PATHS.SERVICE_LIST, icon: PuzzlePiece , description: 'Learn about available services' },
+    { label: 'Projects', key: 'projects', path: PATHS.PROJECT_LIST, icon: PaintBrush , description: 'View public projects and case studies' },
+    { label: 'Gallery', key: 'gallery', path: PATHS.GALLERY_LIST, icon: PuzzlePiece , description: 'View images and designs associated with projects.' },
+    { label: 'FAQs', key: 'faqs', path: PATHS.FAQ_LIST, icon: QuestionMarkCircle , description: 'Frequently Asked Questions and support resources' },
+    { label: 'Contact Us', key: 'contact_us', path: PATHS.CONTACT, icon: Phone , description: 'Contact information and form' },
 ]
 
 export const LegalLinks = [

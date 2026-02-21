@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
 import RequestServiceTable from "@components/layout/admin/RequestServiceTable";
 import RequestDetailDrawer from "@components/layout/admin/RequestDetailDrawer";
+import { useState, useEffect } from 'react';
 import { AdminService } from "@/services/admin.service";
-import { ICONS } from "@/icons";
+import { ArrowPath, Cog } from "@/icons";
 
 export default function RequestServiceList() {
     const [requests, setRequests] = useState<any[]>([]);
@@ -55,7 +55,7 @@ export default function RequestServiceList() {
                         onClick={loadRequests}
                         className="px-4 py-2 bg-emphasis text-body rounded-lg hover:bg-neutral-tertiary-medium transition-colors flex items-center gap-2 text-sm font-semibold"
                     >
-                        <ICONS.arrowPath className={`size-4 ${loading ? 'animate-spin' : ''}`} />
+                        <ArrowPath className={`size-4 ${loading ? 'animate-spin' : ''}`} />
                         Refresh
                     </button>
                 </div>
@@ -64,7 +64,7 @@ export default function RequestServiceList() {
                 <div className="flex-1 min-h-0 overflow-hidden">
                     {loading && requests.length === 0 ? (
                         <div className="h-full flex flex-col items-center justify-center text-muted animate-pulse">
-                            <ICONS.cog className="size-12 animate-spin mb-4" />
+                            <Cog className="size-12 animate-spin mb-4" />
                             <p className="font-medium">Initializing workspace...</p>
                         </div>
                     ) : (

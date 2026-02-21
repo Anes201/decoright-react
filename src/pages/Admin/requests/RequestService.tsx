@@ -1,11 +1,11 @@
 
+import Spinner from "@/components/common/Spinner";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { RequestService } from "@/services/request.service";
-import { ICONS } from "@/icons";
 import { PATHS } from "@/routers/Paths";
-import Spinner from "@/components/common/Spinner";
 import { supabase } from "@/lib/supabase";
+import { ExclamationTriangle, ArrowLeft, DocumentText, MapPin, PaperClip, Photo, User, ChatBubbleOvalLeftEllipsis, ArrowDownTray } from "@/icons";
 
 export default function RequestOverview() {
     const { id } = useParams<{ id: string }>();
@@ -55,7 +55,7 @@ export default function RequestOverview() {
         return (
             <main className="flex flex-col items-center justify-center min-h-hero gap-4">
                 <div className="text-danger text-center">
-                    <ICONS.exclamationTriangle className="size-12 mx-auto mb-2" />
+                    <ExclamationTriangle className="size-12 mx-auto mb-2" />
                     <p className="text-lg font-medium">{error || "Request not found"}</p>
                 </div>
                 <Link to={PATHS.ADMIN.REQUEST_SERVICE_LIST} className="text-primary hover:underline">
@@ -90,7 +90,7 @@ export default function RequestOverview() {
                             to={PATHS.ADMIN.REQUEST_SERVICE_LIST}
                             className="flex items-center gap-2 px-3 py-2 text-sm text-muted hover:text-primary border border-muted/15 rounded-lg hover:bg-emphasis/50 transition-colors"
                         >
-                            <ICONS.arrowLeft className="size-4" />
+                            <ArrowLeft className="size-4" />
                             Back to List
                         </Link>
                     </div>
@@ -103,7 +103,7 @@ export default function RequestOverview() {
                             {/* Request Details Card */}
                             <div className="p-6 bg-surface border border-muted/15 rounded-xl space-y-4">
                                 <h2 className="font-semibold text-base flex items-center gap-2">
-                                    <ICONS.documentText className="size-5 text-primary" />
+                                    <DocumentText className="size-5 text-primary" />
                                     Request Details
                                 </h2>
 
@@ -123,7 +123,7 @@ export default function RequestOverview() {
                                     <div>
                                         <label className="text-xs text-muted font-medium">Location</label>
                                         <p className="text-sm font-medium mt-1 flex items-center gap-1">
-                                            <ICONS.mapPin className="size-4 text-muted" />
+                                            <MapPin className="size-4 text-muted" />
                                             {request.location || 'N/A'}
                                         </p>
                                     </div>
@@ -164,7 +164,7 @@ export default function RequestOverview() {
                             {attachments.length > 0 && (
                                 <div className="p-6 bg-surface border border-muted/15 rounded-xl space-y-4">
                                     <h2 className="font-semibold text-base flex items-center gap-2">
-                                        <ICONS.paperClip className="size-5 text-primary" />
+                                        <PaperClip className="size-5 text-primary" />
                                         Attachments ({attachments.length})
                                     </h2>
                                     <div className="space-y-2">
@@ -178,11 +178,11 @@ export default function RequestOverview() {
                                             >
                                                 <div className="flex items-center justify-center size-10 bg-primary/10 rounded-lg shrink-0">
                                                     {attachment.file_type === 'IMAGE' ? (
-                                                        <ICONS.photo className="size-5 text-primary" />
+                                                        <Photo className="size-5 text-primary" />
                                                     ) : attachment.file_type === 'PDF' ? (
-                                                        <ICONS.documentText className="size-5 text-primary" />
+                                                        <DocumentText className="size-5 text-primary" />
                                                     ) : (
-                                                        <ICONS.documentText className="size-5 text-primary" />
+                                                        <DocumentText className="size-5 text-primary" />
                                                     )}
                                                 </div>
                                                 <div className="flex-1 min-w-0">
@@ -191,7 +191,7 @@ export default function RequestOverview() {
                                                     </p>
                                                     <p className="text-xs text-muted capitalize">{attachment.file_type}</p>
                                                 </div>
-                                                <ICONS.arrowDownTray className="size-5 text-muted group-hover:text-primary transition-colors shrink-0" />
+                                                <ArrowDownTray className="size-5 text-muted group-hover:text-primary transition-colors shrink-0" />
                                             </a>
                                         ))}
                                     </div>
@@ -214,7 +214,7 @@ export default function RequestOverview() {
                             {/* Customer Info Card */}
                             <div className="p-6 bg-surface border border-muted/15 rounded-xl space-y-4">
                                 <h2 className="font-semibold text-base flex items-center gap-2">
-                                    <ICONS.user className="size-5 text-primary" />
+                                    <User className="size-5 text-primary" />
                                     Customer
                                 </h2>
                                 <div className="space-y-3">
@@ -240,7 +240,7 @@ export default function RequestOverview() {
                                     to={PATHS.ADMIN.chatRoom(id!)}
                                     className="flex items-center justify-center gap-2 w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
                                 >
-                                    <ICONS.chatBubbleOvalLeftEllipsis className="size-5" />
+                                    <ChatBubbleOvalLeftEllipsis className="size-5" />
                                     Open Chat
                                 </Link>
                             </div>

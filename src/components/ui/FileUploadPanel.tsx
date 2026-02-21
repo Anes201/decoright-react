@@ -1,9 +1,8 @@
 
 import React from "react";
-import { useStagedFiles } from "@/hooks/useStagedFiles";
 import FileList from "./FileList";
-import { ICONS } from "@/icons";
-
+import { useStagedFiles } from "@/hooks/useStagedFiles";
+import { DocumentArrowUp } from "@/icons";
 /**
  * Minimal panel - no styles. Add classes for layout.
  * The hook starts uploads automatically (see hook). If you prefer manual upload, remove that behavior from the hook.
@@ -45,7 +44,7 @@ export default function FileUploadPanel({ stagedFiles }: FileUploadPanelProps) {
         <span className="font-medium text-xs text-muted px-1"> Attach Files </span>
         <label htmlFor="filesToUpload" className='flex items-center justify-between gap-4 w-full h-full p-2 border border-muted/25 bg-emphasis/75 rounded-t-lg cursor-pointer'>
           <div className="flex items-center px-2">
-            <span> <ICONS.documentArrowUp className='size-5 text-muted' /> </span>
+            <span> <DocumentArrowUp className='size-5 text-muted' /> </span>
             <span className="text-2xs md:text-xs text-muted px-2"> Upload Files, Images & Documents </span>
           </div>
           <span className="font-semibold text-sm text-center min-w-max px-3 py-2 text-foreground bg-emphasis border border-muted/25 rounded-lg shadow-xs"> Upload </span>

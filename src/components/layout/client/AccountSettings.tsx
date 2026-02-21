@@ -12,8 +12,7 @@ import { SelectDropDownMenu } from "@components/ui/Select";
 import { USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "@/config";
 import { PHONE_REGEX, USERNAME_REGEX } from "@/utils/validators";
 import { useTranslation } from "react-i18next";
-import { ICONS } from "@/icons";
-import PhoneVerificationModal from "@/components/ui/PhoneVerificationModal";
+import { BookOpen, LockClosed, QuestionMarkCircle } from "@/icons";
 
 // Unused types ProfileData and Settings removed to clear lint errors
 export type FieldKey = "firstName" | "lastName" | "phone";
@@ -29,7 +28,6 @@ export default function AccountSettingsLayout() {
     const [initializing, setInitializing] = useState(true);
     const [_loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null)
-    const [phoneVerification, setPhoneVerification] = useState<boolean>(false);
 
     // Custom debounce function to avoid lodash dependency
     function debounce<T extends (...args: any[]) => any>(func: T, wait: number) {
@@ -178,9 +176,9 @@ export default function AccountSettingsLayout() {
     }
 
     const languageChoices = [
-        { id:'en', label: t('common.english'), value: 'en', icon: null, },
-        { id:'fr', label: t('common.french'), value: 'fr', icon: null, },
-        { id:'ar', label: t('common.arabic'), value: 'ar', icon: null, },
+        { id: 'en', label: t('common.english'), value: 'en', icon: null, },
+        { id: 'fr', label: t('common.french'), value: 'fr', icon: null, },
+        { id: 'ar', label: t('common.arabic'), value: 'ar', icon: null, },
     ]
 
     return (
@@ -250,28 +248,10 @@ export default function AccountSettingsLayout() {
                                 <PhoneInput
                                     dir="ltr"
                                     id="phone-field"
-                                    className="bg-emphasis/75 pr-8"
+                                    className="bg-emphasis/75"
                                     value={settings.phone ?? ''}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('phone', e.target.value)} />
-                                { user.phoneVerified
-                                ? <button dir="ltr" type="button" area-label="change phone number"
-                                    className="flex gap-2 items-center absolute top-0 right-2 text-xs text-muted h-full"
-                                    > <ICONS.pencilSquare className="size-5 text-muted"/>
-                                </button>
-                                : <button dir="ltr" type="button" area-label="verify phone number"
-                                    className="flex gap-2 items-center absolute top-0 right-2 text-xs text-warning h-full"
-                                    onClick={() => setPhoneVerification(true)}
-                                    > { t('settings.phone_verify_label') } <ICONS.exclamationTriangle className="size-5 text-warning"/>
-                                </button>
-                                }
-
-                                <PhoneVerificationModal isOpen={phoneVerification} onClose={() => setPhoneVerification(false)} onSuccess={() => setPhoneVerification(false)} />
-
                             </div>
-                            <p className="flex gap-2 mt-2">
-                                <ICONS.exclamationTriangle className="size-5 text-warning"/>
-                                <button type="button" className="text-xs text-muted decoration-warning hover:underline active:underline"> { t('settings.phone_verify_message') }! </button>
-                            </p>
                         </div>
 
                     </div>
@@ -324,17 +304,17 @@ export default function AccountSettingsLayout() {
                     <ul className="flex flex-col gap-4">
                         <li> <Link to={PATHS.CLIENT.PASSWORD_CHANGE}
                             className="flex items-center gap-2 w-full h-full px-2.5 py-2 bg-surface border border-muted/15 rounded-lg hover:underline active:underline"
-                        > <ICONS.lockClosed className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> {t('settings.change_password')} </span> </Link>
+                        > <LockClosed className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> {t('settings.change_password')} </span> </Link>
                         </li>
 
                         <li> <Link to={PATHS.PASSWORD_RESET}
                             className="flex items-center gap-2 w-full h-full px-2.5 py-2 bg-surface border border-muted/15 rounded-lg hover:underline active:underline"
-                        > <ICONS.questionMarkCircle className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> {t('settings.forgot_password')} </span> </Link>
+                        > <QuestionMarkCircle className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> {t('settings.forgot_password')} </span> </Link>
                         </li>
 
                         <li> <Link to={PATHS.PRIVACY_POLICY}
                             className="flex items-center gap-2 w-full h-full px-2.5 py-2 bg-surface border border-muted/15 rounded-lg hover:underline active:underline"
-                        > <ICONS.bookOpen className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> {t('settings.privacy_policy')} </span> </Link>
+                        > <BookOpen className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> {t('settings.privacy_policy')} </span> </Link>
                         </li>
 
                     </ul>

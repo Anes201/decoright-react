@@ -1,7 +1,7 @@
 import ProjectTable from "@/components/layout/admin/projects/ProjectTable";
-import { ICONS } from "@/icons";
-import { useState } from "react";
 import ProjectDrawer from "@/components/layout/admin/projects/ProjectDrawer";
+import { useState } from "react";
+import { Plus } from "@/icons";
 
 export default function AdminProjectList() {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -38,7 +38,7 @@ export default function AdminProjectList() {
                             onClick={handleCreate}
                             className="bg-primary text-white px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 hover:bg-primary/90 transition-colors shadow-sm"
                         >
-                            <ICONS.plus className="size-4" /> Create New Project
+                            <Plus className="size-4" /> Create New Project
                         </button>
                     </div>
 

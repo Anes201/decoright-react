@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { ICONS } from '@/icons';
 import { AdminService } from '@/services/admin.service';
+import { XMark, User, Phone, MapPin, Tag, RectangleStack } from '@/icons';
 
 interface RequestDetailDrawerProps {
     request: any | null;
@@ -70,7 +70,7 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
                             onClick={onClose}
                             className="p-2 hover:bg-emphasis rounded-full transition-colors"
                         >
-                            <ICONS.xMark className="size-6 text-muted" />
+                            <XMark className="size-6 text-muted" />
                         </button>
                     </div>
 
@@ -82,7 +82,7 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
                             <div className="space-y-4">
                                 <div className="flex items-center gap-4">
                                     <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                        <ICONS.user className="size-5" />
+                                        <User className="size-5" />
                                     </div>
                                     <div>
                                         <p className="text-xs text-muted">Full Name</p>
@@ -92,7 +92,7 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
 
                                 <div className="flex items-center gap-4">
                                     <div className="size-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500">
-                                        <ICONS.phone className="size-5" />
+                                        <Phone className="size-5" />
                                     </div>
                                     <div>
                                         <p className="text-xs text-muted">Phone Number</p>
@@ -102,7 +102,7 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
 
                                 <div className="flex items-center gap-4">
                                     <div className="size-10 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500">
-                                        <ICONS.mapPin className="size-5" />
+                                        <MapPin className="size-5" />
                                     </div>
                                     <div>
                                         <p className="text-xs text-muted">Location</p>
@@ -118,7 +118,7 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="p-4 rounded-xl bg-emphasis/30 border border-muted/10">
                                     <div className="flex items-center gap-2 text-primary mb-1">
-                                        <ICONS.tag className="size-4" />
+                                        <Tag className="size-4" />
                                         <span className="text-3xs uppercase font-bold">Service</span>
                                     </div>
                                     <p className="text-sm font-medium">{request.service_types?.display_name_en || 'Unknown'}</p>
@@ -126,7 +126,7 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
 
                                 <div className="p-4 rounded-xl bg-emphasis/30 border border-muted/10">
                                     <div className="flex items-center gap-2 text-indigo-500 mb-1">
-                                        <ICONS.rectangleStack className="size-4" />
+                                        <RectangleStack className="size-4" />
                                         <span className="text-3xs uppercase font-bold">Space</span>
                                     </div>
                                     <p className="text-sm font-medium">{request.space_types?.display_name_en || request.space_type || 'Unknown'}</p>

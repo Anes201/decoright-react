@@ -3,10 +3,10 @@
 
 import { useEffect, useState } from "react"
 import { RequestService } from "@/services/request.service"
-import { ICONS } from "@/icons"
 import { Link } from "react-router-dom"
 import { PATHS } from "@/routers/Paths"
 import { useTranslation } from "react-i18next";
+import { ChatBubbleOvalLeftEllipsis, ChevronRight } from "@/icons";
 
 export function RequestServiceItem({ request }: any) {
     const { t, i18n } = useTranslation();
@@ -32,7 +32,7 @@ export function RequestServiceItem({ request }: any) {
                     <div className="flex max-md:flex-col justify-between gap-2 w-2/3">
 
                         <Link
-                            to={PATHS.CLIENT.chatRoom(request.id)}
+                            to={PATHS.CLIENT.chatRoom(request.chat_rooms?.[0]?.id || request.id)}
                             className="col col-id hover:underline text-primary font-semibold"
                         >
                             #{request.request_code || request.id.slice(0, 8)}
@@ -51,14 +51,14 @@ export function RequestServiceItem({ request }: any) {
 
                 {/* CTA */}
                 <Link
-                    to={PATHS.CLIENT.chatRoom(request.id)}
+                    to={PATHS.CLIENT.chatRoom(request.chat_rooms?.[0]?.id || request.id)}
                     className="col flex items-center justify-between md:justify-end gap-8 w-full md:w-1/2 min-w-max hover:text-primary transition-colors"
                 >
                     <span className="flex gap-2 items-center">
-                        {ICONS.chatBubbleOvalLeftEllipsis({ className: 'size-5' })}
+                        <ChatBubbleOvalLeftEllipsis className="size-5" />
                         <span>{t('requests.open_chat')}</span>
                     </span>
-                    <span> {ICONS.chevronRight({ className: 'size-4 rtl:rotate-180' })} </span>
+                    <span> <ChevronRight className="size-4 rtl:rotate-180" /> </span>
                 </Link>
 
             </div>

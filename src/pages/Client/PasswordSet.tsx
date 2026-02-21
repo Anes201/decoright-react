@@ -5,7 +5,7 @@ import { SCTALink } from "@/components/ui/CTA";
 import { PasswordInput } from "@/components/ui/Input";
 import { PASSWORD_MIN_LENGTH } from "@/config";
 import { PASSWORD_REGEX } from "@/utils/validators";
-import { ICONS } from "@/icons";
+import { CheckCircle, InformationCircle } from "@/icons";
 import { supabase } from "@/lib/supabase";
 import { PATHS } from "@/routers/Paths";
 import { useEffect, useState } from "react";
@@ -83,7 +83,7 @@ export default function PasswordSet() {
     }, [newPassword, confirmPassword]);
 
 
-    async function handleSubmit(e: React.SubmitEvent) {
+    async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
 
         setError(null)
@@ -136,7 +136,7 @@ export default function PasswordSet() {
 
         } catch (err) {
             console.error("Unhandled error in set-password", err);
-            setError( t('errors.generic') );
+            setError(t('errors.generic'));
         } finally {
             setLoading(false);
         }
@@ -158,8 +158,8 @@ export default function PasswordSet() {
                         </div>
 
                         <div className="space-y-4 text-center">
-                            <h1 className="font-semibold text-xl md:text-3xl"> { t('password.set_title') } </h1>
-                            <p className="text-xs md:text-sm"> { t('password.set_description') } </p>
+                            <h1 className="font-semibold text-xl md:text-3xl"> {t('password.set_title')} </h1>
+                            <p className="text-xs md:text-sm"> {t('password.set_description')} </p>
                         </div>
                     </div>
 
@@ -169,14 +169,14 @@ export default function PasswordSet() {
                         <div className="flex flex-col gap-2">
                             <label htmlFor="password"
                                 className="font-medium text-xs text-muted px-1"
-                            > { t('password.password_label') } </label>
+                            > {t('password.password_label')} </label>
                             <PasswordInput id="password" disabled={pageLoading}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewPassword(e.target.value)} />
                         </div>
                         <div className="flex flex-col gap-2">
                             <label htmlFor="confirm-password"
                                 className="font-medium text-xs text-muted px-1"
-                            > { t('password.password_confirm_label') } </label>
+                            > {t('password.password_confirm_label')} </label>
                             <PasswordInput id="confirm-password" disabled={pageLoading}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)} />
                         </div>
@@ -184,13 +184,13 @@ export default function PasswordSet() {
                         <ul className="flex flex-col gap-4">
 
                             <li className="flex items-center gap-2">
-                                {passwordValid ? <ICONS.checkCircle className="size-4 text-success" /> : <ICONS.informationCircle className="size-4" />}
-                                <p className="text-xs text-muted"> { t('password.helper_requirements', {PASSWORD_MIN_LENGTH: PASSWORD_MIN_LENGTH}) }. </p>
+                                {passwordValid ? <CheckCircle className="size-4 text-success" /> : <InformationCircle className="size-4" />}
+                                <p className="text-xs text-muted"> {t('password.helper_requirements', { PASSWORD_MIN_LENGTH: PASSWORD_MIN_LENGTH })}. </p>
                             </li>
 
                             <li className="flex items-center gap-2">
-                                {passwordsMatch ? <ICONS.checkCircle className="size-4 text-success" /> : <ICONS.informationCircle className="size-4" />}
-                                <p className="text-xs text-muted"> { t('password.helper_match') }. </p>
+                                {passwordsMatch ? <CheckCircle className="size-4 text-success" /> : <InformationCircle className="size-4" />}
+                                <p className="text-xs text-muted"> {t('password.helper_match')}. </p>
                             </li>
 
                         </ul>
@@ -202,9 +202,9 @@ export default function PasswordSet() {
                                 disabled={!passwordValid || !passwordsMatch || loading || pageLoading}
                                 title="Set New Password"
                             >
-                                <Spinner status={loading} size="sm"> { t('password.password_set_cta') } </Spinner>
+                                <Spinner status={loading} size="sm"> {t('password.password_set_cta')} </Spinner>
                             </PButton>
-                            <SCTALink to={PATHS.PASSWORD_RESET} className="w-full"> { t('common.cancel') } </SCTALink>
+                            <SCTALink to={PATHS.PASSWORD_RESET} className="w-full"> {t('common.cancel')} </SCTALink>
                         </div>
                     </form>
 

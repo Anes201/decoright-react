@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { SpaceTypesService, type SpaceType } from '@/services/space-types.service';
-import { ICONS } from '@/icons';
 import SpaceTypeTable from './SpaceTypeTable';
 import SpaceTypeForm from './SpaceTypeForm';
+import { ArrowPath, Cog, Plus } from '@/icons';
 
 export default function SpaceTypes() {
     const [spaceTypes, setSpaceTypes] = useState<SpaceType[]>([]);
@@ -61,14 +61,14 @@ export default function SpaceTypes() {
                             onClick={loadSpaceTypes}
                             className="px-4 py-2 bg-emphasis text-body rounded-lg hover:bg-neutral-tertiary-medium transition-colors flex items-center gap-2 text-sm font-semibold"
                         >
-                            <ICONS.arrowPath className={`size-4 ${loading ? 'animate-spin' : ''}`} />
+                            <ArrowPath className={`size-4 ${loading ? 'animate-spin' : ''}`} />
                             Refresh
                         </button>
                         <button
                             onClick={handleAdd}
                             className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 text-sm font-semibold"
                         >
-                            <ICONS.plus className="size-4" />
+                            <Plus className="size-4" />
                             Add Space Type
                         </button>
                     </div>
@@ -78,7 +78,7 @@ export default function SpaceTypes() {
                 <div className="flex-1 min-h-0 overflow-hidden">
                     {loading && spaceTypes.length === 0 ? (
                         <div className="h-full flex flex-col items-center justify-center text-muted animate-pulse">
-                            <ICONS.cog className="size-12 animate-spin mb-4" />
+                            <Cog className="size-12 animate-spin mb-4" />
                             <p className="font-medium">Loading space types...</p>
                         </div>
                     ) : (

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { SpaceTypesService, type SpaceType, type SpaceTypeInsert, type SpaceTypeUpdate } from '@/services/space-types.service';
-import { ICONS } from '@/icons';
+import { Cog, XMark } from '@/icons';
 
 interface SpaceTypeFormProps {
     isOpen: boolean;
@@ -95,7 +95,7 @@ export default function SpaceTypeForm({ isOpen, spaceType, onClose, onSuccess }:
                         onClick={onClose}
                         className="p-2 hover:bg-surface/50 rounded-lg transition-colors"
                     >
-                        <ICONS.xMark className="size-5" />
+                        <XMark className="size-5" />
                     </button>
                 </div>
 
@@ -217,7 +217,7 @@ export default function SpaceTypeForm({ isOpen, spaceType, onClose, onSuccess }:
                         disabled={loading}
                         className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
                     >
-                        {loading && <ICONS.cog className="size-4 animate-spin" />}
+                        {loading && <Cog className="size-4 animate-spin" />}
                         {spaceType ? 'Update' : 'Create'}
                     </button>
                 </div>

@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { slugify } from "@/utils/texts";
 import { PATHS } from "@/routers/Paths";
 import { useForm, type SubmitHandler } from "react-hook-form"
-import { ICONS } from "@/icons";
+import { InformationCircle } from "@/icons";
 
 interface FormValues {
     'service-space-title-en': string;
@@ -79,7 +79,7 @@ export default function ServiceSpaceCreateLayout() {
 
                     {errors['root'] &&
                         <div className="flex items-center gap-2 w-full h-fit p-3 border border-danger/45 rounded-lg">
-                            <ICONS.informationCircle className="size-5 text-danger" />
+                            <InformationCircle className="size-5 text-danger" />
                             <p className="text-sm text-danger text-center">{errors['root']?.message}</p>
                         </div>
                     }

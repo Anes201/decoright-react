@@ -1,4 +1,6 @@
-import { ICONS } from '@/icons';
+
+import { XMark } from "@/icons";
+
 import ProjectForm from './ProjectForm';
 
 interface ProjectDrawerProps {
@@ -40,7 +42,7 @@ export default function ProjectDrawer({ project, isOpen, onClose, onSuccess }: P
                             </p>
                         </div>
                         <button onClick={onClose} className="p-2 hover:bg-emphasis rounded-full transition-colors">
-                            <ICONS.xMark className="size-6 text-muted" />
+                            <XMark className="size-6 text-muted" />
                         </button>
                     </div>
 

@@ -1,7 +1,7 @@
 import GalleryListLayout from "@components/layout/admin/gallery/GalleryList";
 import { Link } from "react-router-dom";
 import { PATHS } from "@/routers/Paths";
-import { ICONS } from "@/icons";
+import { Plus } from "@/icons";
 
 export default function GalleryList() {
     return (
@@ -14,7 +14,7 @@ export default function GalleryList() {
                             <p className="text-sm text-muted">Manage your marketing showcase items with before and after comparisons.</p>
                         </div>
                         <Link to={PATHS.ADMIN.GALLERY_CREATE} className="p-button">
-                            <ICONS.plus className="size-4 mr-2" />
+                            <Plus className="size-4 mr-2" />
                             Add Gallery Item
                         </Link>
                     </div>
