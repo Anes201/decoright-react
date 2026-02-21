@@ -14,7 +14,7 @@ import { allowedLocales } from "@/constants"
 import { useTranslation } from "react-i18next"
 import { ArrowRightEndOnRectangle, ArrowRightStartOnRectangle, Chat, ChevronRight, Folder, Language, Menu, PresentationChartLine, User, UserPlus } from "@/icons";
 
-const Logo = "/public/logo.jpeg";
+const Logo = "/Logo.PNG";
 
 const UserContext = createContext<any>(null);
 const MenuContext = createContext<any>(undefined);
@@ -53,7 +53,6 @@ export function NavLinks() {
 export function AuthenticatedUserActins() {
 
     const { user, isAdmin } = useContext(UserContext);
-    const [chatMenuOpen, setChatMenuOpen] = useState<boolean>(false);
     const [navMenuOpen, setNavMenuOpen] = useState<boolean>(false);
     const { t } = useTranslation()
 
@@ -74,16 +73,15 @@ export function AuthenticatedUserActins() {
                             <PresentationChartLine className="size-5 md:size-6" />
                         </Link>
 
-                        {/* Chat Menu Card */}
-                        <button type="button" title="Chat Menu" onClick={() => setChatMenuOpen(!chatMenuOpen)}
-                            className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
+                        {/* Chat Nav Page */}
+                        <Link to={PATHS.ADMIN.CHAT} title="Chats" className="relative content-center p-1.5 md:p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
                             <Chat className="size-5 md:size-6" />
 
                             <span className="absolute flex size-3 top-0 left-0">
                                 <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
                                 <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
                             </span>
-                        </button>
+                        </Link>
                     </>
 
                     : <>
@@ -118,14 +116,6 @@ export function AuthenticatedUserActins() {
                 </button>
 
             </div>
-
-            {chatMenuOpen &&
-                <MenuCard title={t('common.menu_chat')} open={chatMenuOpen} setOpen={setChatMenuOpen}>
-                    {/* Mobile Nav Menu */}
-                    <ul className="flex flex-col w-full h-full gap-2 border border-muted/15 p-2 rounded-lg overflow-y-auto min-scrollbar">
-                    </ul>
-                </MenuCard>
-            }
 
             {/* Mobile Nav Menu Card Overlay */}
             {navMenuOpen &&

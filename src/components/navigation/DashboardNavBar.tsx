@@ -6,7 +6,7 @@ import { MenuCard } from "@components/ui/MenuCard"
 import { PATHS } from "@/routers/Paths"
 import { Chat, Home, Menu, Folder } from "@/icons";
 
-const Logo = "/decoright.jpeg";
+const Logo = "/Logo.PNG";
 
 export function NavLogo() {
     return (

@@ -4,7 +4,7 @@ import { SocialMediaPhoneFields, SocialMediaUrlFields } from "@/constants";
 import { useTranslation } from "react-i18next";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
-const Logo = "/decoright.jpeg";
+const Logo = "/Logo.PNG";
 
 export function Footer() {
     const { t } = useTranslation();
