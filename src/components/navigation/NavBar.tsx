@@ -53,12 +53,11 @@ export function NavLinks() {
 export function AuthenticatedUserActins() {
 
     const { user, isAdmin } = useContext(UserContext);
-    if (!user) return;
-
     const [chatMenuOpen, setChatMenuOpen] = useState<boolean>(false);
     const [navMenuOpen, setNavMenuOpen] = useState<boolean>(false);
-
     const { t } = useTranslation()
+
+    if (!user) return null;
 
     return (
         <>
@@ -306,7 +305,7 @@ export function ClientMenu() {
                     <Link to={item.path} className="flex flex-col gap-1 w-full h-full p-2 border-b border-muted/15 group-hover/menuitem:border-primary/75">
                         <div className="flex content-center gap-2">
                             {/* Icon */}
-                            { item.icon ? <item.icon /> : <Folder /> }
+                            {item.icon ? <item.icon /> : <Folder />}
                             {/* Label */}
                             <h4 className="font-medium text-sm text-muted group-hover/menuitem:text-foreground"> {t(`nav.${item.key}`)} </h4>
                         </div>
