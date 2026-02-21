@@ -2,7 +2,7 @@ import useAuth from "@/hooks/useAuth";
 import Spinner from "@/components/common/Spinner";
 import type { Database } from "@/types/database.types";
 import { Link, Navigate } from "react-router-dom";
-import { Envelope, Phone, UserCircle, PencilSquare, CheckCircle, LockClosed } from "@/icons";
+import { Envelope, Phone, UserCircle, PencilSquare } from "@/icons";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { PATHS } from "@/routers/Paths";
@@ -101,69 +101,28 @@ export default function AccountProfileLayout() {
                 </div>
             </div>
 
-            {/* ── Quick Info Grid ────────────────────────────────── */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-
-                {/* Contact Card */}
-                <div className="flex flex-col gap-8 p-8 md:p-10 bg-surface border border-muted/15 rounded-[2.5rem] shadow-sm hover:shadow-md transition-shadow">
-                    <div className="flex items-center gap-4">
-                        <div className="p-2 bg-primary/10 rounded-xl border border-primary/10">
-                            <UserCircle className="size-5 text-primary" />
-                        </div>
-                        <h3 className="font-bold text-xs text-muted tracking-widest uppercase">{t('profile.personal_info')}</h3>
+            {/* ── Personal Info ─────────────────────────────────── */}
+            <div className="flex flex-col gap-8 p-8 md:p-10 bg-surface border border-muted/15 rounded-[2.5rem] shadow-sm hover:shadow-md transition-shadow lg:max-w-2xl mx-auto w-full">
+                <div className="flex items-center gap-4">
+                    <div className="p-2 bg-primary/10 rounded-xl border border-primary/10">
+                        <UserCircle className="size-5 text-primary" />
                     </div>
-
-                    <ul className="flex flex-col gap-6">
-                        {infoItems.map(item => (
-                            <li key={item.id} className="group flex items-center gap-5">
-                                <div className="shrink-0 p-3.5 bg-emphasis border border-muted/10 text-muted rounded-2xl group-hover:bg-primary/5 group-hover:text-primary group-hover:border-primary/10 transition-all duration-300">
-                                    {item.icon}
-                                </div>
-                                <div className="flex flex-col min-w-0">
-                                    <span className="text-[10px] font-bold text-muted/50 uppercase tracking-widest mb-0.5">{item.label}</span>
-                                    <p className="font-bold text-foreground text-lg truncate tracking-tight">{item.value}</p>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
+                    <h3 className="font-bold text-xs text-muted tracking-widest uppercase">{t('profile.personal_info')}</h3>
                 </div>
 
-                {/* Account Security/Status Card */}
-                <div className="flex flex-col gap-8 p-8 md:p-10 bg-surface border border-muted/15 rounded-[2.5rem] shadow-sm hover:shadow-md transition-shadow">
-                    <div className="flex items-center gap-4">
-                        <div className="p-2 bg-success/10 rounded-xl border border-success/10">
-                            <LockClosed className="size-5 text-success" />
-                        </div>
-                        <h3 className="font-bold text-xs text-muted tracking-widest uppercase">{t('settings.security')}</h3>
-                    </div>
-
-                    <div className="flex flex-col gap-6">
-                        <div className="flex items-start gap-5 p-6 bg-success/5 border border-success/10 rounded-[2rem] group/status">
-                            <div className="shrink-0 p-3 bg-success text-white rounded-2xl shadow-lg shadow-success/20 group-hover/status:scale-110 transition-transform">
-                                <CheckCircle className="size-6" />
+                <ul className="flex flex-col gap-6">
+                    {infoItems.map(item => (
+                        <li key={item.id} className="group flex items-center gap-5">
+                            <div className="shrink-0 p-3.5 bg-emphasis border border-muted/10 text-muted rounded-2xl group-hover:bg-primary/5 group-hover:text-primary group-hover:border-primary/10 transition-all duration-300">
+                                {item.icon}
                             </div>
-                            <div className="flex flex-col gap-1.5 pt-0.5">
-                                <span className="text-base font-bold text-success-foreground leading-none">Security Verified</span>
-                                <p className="text-xs text-success-foreground/60 leading-relaxed font-medium">Your credentials are secure. All account features are fully active.</p>
+                            <div className="flex flex-col min-w-0">
+                                <span className="text-[10px] font-bold text-muted/50 uppercase tracking-widest mb-0.5">{item.label}</span>
+                                <p className="font-bold text-foreground text-lg truncate tracking-tight">{item.value}</p>
                             </div>
-                        </div>
-
-                        <div className="flex flex-col gap-3 px-1 mt-auto">
-                            <div className="flex items-center justify-between text-[11px] font-bold tracking-widest uppercase text-muted/60">
-                                <span>Trust Score</span>
-                                <span className="text-success">92%</span>
-                            </div>
-                            <div className="flex gap-1.5 h-2">
-                                <div className="flex-1 rounded-full bg-success shadow-sm" />
-                                <div className="flex-1 rounded-full bg-success shadow-sm" />
-                                <div className="flex-1 rounded-full bg-success shadow-sm" />
-                                <div className="flex-1 rounded-full bg-success shadow-sm" />
-                                <div className="flex-1 rounded-full bg-muted/10" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                        </li>
+                    ))}
+                </ul>
             </div>
 
         </div>
