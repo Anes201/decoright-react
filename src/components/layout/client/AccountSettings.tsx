@@ -11,6 +11,7 @@ import { Link, Navigate } from "react-router-dom";
 import { SelectDropDownMenu } from "@components/ui/Select";
 import { useTranslation } from "react-i18next";
 import { CheckCircle, LockClosed, QuestionMarkCircle } from "@/icons";
+import { PButton } from "@components/ui/Button";
 
 // Normalize Algerian phone numbers to E.164 international format
 function normalizePhone(raw: string): string {
@@ -154,7 +155,7 @@ export default function AccountSettingsLayout() {
     ];
 
     return (
-        <div className="flex flex-col gap-16 w-full mb-16">
+        <div className="flex flex-col gap-10 md:gap-16 w-full mb-16 px-1">
 
             {globalError && (
                 <p className="text-xs text-danger bg-danger/10 border border-danger/20 rounded-lg px-3 py-2">
@@ -162,20 +163,19 @@ export default function AccountSettingsLayout() {
                 </p>
             )}
 
-            <form onSubmit={handleSave} className="flex flex-col gap-16 w-full">
+            <form onSubmit={handleSave} className="flex flex-col gap-10 md:gap-16 w-full">
 
                 {/* ── Profile Information ────────────────────────────── */}
-                <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-6 md:gap-8">
                     <div className="flex items-center gap-4 w-full">
                         <h2 className="text-xs font-medium text-muted min-w-max">{t('settings.profile_info')}</h2>
                         <hr className="w-full border-0 border-b border-b-muted/15" />
                     </div>
 
-
                     {/* Fields */}
-                    <div className="flex flex-col w-full gap-4 lg:w-3/5">
+                    <div className="flex flex-col w-full gap-4 lg:max-w-2xl">
 
-                        <div className="flex max-xs:flex-col md:flex-col lg:flex-row gap-4 w-full">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                             <div className="w-full">
                                 <label htmlFor="first-name-field" className="block text-xs text-muted mb-1.5 mx-1">{t('settings.first_name')}</label>
                                 <Input
@@ -235,13 +235,13 @@ export default function AccountSettingsLayout() {
                 </div>
 
                 {/* ── Preferences ───────────────────────────────────── */}
-                <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-6 md:gap-8">
                     <div className="flex items-center gap-4 w-full">
                         <h2 className="text-xs font-medium text-muted min-w-max">{t('settings.preferences')}</h2>
                         <hr className="w-full border-0 border-b border-b-muted/15" />
                     </div>
 
-                    <div className="flex flex-col w-full gap-4 lg:w-3/5">
+                    <div className="flex flex-col w-full gap-4 lg:max-w-xl">
                         <div className="flex flex-col gap-1.5">
                             <label htmlFor="select-language" className="text-xs text-muted px-1">{t('settings.language')}</label>
                             <SelectDropDownMenu
@@ -259,30 +259,29 @@ export default function AccountSettingsLayout() {
                 </div>
 
                 {/* ── Save Button ────────────────────────────────────── */}
-                <div className="flex items-center gap-4 lg:w-3/5">
-                    <button
+                <div className="flex items-center gap-4">
+                    <PButton
                         type="submit"
-                        disabled={saving}
-                        className="flex items-center gap-2 font-semibold text-sm text-white/95 px-6 py-2.5 bg-primary rounded-xl disabled:opacity-50 hover:opacity-90 active:scale-[0.98] transition-all"
+                        loading={saving}
+                        className="w-full sm:w-auto px-10 py-3 rounded-xl"
                     >
-                        <Spinner status={saving} size="sm">
+                        <div className="flex items-center gap-2">
                             <CheckCircle className="size-4" />
                             {t('common.save')}
-                        </Spinner>
-                    </button>
-                    <p className="text-2xs text-muted">{t('settings.error_required') ? '' : ''}</p>
+                        </div>
+                    </PButton>
                 </div>
 
             </form>
 
             {/* ── Security ──────────────────────────────────────────── */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-6 md:gap-8">
                 <div className="flex items-center gap-4 w-full">
                     <h2 className="text-xs font-medium text-muted min-w-max">{t('settings.security')}</h2>
                     <hr className="w-full border-0 border-b border-b-muted/15" />
                 </div>
 
-                <div className="flex flex-col gap-3 w-full lg:w-3/5">
+                <div className="flex flex-col gap-3 w-full lg:max-w-xl">
                     <ul className="flex flex-col gap-3">
                         <li>
                             <Link
