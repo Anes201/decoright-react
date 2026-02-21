@@ -10,16 +10,6 @@ import { useTranslation } from "react-i18next";
 
 type ProfileData = Database['public']['Tables']['profiles']['Row'];
 
-// Returns capitalized initials from a full name string
-function getInitials(name: string): string {
-    return name
-        .trim()
-        .split(' ')
-        .filter(Boolean)
-        .slice(0, 2)
-        .map(n => n[0].toUpperCase())
-        .join('');
-}
 
 export default function AccountProfileLayout() {
     const { user, loading: authLoading } = useAuth();
@@ -63,7 +53,6 @@ export default function AccountProfileLayout() {
         : t('profile.not_provided');
 
     const displayName = profile?.full_name || t('profile.anonymous');
-    const initials = getInitials(displayName);
 
     const infoItems = [
         {
@@ -89,19 +78,10 @@ export default function AccountProfileLayout() {
     return (
         <div className="flex flex-col gap-8">
 
-            {/* ── Avatar + Name ─────────────────────────────────── */}
-            <div className="flex flex-col items-center gap-3">
-                <div className="w-fit h-25 md:h-36 p-1 md:p-1.5 aspect-square border border-muted/20 rounded-full bg-background overflow-hidden">
-                    {/* Initials fallback — replace with real avatar when available */}
-                    <div className="w-full h-full rounded-full bg-primary/15 flex items-center justify-center">
-                        <span className="font-bold text-2xl md:text-3xl text-primary select-none">{initials}</span>
-                    </div>
-                </div>
-
-                <div className="flex flex-col items-center text-center gap-0.5">
-                    <h4 className="font-semibold text-lg leading-tight">{displayName}</h4>
-                    <p className="text-2xs text-muted">{t('profile.joined_at', { date: joinDate })}</p>
-                </div>
+            {/* ── User Header ───────────────────────────────────── */}
+            <div className="flex flex-col items-center text-center gap-0.5 pt-4">
+                <h4 className="font-semibold text-xl leading-tight text-foreground">{displayName}</h4>
+                <p className="text-sm text-muted">{t('profile.joined_at', { date: joinDate })}</p>
             </div>
 
             {/* ── Personal Info ─────────────────────────────────── */}
