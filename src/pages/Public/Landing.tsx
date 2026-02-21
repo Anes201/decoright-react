@@ -39,7 +39,7 @@ export default function Landing() {
                 <Hero settings={settings} />
             </main>
 
-            <section className="content-container relative flex flex-col gap-8 w-full mt-16 pb-16 px-4 sm:px-6 md:px-8">
+            <section className="content-container relative flex flex-col gap-8 w-full mt-16 pb-16 px-4 sm:px-6 md:px-8 max-lg:overflow-x-clip">
 
                 <hr className="absolute top-0 left-0 w-full h-full border-0 border-x border-muted/25 -z-10" />
                 <hr className="absolute -top-2 -start-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs -z-10" />
@@ -73,7 +73,7 @@ export default function Landing() {
                 <ShowcaseCardList />
 
             </section>
-            <section className="content-container relative flex flex-col gap-8 w-full mb-16 pt-16 px-4 sm:px-6 md:px-8">
+            <section className="content-container relative flex flex-col gap-8 w-full mb-16 pt-16 px-4 sm:px-6 md:px-8 max-lg:overflow-x-clip">
 
                 <hr className="absolute top-0 left-0 w-full h-full border-0 border-x border-muted/25 -z-10" />
                 <hr className="absolute -bottom-2 -start-1 w-2.25 h-fit aspect-square border border-muted/25 rounded-full bg-emphasis shadow-xs -z-10" />

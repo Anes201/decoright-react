@@ -39,7 +39,7 @@ export function ShowcaseCard({ showcase }: { showcase: any }) {
 
 export function ShowcaseCardList() {
     return (
-        <ul className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] grid-cols-m gap-6 w-full">
+        <ul className="grid grid-cols-1 2xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] grid-cols-m gap-4 lg:gap-6 w-full">
             {showcases.map((showcase, index) => (
                 <ShowcaseCard key={index} showcase={showcase} />
             ))}

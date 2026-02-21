@@ -193,7 +193,7 @@ export function ServiceCardList() {
                 style={{ '--swiper-navigation-size': '30px', '--swiper-navigation-color': 'var(--acme-primary)', '--swiper-pagination-color': 'var(--acme-primary)' } as CSSProperties}
             >
                 {services.map((service:ServiceType) => (
-                    <SwiperSlide key={service.id} className="pr-2">
+                    <SwiperSlide key={service.id} className="px-1">
                         <ServiceCardItem service={service} />
                     </SwiperSlide>
                 ))}
