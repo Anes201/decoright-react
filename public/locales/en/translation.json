@@ -129,12 +129,17 @@
     "already_have_account": "Already have an account?",
     "login_now": "Login",
     "error_failed_login": "Failed to login",
-    "error_failed_signup": "Failed to sign up",
+    "error_failed_signup": "Signup failed. Please try again.",
     "error_failed_logout": "Failed to sign out",
+    "error_email_taken": "An account with this email already exists. Try logging in instead.",
+    "error_phone_taken": "This phone number is already linked to an account. Please use a different number.",
+    "error_weak_password": "Password must be at least 6 characters long.",
+    "error_name_required": "Please enter your first and last name.",
+    "error_invalid_phone": "Please enter a valid phone number (e.g. 0550 123 456).",
     "phone": "Phone Number",
     "placeholders": {
       "email": "email@example.com",
-      "phone": "Phone Number",
+      "phone": "05 50 12 34 56",
       "email_or_phone": "Enter email or phone",
       "first_name": "First name",
       "last_name": "Last name"
@@ -333,7 +338,7 @@
   "services": {
     "service_list_title": "Services — Crafted Spaces, Thoughtful Design",
     "service_list_description": "Discover our tailored design services — from initial concept and space planning to finishes and custom furniture. We collaborate with you to create interiors that are beautiful, functional, and made for living.",
-    "request_project": "Request a Project",
+    "request_project": "Request a Service",
     "service_card_title": "Full-Service Design & Execution",
     "service_card_description": "Let Decoright handle every detail — styling, installations, and expert finishes that turn empty space into something exceptional",
     "service_card_cta": "Request Service"

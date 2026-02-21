@@ -2,327 +2,314 @@
 import useAuth from "@/hooks/useAuth";
 import Spinner from "@components/common/Spinner";
 import toast from "react-hot-toast";
-import React, { useCallback, useEffect, useState } from "react";
-import { allowedLocales, images } from "@/constants";
+import React, { useEffect, useState } from "react";
+import { allowedLocales } from "@/constants";
 import { EmailInput, Input, PhoneInput } from "@components/ui/Input";
 import { supabase } from "@/lib/supabase";
 import { PATHS } from "@/routers/Paths";
 import { Link, Navigate } from "react-router-dom";
 import { SelectDropDownMenu } from "@components/ui/Select";
-import { USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "@/config";
-import { PHONE_REGEX, USERNAME_REGEX } from "@/utils/validators";
 import { useTranslation } from "react-i18next";
-import { BookOpen, LockClosed, QuestionMarkCircle } from "@/icons";
+import { CheckCircle, LockClosed, QuestionMarkCircle } from "@/icons";
+import { PButton } from "@components/ui/Button";
 
-// Unused types ProfileData and Settings removed to clear lint errors
-export type FieldKey = "firstName" | "lastName" | "phone";
+// Normalize Algerian phone numbers to E.164 international format
+function normalizePhone(raw: string): string {
+    let p = raw.trim().replace(/[\s\-().]/g, '');
+    if (p.startsWith('05') || p.startsWith('06') || p.startsWith('07')) return '+213' + p.slice(1);
+    if (/^[567]\d{8}$/.test(p)) return '+213' + p;
+    if (p.startsWith('00213')) return '+' + p.slice(2);
+    if (p.startsWith('213') && p.length === 12) return '+' + p;
+    return p;
+}
 
 export default function AccountSettingsLayout() {
-    // const navigate = useNavigate() - Removed unused variable to clear lint error
-
     const { t, i18n } = useTranslation();
-    const { user, loading: authLoading } = useAuth()
-    const [settings, setSettings] = useState<Record<string, string>>({});
-    const [language, setLanguage] = useState<string | "en" | "fr" | "ar">(i18n.language || "en")
-    const [_dataSaved, setDataSaved] = useState(false);
+    const { user, loading: authLoading } = useAuth();
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [language, setLanguage] = useState<string>(i18n.language || 'en');
     const [initializing, setInitializing] = useState(true);
-    const [_loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null)
+    const [saving, setSaving] = useState(false);
+    const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+    const [globalError, setGlobalError] = useState<string | null>(null);
 
-    // Custom debounce function to avoid lodash dependency
-    function debounce<T extends (...args: any[]) => any>(func: T, wait: number) {
-        let timeout: ReturnType<typeof setTimeout>;
-        return (...args: Parameters<T>) => {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func(...args), wait);
-        };
-    }
-
-    function handleChange(field: string, value: string) {
-        setSettings(prev => ({ ...prev, [field]: value }))
-
-        // validate/local rules here if needed, e.g. don't save empty names
-        if ((field === "first_name" || field === "last_name") && value.trim() === "") return;
-        // save full_name only when user edits first/last
-        if (field === "first_name" || field === "last_name") {
-            const currentFirst = field === "first_name" ? value : settings.first_name;
-            const currentLast = field === "last_name" ? value : settings.last_name;
-            const fullName = `${currentFirst} ${currentLast}`.trim();
-            debouncedSave('full_name', fullName);
-        }
-
-        if ((field === "language") && allowedLocales.includes(value)) return;
-        if ((field === "language")) {
-            setLanguage(value)
-            i18n.changeLanguage(value); // This is the global trigger
-            // Save it to the db if needed
-        };
-
-    };
-
+    // ── Fetch profile data on mount ──────────────────────────────────────────
     useEffect(() => {
         const fetchProfile = async () => {
-
             if (!user) return;
-            setError(null);
-
             try {
                 const { data, error } = await supabase
                     .from('profiles')
-                    .select('*')
+                    .select('full_name, phone')
                     .eq('id', user.id)
                     .single();
 
                 if (error) throw error;
 
-                // populate form fields with fetched data (use `data`, not `profile` state)
                 const fullName = data?.full_name ?? '';
                 const [first = '', ...rest] = fullName.split(' ');
-                setSettings(
-                    {
-                        first_name: first,
-                        last_name: rest.join(' '),
-                        phone: data?.phone ?? ''
-                    }
-                )
-
+                setFirstName(first);
+                setLastName(rest.join(' '));
+                setPhone(data?.phone ?? '');
             } catch (err: any) {
-                console.error("Error fetching profile:", err);
-                setError(err?.message ?? t('settings.error_load'));
+                console.error('Error fetching profile:', err);
+                setGlobalError(err?.message ?? t('settings.error_load'));
             } finally {
                 setInitializing(false);
             }
         };
 
         if (!authLoading) fetchProfile();
-
     }, [user, authLoading]);
-
-    const debouncedSave = useCallback(
-        debounce(async (key: string, rawValue: string) => {
-
-            if (!user?.id) {
-                setError(t('settings.error_missing_user'));
-                return;
-            }
-
-            setLoading(true);
-            try {
-
-                const value = (rawValue ?? "").trim();
-
-                switch (key) {
-                    case "firstName":
-                    case "lastName":
-                        if (value.length < USERNAME_MIN_LENGTH) return t('settings.error_required');
-                        if (value.length > USERNAME_MAX_LENGTH) return t('settings.error_max_length', { max: USERNAME_MAX_LENGTH });
-                        if (!USERNAME_REGEX.test(value)) return t('settings.error_invalid_chars');
-                        break;
-
-                    case "phone":
-                        // phone is optional, empty is allowed
-                        if (value === "") return null;
-                        if (!PHONE_REGEX.test(value)) return t('settings.error_invalid_phone');
-                        break;
-                    case "language":
-                        return;
-
-                    default: throw new Error(`Unhandled or invalid request: ${key}`);
-                }
-
-                const normalized = value.trim() === "" ? null : value.trim();
-
-                const { error } = await supabase
-                    .from('profiles')
-                    .update({ [key]: normalized })
-                    .eq('id', user?.id);
-
-                if (error) throw error
-
-                toast.success(t('settings.saved'))
-                setDataSaved(true);
-                setTimeout(() => setDataSaved(false), 2000);
-
-            } catch (error) {
-                console.error("Failed to save setting:", error);
-                toast.error(t('settings.error_generic'))
-            } finally {
-                setLoading(false);
-            }
-        }, 1000),
-        []
-    );
 
     if (!user) return <Navigate to={PATHS.LOGIN} replace />;
 
-
-    function handleUploadProfilePicture(e: any) {
-        e.preventDefault()
-
-    }
-
-    function handleRemoveProfilePicture(e: any) {
-        e.preventDefault()
-    }
-
-
     if (initializing) {
         return (
-            <div className="flex flex-col items-center justify-center gap-4 w-full h-full">
+            <div className="flex flex-col items-center justify-center gap-4 w-full h-64">
                 <Spinner status={initializing} />
-                <span className="text-xs"> {t('profile.loading')} </span>
+                <span className="text-xs text-muted">{t('profile.loading')}</span>
             </div>
-        )
+        );
     }
 
+    // ── Validation ────────────────────────────────────────────────────────────
+    function validate(): boolean {
+        const errors: Record<string, string> = {};
+
+        if (!firstName.trim()) errors.firstName = t('settings.error_required');
+        else if (firstName.length > 50) errors.firstName = t('settings.error_max_length', { max: 50 });
+
+        if (!lastName.trim()) errors.lastName = t('settings.error_required');
+        else if (lastName.length > 50) errors.lastName = t('settings.error_max_length', { max: 50 });
+
+        const phoneDigits = phone.trim().replace(/[\s\-().]/g, '');
+        if (phoneDigits && phoneDigits.length < 9) {
+            errors.phone = t('settings.error_invalid_phone');
+        }
+
+        setFieldErrors(errors);
+        return Object.keys(errors).length === 0;
+    }
+
+    // ── Save Handler ─────────────────────────────────────────────────────────
+    const handleSave = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setGlobalError(null);
+
+        if (!validate()) return;
+
+        const normalizedPhone = phone.trim() ? normalizePhone(phone) : null;
+
+        // Check for duplicate phone (only if user changed it)
+        if (normalizedPhone) {
+            const { data: existing } = await supabase
+                .from('profiles')
+                .select('id')
+                .eq('phone', normalizedPhone)
+                .neq('id', user.id)
+                .maybeSingle();
+
+            if (existing) {
+                setFieldErrors(prev => ({ ...prev, phone: t('auth.error_phone_taken') || 'This phone number is already linked to another account.' }));
+                return;
+            }
+        }
+
+        setSaving(true);
+        try {
+            const { error } = await supabase
+                .from('profiles')
+                .update({
+                    full_name: `${firstName.trim()} ${lastName.trim()}`.trim(),
+                    phone: normalizedPhone,
+                    updated_at: new Date().toISOString(),
+                })
+                .eq('id', user.id);
+
+            if (error) throw error;
+
+            toast.success(t('settings.saved'));
+        } catch (err: any) {
+            console.error('Failed to save settings:', err);
+            setGlobalError(t('settings.error_generic'));
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    // ── Language (instant, no Save needed) ───────────────────────────────────
+    function handleLanguageChange(option: any) {
+        if (!allowedLocales.includes(option.value)) return;
+        setLanguage(option.value);
+        i18n.changeLanguage(option.value);
+    }
+
+
     const languageChoices = [
-        { id: 'en', label: t('common.english'), value: 'en', icon: null, },
-        { id: 'fr', label: t('common.french'), value: 'fr', icon: null, },
-        { id: 'ar', label: t('common.arabic'), value: 'ar', icon: null, },
-    ]
+        { id: 'en', label: t('common.english'), value: 'en', icon: null },
+        { id: 'fr', label: t('common.french'), value: 'fr', icon: null },
+        { id: 'ar', label: t('common.arabic'), value: 'ar', icon: null },
+    ];
 
     return (
+        <div className="flex flex-col gap-10 md:gap-16 w-full mb-16 px-1">
 
-        <div className="flex flex-col gap-16 w-full mb-16">
+            {globalError && (
+                <p className="text-xs text-danger bg-danger/10 border border-danger/20 rounded-lg px-3 py-2">
+                    {globalError}
+                </p>
+            )}
 
-            {error && <p className="text-xs text-danger"> {error} </p>}
+            <form onSubmit={handleSave} className="flex flex-col gap-10 md:gap-16 w-full">
 
-            <form className="flex flex-col gap-16 w-full">
-
-                {/* Profile Information container */}
-                <div className="flex flex-col gap-8">
+                {/* ── Profile Information ────────────────────────────── */}
+                <div className="flex flex-col gap-6 md:gap-8">
                     <div className="flex items-center gap-4 w-full">
-                        <h2 className="text-xs min-w-max"> {t('settings.profile_info')} </h2>
-                        <hr className="w-full border-0 border-b border-b-muted/15 mask-x-from-99%" />
+                        <h2 className="text-xs font-medium text-muted min-w-max">{t('settings.profile_info')}</h2>
+                        <hr className="w-full border-0 border-b border-b-muted/15" />
                     </div>
 
-                    {/* Profile Image */}
-                    <div className="flex max-sm:flex-col items-center gap-6 w-full">
-                        <div className="group/item relative w-fit h-30 md:h-35 p-1 md:p-2 aspect-square border border-muted/15 rounded-full bg-background overflow-hidden">
-                            {/* <label htmlFor="fileToUpload" className="absolute hidden group-hover:item:flex group-active:item:flex items-center justify-center top-0 left-0 w-full h-full bg-muted/35 cursor-pointer"> {ICONS.arrowUpTray({className:'text-white size-8'})} </label>
-                            <input type="file" name="fileToUpload" id="fileToUpload" className="hidden" /> */}
-                            <img src={images[7]} alt="Avatar" className="w-full h-full object-cover rounded-full" />
-                        </div>
-                        <div className="flex flex-col max-sm:items-center justify-center gap-2">
+                    {/* Fields */}
+                    <div className="flex flex-col w-full gap-4 lg:max-w-2xl">
 
-                            <div>
-                                <label htmlFor="upload-profile-picture" className="text-xs text-muted cursor-pointer hover:underline active:underline"> {t('settings.upload_picture')} </label>
-                                <input type="file" id="upload-profile-picture" className="hidden" onClick={handleUploadProfilePicture} />
-                            </div>
-                            <div>
-                                <label htmlFor="remove-profile-picture"
-                                    className="text-sm text-danger cursor-pointer hover:underline active:underline"
-                                > {t('settings.remove_picture')} </label>
-                                <input id="remove-profile-picture" className="hidden" onClick={handleRemoveProfilePicture} />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col w-full gap-3 md:gap-4 lg:w-3/5">
-
-                        <div className="flex max-xs:flex-col md:flex-col lg:flex-row gap-3 md:gap-4 w-full">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                             <div className="w-full">
-                                <label htmlFor="first-name-field" className="text-xs text-muted mx-1"> {t('settings.first_name')} </label>
-                                <Input type="text" id="first-name-field" placeholder={t('settings.first_name')} className="bg-emphasis/75"
-                                    value={settings.first_name ?? ''}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('first_name', e.target.value)} />
+                                <label htmlFor="first-name-field" className="block text-xs text-muted mb-1.5 mx-1">{t('settings.first_name')}</label>
+                                <Input
+                                    type="text"
+                                    id="first-name-field"
+                                    placeholder={t('settings.first_name')}
+                                    className="bg-emphasis/75"
+                                    value={firstName}
+                                    error={fieldErrors.firstName}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        setFirstName(e.target.value);
+                                        setFieldErrors(prev => ({ ...prev, firstName: '' }));
+                                    }}
+                                />
                             </div>
-
                             <div className="w-full">
-                                <label htmlFor="last-name-field" className="text-xs text-muted mx-1"> {t('settings.last_name')} </label>
-                                <Input type="text" id="last-name-field" placeholder={t('settings.last_name')}
+                                <label htmlFor="last-name-field" className="block text-xs text-muted mb-1.5 mx-1">{t('settings.last_name')}</label>
+                                <Input
+                                    type="text"
+                                    id="last-name-field"
+                                    placeholder={t('settings.last_name')}
                                     className="bg-emphasis/75"
-                                    value={settings.last_name ?? ''}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('last_name', e.target.value)} />
+                                    value={lastName}
+                                    error={fieldErrors.lastName}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        setLastName(e.target.value);
+                                        setFieldErrors(prev => ({ ...prev, lastName: '' }));
+                                    }}
+                                />
                             </div>
                         </div>
 
+                        {/* Email — read-only */}
                         <div>
-                            <label htmlFor="email-field" className="text-xs text-muted mx-1"> {t('settings.email')} </label>
-                            <EmailInput dir="ltr" id="email-field" className="bg-muted/5" readOnly={true} defaultValue={user.email} />
+                            <label htmlFor="email-field" className="block text-xs text-muted mb-1.5 mx-1">{t('settings.email')}</label>
+                            <EmailInput dir="ltr" id="email-field" className="bg-muted/5 opacity-70" readOnly={true} defaultValue={user.email} />
                         </div>
 
+                        {/* Phone */}
                         <div>
-                            <label htmlFor="phone-field" className="text-xs text-muted mx-1"> {t('settings.phone')} </label>
-                            <div className="relative">
-                                <PhoneInput
-                                    dir="ltr"
-                                    id="phone-field"
-                                    className="bg-emphasis/75"
-                                    value={settings.phone ?? ''}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('phone', e.target.value)} />
-                            </div>
+                            <label htmlFor="phone-field" className="block text-xs text-muted mb-1.5 mx-1">{t('settings.phone')}</label>
+                            <PhoneInput
+                                dir="ltr"
+                                id="phone-field"
+                                className="bg-emphasis/75"
+                                value={phone}
+                                error={fieldErrors.phone}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    setPhone(e.target.value);
+                                    setFieldErrors(prev => ({ ...prev, phone: '' }));
+                                }}
+                            />
+                            <p className="text-2xs text-muted mt-1 mx-1">e.g. 0550 123 456 — saved as +213...</p>
                         </div>
 
                     </div>
-
                 </div>
 
-
-                {/* preferences container */}
-                <div className="flex flex-col gap-8 mb-8">
-
+                {/* ── Preferences ───────────────────────────────────── */}
+                <div className="flex flex-col gap-6 md:gap-8">
                     <div className="flex items-center gap-4 w-full">
-                        <h2 className="text-xs min-w-max"> {t('settings.preferences')} </h2>
-                        <hr className="w-full border-0 border-b border-b-muted/15 mask-x-from-99%" />
+                        <h2 className="text-xs font-medium text-muted min-w-max">{t('settings.preferences')}</h2>
+                        <hr className="w-full border-0 border-b border-b-muted/15" />
                     </div>
 
-                    {/* Inputs Container */}
-                    <div className="flex flex-col w-full gap-3 md:gap-4 lg:w-3/5">
-
-                        <div className="flex flex-col gap-2">
-                            <label htmlFor="select-language" className="font-medium text-xs text-muted px-1"> {t('settings.language')} </label>
+                    <div className="flex flex-col w-full gap-4 lg:max-w-xl">
+                        <div className="flex flex-col gap-1.5">
+                            <label htmlFor="select-language" className="text-xs text-muted px-1">{t('settings.language')}</label>
                             <SelectDropDownMenu
                                 options={languageChoices}
                                 placeholder={t('settings.language_placeholder')}
                                 id="select-language"
                                 value={languageChoices.find(s => s.value === language)}
-                                onChange={(option: any) => {
-                                    setLanguage(option.value);
-                                    i18n.changeLanguage(option.value);
-                                    debouncedSave('language', option.value);
-                                }}
+                                onChange={handleLanguageChange}
                                 isSearchable={false}
                                 required
                             />
+                            <p className="text-2xs text-muted px-1">Language changes apply instantly.</p>
                         </div>
                     </div>
                 </div>
-            </form>
 
-            {/* Security container */}
-            <div className="flex flex-col gap-4">
-
-                <div className="flex items-center gap-4 w-full">
-                    <h2 className="text-xs min-w-max"> {t('settings.security')} </h2>
-                    <hr className="w-full border-0 border-b border-b-muted/15 mask-x-from-99%" />
+                {/* ── Save Button ────────────────────────────────────── */}
+                <div className="flex items-center gap-4">
+                    <PButton
+                        type="submit"
+                        loading={saving}
+                        className="w-full sm:w-auto px-10 py-3 rounded-xl"
+                    >
+                        <div className="flex items-center gap-2">
+                            <CheckCircle className="size-4" />
+                            {t('common.save')}
+                        </div>
+                    </PButton>
                 </div>
 
-                {/* Container */}
-                <div className="flex flex-col gap-3 md:gap-4 w-full lg:w-3/5">
+            </form>
 
-                    <ul className="flex flex-col gap-4">
-                        <li> <Link to={PATHS.CLIENT.PASSWORD_CHANGE}
-                            className="flex items-center gap-2 w-full h-full px-2.5 py-2 bg-surface border border-muted/15 rounded-lg hover:underline active:underline"
-                        > <LockClosed className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> {t('settings.change_password')} </span> </Link>
+            {/* ── Security ──────────────────────────────────────────── */}
+            <div className="flex flex-col gap-6 md:gap-8">
+                <div className="flex items-center gap-4 w-full">
+                    <h2 className="text-xs font-medium text-muted min-w-max">{t('settings.security')}</h2>
+                    <hr className="w-full border-0 border-b border-b-muted/15" />
+                </div>
+
+                <div className="flex flex-col gap-3 w-full lg:max-w-xl">
+                    <ul className="flex flex-col gap-3">
+                        <li>
+                            <Link
+                                to={PATHS.CLIENT.PASSWORD_CHANGE}
+                                className="flex items-center gap-3 w-full px-3 py-2.5 bg-surface border border-muted/15 rounded-xl hover:border-muted/30 transition-colors"
+                            >
+                                <LockClosed className="size-5 text-muted shrink-0" />
+                                <div className="flex flex-col">
+                                    <span className="font-medium text-sm">{t('settings.change_password')}</span>
+                                    <span className="text-2xs text-muted">Update your current password</span>
+                                </div>
+                            </Link>
                         </li>
-
-                        <li> <Link to={PATHS.PASSWORD_RESET}
-                            className="flex items-center gap-2 w-full h-full px-2.5 py-2 bg-surface border border-muted/15 rounded-lg hover:underline active:underline"
-                        > <QuestionMarkCircle className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> {t('settings.forgot_password')} </span> </Link>
+                        <li>
+                            <Link
+                                to={PATHS.PASSWORD_RESET}
+                                className="flex items-center gap-3 w-full px-3 py-2.5 bg-surface border border-muted/15 rounded-xl hover:border-muted/30 transition-colors"
+                            >
+                                <QuestionMarkCircle className="size-5 text-muted shrink-0" />
+                                <div className="flex flex-col">
+                                    <span className="font-medium text-sm">{t('settings.forgot_password')}</span>
+                                    <span className="text-2xs text-muted">Reset via email link</span>
+                                </div>
+                            </Link>
                         </li>
-
-                        <li> <Link to={PATHS.PRIVACY_POLICY}
-                            className="flex items-center gap-2 w-full h-full px-2.5 py-2 bg-surface border border-muted/15 rounded-lg hover:underline active:underline"
-                        > <BookOpen className="size-5 text-muted" /> <span className="font-medium text-xs md:text-sm"> {t('settings.privacy_policy')} </span> </Link>
-                        </li>
-
                     </ul>
                 </div>
             </div>
         </div>
-
-
-
-    )
+    );
 }

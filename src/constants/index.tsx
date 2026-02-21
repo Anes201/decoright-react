@@ -90,7 +90,7 @@ export const images = [
 //     // { label: 'Office', value: 'office', icon: 'office' },
 //     // { label: 'Hospitality', value: 'hospitality', icon: 'hospitality' },
 //     // { label: 'Retail', value: 'retail', icon: 'retail' },
-// ]
+// // ]
 
 // export const serviceTypes = [
 //     { id: '1', label: 'Space Planning', value: 'space-planning', src: SpacesPlaning, description: 'Practical layouts and furniture plans that boost usability and circulation while matching your style.' },
@@ -279,17 +279,17 @@ export const showcases = [
 
 
 export const SocialMediaUrlFields = [
-    { id: '1', label: 'Facebook', placeholder: 'https://facebook.com/@example/', icon: Facebook  },
-    { id: '2', label: 'Tiktok', placeholder: 'https://tiktok.com/@example/', icon: Tiktok  },
-    { id: '3', label: 'Instagram', placeholder: 'https://instagram.com/example/', icon: Instagram  },
-    { id: '4', label: 'Youtube', placeholder: 'https://youtube.com/@example/', icon: Youtube  },
-    { id: '5', label: 'Pinterest', placeholder: 'https://pinterest.com/example/', icon: Pinterest  },
-    { id: '8', label: 'X (Twitter)', placeholder: 'https://x.com/@example/', icon: XTwitter  },
+    { id: '1', label: 'Facebook', key: 'facebook', placeholder: 'https://facebook.com/@example/', icon: Facebook },
+    { id: '2', label: 'Tiktok', key: 'tiktok', placeholder: 'https://tiktok.com/@example/', icon: Tiktok },
+    { id: '3', label: 'Instagram', key: 'instagram', placeholder: 'https://instagram.com/example/', icon: Instagram },
+    { id: '4', label: 'Youtube', key: 'youtube', placeholder: 'https://youtube.com/@example/', icon: Youtube },
+    { id: '5', label: 'Pinterest', key: 'pinterest', placeholder: 'https://pinterest.com/example/', icon: Pinterest },
+    { id: '8', label: 'X (Twitter)', key: 'xtwitter', placeholder: 'https://x.com/@example/', icon: XTwitter },
 ]
 
 export const SocialMediaPhoneFields = [
-    { id: '6', label: 'Whatsapp', placeholder: '+213123456789', icon: Whatsapp  },
-    { id: '7', label: 'Telegram', placeholder: '+213123456789', icon: Telegram  },
+    { id: '6', label: 'Whatsapp', key: 'whatsapp', placeholder: '+213123456789', icon: Whatsapp },
+    { id: '7', label: 'Telegram', key: 'telegram', placeholder: '+213123456789', icon: Telegram },
 ]
 
 export const allowedLocales = ['en', 'fr', 'ar']

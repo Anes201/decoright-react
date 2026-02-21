@@ -43,5 +43,8 @@ export function useSiteSettings() {
         instagram: getSetting('instagram', ''),
         tiktok: getSetting('tiktok', ''),
         youtube: getSetting('youtube', ''),
+        pinterest: getSetting('pinterest', ''),
+        xtwitter: getSetting('xtwitter', ''),
+        telegram: getSetting('telegram', ''),
     };
 }

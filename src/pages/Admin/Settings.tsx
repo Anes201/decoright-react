@@ -116,12 +116,6 @@ export default function Settings() {
                                             value={settings['primary_phone'] || ''}
                                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('primary_phone', e.target.value)}
                                         />
-                                        <PhoneInput
-                                            id="whatsapp"
-                                            placeholder="WhatsApp Number"
-                                            value={settings['whatsapp'] || ''}
-                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('whatsapp', e.target.value)}
-                                        />
                                     </div>
                                 </div>
 
@@ -146,29 +140,29 @@ export default function Settings() {
                     <h2 className="font-medium text-sm"> Social Media </h2>
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
-                            {SocialMediaUrlFields.map((social) => (
+                            {SocialMediaUrlFields.map((social: any) => (
                                 <Input
                                     key={social.id}
                                     id={social.id}
                                     type="url"
                                     placeholder={social.placeholder}
                                     className="content-center pl-10"
-                                    value={settings[social.label.toLowerCase()] || ''}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(social.label.toLowerCase(), e.target.value)}
+                                    value={settings[social.key] || ''}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(social.key, e.target.value)}
                                 >
                                     <span className="absolute px-1.5 left-0.5 md:left-1"> {social.icon ? <social.icon /> : <Folder />} </span>
                                 </Input>
                             ))}
 
-                            {SocialMediaPhoneFields.map((social) => (
+                            {SocialMediaPhoneFields.map((social: any) => (
                                 <Input
                                     key={social.id}
                                     id={social.id}
                                     type="tel"
                                     placeholder={social.placeholder}
                                     className="content-center pl-10"
-                                    value={settings[social.label.toLowerCase()] || ''}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(social.label.toLowerCase(), e.target.value)}
+                                    value={settings[social.key] || ''}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(social.key, e.target.value)}
                                 >
                                     <span className="absolute px-1.5 left-0.5 md:left-1"> {social.icon ? <social.icon /> : <Folder />} </span>
                                 </Input>

@@ -36,7 +36,7 @@ export default function ProjectListPage() {
                             <p className="text-2xs md:text-xs">{pageDescription}</p>
                         </div>
                         {/* CTA */}
-                        <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE}> { t('nav.request_service') } </PCTALink>
+                        <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE} className="w-fit"> {t('nav.request_service')} </PCTALink>
 
                     </div>
                 </div>

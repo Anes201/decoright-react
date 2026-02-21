@@ -8,9 +8,9 @@ export default function AccountSettings() {
 
         <main>
 
-            <section className="h-hero min-h-hero content-container mx-auto relative flex flex-col items-center justify-center w-full mt-8">
-                <div className="relative flex flex-col gap-16 w-full h-full">
-                    <h1 className="font-semibold text-lg md:text-2xl"> {t('settings.title')} </h1>
+            <section className="h-auto min-h-screen content-container mx-auto relative flex flex-col items-center justify-start w-full mt-8 pb-16">
+                <div className="relative flex flex-col gap-10 md:gap-16 w-full h-full px-4 sm:px-0">
+                    <h1 className="font-semibold text-xl md:text-2xl pt-4"> {t('settings.title')} </h1>
 
                     <div className="space-y-4 w-full">
                         <AccountSettingsLayout />

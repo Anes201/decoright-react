@@ -291,7 +291,7 @@ export const AdminService = {
 
         const settings: Record<string, string> = {}
         data.forEach(s => {
-            if (s.key && s.value) settings[s.key] = s.value
+            if (s.key && s.value !== null) settings[s.key] = s.value
         })
         return settings
     },

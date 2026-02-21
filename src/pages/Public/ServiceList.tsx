@@ -30,41 +30,41 @@ export default function ServiceList() {
 
     return (
         <>
-        <main>
-            <section className="content-container relative w-full px-4 sm:px-8 md:px-12">
-                <div className="w-full h-full my-12 p-4 md:p-8 border border-muted/15 rounded-4xl">
-                    {/* Context */}
-                    <div className="flex flex-col gap-8">
-                        <div className="space-y-2 md:space-y-3">
-                            <h1 className="font-semibold text-lg sm:text-2xl md:text-3xl">
-                                {pageTitle}
-                            </h1>
-                            <p className="text-3xs sm:text-2xs md:text-xs">
-                                {pageDescription}
-                            </p>
-                        </div>
+            <main>
+                <section className="content-container relative w-full px-4 sm:px-8 md:px-12">
+                    <div className="w-full h-full my-12 p-4 md:p-8 border border-muted/15 rounded-4xl">
+                        {/* Context */}
+                        <div className="flex flex-col gap-8">
+                            <div className="space-y-2 md:space-y-3">
+                                <h1 className="font-semibold text-lg sm:text-2xl md:text-3xl">
+                                    {pageTitle}
+                                </h1>
+                                <p className="text-3xs sm:text-2xs md:text-xs">
+                                    {pageDescription}
+                                </p>
+                            </div>
 
-                        {/* CTA */}
-                        <div className="flex gap-2">
-                            <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE}> {t('services.request_project')} </PCTALink>
+                            {/* CTA */}
+                            <div className="flex gap-2">
+                                <PCTALink to={PATHS.CLIENT.REQUEST_SERVICE} className="w-fit"> {t('services.request_project')} </PCTALink>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div>
-                    <ServiceCardList />
-                </div>
+                    <div>
+                        <ServiceCardList />
+                    </div>
 
+                </section>
+
+            </main>
+            <section className="content-container relative my-18 px-4 sm:px-8 md:px-12 space-y-12">
+                <SectionHeader
+                    title={faqTitle}
+                    desc={faqDescription}
+                />
+                <FAQList />
             </section>
-
-        </main>
-        <section className="content-container relative my-18 px-4 sm:px-8 md:px-12 space-y-12">
-            <SectionHeader
-                title={faqTitle}
-                desc={faqDescription}
-            />
-            <FAQList />
-        </section>
         </>
     )
 }

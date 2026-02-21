@@ -14,6 +14,7 @@ import { SpaceTypesService, type SpaceType } from '@/services/space-types.servic
 import { useNavigate } from 'react-router-dom'
 import { PATHS } from '@/routers/Paths'
 import { useTranslation } from "react-i18next";
+import { CheckCircle } from "@/icons";
 
 
 export default function RequestServiceLayout() {
@@ -52,7 +53,6 @@ export default function RequestServiceLayout() {
                 setServiceTypes(services);
                 setSpaceTypes(spaces);
 
-                // Auto-select if there's only one option
                 if (services.length === 1) setServiceType(services[0].id);
                 if (spaces.length === 1) setSpaceType(spaces[0].id);
             } catch (err) {
@@ -62,7 +62,12 @@ export default function RequestServiceLayout() {
         fetchOptions();
     }, []);
 
-    if (authLoading) return <div className="flex flex-col gap-4"> <Spinner status={authLoading} /> <span className="text-sm">{t('common.loading')}</span> </div>
+    if (authLoading) return (
+        <div className="flex flex-col items-center justify-center gap-4 h-64">
+            <Spinner status={authLoading} />
+            <span className="text-xs text-muted">{t('common.loading')}</span>
+        </div>
+    )
     if (!user) return null
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -76,7 +81,6 @@ export default function RequestServiceLayout() {
         setError(null)
 
         try {
-            // Check if all files are uploaded
             const uploading = files.some(f => f.status === 'uploading');
             if (uploading) {
                 setError(t('request_form.error_uploading'));
@@ -119,138 +123,180 @@ export default function RequestServiceLayout() {
     }
 
     return (
+        <div className="w-full flex flex-col gap-8 mb-16 py-2">
 
-        <div className="relative flex flex-col gap-6 w-full h-full p-3 md:p-8 mb-20">
-            <div className="absolute top-0 left-0 w-full h-full border border-muted/15 rounded-3xl bg-surface -z-10 mask-b-to-transparent mask-b-to-100%"></div>
-
-            {/* Header */}
-
-            <div className="flex justify-between gap-4">
-                <div className="space-y-2 w-full">
-                    <h2 className='font-semibold text-lg'> {t('request_form.form_title')} </h2>
-                    <p className='text-2xs md:text-xs'> {t('request_form.form_description')} </p>
+            {/* ── Page Header ─────────────────────────────────── */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="flex flex-col gap-1.5">
+                    <h2 className="font-bold text-2xl tracking-tight">{t('request_form.form_title')}</h2>
+                    <p className="text-sm text-muted max-w-xl">{t('request_form.form_description')}</p>
                 </div>
-
-                {/* CTA */}
-                <div className="hidden md:flex max-xs:flex-col md:flex-row gap-3 md:gap-4 w-fit">
-                    <PButton type="submit" form="service-request-form"
-                        disabled={loading}
-                        title={t('request_form.submit')}
-                        className="w-fit h-fit"
+                <div className="hidden md:flex shrink-0">
+                    <PButton
+                        type="submit"
+                        form="service-request-form"
+                        loading={loading}
+                        className="px-8"
                     >
-                        <Spinner status={loading}> {t('request_form.submit')} </Spinner>
+                        <div className="flex items-center gap-2">
+                            <CheckCircle className="size-4" />
+                            {t('request_form.submit')}
+                        </div>
                     </PButton>
                 </div>
             </div>
 
+            {/* ── Error Banner ─────────────────────────────────── */}
+            {error && (
+                <div className="flex items-center gap-3 px-4 py-3 bg-danger/8 border border-danger/20 rounded-xl text-sm text-danger">
+                    <span className="shrink-0">⚠</span>
+                    {error}
+                </div>
+            )}
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-8 w-full h-fit" id="service-request-form">
+            <form onSubmit={handleSubmit} id="service-request-form" className="flex flex-col gap-10">
 
-                {error && <p className="text-xs text-danger"> {error} </p>}
-                {/* Input Data */}
-                <div className="flex max-md:flex-col gap-8 w-full h-full">
+                {/* ── Row: two-column on desktop ───────────────── */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
 
-                    <div className="flex flex-col gap-6 w-full h-full">
+                    {/* Left Column */}
+                    <div className="flex flex-col gap-8">
 
-                        <div className="flex flex-col gap-2">
-                            <label htmlFor="select-service-design-style" className="font-medium text-xs text-muted px-1"> {t('request_form.service_type')} </label>
-                            <SelectMenu
-                                options={serviceTypes.map(s => ({ label: s[`display_name${langSuffix}`] || s.display_name_en, value: s.id }))}
-                                placeholder={t('request_form.service_type_placeholder')}
-                                id="select-service-service-type"
-                                value={serviceTypes.find(s => s.id === serviceType) ? { label: serviceTypes.find(s => s.id === serviceType)![`display_name${langSuffix}`] || serviceTypes.find(s => s.id === serviceType)!.display_name_en, value: serviceType } : undefined}
-                                onChange={(option: any) => setServiceType(option.value)}
-                            />
-                        </div>
+                        {/* Service & Space */}
+                        <div className="flex flex-col gap-6 p-6 bg-surface border border-muted/15 rounded-2xl">
+                            <p className="text-xs font-bold text-muted tracking-widest uppercase">Service Details</p>
 
-                        <div className="flex flex-col gap-2">
-
-                            <label htmlFor="select-service-space-type" className="font-medium text-xs text-muted px-1"> {t('request_form.space_type')} </label>
-                            <SelectMenu
-                                options={spaceTypes.map(s => ({ label: s[`display_name${langSuffix}`] || s.display_name_en, value: s.id }))}
-                                placeholder={t('request_form.space_type_placeholder')}
-                                id="select-service-space-type"
-                                value={spaceTypes.find(s => s.id === spaceType) ? { label: spaceTypes.find(s => s.id === spaceType)![`display_name${langSuffix}`] || spaceTypes.find(s => s.id === spaceType)!.display_name_en, value: spaceType } : undefined}
-                                onChange={(option: any) => setSpaceType(option.value)}
-                                required
-                            />
-                        </div>
-
-                        <div className="relative flex flex-col gap-2">
-                            <label htmlFor="select-service-design-style" className="group/date font-medium text-xs text-muted px-1"> {t('request_form.completion_date')} </label>
-                            <DateInput name="service-request-date" id="service-request-date"
-                                className="w-full p-2.5 text-sm text-muted bg-emphasis/75 rounded-lg cursor-text outline-1 outline-muted/15 hover:outline-muted/35 focus:outline-primary/45" />
-
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            <label htmlFor="request-location" className="font-medium text-xs text-muted px-1"> {t('request_form.location')} </label>
-                            <Input
-                                id="request-location"
-                                placeholder={t('request_form.location_placeholder')}
-                                value={location}
-                                onChange={(e: any) => setLocation(e.target.value)}
-                                required
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            <label className="font-medium text-xs text-muted px-1"> {t('request_form.area_dimensions')} </label>
-                            <div className="flex gap-4">
-                                <Input
-                                    id="request-width"
-                                    type="number"
-                                    placeholder={t('request_form.width')}
-                                    value={width}
-                                    onChange={(e: any) => setWidth(e.target.value)}
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="select-service-service-type" className="text-xs text-muted font-medium px-0.5">
+                                    {t('request_form.service_type')}
+                                </label>
+                                <SelectMenu
+                                    options={serviceTypes.map(s => ({ label: s[`display_name${langSuffix}`] || s.display_name_en, value: s.id }))}
+                                    placeholder={t('request_form.service_type_placeholder')}
+                                    id="select-service-service-type"
+                                    value={serviceTypes.find(s => s.id === serviceType) ? { label: serviceTypes.find(s => s.id === serviceType)![`display_name${langSuffix}`] || serviceTypes.find(s => s.id === serviceType)!.display_name_en, value: serviceType } : undefined}
+                                    onChange={(option: any) => setServiceType(option.value)}
                                 />
-                                <Input
-                                    id="request-height"
-                                    type="number"
-                                    placeholder={t('request_form.height')}
-                                    value={height}
-                                    onChange={(e: any) => setHeight(e.target.value)}
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="select-service-space-type" className="text-xs text-muted font-medium px-0.5">
+                                    {t('request_form.space_type')}
+                                </label>
+                                <SelectMenu
+                                    options={spaceTypes.map(s => ({ label: s[`display_name${langSuffix}`] || s.display_name_en, value: s.id }))}
+                                    placeholder={t('request_form.space_type_placeholder')}
+                                    id="select-service-space-type"
+                                    value={spaceTypes.find(s => s.id === spaceType) ? { label: spaceTypes.find(s => s.id === spaceType)![`display_name${langSuffix}`] || spaceTypes.find(s => s.id === spaceType)!.display_name_en, value: spaceType } : undefined}
+                                    onChange={(option: any) => setSpaceType(option.value)}
+                                    required
                                 />
                             </div>
                         </div>
 
-                        {/* CTA */}
-                        <div className="flex max-xs:flex-col md:flex-row gap-3 md:gap-4 w-full md:w-fit mt-4">
-                            <PButton type="submit" form="service-request-form"
-                                className="w-full h-fit"
-                                disabled={loading}
-                            >
-                                <Spinner status={loading}> {t('request_form.submit')} </Spinner>
-                            </PButton>
-                            <SCTALink to={-1} className="w-full"> {t('request_form.cancel')} </SCTALink>
+                        {/* Location & Date */}
+                        <div className="flex flex-col gap-6 p-6 bg-surface border border-muted/15 rounded-2xl">
+                            <p className="text-xs font-bold text-muted tracking-widest uppercase">Location & Timeline</p>
+
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="request-location" className="text-xs text-muted font-medium px-0.5">
+                                    {t('request_form.location')} <span className="text-danger">*</span>
+                                </label>
+                                <Input
+                                    id="request-location"
+                                    placeholder={t('request_form.location_placeholder')}
+                                    value={location}
+                                    onChange={(e: any) => setLocation(e.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="service-request-date" className="text-xs text-muted font-medium px-0.5">
+                                    {t('request_form.completion_date')}
+                                </label>
+                                <DateInput
+                                    name="service-request-date"
+                                    id="service-request-date"
+                                    className="h-12 w-full px-3 text-sm text-muted bg-emphasis/75 border border-muted/15 rounded-lg outline-0 focus:outline-1 focus:outline-primary/45 hover:border-muted/30 transition-colors cursor-pointer"
+                                />
+                                <p className="text-[11px] text-muted/60 px-0.5">Optional — leave blank if you're flexible on timing.</p>
+                            </div>
+
+                            {/* Dimensions */}
+                            <div className="flex flex-col gap-2">
+                                <label className="text-xs text-muted font-medium px-0.5">
+                                    {t('request_form.area_dimensions')}
+                                </label>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <Input
+                                        id="request-width"
+                                        type="number"
+                                        placeholder={t('request_form.width')}
+                                        value={width}
+                                        onChange={(e: any) => setWidth(e.target.value)}
+                                    />
+                                    <Input
+                                        id="request-height"
+                                        type="number"
+                                        placeholder={t('request_form.height')}
+                                        value={height}
+                                        onChange={(e: any) => setHeight(e.target.value)}
+                                    />
+                                </div>
+                            </div>
                         </div>
 
                     </div>
 
-                    {/* Second Form Column */}
-                    <div className="flex flex-col gap-6 w-full h-full">
+                    {/* Right Column */}
+                    <div className="flex flex-col gap-8">
 
-                        <div className="flex flex-col gap-2">
-                            <label htmlFor="request-service-description" className="font-medium text-xs text-muted px-1"> {t('request_form.description')} </label>
-                            <textarea
-                                name="description"
-                                id="request-service-description"
-                                rows={6}
-                                placeholder={t('request_form.description_placeholder')}
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
-                                className="w-full p-2.5 text-sm bg-emphasis/75 rounded-lg outline-1 outline-muted/15 hover:outline-muted/35 focus:outline-primary/45"
-                            >
-
-                            </textarea>
+                        {/* Description */}
+                        <div className="flex flex-col gap-6 p-6 bg-surface border border-muted/15 rounded-2xl">
+                            <p className="text-xs font-bold text-muted tracking-widest uppercase">Additional Details</p>
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="request-service-description" className="text-xs text-muted font-medium px-0.5">
+                                    {t('request_form.description')}
+                                </label>
+                                <textarea
+                                    name="description"
+                                    id="request-service-description"
+                                    rows={7}
+                                    placeholder={t('request_form.description_placeholder')}
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    className="w-full p-3 text-sm bg-emphasis/75 border border-muted/15 rounded-lg outline-0 focus:outline-1 focus:outline-primary/45 hover:border-muted/30 transition-colors resize-none"
+                                />
+                            </div>
                         </div>
 
-                        <FileUploadPanel stagedFiles={stagedFiles} />
-                    </div>
+                        {/* Attachments */}
+                        <div className="flex flex-col gap-6 p-6 bg-surface border border-muted/15 rounded-2xl">
+                            <p className="text-xs font-bold text-muted tracking-widest uppercase">Attachments</p>
+                            <FileUploadPanel stagedFiles={stagedFiles} />
+                        </div>
 
+                    </div>
                 </div>
-            </form>
 
+                {/* ── Submit Actions ────────────────────────────── */}
+                <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-muted/10">
+                    <PButton
+                        type="submit"
+                        form="service-request-form"
+                        loading={loading}
+                        className="w-full sm:w-auto px-10"
+                    >
+                        <div className="flex items-center justify-center gap-2">
+                            <CheckCircle className="size-4" />
+                            {t('request_form.submit')}
+                        </div>
+                    </PButton>
+                    <SCTALink to={-1} className="w-full sm:w-auto">{t('request_form.cancel')}</SCTALink>
+                </div>
+
+            </form>
         </div>
     )
 }
