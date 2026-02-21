@@ -72,7 +72,7 @@ export default function RequestServiceLayout() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!spaceType || !serviceType || !location) {
+        if (!spaceType || !serviceType) {
             setError(t('request_form.error_fields'))
             return
         }
@@ -91,11 +91,26 @@ export default function RequestServiceLayout() {
             const payload: any = {
                 service_type_id: serviceType,
                 space_type_id: spaceType,
-                location: location,
             };
 
-            if (width) payload.width = parseFloat(width);
-            if (height) payload.height = parseFloat(height);
+            if (location) payload.location = location;
+
+            const parsedWidth = width ? parseFloat(width) : null;
+            const parsedHeight = height ? parseFloat(height) : null;
+
+            if (parsedWidth !== null && parsedWidth < 0) {
+                setError('Width cannot be negative.');
+                setLoading(false);
+                return;
+            }
+            if (parsedHeight !== null && parsedHeight < 0) {
+                setError('Height cannot be negative.');
+                setLoading(false);
+                return;
+            }
+
+            if (parsedWidth !== null) payload.width = parsedWidth;
+            if (parsedHeight !== null) payload.height = parsedHeight;
             if (description) payload.description = description;
 
             const request = await ReqSvc.createRequest(payload);
@@ -131,19 +146,6 @@ export default function RequestServiceLayout() {
                     <h2 className="font-bold text-2xl tracking-tight">{t('request_form.form_title')}</h2>
                     <p className="text-sm text-muted max-w-xl">{t('request_form.form_description')}</p>
                 </div>
-                <div className="hidden md:flex shrink-0">
-                    <PButton
-                        type="submit"
-                        form="service-request-form"
-                        loading={loading}
-                        className="px-8"
-                    >
-                        <div className="flex items-center gap-2">
-                            <CheckCircle className="size-4" />
-                            {t('request_form.submit')}
-                        </div>
-                    </PButton>
-                </div>
             </div>
 
             {/* ── Error Banner ─────────────────────────────────── */}
@@ -167,8 +169,9 @@ export default function RequestServiceLayout() {
                             <p className="text-xs font-bold text-muted tracking-widest uppercase">Service Details</p>
 
                             <div className="flex flex-col gap-2">
-                                <label htmlFor="select-service-service-type" className="text-xs text-muted font-medium px-0.5">
-                                    {t('request_form.service_type')}
+                                <label htmlFor="select-service-service-type" className="flex items-center justify-between text-xs text-muted font-medium px-0.5">
+                                    <span>{t('request_form.service_type')}</span>
+                                    <span className="text-[10px] text-danger/60 font-bold uppercase tracking-tighter">Required</span>
                                 </label>
                                 <SelectMenu
                                     options={serviceTypes.map(s => ({ label: s[`display_name${langSuffix}`] || s.display_name_en, value: s.id }))}
@@ -180,8 +183,9 @@ export default function RequestServiceLayout() {
                             </div>
 
                             <div className="flex flex-col gap-2">
-                                <label htmlFor="select-service-space-type" className="text-xs text-muted font-medium px-0.5">
-                                    {t('request_form.space_type')}
+                                <label htmlFor="select-service-space-type" className="flex items-center justify-between text-xs text-muted font-medium px-0.5">
+                                    <span>{t('request_form.space_type')}</span>
+                                    <span className="text-[10px] text-danger/60 font-bold uppercase tracking-tighter">Required</span>
                                 </label>
                                 <SelectMenu
                                     options={spaceTypes.map(s => ({ label: s[`display_name${langSuffix}`] || s.display_name_en, value: s.id }))}
@@ -200,15 +204,15 @@ export default function RequestServiceLayout() {
 
                             <div className="flex flex-col gap-2">
                                 <label htmlFor="request-location" className="text-xs text-muted font-medium px-0.5">
-                                    {t('request_form.location')} <span className="text-danger">*</span>
+                                    {t('request_form.location')}
                                 </label>
                                 <Input
                                     id="request-location"
                                     placeholder={t('request_form.location_placeholder')}
                                     value={location}
                                     onChange={(e: any) => setLocation(e.target.value)}
-                                    required
                                 />
+                                <p className="text-[11px] text-muted/60 px-0.5">Optional — leave blank if not applicable.</p>
                             </div>
 
                             <div className="flex flex-col gap-2">
@@ -232,6 +236,8 @@ export default function RequestServiceLayout() {
                                     <Input
                                         id="request-width"
                                         type="number"
+                                        min="0"
+                                        step="0.01"
                                         placeholder={t('request_form.width')}
                                         value={width}
                                         onChange={(e: any) => setWidth(e.target.value)}
@@ -239,6 +245,8 @@ export default function RequestServiceLayout() {
                                     <Input
                                         id="request-height"
                                         type="number"
+                                        min="0"
+                                        step="0.01"
                                         placeholder={t('request_form.height')}
                                         value={height}
                                         onChange={(e: any) => setHeight(e.target.value)}
