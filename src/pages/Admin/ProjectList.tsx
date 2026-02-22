@@ -25,7 +25,7 @@ export default function AdminProjectList() {
 
     return (
         <main className="w-full">
-            <section className="min-h-hero relative flex flex-col w-full mb-20">
+            <section className="relative flex flex-col w-full mb-20">
                 <div className="relative flex flex-col gap-8 h-full md:p-6">
                     <div className="max-md:hidden absolute top-0 left-0 w-full h-full border border-muted/15 rounded-3xl bg-surface -z-10 mask-b-to-transparent mask-b-to-100%"></div>
 

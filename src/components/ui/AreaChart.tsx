@@ -649,7 +649,7 @@ const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
         tremor-id="tremor-raw"
         {...other}
       >
-        <ResponsiveContainer>
+        <ResponsiveContainer minWidth={0}>
           <RechartsAreaChart
             data={data}
             onClick={
@@ -817,9 +817,8 @@ const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
               const categoryId = `${areaId}-${category.replace(/[^a-zA-Z0-9]/g, "")}`
               return (
                 <React.Fragment key={`area-${category}`}>
-                  <defs key={category}>
+                  <defs key={`defs-${category}`}>
                     <linearGradient
-                      key={category}
                       className={cx(
                         getColorClassName(
                           categoryColors.get(

@@ -3,7 +3,7 @@ import ServiceCreateLayout from "@/components/layout/admin/services/ServiceCreat
 export default function ServiceCreate() {
     return (
         <main>
-            <section className="h-hero min-h-hero relative flex flex-col w-full md:pt-8 mb-40">
+            <section className="relative flex flex-col w-full mb-20">
                 <div className="relative flex flex-col gap-8 h-full">
                     <h1 className="font-semibold text-lg md:text-2xl"> Create Service </h1>
                     {/* Service content goes here */}

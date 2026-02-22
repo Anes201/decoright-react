@@ -77,7 +77,7 @@ export default function RequestOverview() {
 
     return (
         <main>
-            <section className="min-h-hero relative flex flex-col w-full md:pt-8 mb-40">
+            <section className="relative flex flex-col w-full mb-20">
                 <div className="relative flex flex-col gap-6 h-full">
 
                     {/* Header */}

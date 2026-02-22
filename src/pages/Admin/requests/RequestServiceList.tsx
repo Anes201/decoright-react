@@ -34,7 +34,7 @@ export default function RequestServiceList() {
 
     return (
         <main className="flex-1 flex flex-col w-full overflow-hidden">
-            <section className="flex-1 min-h-0 flex flex-col pt-4 md:pt-6 overflow-hidden">
+            <section className="flex-1 min-h-0 flex flex-col overflow-hidden">
                 <div className="px-4 md:px-6 mb-6 flex-none">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>

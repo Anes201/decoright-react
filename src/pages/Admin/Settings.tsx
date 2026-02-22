@@ -62,7 +62,7 @@ export default function Settings() {
 
     return (
         <main>
-            <section className="h-hero min-h-hero content-container relative w-full">
+            <section className="content-container relative w-full">
                 <div className="flex max-md:flex-col md:justify-between md:items-end gap-2 w-full h-fit mb-4">
                     <h1 className="font-semibold text-lg md:text-2xl"> Settings & Contacts </h1>
 

@@ -334,7 +334,13 @@ export const AdminService = {
         const { data, error } = await query
 
         if (error) throw error
-        return data
+
+        // Flatten and transform for cleaner consumption
+        return data.map(project => ({
+            ...project,
+            likes: (project.likes as any)?.[0]?.count || 0,
+            views: (project as any).view_count || 0
+        }))
     },
 
     async createProject(project: Database['public']['Tables']['projects']['Insert']) {
