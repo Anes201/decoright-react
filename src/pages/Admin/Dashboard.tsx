@@ -51,7 +51,7 @@ export default function Dashboard() {
     if (loading && !stats) {
         return (
             <div className="flex items-center justify-center h-hero">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                <Spinner status={loading} size="lg" />
             </div>
         );
     }
@@ -63,7 +63,7 @@ export default function Dashboard() {
                     <div className="flex flex-col gap-4 w-full h-full">
 
                         {/* Filters & Search */}
-                        <div className="relative flex flex-col gap-4 md:gap-6 mb-1">
+                        <div className="relative flex flex-col gap-4">
                             {/* Page Header */}
                             <div className="flex items-center gap-2">
                                 <ChartBar className="size-6" />

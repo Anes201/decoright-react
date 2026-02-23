@@ -63,12 +63,12 @@ export function NavActions() {
             <div className="flex items-center gap-2 md:gap-4">
 
                 {/* Request Project */}
-                <Link to={PATHS.ADMIN.PROJECT_CREATE} title="Create a Project" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
+                <Link to={PATHS.ADMIN.PROJECT_CREATE} title="Create a Project" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface rounded-full">
                     Create a Project
                 </Link>
 
                 {/* Chat Link */}
-                <Link to={PATHS.ADMIN.CHAT} title="Chat" className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
+                <Link to={PATHS.ADMIN.CHAT} title="Chat" className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface rounded-full">
                     <Chat className="size-5 md:size-6" />
 
                     <span className="absolute flex size-3 top-0 left-0">
@@ -78,12 +78,12 @@ export function NavActions() {
                 </Link>
 
                 {/* User Profile Nav Page */}
-                <Link to={PATHS.CLIENT.ROOT} title="Client Home Page" className="max-md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full">
+                <Link to={PATHS.CLIENT.ROOT} title="Client Home Page" className="max-md:hidden content-center p-2 border border-muted/15 bg-surface rounded-full">
                     <Home className="size-5 md:size-6" />
                 </Link>
 
                 {/* Menu Trigger */}
-                <button type="button" title="Menu" className="md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>
+                <button type="button" title="Menu" className="md:hidden content-center p-2 border border-muted/15 bg-surface rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>
                     <Menu className="size-5 md:size-6" />
                 </button>
             </div>
