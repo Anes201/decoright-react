@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useConfirm } from '@/components/confirm';
 import { Cog, Folder, PencilSquare, Photo, Trash } from '@/icons';
 import toast from 'react-hot-toast';
+import ZoomImage from '@/components/ui/ZoomImage';
 
 
 interface ServiceTypeTableProps {
@@ -49,9 +50,9 @@ export default function ServiceTypeTable({ serviceTypes, onEdit, onRefresh }: Se
     };
 
     return (
-        <div className="h-full overflow-auto border border-muted/15 rounded-lg">
+        <div className="h-full overflow-auto border-b-0 border border-muted/25 rounded-t-lg bg-surface">
             <table className="w-full text-left border-collapse">
-                <thead className="bg-surface/50 sticky top-0 z-10">
+                <thead className="bg-emphasis/75 sticky top-0 z-10">
                     <tr className="border-b border-muted/15">
                         <th className="px-4 py-3 text-xs font-semibold text-muted uppercase tracking-wider">Image</th>
                         <th className="px-4 py-3 text-xs font-semibold text-muted uppercase tracking-wider">Code</th>
@@ -61,7 +62,7 @@ export default function ServiceTypeTable({ serviceTypes, onEdit, onRefresh }: Se
                         <th className="px-4 py-3 text-right text-xs font-semibold text-muted uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-muted/15">
+                <tbody>
                     {serviceTypes.length === 0 ? (
                         <tr>
                             <td colSpan={6} className="px-4 py-12 text-center text-muted">
@@ -71,11 +72,11 @@ export default function ServiceTypeTable({ serviceTypes, onEdit, onRefresh }: Se
                         </tr>
                     ) : (
                         serviceTypes.map((serviceType) => (
-                            <tr key={serviceType.id} className="hover:bg-surface/30 transition-colors">
-                                <td className="px-4 py-3">
-                                    <div className="w-24 h-16 rounded-lg overflow-hidden border border-muted/10 bg-surface flex items-center justify-center">
+                            <tr key={serviceType.id} className="border-b border-muted/15 hover:bg-emphasis transition-colors">
+                                <td className="p-3">
+                                    <div className="h-22 aspect-video rounded-lg overflow-hidden border border-muted/10 bg-surface flex items-center justify-center">
                                         {serviceType.image_url ? (
-                                            <img src={serviceType.image_url} alt="" className="w-full h-full object-cover" />
+                                            <ZoomImage src={serviceType.image_url} alt="" className="w-full h-full object-cover" />
                                         ) : (
                                             <Photo className="size-8 text-muted/20" />
                                         )}

@@ -1,25 +1,21 @@
 
+import Spinner from "@/components/common/Spinner";
+import { PButton } from "@/components/ui/Button";
+import { SCTALink } from "@/components/ui/CTA";
 import { EmailInput, Input, PhoneInput } from "@/components/ui/Input";
-import { images, SocialMediaPhoneFields, SocialMediaUrlFields } from "@/constants";
-import { companyNameTitle } from "@/constants/company";
+import { SocialMediaPhoneFields, SocialMediaUrlFields } from "@/constants";
 import { Folder } from "@/icons";
 import { SiteSettingsService } from "@/services/site-settings.service";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-// Custom debounce function to avoid lodash dependency
-function debounce<T extends (...args: any[]) => any>(func: T, wait: number) {
-    let timeout: ReturnType<typeof setTimeout>;
-    return (...args: Parameters<T>) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func(...args), wait);
-    };
-}
 
 export default function Settings() {
-    const [dataSaved, setDataSaved] = useState(false);
     const [loading, setLoading] = useState(false);
     const [settings, setSettings] = useState<Record<string, string>>({});
     const [initializing, setInitializing] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function loadSettings() {
@@ -35,25 +31,29 @@ export default function Settings() {
         loadSettings();
     }, []);
 
-    const debouncedSave = useCallback(
-        debounce(async (key: string, value: string) => {
-            setLoading(true);
-            try {
-                await SiteSettingsService.update(key, value);
-                setDataSaved(true);
-                setTimeout(() => setDataSaved(false), 2000);
-            } catch (error) {
-                console.error("Failed to save setting:", error);
-            } finally {
-                setLoading(false);
-            }
-        }, 1000),
-        []
-    );
+    const handleSubmit = async (e: React.SubmitEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            const savePromises = Object.entries(settings).map(([key, value]) =>
+                SiteSettingsService.update(key, value)
+            );
+            await Promise.all(savePromises);
+            // Optionally show a success message
+            toast.success("Settings saved successfully!");
+        } catch (error) {
+            console.error("Failed to save settings:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleChange = (key: string, value: string) => {
         setSettings(prev => ({ ...prev, [key]: value }));
-        debouncedSave(key, value);
+    };
+
+    const handleGoBack = () => {
+        navigate(-1);
     };
 
     if (initializing) {
@@ -61,34 +61,17 @@ export default function Settings() {
     }
 
     return (
-        <main>
-            <section className="h-hero min-h-hero content-container relative w-full">
-                <div className="flex max-md:flex-col md:justify-between md:items-end gap-2 w-full h-fit mb-4">
+        <main className="w-full">
+            <section className="relative flex flex-col w-full px-4 md:px-8 py-6 space-y-6 mb-20">
+                <div className="flex max-md:flex-col md:justify-between md:items-end gap-2 w-full h-fit">
                     <h1 className="font-semibold text-lg md:text-2xl"> Settings & Contacts </h1>
-
-                    {loading
-                        ? <span className="font-medium text-xs text-foreground/75 animate-pulse"> Saving Data... </span>
-                        :
-                        dataSaved
-                            ? <span className="font-medium text-xs text-success pulse"> ✓ Data-Saved </span>
-                            : <span className="font-medium text-xs text-muted/75"> Auto-Save enabled </span>
-                    }
                 </div>
 
                 <div className="flex max-md:flex-col gap-4 w-full">
-                    <div className="flex flex-col gap-2 md:gap-4 w-full h-full md:p-4 md:bg-surface rounded-xl">
+                    <div className="flex flex-col gap-2 md:gap-4 w-full h-full">
                         <form className="flex flex-col gap-4">
-                            <div className="flex flex-col items-center gap-2 w-full max-md:p-4 max-md:bg-surface rounded-xl">
-                                <div className="group/item relative w-fit h-25 md:h-40 p-1 md:p-2 aspect-square border border-muted/15 rounded-full bg-background overflow-hidden text-center content-center">
-                                    {/* Image upload logic could be added here */}
-                                    <img src={images[7]} alt="Avatar" className="w-full h-full object-cover rounded-full" />
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <span className="font-semibold text-foreground"> {settings['company_name'] || companyNameTitle} </span>
-                                </div>
-                            </div>
 
-                            <div className="flex flex-col gap-4 h-full md:bg-surface rounded-xl">
+                            <div className="flex flex-col gap-4 h-full">
                                 <div className="flex flex-col gap-2">
                                     <label className="font-medium text-xs text-muted mx-1"> Email Addresses </label>
                                     <div className="flex flex-col gap-2">
@@ -136,7 +119,7 @@ export default function Settings() {
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-2 md:gap-4 w-full md:p-4 md:bg-surface rounded-xl">
+                <div className="flex flex-col gap-2 md:gap-4 w-full">
                     <h2 className="font-medium text-sm"> Social Media </h2>
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
@@ -169,6 +152,17 @@ export default function Settings() {
                             ))}
                         </div>
                     </div>
+                    <div>
+
+                    </div>
+                </div>
+                <div className="flex gap-4">
+                    <PButton type="button" disabled={loading} className="min-w-[120px]"
+                    onClick={handleSubmit}>
+                        <Spinner status={loading} size="sm"> Save Changes </Spinner>
+                    </PButton>
+
+                    <SCTALink to={handleGoBack}> Cancel </SCTALink>
                 </div>
             </section>
         </main >

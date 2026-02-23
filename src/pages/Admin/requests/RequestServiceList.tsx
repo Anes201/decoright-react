@@ -33,27 +33,17 @@ export default function RequestServiceList() {
     }, []);
 
     return (
-        <main className="flex-1 flex flex-col w-full overflow-hidden">
-            <section className="flex-1 min-h-0 flex flex-col pt-4 md:pt-6 overflow-hidden">
-                <div className="px-4 md:px-6 mb-6 flex-none">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div>
-                            <h1 className="font-bold text-2xl md:text-3xl text-heading tracking-tight">Request Management</h1>
-                            <p className="text-sm text-muted mt-1">Manage and track service requests through their lifecycle.</p>
-                        </div>
-
-                        <button
-                            onClick={loadRequests}
-                            className="px-4 py-2 bg-emphasis text-body rounded-lg hover:bg-neutral-tertiary-medium transition-colors flex items-center gap-2 text-sm font-semibold"
-                        >
-                            <ArrowPath className={`size-4 ${loading ? 'animate-spin' : ''}`} />
-                            Refresh
-                        </button>
+        <main className="w-full">
+            <section className="flex flex-col pt-4 md:pt-6 w-full h-full mb-60">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h1 className="font-medium text-xl md:text-2xl text-heading tracking-tight"> Request Management </h1>
+                        <p className="text-sm text-muted mt-1">Manage and track service requests through their lifecycle.</p>
                     </div>
                 </div>
 
                 {/* Main Content Area */}
-                <div className="flex-1 min-h-0 overflow-hidden">
+                <div >
                     {loading && requests.length === 0 ? (
                         <div className="h-full flex flex-col items-center justify-center text-muted animate-pulse">
                             <Cog className="size-12 animate-spin mb-4" />

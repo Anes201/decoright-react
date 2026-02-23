@@ -7,7 +7,7 @@ type Props = {
   size?: 'sm' | 'md' | 'lg' | 'xl';
 };
 
-function Spinner({ status=true, children = 'Loading...', className = '', size = 'md' }: Props) {
+function Spinner({ status=false, children = 'Loading...', className = '', size = 'md' }: Props) {
   const sizeClass = size === 'sm' ? 'w-4 h-4' : size === 'lg' ? 'w-8 h-8' : size === 'xl' ? 'w-12 h-12' : 'w-6 h-6';
   const textClass = `text-inherit ${status ? 'text-transparent bg-transparent' : className}`.trim();
   const overlayClass = `absolute inset-0 flex items-center justify-center ${className}`.trim();

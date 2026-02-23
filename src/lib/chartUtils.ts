@@ -11,6 +11,12 @@ export const chartColors = {
     fill: "fill-primary",
     text: "text-primary",
   },
+  sky: {
+    bg: "bg-sky-400",
+    stroke: "stroke-sky-400",
+    fill: "fill-sky-400",
+    text: "text-sky-400",
+  },
   cyan: {
     bg: "bg-cyan-500",
     stroke: "stroke-cyan-500",

@@ -131,7 +131,7 @@ export default function UserTable() {
           filterField: 'role',
           searchPlaceholder: 'Search by name...',
           renderActions: (row) => (
-            <div className="flex flex-col gap-2 w-full">
+            <div className="flex flex-col gap-2 w-full z-10">
               <button className="px-2 py-1 w-full text-sm text-start hover:bg-emphasis/10 rounded font-medium" onClick={(e) => { e.stopPropagation(); handleUserClick(row); }}>View Details</button>
             </div>
           )

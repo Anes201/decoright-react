@@ -49,9 +49,9 @@ export default function SpaceTypeTable({ spaceTypes, onEdit, onRefresh }: SpaceT
     };
 
     return (
-        <div className="h-full overflow-auto border border-muted/15 rounded-lg">
-            <table className="w-full">
-                <thead className="bg-surface/50 sticky top-0 z-10">
+        <div className="h-full overflow-auto border-b-0 border border-muted/25 rounded-t-lg bg-surface">
+            <table className="w-full text-left border-collapse">
+                <thead className="bg-emphasis/75 sticky top-0 z-10">
                     <tr className="border-b border-muted/15">
                         <th className="px-4 py-3 text-left text-xs font-semibold text-muted uppercase tracking-wider">Code</th>
                         <th className="px-4 py-3 text-left text-xs font-semibold text-muted uppercase tracking-wider">English Name</th>
@@ -60,7 +60,7 @@ export default function SpaceTypeTable({ spaceTypes, onEdit, onRefresh }: SpaceT
                         <th className="px-4 py-3 text-right text-xs font-semibold text-muted uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-muted/15">
+                <tbody>
                     {spaceTypes.length === 0 ? (
                         <tr>
                             <td colSpan={5} className="px-4 py-12 text-center text-muted">
@@ -70,7 +70,7 @@ export default function SpaceTypeTable({ spaceTypes, onEdit, onRefresh }: SpaceT
                         </tr>
                     ) : (
                         spaceTypes.map((spaceType) => (
-                            <tr key={spaceType.id} className="hover:bg-surface/30 transition-colors">
+                            <tr key={spaceType.id} className="border-b border-muted/15 hover:bg-emphasis/75 transition-colors">
                                 <td className="px-4 py-3 text-sm font-mono text-foreground">{spaceType.name}</td>
                                 <td className="px-4 py-3 text-sm text-foreground">{spaceType.display_name_en}</td>
                                 <td className="px-4 py-3 text-sm text-foreground">{spaceType.display_name_ar || '—'}</td>
@@ -92,21 +92,20 @@ export default function SpaceTypeTable({ spaceTypes, onEdit, onRefresh }: SpaceT
                                         )}
                                     </button>
                                 </td>
-                                <td className="px-4 py-3 text-right">
+                                <td className="p-4 text-right">
                                     <div className="flex items-center justify-end gap-2">
                                         <button
+                                            title="Edit Space Type"
                                             onClick={() => onEdit(spaceType)}
-                                            className="inline-flex items-center gap-1 px-3 py-1 text-sm font-medium text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                                        >
-                                            <PencilSquare className="size-4" />
-                                            Edit
+                                            className="inline-flex items-center gap-1 p-2 text-sm font-medium ring-muted/45 rounded-full transition-colors hover:ring-1 hover:bg-emphasis"
+                                        > <PencilSquare className="size-4" />
                                         </button>
                                         <button
+                                            title="Delete Space Type"
                                             onClick={() => handleDelete(spaceType)}
-                                            className="inline-flex items-center gap-1 px-3 py-1 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                                        >
-                                            <Trash className="size-4" />
-                                            Delete
+                                            className="group/trash inline-flex items-center gap-1 p-2 text-sm font-medium ring-danger/45 rounded-full transition-colors hover:ring-1 hover:bg-emphasis"
+                                        > <Trash className="size-4 group-hover/trash:text-danger" />
+
                                         </button>
                                     </div>
                                 </td>

@@ -283,13 +283,10 @@ export const SocialMediaUrlFields = [
     { id: '2', label: 'Tiktok', key: 'tiktok', placeholder: 'https://tiktok.com/@example/', icon: Tiktok },
     { id: '3', label: 'Instagram', key: 'instagram', placeholder: 'https://instagram.com/example/', icon: Instagram },
     { id: '4', label: 'Youtube', key: 'youtube', placeholder: 'https://youtube.com/@example/', icon: Youtube },
-    { id: '5', label: 'Pinterest', key: 'pinterest', placeholder: 'https://pinterest.com/example/', icon: Pinterest },
-    { id: '8', label: 'X (Twitter)', key: 'xtwitter', placeholder: 'https://x.com/@example/', icon: XTwitter },
 ]
 
 export const SocialMediaPhoneFields = [
     { id: '6', label: 'Whatsapp', key: 'whatsapp', placeholder: '+213123456789', icon: Whatsapp },
-    { id: '7', label: 'Telegram', key: 'telegram', placeholder: '+213123456789', icon: Telegram },
 ]
 
 export const allowedLocales = ['en', 'fr', 'ar']

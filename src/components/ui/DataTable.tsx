@@ -1,6 +1,6 @@
 
 
-import { Funnel, ChevronDown, EllipsisHorizontal, MagnifyingGlass } from '@/icons';
+import { Funnel, ChevronDown, EllipsisHorizontal, MagnifyingGlass, ArrowPath } from '@/icons';
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 
 type Column<T = any> = {
@@ -33,6 +33,7 @@ type TableOptions<T = any> = {
   bulkActions?: BulkAction<T>[]; // defaults to empty
   idField?: string;
   onRowClick?: (row: T) => void;
+  onRefresh?: () => Promise<void> | void;
 };
 
 export default function Table<T extends Record<string, any>>(props: {
@@ -54,6 +55,7 @@ export default function Table<T extends Record<string, any>>(props: {
     bulkActions = [], // defaults to empty
     idField,
     onRowClick,
+    onRefresh,
   } = options;
 
   // controlled UI state
@@ -61,12 +63,30 @@ export default function Table<T extends Record<string, any>>(props: {
   const [filterValue, setFilterValue] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+
   // header checkbox ref so we can set `indeterminate` properly
   const headerCheckboxRef = useRef<HTMLInputElement | null>(null);
 
   // selection state: store ids (we use index-based uid if there's no id)
   const [selectedMap, setSelectedMap] = useState<Record<string, boolean>>({});
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    if (!onRefresh) return;
+    try {
+      const res = onRefresh();
+      // support sync or async refresh functions
+      if (res && typeof (res as any).then === 'function') {
+        setRefreshing(true);
+        await res;
+      }
+    } catch (err) {
+      console.error("Table refresh failed", err);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   // ---- helpers ----
   const getRowId = (row: T, fallbackIndex?: number) => {
@@ -203,7 +223,7 @@ export default function Table<T extends Record<string, any>>(props: {
     );
 
     return (
-      <div className="relative inline-flex items-center">
+      <div className="relative inline-flex items-center z-60">
         <button
           type="button"
           aria-expanded={isOpen}
@@ -223,7 +243,7 @@ export default function Table<T extends Record<string, any>>(props: {
           <div
             role="menu"
             onClick={(e) => e.stopPropagation()}
-            className="absolute right-0 top-full mt-1 min-w-40 w-max bg-surface border border-muted/15 rounded-lg shadow-md z-30"
+            className="absolute end-0 top-full mt-2 min-w-40 w-max bg-surface border border-muted/15 rounded-lg shadow-md z-60"
           >
             {renderActions ? (
               <div className="flex gap-4 p-2">{renderActions(row)}</div>
@@ -302,7 +322,7 @@ export default function Table<T extends Record<string, any>>(props: {
 
 
   return (
-    <div className={`relative w-full h-full border border-muted/25 bg-surface rounded-xl flex flex-col overflow-hidden ${className}`}>
+    <div className={`relative w-full h-full border border-muted/25 bg-surface rounded-xl flex flex-col ${className}`}>
       <div className="p-3 md:p-4 flex items-center justify-between space-x-4 flex-none border-b border-muted/10">
         {/* Search */}
         <div className="flex-1 max-w-2xl">
@@ -321,14 +341,28 @@ export default function Table<T extends Record<string, any>>(props: {
         {/* Filter */}
         <div className="flex items-center gap-3">
           {filterOptions && filterOptions.length > 0 ? (
-            <div className="relative">
+            <div className="relative flex items-center gap-2">
+
               <button id="dropdownDefaultButton" onClick={() => setDropdownOpen(v => !v)} type="button"
-                className="space-x-1 shrink-0 inline-flex items-center justify-center text-body bg-emphasis/75 box-border border border-muted/25 hover:text-heading shadow-xs focus:outline-1 outline-muted/45 font-medium leading-5 rounded-lg text-sm px-3 py-2"
+                className="space-x-1 shrink-0 inline-flex items-center justify-center text-body bg-emphasis box-border border border-muted/15 hover:text-heading shadow-xs focus:outline-1 outline-muted/45 font-medium leading-5 rounded-lg text-sm px-3 py-2"
               >
                 <Funnel className="size-4 text-muted" />
                 <span className="max-md:hidden"> Filter by </span>
                 <ChevronDown className="size-4 text-muted" />
               </button>
+
+              {/* Refresh Button */}
+              {onRefresh && (
+                <button
+                  onClick={handleRefresh}
+                  disabled={refreshing}
+                  className="inline-flex items-center gap-2 p-2 border border-muted/15 hover:border-muted/25 rounded-lg text-sm bg-emphasis transition-colors shadow-xs"
+                  title={refreshing ? "Refreshing…" : "Refresh"}
+                >
+                  <ArrowPath className={`size-4 ${refreshing ? 'animate-spin' : ''}`} />
+                </button>
+              )}
+
 
               {dropdownOpen && (
                 <div className="z-30 absolute right-0 mt-2 bg-surface border border-muted/25 rounded-xl shadow-lg w-60">
@@ -361,9 +395,9 @@ export default function Table<T extends Record<string, any>>(props: {
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto custom-scrollbar">
+      <div className="flex-1 custom-scrollbar">
         <table className="w-full text-sm text-left rtl:text-right text-body">
-          <thead className="text-sm text-body bg-emphasis/75 border-b border-muted/75 sticky top-0 z-10 shadow-sm">
+          <thead className="text-sm text-body bg-emphasis border-b border-muted/75 sticky top-0 z-10 shadow-sm">
             <tr>
               {/* selectable header */}
               {selectable && (

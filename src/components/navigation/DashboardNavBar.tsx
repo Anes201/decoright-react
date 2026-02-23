@@ -120,9 +120,9 @@ export default function DashboardNavBar() {
 
     return (
 
-        <div className="navbar-height absolute z-50 flex justify-between gap-2 md:gap-4 w-full px-3 sm:px-6 md:px-9">
+        <div className="navbar-height lg:absolute z-50 flex justify-between md:justify-end gap-2 md:gap-4 w-full px-3 sm:px-6 md:px-9 pointer-events-none">
             <NavLogo />
-            <nav className="flex items-center justify-end w-full">
+            <nav className="flex items-center justify-end w-fit pointer-events-auto">
                 <NavActions />
             </nav>
         </div>

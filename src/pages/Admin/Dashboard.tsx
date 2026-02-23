@@ -58,23 +58,22 @@ export default function Dashboard() {
 
     return (
         <>
-            <main>
-                <section className="content-container relative flex flex-col space-y-16 w-full">
+            <main className="h-full">
+                <section className="relative flex flex-col w-full h-full pt-4 md:py-8">
                     <div className="flex flex-col gap-4 w-full h-full">
 
                         {/* Filters & Search */}
-                        <div className="relative flex gap-4 md:gap-6 mb-1">
-                            <div className="absolute -bottom-4 w-full border-b border-muted/75 mask-x-to-transparent"></div>
+                        <div className="relative flex max-md:flex-col gap-4 md:gap-6 mb-1">
                             {/* Page Header */}
                             <div className="flex items-center gap-2">
                                 <ChartBar className="size-6" />
-                                <h1 className="font-semibold text-xl"> Analytics </h1>
+                                <h1 className="font-semibold text-xl"> Analytics & Overall Performance </h1>
                             </div>
                             <div className="relative flex items-center gap-4">
                                 <div className="relative">
                                     <button
                                         onClick={() => setIsFilterOpen(!isFilterOpen)}
-                                        className="space-x-1 shrink-0 inline-flex items-center justify-center text-body bg-emphasis/75 box-border border border-muted/25 hover:text-heading shadow-xs focus:outline-1 outline-muted/45 font-medium leading-5 rounded-lg text-sm px-3 py-2"
+                                        className="space-x-1 shrink-0 inline-flex items-center justify-center text-body bg-emphasis/75 box-border border border-muted/20 hover:text-heading focus:outline-1 outline-muted/45 font-medium leading-5 rounded-lg text-sm px-3 py-2"
                                     >
                                         <Calendar className="size-4 text-muted" />
                                         <span> {timeframeLabels[timeframe]} </span>
@@ -82,7 +81,7 @@ export default function Dashboard() {
                                     </button>
 
                                     {isFilterOpen && (
-                                        <div className="absolute top-full left-0 mt-2 w-40 bg-surface border border-muted/15 rounded-xl shadow-xl z-50 overflow-hidden">
+                                        <div className="absolute top-full left-0 mt-2 w-40 bg-surface border border-muted/20 rounded-xl shadow-xl z-50 overflow-hidden">
                                             {(['30d', '90d', 'lifetime'] as const).map((option) => (
                                                 <button
                                                     key={option}
@@ -103,17 +102,12 @@ export default function Dashboard() {
 
                         {/* KPI cards */}
                         <div className="flex flex-col">
-                            <div className="flex items-center justify-between mb-4">
-                                <h3 className="font-bold text-lg text-heading"> Overall Performance </h3>
-                                <span className="text-xs text-muted bg-emphasis/50 px-2 py-1 rounded-full border border-muted/10"> {timeframeLabels[timeframe]} </span>
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+                            <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-4 w-full">
                                 {topKPICards.map((data) => (
-                                    <div key={data.id} className="relative group overflow-hidden flex flex-col justify-between p-5 border border-muted/10 shadow-sm bg-surface rounded-2xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                                        <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 bg-linear-to-br ${data.color} opacity-10 rounded-full blur-2xl group-hover:opacity-20 transition-opacity`}></div>
+                                    <div key={data.id} className="relative group/card overflow-hidden flex flex-col justify-between p-4 border border-muted/20 bg-surface rounded-2xl transition-all">
                                         <div className="flex items-start justify-between mb-4">
-                                            <div className={`p-2.5 rounded-xl bg-linear-to-br ${data.color} shadow-lg shadow-indigo-500/20`}>
-                                                <data.icon className="size-5 text-white" />
+                                            <div className="p-2.5 bg-linear-to-br rounded-lg ring-1 ring-muted/25 bg-emphasis">
+                                                <data.icon className="size-6 text-muted" />
                                             </div>
                                         </div>
                                         <div>
@@ -126,8 +120,8 @@ export default function Dashboard() {
                         </div>
 
                         {/* Chart Section */}
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
-                            <div className="lg:col-span-2 border border-muted/10 shadow-sm bg-surface rounded-2xl overflow-hidden flex flex-col">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-full">
+                            <div className="flex flex-col lg:col-span-2 h-full border border-muted/20 bg-surface rounded-2xl overflow-hidden">
                                 <div className="p-6 border-b border-muted/5 flex items-center justify-between">
                                     <div>
                                         <h3 className="font-bold text-heading">
@@ -136,11 +130,11 @@ export default function Dashboard() {
                                         <p className="text-xs text-muted mt-1">Growth of created and completed requests.</p>
                                     </div>
                                     <div className="flex gap-2">
-                                        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/5 border border-blue-500/10 text-[10px] font-bold text-blue-600">
-                                            <span className="size-1.5 rounded-full bg-blue-500" /> Requests
+                                        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/5 border border-primary/10 text-[10px] font-bold text-primary">
+                                            <span className="size-1.5 rounded-full bg-primary" /> Requests
                                         </div>
-                                        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/5 border border-emerald-500/10 text-[10px] font-bold text-emerald-600">
-                                            <span className="size-1.5 rounded-full bg-emerald-500" /> Completed
+                                        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-sky-400/5 border border-sky-400/10 text-[10px] font-bold text-sky-600">
+                                            <span className="size-1.5 rounded-full bg-sky-400" /> Completed
                                         </div>
                                     </div>
                                 </div>
@@ -155,7 +149,7 @@ export default function Dashboard() {
                                             data={chartData}
                                             index="date"
                                             categories={["Requests", "Complete"]}
-                                            colors={["blue", "emerald"]}
+                                            colors={["primary", "sky"]}
                                             showLegend={false}
                                             showGridLines={true}
                                             onValueChange={(v) => console.log(v)}
@@ -169,7 +163,7 @@ export default function Dashboard() {
 
                             {/* Additional Metrics */}
                             <div className="flex flex-col gap-6 h-full min-h-[480px]">
-                                <div className="flex flex-col border border-muted/10 shadow-sm bg-surface rounded-2xl overflow-hidden h-full">
+                                <div className="flex flex-col border border-muted/20 bg-surface rounded-2xl overflow-hidden h-full">
                                     <div className="p-6 border-b border-muted/5">
                                         <h3 className="font-bold text-heading text-sm"> Popular Services </h3>
                                         <p className="text-xs text-muted mt-1">Distribution by importance.</p>

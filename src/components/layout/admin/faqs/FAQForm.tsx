@@ -39,7 +39,7 @@ export default function FAQForm({ initialData, isUpdate = false }: FAQFormProps)
         }
     }, [initialData]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
         setLoading(true);
 
@@ -184,7 +184,7 @@ export default function FAQForm({ initialData, isUpdate = false }: FAQFormProps)
                     Cancel
                 </button>
                 <PButton type="submit" disabled={loading} className="px-8 py-2.5 h-auto">
-                    <Spinner status={loading} size="sm">
+                    <Spinner status={false} size="sm">
                         {isUpdate ? 'Update FAQ' : 'Create FAQ'}
                     </Spinner>
                 </PButton>

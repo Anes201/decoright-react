@@ -39,7 +39,7 @@ export default function AccountProfileLayout() {
     if (authLoading || loading) {
         return (
             <div className="flex flex-col items-center justify-center gap-4 w-full h-80">
-                <Spinner className="w-8 h-8" />
+                <Spinner status={authLoading || loading} />
                 <span className="text-xs text-muted font-medium animate-pulse">{t('profile.loading')}</span>
             </div>
         );

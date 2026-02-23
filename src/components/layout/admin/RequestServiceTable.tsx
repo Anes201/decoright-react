@@ -14,7 +14,7 @@ interface RequestServiceTableProps {
 }
 
 const STATUS_OPTIONS = [
-    'Submitted', 'Under Review', 'Approved', 'In Progress', 'Completed', 'Rejected', 'Cancelled'
+    'Submitted', 'Under Review', 'Approved', 'In Progress', 'Completed', 'Rejected', // 'Cancelled' Only allowed by users, not admins
 ];
 
 export default function RequestServiceTable({ externalData, onRefresh }: RequestServiceTableProps) {
@@ -126,7 +126,7 @@ export default function RequestServiceTable({ externalData, onRefresh }: Request
                         <select
                             value={row.status}
                             onChange={(e) => handleStatusUpdate(row.id, e.target.value)}
-                            className={`w-full appearance-none cursor-pointer pl-3 pr-8 py-1.5 text-[11px] sm:text-xs font-bold rounded-full border-0 focus:ring-2 focus:ring-offset-1 focus:ring-primary/20 outline-none
+                            className={`w-full appearance-none cursor-pointer pl-3 pr-8 py-1.5 text-[11px] sm:text-xs font-bold rounded-full border-0 focus:ring-2 focus:ring-offset-1 focus:ring-muted/15 outline-none
                                 request-status-${row.status.toLowerCase().replace(/\s+/g, '-')}
                                 hover:opacity-90 transition-all bg-right bg-no-repeat truncate`}
                             style={{
@@ -163,7 +163,7 @@ export default function RequestServiceTable({ externalData, onRefresh }: Request
             render: (row: any) => row.chat_id ? (
                 <Link
                     to={PATHS.ADMIN.chatRoom(row.chat_id)}
-                    className="inline-flex items-center justify-center size-9 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all shadow-sm"
+                    className="inline-flex items-center justify-center size-9 rounded-full border border-muted/15 hover:bg-emphasis hover:text-white transition-all"
                     title="Open Chat with Client"
                     onClick={(e) => e.stopPropagation()}
                 >
@@ -204,6 +204,7 @@ export default function RequestServiceTable({ externalData, onRefresh }: Request
             columns={columns}
             data={displayData}
             options={{
+                onRefresh: onRefresh ? onRefresh : loadData,
                 onRowClick: handleRowClick,
                 selectable: true,
                 filterOptions: [
@@ -213,6 +214,7 @@ export default function RequestServiceTable({ externalData, onRefresh }: Request
                     { label: 'Completed', value: 'Completed' },
                     { label: 'Under Review', value: 'Under Review' },
                     { label: 'Rejected', value: 'Rejected' },
+                    { label: 'Cancelled', value: 'Cancelled' },
                 ],
                 filterField: 'status',
                 searchPlaceholder: 'Search by ID or Client name...',

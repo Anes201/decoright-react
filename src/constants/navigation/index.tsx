@@ -19,43 +19,40 @@ export const adminSideMenuNav = [
 
     { id: '3', label: 'Users & Activity', key: 'users', path: PATHS.ADMIN.USERS, icon: null, description: 'View and manage user accounts, roles and activity logs' },
 
-    {
-        id: '4', label: 'Service Request', key: 'service_request', icon: null, children: [
-            { id: '4.1', label: 'Request List', key: 'request_list', path: PATHS.ADMIN.REQUEST_SERVICE_LIST, icon: null, description: 'Browse, filter and update service requests' },
-        ], description: ''
-    },
-
+    { id: '4', label: 'Request List', key: 'request_list', path: PATHS.ADMIN.REQUEST_SERVICE_LIST, icon: null, description: 'Browse, filter and update service requests',},
 
     {
-        id: '12', label: 'Gallery Management', key: 'gallery_management', icon: null, children: [
-            { id: '12.1', label: 'Gallery List', key: 'gallery_list', path: PATHS.ADMIN.GALLERY_LIST, icon: null, description: 'View and manage all your marketing gallery items.' },
-            { id: '12.2', label: 'Add Gallery Item', key: 'add_gallery', path: PATHS.ADMIN.GALLERY_CREATE, icon: null, description: 'Add new marketing showcase items' },
+        id: '5', label: 'Gallery Management', key: 'gallery_management', icon: null, children: [
+            { id: '5.1', label: 'Gallery List', key: 'gallery_list', path: PATHS.ADMIN.GALLERY_LIST, icon: null, description: 'View and manage all your marketing gallery items.' },
+            { id: '5.2', label: 'Add Gallery Item', key: 'add_gallery', path: PATHS.ADMIN.GALLERY_CREATE, icon: null, description: 'Add new marketing showcase items' },
         ], description: ''
     },
 
     {
-        id: '8', label: 'Project Management', key: 'project_management', icon: null, children: [
-            { id: '8.1', label: 'Project List', key: 'project_list', path: PATHS.ADMIN.PROJECT_LIST, icon: null, description: 'View and manage real company projects.' },
-            { id: '8.2', label: 'Add Project', key: 'add_project', path: PATHS.ADMIN.PROJECT_CREATE, icon: null, description: 'Add new real-world projects' },
+        id: '6', label: 'Project Management', key: 'project_management', icon: null, children: [
+            { id: '6.1', label: 'Project List', key: 'project_list', path: PATHS.ADMIN.PROJECT_LIST, icon: null, description: 'View and manage real company projects.' },
+            { id: '6.2', label: 'Add Project', key: 'add_project', path: PATHS.ADMIN.PROJECT_CREATE, icon: null, description: 'Add new real-world projects' },
         ], description: ''
     },
 
     {
-        id: '6', label: 'Services & Spaces', key: 'services_spaces', icon: null, children: [
-            { id: '6.1', label: 'Service Types', key: 'service_types', path: PATHS.ADMIN.SERVICE_TYPES, icon: null, description: 'Manage generic service categories offered' },
-            { id: '6.2', label: 'Space Types', key: 'space_types', path: PATHS.ADMIN.SPACE_TYPES, icon: null, description: 'Manage different space categories' },
+        id: '7', label: 'Services & Spaces', key: 'services_spaces', icon: null, children: [
+            { id: '7.1', label: 'Service Types', key: 'service_types', path: PATHS.ADMIN.SERVICE_TYPES, icon: null, description: 'Manage generic service categories offered' },
+            // { id: '6.2', label: 'Add Service Type', key: 'service_type_add', path: PATHS.ADMIN.SERVICE_CREATE, icon: null, description: '' },
+            { id: '7.2', label: 'Space Types', key: 'space_types', path: PATHS.ADMIN.SPACE_TYPES, icon: null, description: 'Manage different space categories' },
+            // { id: '6.4', label: 'Add Space Type', key: 'space_type_add', path: PATHS.ADMIN.SERVICE_SPACE_CREATE, icon: null, description: '' },
         ], description: ''
     },
 
     {
-        id: '13', label: 'FAQ Management', key: 'faq_management', icon: null, children: [
-            { id: '13.1', label: 'FAQ List', key: 'faq_list', path: PATHS.ADMIN.FAQ_LIST, icon: null, description: 'View and manage all your frequently asked questions.' },
-            { id: '13.2', label: 'Add FAQ', key: 'add_faq', path: PATHS.ADMIN.FAQ_CREATE, icon: null, description: 'Add new frequently asked questions' },
+        id: '8', label: 'FAQ Management', key: 'faq_management', icon: null, children: [
+            { id: '8.1', label: 'FAQ List', key: 'faq_list', path: PATHS.ADMIN.FAQ_LIST, icon: null, description: 'View and manage all your frequently asked questions.' },
+            { id: '8.2', label: 'Add FAQ', key: 'add_faq', path: PATHS.ADMIN.FAQ_CREATE, icon: null, description: 'Add new frequently asked questions' },
         ], description: ''
     },
 
 
-    { id: '11', label: 'Settings', key: 'settings', path: PATHS.ADMIN.SETTINGS, icon: null, description: 'Application settings, preferences and integrations' },
+    { id: '9', label: 'Settings', key: 'settings', path: PATHS.ADMIN.SETTINGS, icon: null, description: 'Application settings, preferences and integrations' },
 ]
 
 
