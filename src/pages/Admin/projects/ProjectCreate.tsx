@@ -7,7 +7,7 @@ export default function ProjectCreatePage() {
     return (
         <main className="min-h-screen">
             <section className="relative flex flex-col w-full px-4 md:px-8 pt-6 pb-20">
-                <div className="flex flex-col gap-8 w-full max-w-5xl mx-auto">
+                <div className="flex flex-col gap-8 w-full max-w-5xl">
                     <div className="flex flex-col gap-1 border-b border-muted/10 pb-6">
                         <div className="flex items-center gap-2 text-muted mb-2">
                             <Link to={PATHS.ADMIN.PROJECT_LIST} className="hover:text-primary transition-colors">Projects</Link>

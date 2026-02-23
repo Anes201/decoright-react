@@ -59,11 +59,11 @@ export default function Dashboard() {
     return (
         <>
             <main className="h-full">
-                <section className="relative flex flex-col w-full h-full pt-4 md:py-8">
+                <section className="relative flex flex-col w-full h-full pt-4 md:py-6">
                     <div className="flex flex-col gap-4 w-full h-full">
 
                         {/* Filters & Search */}
-                        <div className="relative flex max-md:flex-col gap-4 md:gap-6 mb-1">
+                        <div className="relative flex flex-col gap-4 md:gap-6 mb-1">
                             {/* Page Header */}
                             <div className="flex items-center gap-2">
                                 <ChartBar className="size-6" />
@@ -102,7 +102,7 @@ export default function Dashboard() {
 
                         {/* KPI cards */}
                         <div className="flex flex-col">
-                            <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-4 w-full">
+                            <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
                                 {topKPICards.map((data) => (
                                     <div key={data.id} className="relative group/card overflow-hidden flex flex-col justify-between p-4 border border-muted/20 bg-surface rounded-2xl transition-all">
                                         <div className="flex items-start justify-between mb-4">

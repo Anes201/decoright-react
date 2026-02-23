@@ -101,8 +101,8 @@ export default function ProjectList () {
     }
     return (
 
-        <main>
-            <section className="relative flex flex-col w-full mb-20">
+        <main className="w-full">
+            <section className="flex flex-col pt-4 md:pt-6 w-full h-full mb-40">
                 <div className="relative flex flex-col gap-8 h-full">
                     <h1 className="font-semibold text-lg md:text-2xl w-fit"> Project List </h1>
                     <div className="w-full">

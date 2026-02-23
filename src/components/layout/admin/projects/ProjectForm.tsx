@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { PButton } from "@/components/ui/Button";
+import { PButton, SButton } from "@/components/ui/Button";
 import FileUploadPanel from "@/components/ui/FileUploadPanel";
 import { DateInput } from "@/components/ui/Input";
 import { SelectMenu } from "@/components/ui/Select";
@@ -12,6 +12,8 @@ import { SpaceTypesService, type SpaceType } from "@/services/space-types.servic
 import { useStagedFiles } from "@/hooks/useStagedFiles";
 import Spinner from "@/components/common/Spinner";
 import { PATHS } from "@/routers/Paths";
+import { useConfirm } from "@/components/confirm";
+import { Trash } from "lucide-react";
 
 interface ProjectFormProps {
     project?: any;
@@ -153,6 +155,47 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             setLoading(false);
         }
     };
+
+    function DeleteButton({ id }: { id: string }) {
+        const confirm = useConfirm();
+        const navigate = useNavigate();
+        const [deleting, setDeleting] = useState(false);
+
+        const handleDelete = async () => {
+            const isConfirmed = await confirm({
+                title: "Delete Project",
+                description: "Are you sure you want to delete this project? This action cannot be undone.",
+                confirmText: "Delete Project",
+                variant: "destructive"
+            });
+
+            if (!isConfirmed) return;
+
+            setDeleting(true);
+            try {
+                await AdminService.deleteProject(id);
+                toast.success("Project deleted successfully");
+                navigate(PATHS.ADMIN.PROJECT_LIST);
+            } catch (error) {
+                console.error("Delete failed:", error);
+                toast.error("Failed to delete project");
+            } finally {
+                setDeleting(false);
+            }
+        };
+
+        return (
+            <button
+                type="button"
+                onClick={handleDelete}
+                disabled={deleting}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-danger rounded-lg transition-colors hover:bg-danger/80 disabled:cursor-not-allowed disabled:bg-danger/50"
+            >
+                {deleting ? <Spinner status={true} size="sm" /> : <Trash className="size-4 text-white" />}
+                Delete
+            </button>
+        );
+    }
 
     if (fetchingOptions) {
         return <div className="p-20 flex justify-center"><Spinner status={true} size="lg" /></div>;
@@ -309,16 +352,20 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             </div>
 
             <div className="flex gap-4 border-t border-muted/10 pt-8">
-                <PButton type="submit" disabled={loading} className="min-w-[150px]">
-                    <Spinner status={loading} size="sm"> {project ? "Update Project" : "Create Project"} </Spinner>
-                </PButton>
-                <button
-                    type="button"
-                    onClick={() => onCancel ? onCancel() : navigate(PATHS.ADMIN.PROJECT_LIST)}
-                    className="p-button-ghost"
-                >
-                    Cancel
-                </button>
+                <div className="flex gap-4">
+                    <PButton type="submit" disabled={loading} className="min-w-[150px]">
+                        <Spinner status={loading} size="sm"> {project ? "Update Project" : "Create Project"} </Spinner>
+                    </PButton>
+                    <SButton
+                        type="button"
+                        onClick={() => onCancel ? onCancel() : navigate(PATHS.ADMIN.PROJECT_LIST)}
+                    >
+                        Cancel
+                    </SButton>
+                </div>
+                {project &&
+                    <DeleteButton id={project.id} />
+                }
             </div>
         </form>
     );

@@ -8,47 +8,6 @@ import { PATHS } from "@/routers/Paths";
 import { useConfirm } from "@/components/confirm";
 import { Trash, ChevronRight } from "@/icons";
 
-function DeleteButton({ id }: { id: string }) {
-    const confirm = useConfirm();
-    const navigate = useNavigate();
-    const [deleting, setDeleting] = useState(false);
-
-    const handleDelete = async () => {
-        const isConfirmed = await confirm({
-            title: "Delete Project",
-            description: "Are you sure you want to delete this project? This action cannot be undone.",
-            confirmText: "Delete Project",
-            variant: "destructive"
-        });
-
-        if (!isConfirmed) return;
-
-        setDeleting(true);
-        try {
-            await AdminService.deleteProject(id);
-            toast.success("Project deleted successfully");
-            navigate(PATHS.ADMIN.PROJECT_LIST);
-        } catch (error) {
-            console.error("Delete failed:", error);
-            toast.error("Failed to delete project");
-        } finally {
-            setDeleting(false);
-        }
-    };
-
-    return (
-        <button
-            type="button"
-            onClick={handleDelete}
-            disabled={deleting}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-50 rounded-lg transition-colors border border-red-200"
-        >
-            {deleting ? <Spinner status={true} size="sm" /> : <Trash className="size-4" />}
-            Delete
-        </button>
-    );
-}
-
 export default function ProjectUpdatePage() {
     const { id } = useParams();
     const [project, setProject] = useState<any>(null);
@@ -94,7 +53,7 @@ export default function ProjectUpdatePage() {
     return (
         <main className="min-h-screen">
             <section className="relative flex flex-col w-full px-4 md:px-8 pt-6 pb-20">
-                <div className="flex flex-col gap-8 w-full max-w-5xl mx-auto">
+                <div className="flex flex-col gap-8 w-full max-w-5xl">
                     <div className="flex flex-col gap-1 border-b border-muted/10 pb-6">
                         <div className="flex items-center justify-between gap-4">
                             <div className="flex flex-col gap-1">
@@ -107,7 +66,6 @@ export default function ProjectUpdatePage() {
                                 <p className="text-sm text-muted">Update technical details and imagery for this project.</p>
                             </div>
 
-                            <DeleteButton id={project.id} />
                         </div>
                     </div>
 

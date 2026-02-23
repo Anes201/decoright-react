@@ -13,7 +13,7 @@ export default function AdminLayout() {
             </aside>
 
             <div className="flex flex-col h-screen w-full overflow-y-auto">
-                <header className="sticky top-0 z-50 bg-background">
+                <header className="relative z-50 bg-background">
                     <DashboardNavBar />
                 </header>
 
