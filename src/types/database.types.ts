@@ -11,31 +11,31 @@ export type Database = {
         Tables: {
             admin_activities: {
                 Row: {
-                    action: Database["public"]["Enums"]["admin_action"]
-                    admin_id: string | null
-                    created_at: string | null
-                    details: string | null
                     id: string
-                    target_id: string | null
+                    admin_id: string | null
+                    action: Database["public"]["Enums"]["admin_action"]
                     target_table: string
+                    target_id: string | null
+                    details: string | null
+                    created_at: string | null
                 }
                 Insert: {
-                    action: Database["public"]["Enums"]["admin_action"]
-                    admin_id?: string | null
-                    created_at?: string | null
-                    details?: string | null
                     id?: string
-                    target_id?: string | null
+                    admin_id?: string | null
+                    action: Database["public"]["Enums"]["admin_action"]
                     target_table: string
+                    target_id?: string | null
+                    details?: string | null
+                    created_at?: string | null
                 }
                 Update: {
-                    action?: Database["public"]["Enums"]["admin_action"]
-                    admin_id?: string | null
-                    created_at?: string | null
-                    details?: string | null
                     id?: string
-                    target_id?: string | null
+                    admin_id?: string | null
+                    action?: Database["public"]["Enums"]["admin_action"]
                     target_table?: string
+                    target_id?: string | null
+                    details?: string | null
+                    created_at?: string | null
                 }
                 Relationships: [
                     {
@@ -49,24 +49,24 @@ export type Database = {
             }
             chat_rooms: {
                 Row: {
-                    created_at: string | null
                     id: string
-                    is_active: boolean | null
                     request_id: string | null
+                    is_active: boolean | null
+                    created_at: string | null
                     updated_at: string | null
                 }
                 Insert: {
-                    created_at?: string | null
                     id?: string
-                    is_active?: boolean | null
                     request_id?: string | null
+                    is_active?: boolean | null
+                    created_at?: string | null
                     updated_at?: string | null
                 }
                 Update: {
-                    created_at?: string | null
                     id?: string
-                    is_active?: boolean | null
                     request_id?: string | null
+                    is_active?: boolean | null
+                    created_at?: string | null
                     updated_at?: string | null
                 }
                 Relationships: [
@@ -79,124 +79,80 @@ export type Database = {
                     },
                 ]
             }
-            messages: {
+            contact_messages: {
                 Row: {
-                    media_url: string | null
-                    chat_room_id: string | null
-                    content: string
-                    created_at: string | null
                     id: string
-                    is_read: boolean | null
-                    request_id: string
-                    sender_id: string | null
-                    message_type: Database["public"]["Enums"]["message_type_enum"] | null
-                }
-                Insert: {
-                    media_url?: string | null
-                    chat_room_id?: string | null
-                    content: string
-                    created_at?: string | null
-                    id?: string
-                    is_read?: boolean | null
-                    request_id: string
-                    sender_id?: string | null
-                    message_type?: Database["public"]["Enums"]["message_type_enum"] | null
-                }
-                Update: {
-                    media_url?: string | null
-                    chat_room_id?: string | null
-                    content?: string
-                    created_at?: string | null
-                    id?: string
-                    is_read?: boolean | null
-                    request_id?: string
-                    sender_id?: string | null
-                    message_type?: Database["public"]["Enums"]["message_type_enum"] | null
-                }
-                Relationships: [
-                    {
-                        foreignKeyName: "messages_chat_room_id_fkey"
-                        columns: ["chat_room_id"]
-                        isOneToOne: false
-                        referencedRelation: "chat_rooms"
-                        referencedColumns: ["id"]
-                    },
-                    {
-                        foreignKeyName: "messages_sender_id_fkey"
-                        columns: ["sender_id"]
-                        isOneToOne: false
-                        referencedRelation: "profiles"
-                        referencedColumns: ["id"]
-                    },
-                ]
-            }
-            profiles: {
-                Row: {
-                    created_at: string | null
-                    full_name: string | null
-                    id: string
-                    internal_notes: string | null
-                    is_active: boolean | null
+                    name: string
+                    email: string
                     phone: string | null
-                    role: Database["public"]["Enums"]["user_role"] | null
-                    updated_at: string | null
+                    subject: string | null
+                    message: string
+                    status: Database["public"]["Enums"]["contact_status"]
+                    created_at: string | null
                 }
                 Insert: {
-                    created_at?: string | null
-                    full_name?: string | null
-                    id: string
-                    internal_notes?: string | null
-                    is_active?: boolean | null
+                    id?: string
+                    name: string
+                    email: string
                     phone?: string | null
-                    role?: Database["public"]["Enums"]["user_role"] | null
-                    updated_at?: string | null
+                    subject?: string | null
+                    message: string
+                    status?: Database["public"]["Enums"]["contact_status"]
+                    created_at?: string | null
                 }
                 Update: {
-                    created_at?: string | null
-                    full_name?: string | null
                     id?: string
-                    internal_notes?: string | null
-                    is_active?: boolean | null
+                    name?: string
+                    email?: string
                     phone?: string | null
-                    role?: Database["public"]["Enums"]["user_role"] | null
-                    updated_at?: string | null
+                    subject?: string | null
+                    message?: string
+                    status?: Database["public"]["Enums"]["contact_status"]
+                    created_at?: string | null
                 }
                 Relationships: []
             }
-            project_images: {
+            faqs: {
                 Row: {
-                    uploaded_at: string | null
                     id: string
-                    image_url: string
-                    is_cover: boolean | null
-                    project_id: string | null
-                    sort_order: number | null
+                    question_en: string
+                    question_ar: string | null
+                    question_fr: string | null
+                    answer_en: string
+                    answer_ar: string | null
+                    answer_fr: string | null
+                    display_order: number | null
+                    is_active: boolean | null
+                    created_at: string | null
+                    updated_at: string | null
                 }
                 Insert: {
-                    uploaded_at?: string | null
                     id?: string
-                    image_url: string
-                    is_cover?: boolean | null
-                    project_id?: string | null
-                    sort_order?: number | null
+                    question_en: string
+                    question_ar?: string | null
+                    question_fr?: string | null
+                    answer_en: string
+                    answer_ar?: string | null
+                    answer_fr?: string | null
+                    display_order?: number | null
+                    is_active?: boolean | null
+                    created_at?: string | null
+                    updated_at?: string | null
                 }
                 Update: {
-                    uploaded_at?: string | null
                     id?: string
-                    image_url?: string
-                    is_cover?: boolean | null
-                    project_id?: string | null
-                    sort_order?: number | null
+                    question_en?: string
+                    question_ar?: string | null
+                    question_fr?: string | null
+                    answer_en?: string
+                    answer_ar?: string | null
+                    answer_fr?: string | null
+                    display_order?: number | null
+                    is_active?: boolean | null
+                    created_at?: string | null
+                    updated_at?: string | null
                 }
-                Relationships: [
-                    {
-                        foreignKeyName: "project_images_project_id_fkey"
-                        columns: ["project_id"]
-                        isOneToOne: false
-                        referencedRelation: "projects"
-                        referencedColumns: ["id"]
-                    },
-                ]
+                Relationships: []
             }
             gallery_items: {
                 Row: {
@@ -243,34 +199,96 @@ export type Database = {
                 }
                 Relationships: []
             }
-            request_attachments: {
+            likes: {
                 Row: {
-                    id: string
-                    request_id: string | null
-                    file_name: string | null
-                    file_url: string | null
-                    file_type: Database["public"]["Enums"]["file_type_enum"] | null
-                    uploaded_at: string | null
+                    user_id: string
+                    project_id: string
+                    created_at: string | null
                 }
                 Insert: {
-                    id?: string
-                    request_id?: string | null
-                    file_name?: string | null
-                    file_url?: string | null
-                    file_type?: Database["public"]["Enums"]["file_type_enum"] | null
-                    uploaded_at?: string | null
+                    user_id: string
+                    project_id: string
+                    created_at?: string | null
                 }
                 Update: {
-                    id?: string
-                    request_id?: string | null
-                    file_name?: string | null
-                    file_url?: string | null
-                    file_type?: Database["public"]["Enums"]["file_type_enum"] | null
-                    uploaded_at?: string | null
+                    user_id?: string
+                    project_id?: string
+                    created_at?: string | null
                 }
                 Relationships: [
                     {
-                        foreignKeyName: "request_attachments_request_id_fkey"
+                        foreignKeyName: "likes_user_id_fkey"
+                        columns: ["user_id"]
+                        isOneToOne: false
+                        referencedRelation: "profiles"
+                        referencedColumns: ["id"]
+                    },
+                    {
+                        foreignKeyName: "likes_project_id_fkey"
+                        columns: ["project_id"]
+                        isOneToOne: false
+                        referencedRelation: "projects"
+                        referencedColumns: ["id"]
+                    },
+                ]
+            }
+            messages: {
+                Row: {
+                    id: string
+                    request_id: string
+                    sender_id: string | null
+                    content: string
+                    created_at: string | null
+                    attachments: Json | null
+                    chat_room_id: string | null
+                    message_type: Database["public"]["Enums"]["message_type_enum"] | null
+                    media_url: string | null
+                    duration_seconds: number | null
+                    is_read: boolean | null
+                }
+                Insert: {
+                    id?: string
+                    request_id: string
+                    sender_id?: string | null
+                    content: string
+                    created_at?: string | null
+                    attachments?: Json | null
+                    chat_room_id?: string | null
+                    message_type?: Database["public"]["Enums"]["message_type_enum"] | null
+                    media_url?: string | null
+                    duration_seconds?: number | null
+                    is_read?: boolean | null
+                }
+                Update: {
+                    id?: string
+                    request_id?: string
+                    sender_id?: string | null
+                    content?: string
+                    created_at?: string | null
+                    attachments?: Json | null
+                    chat_room_id?: string | null
+                    message_type?: Database["public"]["Enums"]["message_type_enum"] | null
+                    media_url?: string | null
+                    duration_seconds?: number | null
+                    is_read?: boolean | null
+                }
+                Relationships: [
+                    {
+                        foreignKeyName: "messages_chat_room_id_fkey"
+                        columns: ["chat_room_id"]
+                        isOneToOne: false
+                        referencedRelation: "chat_rooms"
+                        referencedColumns: ["id"]
+                    },
+                    {
+                        foreignKeyName: "messages_sender_id_fkey"
+                        columns: ["sender_id"]
+                        isOneToOne: false
+                        referencedRelation: "profiles"
+                        referencedColumns: ["id"]
+                    },
+                    {
+                        foreignKeyName: "messages_request_id_fkey"
                         columns: ["request_id"]
                         isOneToOne: false
                         referencedRelation: "service_requests"
@@ -278,88 +296,162 @@ export type Database = {
                     },
                 ]
             }
+            profiles: {
+                Row: {
+                    id: string
+                    role: Database["public"]["Enums"]["user_role"] | null
+                    full_name: string | null
+                    created_at: string | null
+                    phone: string | null
+                    updated_at: string | null
+                    is_active: boolean | null
+                    internal_notes: string | null
+                    email: string | null
+                    phone_verified: boolean | null
+                }
+                Insert: {
+                    id: string
+                    role?: Database["public"]["Enums"]["user_role"] | null
+                    full_name?: string | null
+                    created_at?: string | null
+                    phone?: string | null
+                    updated_at?: string | null
+                    is_active?: boolean | null
+                    internal_notes?: string | null
+                    email?: string | null
+                    phone_verified?: boolean | null
+                }
+                Update: {
+                    id?: string
+                    role?: Database["public"]["Enums"]["user_role"] | null
+                    full_name?: string | null
+                    created_at?: string | null
+                    phone?: string | null
+                    updated_at?: string | null
+                    is_active?: boolean | null
+                    internal_notes?: string | null
+                    email?: string | null
+                    phone_verified?: boolean | null
+                }
+                Relationships: []
+            }
+            project_images: {
+                Row: {
+                    id: string
+                    project_id: string | null
+                    image_url: string
+                    is_cover: boolean | null
+                    sort_order: number | null
+                    uploaded_at: string | null
+                }
+                Insert: {
+                    id?: string
+                    project_id?: string | null
+                    image_url: string
+                    is_cover?: boolean | null
+                    sort_order?: number | null
+                    uploaded_at?: string | null
+                }
+                Update: {
+                    id?: string
+                    project_id?: string | null
+                    image_url?: string
+                    is_cover?: boolean | null
+                    sort_order?: number | null
+                    uploaded_at?: string | null
+                }
+                Relationships: [
+                    {
+                        foreignKeyName: "project_images_project_id_fkey"
+                        columns: ["project_id"]
+                        isOneToOne: false
+                        referencedRelation: "projects"
+                        referencedColumns: ["id"]
+                    },
+                ]
+            }
             projects: {
                 Row: {
-                    width: number | null
-                    height: number | null
-                    construction_end_date: string | null
-                    construction_start_date: string | null
-                    created_at: string | null
-                    description: string | null
                     id: string
+                    title: string
+                    description: string | null
+                    space_type: Database["public"]["Enums"]["space_type"] | null
                     location: string | null
                     main_image_url: string | null
-                    service_type: string | null
-                    service_type_id: string | null
-                    slug: string | null
-                    space_type: string | null
-                    space_type_id: string | null
-                    thumbnail_url: string | null
-                    title: string
-                    updated_at: string | null
                     visibility: Database["public"]["Enums"]["project_visibility"] | null
+                    construction_start_date: string | null
+                    construction_end_date: string | null
+                    created_at: string | null
+                    updated_at: string | null
+                    service_type_id: string | null
+                    space_type_id: string | null
+                    slug: string | null
+                    thumbnail_url: string | null
+                    width: number | null
+                    height: number | null
                     title_ar: string | null
                     title_fr: string | null
                     description_ar: string | null
                     description_fr: string | null
-                    location_ar: string | null
-                    location_fr: string | null
-                }
-                Insert: {
-                    width?: number | null
-                    height?: number | null
-                    construction_end_date?: string | null
-                    construction_start_date?: string | null
-                    created_at?: string | null
-                    description?: string | null
-                    id?: string
-                    location?: string | null
-                    main_image_url?: string | null
-                    service_type?: string | null
-                    service_type_id?: string | null
-                    slug?: string | null
-                    space_type?: string | null
-                    space_type_id?: string | null
-                    thumbnail_url?: string | null
-                    title: string
-                    updated_at?: string | null
-                    visibility?: Database["public"]["Enums"]["project_visibility"] | null
-                    title_ar?: string | null
-                    title_fr?: string | null
-                    description_ar?: string | null
+                     location_ar: string | null
+                     location_fr: string | null
+                     view_count: number
+                 }
+                 Insert: {
+                     id?: string
+                     title: string
+                     description?: string | null
+                     space_type?: Database["public"]["Enums"]["space_type"] | null
+                     location?: string | null
+                     main_image_url?: string | null
+                     visibility?: Database["public"]["Enums"]["project_visibility"] | null
+                     construction_start_date?: string | null
+                     construction_end_date?: string | null
+                     created_at?: string | null
+                     updated_at?: string | null
+                     service_type_id?: string | null
+                     space_type_id?: string | null
+                     slug?: string | null
+                     thumbnail_url?: string | null
+                     width?: number | null
+                     height?: number | null
+                     title_ar?: string | null
+                     title_fr?: string | null
+                     description_ar?: string | null
+                     description_fr?: string | null
+                     location_ar?: string | null
+                     location_fr?: string | null
+                     view_count?: number
+                 }
+                 Update: {
+                     id?: string
+                     title?: string
+                     description?: string | null
+                     space_type?: Database["public"]["Enums"]["space_type"] | null
+                     location?: string | null
+                     main_image_url?: string | null
+                     visibility?: Database["public"]["Enums"]["project_visibility"] | null
+                     construction_start_date?: string | null
+                     construction_end_date?: string | null
+                     created_at?: string | null
+                     updated_at?: string | null
+                     service_type_id?: string | null
+                     space_type_id?: string | null
+                     slug?: string | null
+                     thumbnail_url?: string | null
+                     width?: number | null
+                     height?: number | null
+                     title_ar?: string | null
+                     title_fr?: string | null
+                     description_ar?: string | null
                     description_fr?: string | null
-                    location_ar?: string | null
-                    location_fr?: string | null
-                }
-                Update: {
-                    width?: number | null
-                    height?: number | null
-                    construction_end_date?: string | null
-                    construction_start_date?: string | null
-                    created_at?: string | null
-                    description?: string | null
-                    id?: string
-                    location?: string | null
-                    main_image_url?: string | null
-                    service_type?: string | null
-                    service_type_id?: string | null
-                    slug?: string | null
-                    space_type?: string | null
-                    space_type_id?: string | null
-                    thumbnail_url?: string | null
-                    title?: string
-                    updated_at?: string | null
-                    visibility?: Database["public"]["Enums"]["project_visibility"] | null
-                    title_ar?: string | null
-                    title_fr?: string | null
-                    description_ar?: string | null
-                    description_fr?: string | null
-                    location_ar?: string | null
-                    location_fr?: string | null
-                }
-                Relationships: [
-                    {
-                        foreignKeyName: "projects_service_type_id_fkey"
+                     location_ar?: string | null
+                     location_fr?: string | null
+                     view_count?: number
+                 }
+                 Relationships: [
+                     {
+                         foreignKeyName: "projects_service_type_id_fkey"
                         columns: ["service_type_id"]
                         isOneToOne: false
                         referencedRelation: "service_types"
@@ -374,54 +466,86 @@ export type Database = {
                     },
                 ]
             }
-            service_requests: {
+            request_attachments: {
                 Row: {
-                    width: number | null
-                    height: number | null
-                    created_at: string | null
-                    description: string | null
                     id: string
-                    location: string | null
-                    request_code: string
-                    service_type: string | null
-                    service_type_id: string | null
-                    space_type: string | null
-                    space_type_id: string | null
-                    status: Database["public"]["Enums"]["request_status"]
-                    updated_at: string | null
-                    user_id: string | null
+                    request_id: string | null
+                    file_url: string | null
+                    file_name: string | null
+                    file_type: Database["public"]["Enums"]["file_type_enum"] | null
+                    uploaded_at: string | null
                 }
                 Insert: {
-                    width?: number | null
-                    height?: number | null
-                    created_at?: string | null
-                    description?: string | null
                     id?: string
-                    location?: string | null
-                    request_code: string
-                    service_type?: string | null
-                    service_type_id?: string | null
-                    space_type?: string | null
-                    space_type_id?: string | null
-                    status: Database["public"]["Enums"]["request_status"]
-                    updated_at?: string | null
-                    user_id?: string | null
+                    request_id?: string | null
+                    file_url?: string | null
+                    file_name?: string | null
+                    file_type?: Database["public"]["Enums"]["file_type_enum"] | null
+                    uploaded_at?: string | null
                 }
                 Update: {
+                    id?: string
+                    request_id?: string | null
+                    file_url?: string | null
+                    file_name?: string | null
+                    file_type?: Database["public"]["Enums"]["file_type_enum"] | null
+                    uploaded_at?: string | null
+                }
+                Relationships: [
+                    {
+                        foreignKeyName: "request_attachments_request_id_fkey"
+                        columns: ["request_id"]
+                        isOneToOne: false
+                        referencedRelation: "service_requests"
+                        referencedColumns: ["id"]
+                    },
+                ]
+            }
+            service_requests: {
+                Row: {
+                    id: string
+                    user_id: string | null
+                    description: string | null
+                    status: Database["public"]["Enums"]["request_status"]
+                    created_at: string | null
+                    updated_at: string | null
+                    location: string | null
+                    request_code: string
+                    space_type: Database["public"]["Enums"]["space_type"] | null
+                    service_type_id: string | null
+                    space_type_id: string | null
+                    width: number | null
+                    height: number | null
+                }
+                Insert: {
+                    id?: string
+                    user_id?: string | null
+                    description?: string | null
+                    status: Database["public"]["Enums"]["request_status"]
+                    created_at?: string | null
+                    updated_at?: string | null
+                    location?: string | null
+                    request_code: string
+                    space_type?: Database["public"]["Enums"]["space_type"] | null
+                    service_type_id?: string | null
+                    space_type_id?: string | null
                     width?: number | null
                     height?: number | null
-                    created_at?: string | null
-                    description?: string | null
+                }
+                Update: {
                     id?: string
+                    user_id?: string | null
+                    description?: string | null
+                    status?: Database["public"]["Enums"]["request_status"]
+                    created_at?: string | null
+                    updated_at?: string | null
                     location?: string | null
                     request_code?: string
-                    service_type?: string | null
+                    space_type?: Database["public"]["Enums"]["space_type"] | null
                     service_type_id?: string | null
-                    space_type?: string | null
                     space_type_id?: string | null
-                    status?: Database["public"]["Enums"]["request_status"]
-                    updated_at?: string | null
-                    user_id?: string | null
+                    width?: number | null
+                    height?: number | null
                 }
                 Relationships: [
                     {
@@ -449,39 +573,39 @@ export type Database = {
             }
             service_types: {
                 Row: {
-                    created_at: string | null
-                    description: string | null
-                    display_name_ar: string | null
-                    display_name_en: string
-                    display_name_fr: string | null
                     id: string
-                    image_url: string | null
-                    is_active: boolean
                     name: string
+                    display_name_en: string
+                    display_name_ar: string | null
+                    display_name_fr: string | null
+                    description: string | null
+                    is_active: boolean
+                    image_url: string | null
+                    created_at: string | null
                     updated_at: string | null
                 }
                 Insert: {
-                    created_at?: string | null
-                    description?: string | null
-                    display_name_ar?: string | null
-                    display_name_en: string
-                    display_name_fr?: string | null
                     id?: string
-                    image_url?: string | null
-                    is_active?: boolean
                     name: string
+                    display_name_en: string
+                    display_name_ar?: string | null
+                    display_name_fr?: string | null
+                    description?: string | null
+                    is_active?: boolean
+                    image_url?: string | null
+                    created_at?: string | null
                     updated_at?: string | null
                 }
                 Update: {
-                    created_at?: string | null
-                    description?: string | null
-                    display_name_ar?: string | null
-                    display_name_en?: string
-                    display_name_fr?: string | null
                     id?: string
-                    image_url?: string | null
-                    is_active?: boolean
                     name?: string
+                    display_name_en?: string
+                    display_name_ar?: string | null
+                    display_name_fr?: string | null
+                    description?: string | null
+                    is_active?: boolean
+                    image_url?: string | null
+                    created_at?: string | null
                     updated_at?: string | null
                 }
                 Relationships: []
@@ -510,90 +634,96 @@ export type Database = {
                 }
                 Relationships: []
             }
-            faqs: {
-                Row: {
-                    id: string
-                    question: string
-                    answer: string
-                    display_order: number | null
-                    is_active: boolean | null
-                    created_at: string | null
-                    updated_at: string | null
-                    question_ar: string | null
-                    question_fr: string | null
-                    answer_ar: string | null
-                    answer_fr: string | null
-                }
-                Insert: {
-                    id?: string
-                    question: string
-                    answer: string
-                    display_order?: number | null
-                    is_active?: boolean | null
-                    created_at?: string | null
-                    updated_at?: string | null
-                    question_ar?: string | null
-                    question_fr?: string | null
-                    answer_ar?: string | null
-                    answer_fr?: string | null
-                }
-                Update: {
-                    id?: string
-                    question?: string
-                    answer?: string
-                    display_order?: number | null
-                    is_active?: boolean | null
-                    created_at?: string | null
-                    updated_at?: string | null
-                    question_ar?: string | null
-                    question_fr?: string | null
-                    answer_ar?: string | null
-                    answer_fr?: string | null
-                }
-                Relationships: []
-            },
             space_types: {
                 Row: {
-                    created_at: string | null
-                    description: string | null
-                    display_name_ar: string | null
-                    display_name_en: string
-                    display_name_fr: string | null
                     id: string
-                    is_active: boolean | null
                     name: string
+                    display_name_en: string
+                    display_name_ar: string | null
+                    display_name_fr: string | null
+                    description: string | null
+                    is_active: boolean | null
+                    created_at: string | null
                     updated_at: string | null
                 }
                 Insert: {
-                    created_at?: string | null
-                    description?: string | null
-                    display_name_ar?: string | null
-                    display_name_en: string
-                    display_name_fr?: string | null
                     id?: string
-                    is_active?: boolean | null
                     name: string
+                    display_name_en: string
+                    display_name_ar?: string | null
+                    display_name_fr?: string | null
+                    description?: string | null
+                    is_active?: boolean | null
+                    created_at?: string | null
                     updated_at?: string | null
                 }
                 Update: {
-                    created_at?: string | null
-                    description?: string | null
-                    display_name_ar?: string | null
-                    display_name_en?: string
-                    display_name_fr?: string | null
                     id?: string
-                    is_active?: boolean | null
                     name?: string
+                    display_name_en?: string
+                    display_name_ar?: string | null
+                    display_name_fr?: string | null
+                    description?: string | null
+                    is_active?: boolean | null
+                    created_at?: string | null
                     updated_at?: string | null
                 }
                 Relationships: []
+            }
+            testimonials: {
+                Row: {
+                    id: string
+                    user_id: string | null
+                    project_id: string | null
+                    rating: number | null
+                    comment: string | null
+                    is_approved: boolean | null
+                    created_at: string | null
+                }
+                Insert: {
+                    id?: string
+                    user_id?: string | null
+                    project_id?: string | null
+                    rating?: number | null
+                    comment?: string | null
+                    is_approved?: boolean | null
+                    created_at?: string | null
+                }
+                Update: {
+                    id?: string
+                    user_id?: string | null
+                    project_id?: string | null
+                    rating?: number | null
+                    comment?: string | null
+                    is_approved?: boolean | null
+                    created_at?: string | null
+                }
+                Relationships: [
+                    {
+                        foreignKeyName: "testimonials_user_id_fkey"
+                        columns: ["user_id"]
+                        isOneToOne: false
+                        referencedRelation: "profiles"
+                        referencedColumns: ["id"]
+                    },
+                    {
+                        foreignKeyName: "testimonials_project_id_fkey"
+                        columns: ["project_id"]
+                        isOneToOne: false
+                        referencedRelation: "projects"
+                        referencedColumns: ["id"]
+                    },
+                ]
             }
         }
         Views: {
             [_ in never]: never
         }
         Functions: {
-            [_ in never]: never
+            increment_project_view_count: {
+                Args: { project_id: string }
+                Returns: undefined
+            }
         }
         Enums: {
             admin_action: "STATUS_CHANGE" | "PROJECT_PUBLISH" | "SETTINGS_UPDATE"
@@ -602,20 +732,20 @@ export type Database = {
             message_type_enum: "TEXT" | "IMAGE" | "AUDIO" | "SYSTEM"
             project_visibility: "PUBLIC" | "AUTHENTICATED_ONLY" | "HIDDEN"
             request_status:
-            | "Submitted"
-            | "Under Review"
-            | "Waiting for Client Info"
-            | "Approved"
-            | "In Progress"
-            | "Completed"
-            | "Rejected"
-            | "Cancelled"
+                | "Submitted"
+                | "Under Review"
+                | "Waiting for Client Info"
+                | "Approved"
+                | "In Progress"
+                | "Completed"
+                | "Rejected"
+                | "Cancelled"
             space_type:
-            | "HOUSES_AND_ROOMS"
-            | "COMMERCIAL_SHOPS"
-            | "SCHOOLS_AND_NURSERIES"
-            | "OFFICES_RECEPTION"
-            | "DORMITORY_LODGINGS"
+                | "HOUSES_AND_ROOMS"
+                | "COMMERCIAL_SHOPS"
+                | "SCHOOLS_AND_NURSERIES"
+                | "OFFICES_RECEPTION"
+                | "DORMITORY_LODGINGS"
             user_role: "customer" | "admin"
         }
         CompositeTypes: {

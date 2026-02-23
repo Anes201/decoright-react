@@ -6,6 +6,7 @@ import { useChat } from '@/hooks/useChat';
 import useAuth from '@/hooks/useAuth';
 import useConfirm from '@components/confirm/useConfirm';
 import { Trash2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 
 // src/utils/formatMessageTime.ts
@@ -63,6 +64,7 @@ export function formatMessageTime(
 
 export default memo(function MessageItem({ message, currentUserId }:
     { message: Message; currentUserId?: string }) {
+    const { t } = useTranslation();
     const { isAdmin } = useAuth();
     const { deleteMessage } = useChat();
     const confirm = useConfirm();
@@ -83,9 +85,9 @@ export default memo(function MessageItem({ message, currentUserId }:
 
     const handleDelete = async () => {
         const ok = await confirm({
-            title: 'Delete Message',
-            description: 'Are you sure you want to delete this message? This action cannot be undone.',
-            confirmText: 'Delete',
+            title: t('chat.delete_title'),
+            description: t('chat.delete_confirm'),
+            confirmText: t('common.delete'),
             variant: 'destructive'
         });
 
@@ -136,10 +138,15 @@ export default memo(function MessageItem({ message, currentUserId }:
                 {canDelete && (
                     <button
                         onClick={handleDelete}
-                        className={`absolute top-0 ${isMe ? '-left-8' : '-right-8'} p-1.5 text-muted opacity-0 group-hover:opacity-100 hover:text-destructive transition-all duration-200`}
-                        title="Delete message"
+                        className={`absolute top-1/2 -translate-y-1/2 ${isMe ? '-left-12' : '-right-12'} 
+                            flex items-center justify-center
+                            size-9 rounded-full bg-surface border border-muted/20 shadow-lg
+                            text-muted opacity-0 group-hover:opacity-100 
+                            hover:text-destructive hover:border-destructive/30 hover:bg-destructive/5
+                            transition-all duration-200 z-10`}
+                        title={t('chat.delete_message')}
                     >
-                        <Trash2 size={14} />
+                        <Trash2 size={18} />
                     </button>
                 )}
 

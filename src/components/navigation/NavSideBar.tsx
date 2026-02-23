@@ -1,5 +1,5 @@
 
-const Logo = "/decoright.jpeg"
+const Logo = "/Logo.PNG"
 import type { SideNavItem } from "@/types/nav"
 import { LogoutButton } from "@components/common/Confirm"
 import { adminSideMenuNav } from "@/constants/navigation"

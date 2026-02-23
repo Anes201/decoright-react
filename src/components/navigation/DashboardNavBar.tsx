@@ -6,7 +6,8 @@ import { MenuCard } from "@components/ui/MenuCard"
 import { PATHS } from "@/routers/Paths"
 import { Chat, Home, Menu, Folder } from "@/icons";
 
-const Logo = "/decoright.jpeg";
+
+const Logo = "/Logo.PNG";
 
 export function NavLogo() {
     return (
@@ -54,9 +55,7 @@ export function NavMenuItems() {
 
 export function NavActions() {
 
-    const [chatMenuOpen, setChatMenuOpen] = useState<boolean>(false);
     const [navMenuOpen, setNavMenuOpen] = useState(false);
-
 
     return (
 
@@ -64,20 +63,19 @@ export function NavActions() {
             <div className="flex items-center gap-2 md:gap-4">
 
                 {/* Request Project */}
-                <Link to={PATHS.ADMIN.PROJECT_CREATE} title="Request Service" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
+                <Link to={PATHS.ADMIN.PROJECT_CREATE} title="Create a Project" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface/75 rounded-full">
                     Create a Project
                 </Link>
 
-                {/* Chat Menu Card */}
-                <button type="button" title="Chat Menu" onClick={() => setChatMenuOpen(!chatMenuOpen)}
-                    className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
+                {/* Chat Link */}
+                <Link to={PATHS.ADMIN.CHAT} title="Chat" className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
                     <Chat className="size-5 md:size-6" />
 
                     <span className="absolute flex size-3 top-0 left-0">
                         <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
                         <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
                     </span>
-                </button>
+                </Link>
 
                 {/* User Profile Nav Page */}
                 <Link to={PATHS.CLIENT.ROOT} title="Client Home Page" className="max-md:hidden content-center p-2 border border-muted/15 bg-surface/75 rounded-full">
@@ -90,25 +88,12 @@ export function NavActions() {
                 </button>
             </div>
 
-            {chatMenuOpen &&
-                <MenuCard title={'Menu'} open={chatMenuOpen} setOpen={setChatMenuOpen}>
-                    {/* Mobile Nav Menu */}
-
-                    <ul className="flex flex-col w-full h-full gap-2 border border-muted/15 p-2 rounded-lg overflow-auto">
-                    </ul>
-
-                </MenuCard>
-            }
-
             {/* Mobile Nav Menu Card Overlay */}
             {navMenuOpen &&
                 <MenuCard title={'Menu'} open={navMenuOpen} setOpen={setNavMenuOpen}>
-                    {/* Mobile Nav Menu */}
-
                     <ul className="flex flex-col w-full h-full gap-2 border border-muted/15 p-2 rounded-lg overflow-auto">
                         <NavMenuItems />
                     </ul>
-
                 </MenuCard>
             }
 
@@ -120,7 +105,7 @@ export default function DashboardNavBar() {
 
     return (
 
-        <div className="navbar-height lg:absolute z-50 flex justify-between md:justify-end gap-2 md:gap-4 w-full px-3 sm:px-6 md:px-9 pointer-events-none">
+        <div className="navbar-height flex justify-between gap-2 md:gap-4 w-full px-3 sm:px-6 md:px-9 border-b border-muted/10 bg-background/80 backdrop-blur-sm">
             <NavLogo />
             <nav className="flex items-center justify-end w-fit pointer-events-auto">
                 <NavActions />

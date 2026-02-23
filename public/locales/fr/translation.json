@@ -37,16 +37,12 @@
     "service_types": "Types de services",
     "space_types": "Types d'espaces",
     "faq_management": "Gestion des FAQ",
-    "faqs": "Liste des FAQ",
-    "faqs_description": "Trouvez des réponses et des ressources utiles",
-    "add_faq": "Ajouter une FAQ",
+    "faq_list": "Liste des FAQ",
     "settings": "Paramètres",
     "language": "Préférences de langue",
     "language_description": "Choisissez la langue de l’application",
     "navigation_label": "Navigation",
-    "faq_list": "Liste des FAQ",
     "add_faq": "Ajouter une FAQ",
-    "settings": "Paramètres",
     "home_desc": "Page d'accueil et points forts",
     "services_desc": "En savoir plus sur les services disponibles",
     "projects_desc": "Voir les projets publics et les études de cas",
@@ -180,7 +176,7 @@
       "cta": {
         "request_service": "Demander un service",
         "services": "Services",
-        "projects": "Projets et Catégories"
+        "projects": "Projets"
       },
       "metrics": {
         "rating": "Évaluation client",
@@ -246,6 +242,18 @@
       "completed": "Terminée",
       "cancelled": "Annulée",
       "rejected": "Rejetée"
+    },
+    "view_details": "Voir les détails",
+    "delete": "Supprimer la demande",
+    "delete_confirm": "Êtes-vous sûr de vouloir supprimer cette demande ?",
+    "delete_success": "Demande supprimée avec succès",
+    "no_requests_cta": "Commencez votre première demande",
+    "request_details": "Détails de la demande",
+    "details": {
+      "service_info": "Informations sur le service",
+      "location_timeline": "Emplacement et calendrier",
+      "additional_details": "Détails supplémentaires",
+      "attachments": "Pièces jointes"
     }
   },
   "request_form": {
@@ -327,7 +335,9 @@
   "chat": {
     "requests": "Demandes",
     "select_request": "Sélectionner une demande",
-    "select_description": "Choisissez l'une de vos demandes de service dans la liste pour voir son historique de discussion et envoyer des messages."
+    "select_description": "Choisissez l'une de vos demandes de service dans la liste pour voir son historique de discussion et envoyer des messages.",
+    "delete_title": "Supprimer ce message ?",
+    "delete_confirm": "Ce message sera définitivement supprimé pour tous les participants."
   },
   "services": {
     "service_list_title": "Services — Espaces conçus, design pensé",

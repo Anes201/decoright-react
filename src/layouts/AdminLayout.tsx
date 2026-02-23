@@ -12,8 +12,8 @@ export default function AdminLayout() {
                 <NavSideBar />
             </aside>
 
-            <div className="relative flex flex-col h-screen w-full overflow-y-auto">
-                <header className="relative z-50">
+            <div className="flex flex-col h-screen w-full overflow-y-auto">
+                <header className="sticky top-0 z-50 bg-background">
                     <DashboardNavBar />
                 </header>
 

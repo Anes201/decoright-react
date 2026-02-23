@@ -69,6 +69,14 @@ export const ServiceTypesService = {
         if (error) throw error
     },
 
+    async getUsageCount(id: string): Promise<{ requests: number; projects: number }> {
+        const [{ count: requests }, { count: projects }] = await Promise.all([
+            supabase.from('service_requests').select('*', { count: 'exact', head: true }).eq('service_type_id', id),
+            supabase.from('projects').select('*', { count: 'exact', head: true }).eq('service_type_id', id),
+        ])
+        return { requests: requests ?? 0, projects: projects ?? 0 }
+    },
+
     async uploadImage(file: File) {
         const fileExt = file.name.split('.').pop()
         const fileName = `${Math.random()}.${fileExt}`

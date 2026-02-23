@@ -30,9 +30,26 @@ export default function ServiceTypeTable({ serviceTypes, onEdit, onRefresh }: Se
     };
 
     const handleDelete = async (serviceType: ServiceType) => {
+        try {
+            const usage = await ServiceTypesService.getUsageCount(serviceType.id)
+            
+            if (usage.requests > 0 || usage.projects > 0) {
+                const parts: string[] = []
+                if (usage.requests > 0) parts.push(`${usage.requests} service request${usage.requests > 1 ? 's' : ''}`)
+                if (usage.projects > 0) parts.push(`${usage.projects} project${usage.projects > 1 ? 's' : ''}`)
+                
+                toast.error(`Cannot delete — this type is used by ${parts.join(' and ')}. Deactivate it instead.`)
+                return
+            }
+        } catch (error) {
+            console.error('Failed to check service type usage:', error)
+            toast.error('Failed to verify usage. Please try again.')
+            return
+        }
+
         const isConfirmed = await confirm({
             title: 'Delete Service Type',
-            description: `Are you sure you want to delete "${serviceType.display_name_en}"? This action cannot be undone and may fail if projects are using this type.`,
+            description: `Are you sure you want to delete "${serviceType.display_name_en}"? This action cannot be undone.`,
             confirmText: 'Delete',
             variant: 'destructive',
         });
@@ -44,7 +61,7 @@ export default function ServiceTypeTable({ serviceTypes, onEdit, onRefresh }: Se
                 onRefresh();
             } catch (error: any) {
                 console.error('Failed to delete service type:', error);
-                toast.error(error.message || 'Failed to delete service type. It might be in use.');
+                toast.error(error.message || 'Failed to delete service type.');
             }
         }
     };

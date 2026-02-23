@@ -178,8 +178,13 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     // Handle URL-based room selection
     useEffect(() => {
         if (roomIdFromUrl && rooms.length > 0) {
-            const room = rooms.find(r => r.id === roomIdFromUrl);
-            if (room && selectedRoom?.id !== roomIdFromUrl) {
+            // Find by room ID OR by the associated request ID
+            const room = rooms.find(r =>
+                r.id === roomIdFromUrl ||
+                r.service_requests?.id === roomIdFromUrl
+            );
+
+            if (room && selectedRoom?.id !== room.id) {
                 setSelectedRoom(room);
             }
         }

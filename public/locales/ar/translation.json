@@ -37,16 +37,12 @@
     "service_types": "أنواع الخدمات",
     "space_types": "أنواع المساحات",
     "faq_management": "إدارة الأسئلة الشائعة",
-    "faqs": "قائمة الأسئلة",
-    "faqs_description": "اعثر على الإجابات والموارد المفيدة",
-    "add_faq": "إضافة سؤال",
+    "faq_list": "قائمة الأسئلة الشائعة",
     "settings": "الإعدادات",
     "language": "تفضيلات اللغة",
     "language_description": "اختر لغة التطبيق المفضلة",
     "navigation_label": "التنقّل",
-    "faq_list": "قائمة الأسئلة",
     "add_faq": "إضافة سؤال",
-    "settings": "الإعدادات",
     "home_desc": "الصفحة الرئيسية وأبرز النقاط",
     "services_desc": "تعرف على الخدمات المتاحة",
     "projects_desc": "عرض المشاريع العامة ودراسات الحالة",
@@ -180,7 +176,7 @@
       "cta": {
         "request_service": "طلب خدمة",
         "services": "الخدمات",
-        "projects": "الفئات والمشاريع"
+        "projects": "المشاريع"
       },
       "metrics": {
         "rating": "تقييم العملاء",
@@ -246,6 +242,18 @@
       "completed": "مكتمل",
       "cancelled": "ملغي",
       "rejected": "مرفوض"
+    },
+    "view_details": "عرض التفاصيل",
+    "delete": "حذف الطلب",
+    "delete_confirm": "هل أنت متأكد من حذف هذا الطلب؟",
+    "delete_success": "تم حذف الطلب بنجاح",
+    "no_requests_cta": "ابدأ طلبك الأول الآن",
+    "request_details": "تفاصيل الطلب",
+    "details": {
+      "service_info": "معلومات الخدمة",
+      "location_timeline": "الموقع والجدول الزمني",
+      "additional_details": "تفاصيل إضافية",
+      "attachments": "المرفقات"
     }
   },
   "request_form": {
@@ -327,7 +335,9 @@
   "chat": {
     "requests": "الطلبات",
     "select_request": "اختر طلباً",
-    "select_description": "اختر أحد طلبات الخدمة الخاصة بك من القائمة لعرض تاريخ المحادثة وإرسال الرسائل."
+    "select_description": "اختر أحد طلبات الخدمة الخاصة بك من القائمة لعرض تاريخ المحادثة وإرسال الرسائل.",
+    "delete_title": "حذف الرسالة؟",
+    "delete_confirm": "سيتم حذف هذه الرسالة نهائياً لجميع الأطراف في هذه المحادثة."
   },
   "services": {
     "service_list_title": "الخدمات — مساحات مُصمَّمة بعناية",

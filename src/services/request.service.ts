@@ -79,6 +79,9 @@ export const RequestService = {
             .from('service_requests')
             .select(`
                 *,
+                chat_rooms (
+                    id
+                ),
                 service_types (
                     name,
                     display_name_en,
@@ -92,6 +95,9 @@ export const RequestService = {
                 profiles (
                     full_name,
                     role
+                ),
+                request_attachments (
+                    *
                 )
             `)
             .eq('id', id)
@@ -150,5 +156,17 @@ export const RequestService = {
             .insert(rows)
 
         if (error) throw error
+    },
+
+    async deleteRequest(id: string) {
+        const { data, error } = await supabase
+            .from('service_requests')
+            .delete()
+            .eq('id', id)
+            .select()
+            .single()
+
+        if (error) throw error
+        return data
     }
 }
