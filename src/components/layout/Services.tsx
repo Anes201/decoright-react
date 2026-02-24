@@ -10,6 +10,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { PCTALink, SCTALink } from '../ui/CTA';
 import { PATHS } from '@/routers/Paths';
 import { Cog, Photo } from '@/icons';
+import { useImageLoaded } from '@/hooks/useImageLoaded';
 
 const dummyCardImg = "/living-room.png";
 const dummyCardLamps = "/ceiling-lamps.svg";
@@ -18,6 +19,8 @@ export function ServiceCardItem({ service }: { service: ServiceType }) {
 
     const { i18n } = useTranslation();
     const { t } = useTranslation();
+
+    const { loaded } = useImageLoaded(service.image_url || "");
 
     const getLocalizedLabel = (service: ServiceType) => {
         const lang = i18n.language
@@ -31,13 +34,26 @@ export function ServiceCardItem({ service }: { service: ServiceType }) {
 
             <div className="flex flex-col gap-3 px-3 ring-1 ring-muted/25 rounded-xl bg-surface overflow-hidden">
                 <div className="w-full aspect-4/3 border-t-0 border border-muted/25 rounded-b-lg overflow-clip">
-                    {service.image_url ? (
-                        <ZoomImage src={service.image_url} alt={service.display_name_en} />
-                    ) : (
+                    {service.image_url ?
+                        <>
+                            {!loaded &&
+                                <div className="flex w-full h-full items-center justify-center animate-[pulse_2s_ease-in-out_infinite]">
+                                    <Photo className="size-16" />
+                                </div>
+                            }
+
+                            <ZoomImage src={service.image_url || ""} alt="Service Image" loading="lazy"
+                                className={
+                                    `${loaded ? 'opacity-100' : 'absolute opacity-0'}
+                                    max-lg:pb-0 lg:pl-0 object-cover w-full h-full ring-1 ring-muted/15 max-lg:rounded-t-xl lg:rounded-s-xl transition-opacity duration-200 ease-out`
+                                }
+                            />
+                        </>
+                    :
                         <div className="w-full h-full flex items-center justify-center opacity-10">
                             <Photo className="size-12" />
                         </div>
-                    )}
+                    }
                 </div>
 
                 <div className="flex flex-col p-2 border-b-0 border border-muted/25 rounded-t-lg">
@@ -57,7 +73,7 @@ export function ServiceCardItem({ service }: { service: ServiceType }) {
     )
 }
 
-export function ServiceCardList() {
+export default function ServiceCardList() {
     const [services, setServices] = useState<ServiceType[]>([])
     const [loading, setLoading] = useState(true)
 

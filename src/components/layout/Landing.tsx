@@ -131,7 +131,8 @@ export function Hero({ settings = {} }: { settings?: Record<string, string> }) {
                         className={
                             `${loaded ? 'opacity-100' : 'absolute opacity-0'}
                         max-lg:pb-0 lg:pl-0 object-cover w-full h-full ring-1 ring-muted/15 max-lg:rounded-t-xl lg:rounded-s-xl transition-opacity duration-200 ease-out`
-                        } />
+                        }
+                    />
                 </div>
 
             </div>

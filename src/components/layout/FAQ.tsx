@@ -1,11 +1,113 @@
 import Spinner from "@/components/common/Spinner";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AdminService, type FAQ } from "@/services/admin.service";
 import { useTranslation } from "react-i18next";
 import { getLocalizedContent } from "@/utils/i18n";
 import { ChevronDown } from "@/icons";
 
-export function FAQList() {
+type FAQItemProps = {
+  question: string;
+  answer: string;
+  index: number;
+  isOpen: boolean;
+  onToggle: (index: number) => void;
+};
+
+export function FAQItem({ question, answer, index, isOpen, onToggle }: FAQItemProps) {
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  // maxHeight state: '0px' | '<N>px' | 'none'
+  const [maxHeight, setMaxHeight] = useState<string>("0px");
+
+  // Update maxHeight when isOpen changes
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+
+    const setMeasured = () => {
+      // measure content's full height
+      const scrollH = el.scrollHeight;
+      return `${scrollH}px`;
+    };
+
+    if (isOpen) {
+      // Opening: set to measured height to animate from 0 -> px
+      const measured = setMeasured();
+      setMaxHeight(measured);
+
+      // after transition ends, drop the max-height so content can grow/shrink naturally
+      const onTransitionEnd = (ev: TransitionEvent) => {
+        if (ev.propertyName === "max-height") {
+          // only remove restriction if still open
+          if (isOpen) setMaxHeight("none");
+          el.removeEventListener("transitionend", onTransitionEnd);
+        }
+      };
+      el.addEventListener("transitionend", onTransitionEnd);
+    } else {
+      // Closing: if we were 'none' (no max), set px first so we can animate to 0
+      const currentlyNone = maxHeight === "none";
+      const measured = setMeasured();
+      if (currentlyNone) {
+        // apply measured px, then in next frame animate to 0
+        setMaxHeight(measured);
+        requestAnimationFrame(() => requestAnimationFrame(() => setMaxHeight("0px")));
+      } else {
+        // normally animate from current px -> 0
+        setMaxHeight(measured); // ensure we start from measured value
+        requestAnimationFrame(() => setMaxHeight("0px"));
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
+
+  // style object for animated panel
+  const panelStyle: React.CSSProperties =
+    maxHeight === "none"
+      ? { maxHeight: undefined, opacity: 1, transition: "opacity 240ms ease" }
+      : { maxHeight, opacity: isOpen ? 1 : 0, transition: "max-height 320ms cubic-bezier(.2,.9,.2,1), opacity 180ms ease" };
+
+  return (
+    <li
+      key={index}
+      className="group/item flex flex-col p-4 ring-1 ring-muted/15 bg-surface rounded-lg"
+      // keep click on entire li (or you can put on button)
+      onClick={() => onToggle(index)}
+    >
+      <div className="flex justify-between items-center gap-2 cursor-pointer">
+        <h4 className="font-medium text-muted text-xs md:text-sm">{question}</h4>
+
+        <button
+          type="button"
+          aria-expanded={isOpen}
+          aria-controls={`faq-answer-${index}`}
+          className="p-2 ring-muted/15 rounded-full group-hover/item:ring-1 transition-transform"
+          onClick={(e) => {
+            e.stopPropagation(); // avoid double toggle when clicking the button
+            onToggle(index);
+          }}
+        >
+          <ChevronDown
+            className={`size-4 md:size-5 transform transition-transform duration-300 ${isOpen ? "rotate-180" : "rotate-0"}`}
+          />
+        </button>
+      </div>
+
+      <div
+        id={`faq-answer-${index}`}
+        ref={contentRef}
+        style={panelStyle}
+        className="overflow-hidden"
+        aria-hidden={!isOpen}
+      >
+        <div className="pt-4"> {/* inner padding so max-height measurement includes spacing */}
+          <p className="text-sm text-foreground">{answer}</p>
+        </div>
+      </div>
+    </li>
+  );
+}
+
+export default function FAQList() {
     const { i18n } = useTranslation();
     const [faqData, setFaqData] = useState<FAQ[]>([]);
     const [loading, setLoading] = useState(true);
@@ -47,30 +149,21 @@ export function FAQList() {
     }
 
     return (
-        <ul className="flex flex-col gap-6 w-full">
+        <ul className="flex flex-col gap-4 w-full">
+
             {faqData.map((faq, index) => {
                 const { question, answer } = getTranslatedContent(faq);
                 const isOpen = index === openIndex;
 
                 return (
-                    <li key={faq.id} className="group/item flex flex-col border-b border-muted/25 pb-2" onClick={() => setOpenIndex(isOpen ? null : index)}>
-
-                        <div className="flex justify-between items-center mb-2 gap-2 cursor-pointer">
-                            <h4 className="font-medium text-muted text-xs md:text-sm mb-2"> {question} </h4>
-                            <button
-                                type="button"
-                                aria-expanded={isOpen}
-                                aria-controls={`faq-answer-${index}`}
-                                className="p-2 ring-muted/15 rounded-full group-hover/item:ring-1"
-                            >
-                            <ChevronDown className={`size-4 md:size-5 ${isOpen ? 'rotate-180' : ''}`}/>
-                            </button>
-                        </div>
-
-                        <div id={`faq-answer-${index}`} className={`overflow-hidden transition-all duration-150 ${isOpen ? 'max-h-125 opacity-100' : 'max-h-0 opacity-0'}`}>
-                            <p className="text-sm text-foreground mt-1 mb-4"> {answer} </p>
-                        </div>
-                    </li>
+                    <FAQItem
+                        key={faq.id}
+                        index={index}
+                        question={question}
+                        answer={answer}
+                        isOpen={isOpen}
+                        onToggle={() => setOpenIndex(isOpen ? null : index)}
+                    />
                 )
             })}
         </ul>

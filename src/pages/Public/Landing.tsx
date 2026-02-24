@@ -1,12 +1,10 @@
-import { useState, useEffect, lazy } from "react"
+import { useState, useEffect } from "react"
 import { SectionHeader } from "@/components/ui/SectionHeader"
 import { AdminService } from "@/services/admin.service"
 import { useTranslation } from "react-i18next"
 import { Hero } from "@/components/layout/Landing"
-
-const ServiceCardList = lazy(() => import("@components/layout/Services").then(module => ({ default: module.ServiceCardList })));
-const FAQList = lazy(() => import("@components/layout/FAQ").then(module => ({ default: module.FAQList })));
-const ShowcaseCardList = lazy(() => import("@components/layout/Showcase").then(module => ({ default: module.ShowcaseCardList })));
+import { LazySection } from "@/components/common/LazySection"
+import { ChevronDown } from "lucide-react"
 
 export default function Landing() {
     const [settings, setSettings] = useState<Record<string, string>>({});
@@ -53,7 +51,16 @@ export default function Landing() {
                     />
 
                     {/* Service Cards */}
-                    <ServiceCardList />
+                    <LazySection
+                        loader={() => import("@components/layout/Services")}
+                        placeholder={
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {[...Array(6)].map((_, i) => (
+                                    <div key={i} className="h-75 bg-gray-100 animate-pulse rounded-lg" />
+                                ))}
+                            </div>
+                        }
+                    />
                 </div>
 
             </section>
@@ -70,7 +77,16 @@ export default function Landing() {
                 </div>
 
                 {/* Showcase Cards */}
-                <ShowcaseCardList />
+                <LazySection
+                    loader={() => import("@components/layout/Showcase")}
+                    placeholder={
+                        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {[...Array(8)].map((_, i) => (
+                                <div key={i} className="h-40 bg-surface animate-pulse rounded-lg" />
+                            ))}
+                        </div>
+                    }
+                />
 
             </section>
             <section className="content-container relative flex flex-col gap-8 w-full mb-16 pt-16 px-4 sm:px-6 md:px-8 max-lg:overflow-x-clip">
@@ -87,7 +103,20 @@ export default function Landing() {
                 />
 
                 {/* FAQ List */}
-                <FAQList />
+                <LazySection
+                    loader={() => import("@components/layout/FAQ")}
+                    placeholder={
+                        <div className="flex flex-col gap-2">
+                            {[...Array(5)].map((_, i) => (
+                                <>
+                                    <div key={i} className="relative h-14 bg-surface animate-pulse rounded-lg ring-1 ring-muted/15">
+                                        <ChevronDown className="size-6 absolute top-1/2 -translate-y-1/2 end-3 text-muted/75" />
+                                    </div>
+                                </>
+                            ))}
+                        </div>
+                    }
+                />
 
             </section>
         </>
