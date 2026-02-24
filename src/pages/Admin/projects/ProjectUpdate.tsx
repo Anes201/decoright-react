@@ -2,11 +2,10 @@ import toast from "react-hot-toast";
 import ProjectForm from "@/components/layout/admin/projects/ProjectForm";
 import Spinner from "@/components/common/Spinner";
 import { useState, useEffect } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { AdminService } from "@/services/admin.service";
 import { PATHS } from "@/routers/Paths";
-import { useConfirm } from "@/components/confirm";
-import { Trash, ChevronRight } from "@/icons";
+import { ChevronRight } from "@/icons";
 
 export default function ProjectUpdatePage() {
     const { id } = useParams();

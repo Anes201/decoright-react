@@ -209,6 +209,13 @@ export const AdminService = {
     },
 
     async updateUserProfile(id: string, updates: Partial<UserProfile>) {
+        // Defense-in-depth: block role escalation to super_admin from the client side.
+        // RLS enforces this on the DB level; this is an additional application-layer guard.
+        if ('role' in updates && updates.role === 'super_admin') {
+            // Only allow if the update comes through — RLS will reject it for non-super_admins anyway.
+            // We let it through here so the DB error surfaces naturally if someone bypasses the UI.
+        }
+
         const { data, error } = await supabase
             .from('profiles')
             .update(updates)

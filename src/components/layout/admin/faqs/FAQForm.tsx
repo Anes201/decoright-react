@@ -39,7 +39,7 @@ export default function FAQForm({ initialData, isUpdate = false }: FAQFormProps)
         }
     }, [initialData]);
 
-    const handleSubmit = async (e: React.SubmitEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
 

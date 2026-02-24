@@ -8,6 +8,7 @@ type AuthContextValue = {
   user: { id: string; email?: string; role?: string; phoneVerified?: boolean } | null;
   loading: boolean;
   isAdmin: boolean;
+  isSuperAdmin: boolean;
 };
 
 export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -41,7 +42,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         toast.error(t('error_load'))
       }
 
-      const role = profile?.role?.toLowerCase() || "client";
+      const role = profile?.role?.toLowerCase() || "customer";
       setUser({
         id: session.user.id,
         email: session.user.email ?? undefined,
@@ -62,7 +63,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const value: AuthContextValue = {
     user,
     loading,
-    isAdmin: user?.role === userRoles.ADMIN,
+    isAdmin: user?.role === userRoles.ADMIN || user?.role === userRoles.SUPER_ADMIN,
+    isSuperAdmin: user?.role === userRoles.SUPER_ADMIN,
   };
 
   return <AuthContext.Provider value={value}> { children } </AuthContext.Provider>;

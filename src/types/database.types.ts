@@ -724,6 +724,14 @@ export type Database = {
                 Args: { project_id: string }
                 Returns: undefined
             }
+            is_admin: {
+                Args: Record<PropertyKey, never>
+                Returns: boolean
+            }
+            is_super_admin: {
+                Args: Record<PropertyKey, never>
+                Returns: boolean
+            }
         }
         Enums: {
             admin_action: "STATUS_CHANGE" | "PROJECT_PUBLISH" | "SETTINGS_UPDATE"
@@ -746,7 +754,7 @@ export type Database = {
                 | "SCHOOLS_AND_NURSERIES"
                 | "OFFICES_RECEPTION"
                 | "DORMITORY_LODGINGS"
-            user_role: "customer" | "admin"
+            user_role: "customer" | "admin" | "super_admin"
         }
         CompositeTypes: {
             [_ in never]: never

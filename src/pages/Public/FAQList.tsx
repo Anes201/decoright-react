@@ -1,4 +1,4 @@
-import { FAQList } from "@/components/layout/FAQ";
+import FAQList from "@/components/layout/FAQ";
 import { useTranslation } from "react-i18next";
 
 export default function FAQListPage() {
