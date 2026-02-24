@@ -69,11 +69,11 @@ export function FAQItem({ question, answer, index, isOpen, onToggle }: FAQItemPr
   return (
     <li
       key={index}
-      className="group/item flex flex-col p-4 ring-1 ring-muted/15 bg-surface rounded-lg"
+      className="group/item flex flex-col p-4 ring-1 ring-muted/15 bg-surface rounded-lg cursor-pointer"
       // keep click on entire li (or you can put on button)
       onClick={() => onToggle(index)}
     >
-      <div className="flex justify-between items-center gap-2 cursor-pointer">
+      <div className="flex justify-between items-center gap-2">
         <h4 className="font-medium text-muted text-xs md:text-sm">{question}</h4>
 
         <button
@@ -150,19 +150,20 @@ export default function FAQList() {
 
     return (
         <ul className="flex flex-col gap-4 w-full">
-
+            <hr className="absolute top-0 start-8 h-full border-0 border-s border-muted/25 -z-10 pointer-events-none" />
+            <hr className="absolute top-0 end-8 h-full border-0 border-e border-muted/25 -z-10 pointer-events-none" />
             {faqData.map((faq, index) => {
                 const { question, answer } = getTranslatedContent(faq);
                 const isOpen = index === openIndex;
 
                 return (
                     <FAQItem
-                        key={faq.id}
-                        index={index}
-                        question={question}
-                        answer={answer}
-                        isOpen={isOpen}
-                        onToggle={() => setOpenIndex(isOpen ? null : index)}
+                      key={faq.id}
+                      index={index}
+                      question={question}
+                      answer={answer}
+                      isOpen={isOpen}
+                      onToggle={() => setOpenIndex(isOpen ? null : index)}
                     />
                 )
             })}

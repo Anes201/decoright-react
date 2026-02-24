@@ -183,7 +183,7 @@ export default function ServiceCardList() {
                             </div>
                         }
 
-                        <div className="flex flex-col gap-4 p-4 justify-end h-full">
+                        <div className="flex flex-col gap-1 p-4 justify-end h-full">
                             <h4 className={`font-medium ${dummySpan >= 2 ? "text-2xl lg:text-4xl" : "text-lg"}`}>
                                 {t("services.service_card_title")}
                             </h4>
