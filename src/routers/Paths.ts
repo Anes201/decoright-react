@@ -47,6 +47,7 @@ export const PATHS = {
     ADMIN: {
         ROOT: "/admin/",
         ANALYTICS: "/admin/analytics",
+        ACTIVITY_LOG: "/admin/activity-log",
 
         CHAT: "/admin/chat",
         CHAT_ROOM: "/admin/chat/:id",

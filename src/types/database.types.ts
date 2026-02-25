@@ -9,6 +9,51 @@ export type Json =
 export type Database = {
     public: {
         Tables: {
+            activity_logs: {
+                Row: {
+                    id: string
+                    event_type: string
+                    actor_id: string | null
+                    target_user_id: string | null
+                    target_request_id: string | null
+                    metadata: Json | null
+                    created_at: string | null
+                }
+                Insert: {
+                    id?: string
+                    event_type: string
+                    actor_id?: string | null
+                    target_user_id?: string | null
+                    target_request_id?: string | null
+                    metadata?: Json | null
+                    created_at?: string | null
+                }
+                Update: {
+                    id?: string
+                    event_type?: string
+                    actor_id?: string | null
+                    target_user_id?: string | null
+                    target_request_id?: string | null
+                    metadata?: Json | null
+                    created_at?: string | null
+                }
+                Relationships: [
+                    {
+                        foreignKeyName: "activity_logs_actor_id_fkey"
+                        columns: ["actor_id"]
+                        isOneToOne: false
+                        referencedRelation: "profiles"
+                        referencedColumns: ["id"]
+                    },
+                    {
+                        foreignKeyName: "activity_logs_target_user_id_fkey"
+                        columns: ["target_user_id"]
+                        isOneToOne: false
+                        referencedRelation: "profiles"
+                        referencedColumns: ["id"]
+                    },
+                ]
+            }
             admin_activities: {
                 Row: {
                     id: string

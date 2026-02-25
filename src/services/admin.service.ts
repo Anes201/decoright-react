@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import type { Database } from '@/types/database.types'
 import { compressImage } from '@/utils/image.utils'
+import { ActivityLogService } from './activity-log.service'
 
 export type UserProfile = Database['public']['Tables']['profiles']['Row'] & { email?: string }
 export type ServiceRequest = Database['public']['Tables']['service_requests']['Row']
@@ -209,6 +210,13 @@ export const AdminService = {
     },
 
     async updateUserProfile(id: string, updates: Partial<UserProfile>) {
+        // Fetch old profile for comparison if role is changing
+        let oldRole: any = null;
+        if ('role' in updates) {
+            const { data } = await supabase.from('profiles').select('role').eq('id', id).single();
+            oldRole = data?.role;
+        }
+
         // Defense-in-depth: block role escalation to super_admin from the client side.
         // RLS enforces this on the DB level; this is an additional application-layer guard.
         if ('role' in updates && updates.role === 'super_admin') {
@@ -224,6 +232,16 @@ export const AdminService = {
             .single()
 
         if (error) throw error
+
+        // Log role change
+        if ('role' in updates && oldRole !== updates.role) {
+            ActivityLogService.logEvent({
+                event_type: 'ROLE_CHANGED',
+                target_user_id: id,
+                metadata: { old_role: oldRole, new_role: updates.role }
+            });
+        }
+
         return data
     },
 
@@ -278,6 +296,9 @@ export const AdminService = {
     },
 
     async updateRequestStatus(id: string, status: Database['public']['Enums']['request_status']) {
+        // Fetch old status for logging
+        const { data: oldData } = await supabase.from('service_requests').select('status').eq('id', id).single();
+
         const { data, error } = await supabase
             .from('service_requests')
             .update({ status })
@@ -286,6 +307,15 @@ export const AdminService = {
             .single()
 
         if (error) throw error
+
+        // Log status change
+        if (oldData && oldData.status !== status) {
+            ActivityLogService.logEvent({
+                event_type: 'REQUEST_STATUS_CHANGED',
+                target_request_id: id,
+                metadata: { old_status: oldData.status, new_status: status }
+            });
+        }
 
         // Notify in chat (non-blocking)
         try {
