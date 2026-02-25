@@ -107,24 +107,23 @@ export default function SpaceTypeForm({ isOpen, spaceType, onClose, onSuccess }:
                         </div>
                     )}
 
-                    {/* Name (Code) */}
-                    <div>
-                        <label className="block text-sm font-medium text-foreground mb-1">
-                            Code (Machine ID) <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value.toUpperCase().replace(/[\s-]/g, '_').replace(/[^A-Z_]/g, '') })}
-                            placeholder="KITCHEN_AND_BATH"
-                            disabled={!!spaceType}
-                            required
-                            className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:bg-surface/50 disabled:cursor-not-allowed font-mono"
-                        />
-                        <p className="text-xs text-muted mt-1">
-                            {spaceType ? 'Code cannot be changed after creation' : 'Use SCREAMING_SNAKE_CASE (e.g., KITCHEN_AND_BATH)'}
-                        </p>
-                    </div>
+                    {/* Name (Code) - Only visible in Edit mode */}
+                    {spaceType && (
+                        <div>
+                            <label className="block text-sm font-medium text-foreground mb-1">
+                                Code (Machine ID)
+                            </label>
+                            <input
+                                type="text"
+                                value={formData.name}
+                                disabled
+                                className="w-full px-4 py-2 border border-muted/30 rounded-lg bg-surface/50 cursor-not-allowed font-mono text-muted"
+                            />
+                            <p className="text-xs text-muted mt-1">
+                                Code cannot be changed after creation
+                            </p>
+                        </div>
+                    )}
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {/* English Display Name */}
@@ -135,11 +134,26 @@ export default function SpaceTypeForm({ isOpen, spaceType, onClose, onSuccess }:
                             <input
                                 type="text"
                                 value={formData.display_name_en}
-                                onChange={(e) => setFormData({ ...formData, display_name_en: e.target.value })}
+                                onChange={(e) => {
+                                    const val = e.target.value;
+                                    const updates: any = { display_name_en: val };
+                                    if (!spaceType) {
+                                        updates.name = val
+                                            .toUpperCase()
+                                            .replace(/[\s-]/g, '_')
+                                            .replace(/[^A-Z_]/g, '');
+                                    }
+                                    setFormData({ ...formData, ...updates });
+                                }}
                                 placeholder="Kitchen and Bath"
                                 required
                                 className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
                             />
+                            {!spaceType && formData.name && (
+                                <p className="text-xs text-muted mt-1.5 font-mono">
+                                    Generated Code: <span className="text-primary font-bold">{formData.name}</span>
+                                </p>
+                            )}
                         </div>
 
                         {/* French Display Name */}
