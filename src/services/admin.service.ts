@@ -286,6 +286,37 @@ export const AdminService = {
             .single()
 
         if (error) throw error
+
+        // Notify in chat (non-blocking)
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                const { data: room } = await supabase
+                    .from('chat_rooms')
+                    .select('id')
+                    .eq('request_id', id)
+                    .maybeSingle();
+
+                if (room) {
+                    await supabase.from('messages').insert({
+                        chat_room_id: room.id,
+                        sender_id: user.id,
+                        content: `Status updated to: ${status}`,
+                        message_type: 'SYSTEM',
+                        is_read: false
+                    } as any);
+
+                    // Update room's updated_at
+                    await supabase
+                        .from('chat_rooms')
+                        .update({ updated_at: new Date().toISOString() })
+                        .eq('id', room.id);
+                }
+            }
+        } catch (chatError) {
+            console.error("Failed to add system message to chat:", chatError);
+        }
+
         return data
     },
 

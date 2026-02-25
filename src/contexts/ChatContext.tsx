@@ -88,7 +88,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
                 // We'll fetch recent messages and group client-side for simplicity
                 const { data: recentMessages } = await supabase
                     .from('messages')
-                    .select('*')
+                    .select('*, profiles:sender_id(id, full_name, role)')
                     .in('chat_room_id', roomIds)
                     .order('created_at', { ascending: false })
                     .limit(roomIds.length * 2); // Get enough to have at least 1 per room
@@ -151,8 +151,17 @@ export function ChatProvider({ children }: { children: ReactNode }) {
                     loadRooms();
                 }
             })
-            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
-                const newMsg = payload.new as Message;
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, async (payload) => {
+                const newMsgRaw = payload.new as Message;
+                
+                // Fetch profile for the new message to show sender name
+                const { data: newMsg } = await supabase
+                    .from('messages')
+                    .select('*, profiles:sender_id(id, full_name, role)')
+                    .eq('id', newMsgRaw.id)
+                    .single();
+
+                if (!newMsg) return;
 
                 // Update last_message in rooms list without full refetch
                 setRooms(prev => prev.map(room => {
@@ -160,11 +169,11 @@ export function ChatProvider({ children }: { children: ReactNode }) {
                         const isFromOther = newMsg.sender_id !== user.id;
                         return {
                             ...room,
-                            last_message: newMsg,
+                            last_message: newMsg as Message,
                             unread_count: isFromOther && selectedRoomRef.current?.id !== room.id
                                 ? (room.unread_count || 0) + 1
                                 : room.unread_count,
-                            updated_at: newMsg.created_at
+                            updated_at: newMsg.created_at || new Date().toISOString()
                         };
                     }
                     return room;
@@ -204,7 +213,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
             try {
                 const { data, error } = await supabase
                     .from('messages')
-                    .select('*')
+                    .select('*, profiles:sender_id(id, full_name, role)')
                     .eq('chat_room_id', selectedRoom.id)
                     .order('created_at', { ascending: true });
 
@@ -246,19 +255,33 @@ export function ChatProvider({ children }: { children: ReactNode }) {
                     filter: `chat_room_id=eq.${selectedRoom.id}`
                 },
                 (payload) => {
-                    const newMsg = payload.new as Message;
-                    setMessages(prev => {
-                        if (prev.some(m => m.id === newMsg.id)) return prev;
-                        return [...prev, newMsg];
-                    });
-
-                    // Mark as read immediately if we're in the room
-                    if (newMsg.sender_id !== user?.id) {
-                        supabase
+                    const newMsgRaw = payload.new as Message;
+                    
+                    // Fetch profile for the new message to show sender name
+                    const fetchFullMsg = async () => {
+                        const { data: newMsg } = await supabase
                             .from('messages')
-                            .update({ is_read: true })
-                            .eq('id', newMsg.id);
-                    }
+                            .select('*, profiles:sender_id(id, full_name, role)')
+                            .eq('id', newMsgRaw.id)
+                            .single();
+
+                        if (!newMsg) return;
+
+                        setMessages(prev => {
+                            if (prev.some(m => m.id === newMsg.id)) return prev;
+                            return [...prev, newMsg as Message];
+                        });
+
+                        // Mark as read immediately if we're in the room
+                        if (newMsg.sender_id !== user?.id) {
+                            supabase
+                                .from('messages')
+                                .update({ is_read: true })
+                                .eq('id', newMsg.id);
+                        }
+                    };
+
+                    fetchFullMsg();
                 }
             )
             .on('postgres_changes',
@@ -304,7 +327,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
                     message_type: 'TEXT',
                     is_read: true
                 } as any)
-                .select()
+                .select('*, profiles:sender_id(id, full_name, role)')
                 .single();
 
             if (error) throw error;
@@ -354,7 +377,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
                     media_url: publicUrl,
                     is_read: true
                 } as any)
-                .select()
+                .select('*, profiles:sender_id(id, full_name, role)')
                 .single();
 
             if (error) throw error;

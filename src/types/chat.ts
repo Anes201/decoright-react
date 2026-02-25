@@ -13,6 +13,11 @@ export type Message = {
   duration_seconds?: number;
   created_at: string;
   attachments?: any;
+  profiles?: {
+    id: string;
+    full_name: string;
+    role: string;
+  } | null;
 };
 
 export type ChatRoom = {
