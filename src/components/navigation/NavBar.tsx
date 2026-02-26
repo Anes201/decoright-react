@@ -13,6 +13,7 @@ import { SelectDropDownMenu } from "@components/ui/Select"
 import { allowedLocales } from "@/constants"
 import { useTranslation } from "react-i18next"
 import { ArrowRightEndOnRectangle, ArrowRightStartOnRectangle, Chat, ChevronRight, Folder, Language, Menu, PresentationChartLine, User, UserPlus } from "@/icons";
+import { useUnreadCount } from "@/hooks/useUnreadCount";
 
 const Logo = "/Logo.PNG";
 
@@ -55,6 +56,7 @@ export function AuthenticatedUserActins() {
     const { user, isAdmin } = useContext(UserContext);
     const [navMenuOpen, setNavMenuOpen] = useState<boolean>(false);
     const { t } = useTranslation()
+    const hasUnread = useUnreadCount();
 
     if (!user) return null;
 
@@ -77,10 +79,12 @@ export function AuthenticatedUserActins() {
                         <Link to={PATHS.ADMIN.CHAT} title="Chats" className="relative content-center p-1.5 md:p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
                             <Chat className="size-5 md:size-6" />
 
-                            <span className="absolute flex size-3 top-0 left-0">
-                                <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
-                                <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
-                            </span>
+                            {hasUnread && (
+                                <span className="absolute flex size-3 top-0 left-0">
+                                    <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
+                                    <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
+                                </span>
+                            )}
                         </Link>
                     </>
 
@@ -95,10 +99,12 @@ export function AuthenticatedUserActins() {
                         <Link to={PATHS.CLIENT.CHAT} title="Chats" className="relative content-center p-1.5 md:p-2 border border-primary/45 border-muted/15 bg-surface/75 rounded-full">
                             <Chat className="size-5 md:size-6" />
 
-                            <span className="absolute flex size-3 top-0 left-0">
-                                <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
-                                <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
-                            </span>
+                            {hasUnread && (
+                                <span className="absolute flex size-3 top-0 left-0">
+                                    <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
+                                    <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
+                                </span>
+                            )}
                         </Link>
 
                     </>

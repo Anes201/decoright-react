@@ -5,6 +5,7 @@ import { adminMenuNav } from "@/constants/navigation"
 import { MenuCard } from "@components/ui/MenuCard"
 import { PATHS } from "@/routers/Paths"
 import { Chat, Home, Menu, Folder } from "@/icons";
+import { useUnreadCount } from "@/hooks/useUnreadCount";
 
 
 const Logo = "/Logo.PNG";
@@ -56,6 +57,7 @@ export function NavMenuItems() {
 export function NavActions() {
 
     const [navMenuOpen, setNavMenuOpen] = useState(false);
+    const hasUnread = useUnreadCount();
 
     return (
 
@@ -71,10 +73,12 @@ export function NavActions() {
                 <Link to={PATHS.ADMIN.CHAT} title="Chat" className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface rounded-full">
                     <Chat className="size-5 md:size-6" />
 
-                    <span className="absolute flex size-3 top-0 left-0">
-                        <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
-                        <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
-                    </span>
+                    {hasUnread && (
+                        <span className="absolute flex size-3 top-0 left-0">
+                            <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
+                            <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
+                        </span>
+                    )}
                 </Link>
 
                 {/* User Profile Nav Page */}
