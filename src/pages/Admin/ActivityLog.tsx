@@ -93,9 +93,8 @@ export default function ActivityLogPage() {
                 </div>
             )}
 
-            <div className="bg-surface border border-muted/10 rounded-2xl overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
+            <div className="bg-surface border border-muted/10 rounded-2xl overflow-x-auto">
+                    <table className="w-full min-w-[560px] text-left border-collapse">
                         <thead>
                             <tr className="bg-muted/5 border-b border-muted/10">
                                 <th className="p-4 text-xs font-bold uppercase tracking-wider text-muted">Time</th>
@@ -157,7 +156,6 @@ export default function ActivityLogPage() {
                             )}
                         </tbody>
                     </table>
-                </div>
             </div>
         </main>
     );

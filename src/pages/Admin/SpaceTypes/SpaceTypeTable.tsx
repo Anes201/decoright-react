@@ -49,8 +49,8 @@ export default function SpaceTypeTable({ spaceTypes, onEdit, onRefresh }: SpaceT
     };
 
     return (
-        <div className="h-full overflow-auto border-b-0 border border-muted/25 rounded-t-lg bg-surface">
-            <table className="w-full text-left border-collapse">
+        <div className="h-full overflow-y-auto overflow-x-auto border-b-0 border border-muted/25 rounded-t-lg bg-surface">
+            <table className="w-full min-w-[560px] text-left border-collapse">
                 <thead className="bg-emphasis/75 sticky top-0 z-10">
                     <tr className="border-b border-muted/15">
                         <th className="px-4 py-3 text-left text-xs font-semibold text-muted uppercase tracking-wider">Code</th>

@@ -395,8 +395,8 @@ export default function Table<T extends Record<string, any>>(props: {
         </div>
       </div>
 
-      <div className="flex-1 custom-scrollbar">
-        <table className="w-full text-sm text-left rtl:text-right text-body">
+      <div className="flex-1 overflow-x-auto custom-scrollbar">
+        <table className="w-full min-w-[640px] text-sm text-left rtl:text-right text-body">
           <thead className="text-sm text-body bg-emphasis border-b border-muted/75 sticky top-0 z-10 shadow-sm">
             <tr>
               {/* selectable header */}
