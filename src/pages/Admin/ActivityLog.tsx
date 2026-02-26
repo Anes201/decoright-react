@@ -142,6 +142,7 @@ export default function ActivityLogPage() {
                             options={{
                                 searchPlaceholder: 'Search by event type...',
                                 onRefresh: fetchLogs,
+                                hideActions: true,
                                 filterOptions: [
                                     { label: 'Request Deleted', value: 'REQUEST_DELETED' },
                                     { label: 'Role Changed', value: 'ROLE_CHANGED' },

@@ -34,6 +34,7 @@ type TableOptions<T = any> = {
   idField?: string;
   onRowClick?: (row: T) => void;
   onRefresh?: () => Promise<void> | void;
+  hideActions?: boolean;             // hide the Actions column entirely
 };
 
 export default function Table<T extends Record<string, any>>(props: {
@@ -56,6 +57,7 @@ export default function Table<T extends Record<string, any>>(props: {
     idField,
     onRowClick,
     onRefresh,
+    hideActions = false,
   } = options;
 
   // controlled UI state
@@ -430,13 +432,15 @@ export default function Table<T extends Record<string, any>>(props: {
               ))}
 
               {/* Actions / Bulk actions header */}
-              <th scope="col" className="px-4 py-3 font-medium text-end">
-                {selectable && selectionCount > 0 ? (
-                  <BulkActionsHeader />
-                ) : (
-                  <span className="text-muted">Actions</span>
-                )}
-              </th>
+              {!hideActions && (
+                <th scope="col" className="px-4 py-3 font-medium text-end">
+                  {selectable && selectionCount > 0 ? (
+                    <BulkActionsHeader />
+                  ) : (
+                    <span className="text-muted">Actions</span>
+                  )}
+                </th>
+              )}
             </tr>
           </thead>
 
@@ -472,9 +476,11 @@ export default function Table<T extends Record<string, any>>(props: {
                     </td>
                   ))}
 
-                  <td className="px-4 py-4 text-end">
-                    <RowActions row={row} index={idx} />
-                  </td>
+                  {!hideActions && (
+                    <td className="px-4 py-4 text-end">
+                      <RowActions row={row} index={idx} />
+                    </td>
+                  )}
                 </tr>
               );
             })}
