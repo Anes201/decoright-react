@@ -1,6 +1,7 @@
 
 import { supabase } from '@/lib/supabase'
 import type { Database, Enums } from '@/types/database.types'
+import { ActivityLogService } from './activity-log.service'
 
 type CreateRequestInput = Database['public']['Tables']['service_requests']['Insert']
 
@@ -159,14 +160,28 @@ export const RequestService = {
     },
 
     async deleteRequest(id: string) {
-        const { data, error } = await supabase
+        // Fetch details before deleting for logging
+        const { data: request } = await supabase
+            .from('service_requests')
+            .select('request_code, user_id')
+            .eq('id', id)
+            .maybeSingle();
+
+        const { error } = await supabase
             .from('service_requests')
             .delete()
             .eq('id', id)
-            .select()
-            .single()
 
-        if (error) throw error
-        return data
+        if (error) throw error;
+
+        // Log the deletion (non-blocking)
+        if (request) {
+            ActivityLogService.logEvent({
+                event_type: 'REQUEST_DELETED',
+                actor_id: request.user_id || undefined, // Customer deleting their own
+                target_request_id: id,
+                metadata: { request_code: request.request_code }
+            });
+        }
     }
 }

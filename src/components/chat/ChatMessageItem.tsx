@@ -72,7 +72,7 @@ export default memo(function MessageItem({ message, currentUserId }:
     const isMe = message.sender_id === currentUserId;
     const isSystem = message.message_type === 'SYSTEM';
     const canDelete = (isMe || isAdmin) && !isSystem;
-
+    const showSender = isAdmin && !isMe && !isSystem && message.profiles;
 
     const containerClass = `flex flex-col group ${isSystem ? 'items-center' : isMe ? 'items-end' : 'items-start'}`;
     const bubbleClass = isSystem
@@ -99,6 +99,22 @@ export default memo(function MessageItem({ message, currentUserId }:
 
     return (
         <div className={containerClass}>
+            {showSender && (
+                <div className="flex items-center gap-1.5 px-2 mb-1.5">
+                    <span className="text-3xs font-bold text-muted uppercase tracking-wider">
+                        {message.profiles?.full_name}
+                    </span>
+                    {(message.profiles?.role === 'admin' || message.profiles?.role === 'super_admin') && (
+                        <span className={`px-1 py-0.5 rounded text-[8px] font-black uppercase tracking-tighter border
+                            ${message.profiles.role === 'super_admin' 
+                                ? 'bg-amber-400/10 text-amber-600 border-amber-400/20' 
+                                : 'bg-primary/10 text-primary border-primary/20'
+                            }`}>
+                            {message.profiles.role.replace('_', ' ')}
+                        </span>
+                    )}
+                </div>
+            )}
             <div className={bubbleClass}>
                 {isSystem ? (
                     <p>{message.content}</p>

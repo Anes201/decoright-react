@@ -1,5 +1,5 @@
 
-import { Facebook, Instagram, Pinterest, Tiktok, Telegram, Whatsapp, XTwitter, Youtube } from "@/icons";
+import { Facebook, Instagram, Tiktok, Whatsapp, Youtube } from "@/icons";
 
 const userProfile = "/user.png"
 // const SpacesPlaning = "/services/IMG_3766.jpg";
@@ -110,8 +110,9 @@ export const images = [
 // ]
 
 export const userRoles = {
+    SUPER_ADMIN: 'super_admin',
     ADMIN: 'admin',
-    CLIENT: 'client',
+    CUSTOMER: 'customer',
 }
 
 export const projectVisibilityStags = [

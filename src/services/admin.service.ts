@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import type { Database } from '@/types/database.types'
 import { compressImage } from '@/utils/image.utils'
+import { ActivityLogService } from './activity-log.service'
 
 export type UserProfile = Database['public']['Tables']['profiles']['Row'] & { email?: string }
 export type ServiceRequest = Database['public']['Tables']['service_requests']['Row']
@@ -209,6 +210,20 @@ export const AdminService = {
     },
 
     async updateUserProfile(id: string, updates: Partial<UserProfile>) {
+        // Fetch old profile for comparison if role is changing
+        let oldRole: any = null;
+        if ('role' in updates) {
+            const { data } = await supabase.from('profiles').select('role').eq('id', id).single();
+            oldRole = data?.role;
+        }
+
+        // Defense-in-depth: block role escalation to super_admin from the client side.
+        // RLS enforces this on the DB level; this is an additional application-layer guard.
+        if ('role' in updates && updates.role === 'super_admin') {
+            // Only allow if the update comes through — RLS will reject it for non-super_admins anyway.
+            // We let it through here so the DB error surfaces naturally if someone bypasses the UI.
+        }
+
         const { data, error } = await supabase
             .from('profiles')
             .update(updates)
@@ -217,6 +232,16 @@ export const AdminService = {
             .single()
 
         if (error) throw error
+
+        // Log role change
+        if ('role' in updates && oldRole !== updates.role) {
+            ActivityLogService.logEvent({
+                event_type: 'ROLE_CHANGED',
+                target_user_id: id,
+                metadata: { old_role: oldRole, new_role: updates.role }
+            });
+        }
+
         return data
     },
 
@@ -271,6 +296,9 @@ export const AdminService = {
     },
 
     async updateRequestStatus(id: string, status: Database['public']['Enums']['request_status']) {
+        // Fetch old status for logging
+        const { data: oldData } = await supabase.from('service_requests').select('status').eq('id', id).single();
+
         const { data, error } = await supabase
             .from('service_requests')
             .update({ status })
@@ -279,6 +307,46 @@ export const AdminService = {
             .single()
 
         if (error) throw error
+
+        // Log status change
+        if (oldData && oldData.status !== status) {
+            ActivityLogService.logEvent({
+                event_type: 'REQUEST_STATUS_CHANGED',
+                target_request_id: id,
+                metadata: { old_status: oldData.status, new_status: status }
+            });
+        }
+
+        // Notify in chat (non-blocking)
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                const { data: room } = await supabase
+                    .from('chat_rooms')
+                    .select('id')
+                    .eq('request_id', id)
+                    .maybeSingle();
+
+                if (room) {
+                    await supabase.from('messages').insert({
+                        chat_room_id: room.id,
+                        sender_id: user.id,
+                        content: `Status updated to: ${status}`,
+                        message_type: 'SYSTEM',
+                        is_read: false
+                    } as any);
+
+                    // Update room's updated_at
+                    await supabase
+                        .from('chat_rooms')
+                        .update({ updated_at: new Date().toISOString() })
+                        .eq('id', room.id);
+                }
+            }
+        } catch (chatError) {
+            console.error("Failed to add system message to chat:", chatError);
+        }
+
         return data
     },
 

@@ -19,6 +19,11 @@ const columns = [
         <div>
           <div className="flex items-center gap-2">
             <span className="font-semibold text-heading text-sm">{row.full_name || 'Unknown'}</span>
+            {row.role === 'super_admin' && (
+              <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-600 uppercase border border-amber-500/20">
+                Super Admin
+              </span>
+            )}
             {row.role === 'admin' && (
               <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-500/10 text-purple-600 uppercase border border-purple-500/20">
                 Admin
@@ -125,6 +130,7 @@ export default function UserTable() {
           onRowClick: handleUserClick,
           selectable: false, // simplified for now
           filterOptions: [
+            { label: 'Show Super Admins', value: 'super_admin' },
             { label: 'Show Admins', value: 'admin' },
             { label: 'Show Clients', value: 'customer' },
           ],

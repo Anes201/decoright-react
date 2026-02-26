@@ -6,6 +6,7 @@ import { Chat, Cog, DocumentPlus, Home, PaintBrush, Phone, PuzzlePiece, Question
 export const adminMenuNav = [
     { id: '1', label: 'Dashboard', key: 'dashboard', path: PATHS.ADMIN.ROOT, icon: null, description: 'Main administrative overview' },
     { id: '2', label: 'Analytics', key: 'analytics', path: PATHS.ADMIN.ANALYTICS, icon: null, description: 'Overview metrics, KPIs and site analytics' },
+    { id: '10', label: 'Activity Log', key: 'activity_log', path: PATHS.ADMIN.ACTIVITY_LOG, icon: null, description: 'Audit trail of system events' },
     { id: '3', label: 'Users & Activity', key: 'users', path: PATHS.ADMIN.USERS, icon: null, description: 'View and manage user accounts, roles and activity logs' },
     { id: '4', label: 'Service Requests', key: 'requests', path: PATHS.ADMIN.REQUEST_SERVICE_LIST, icon: null, description: 'Browse, filter and update service requests' },
     { id: '13', label: 'FAQ Management', key: 'faqs', path: PATHS.ADMIN.FAQ_LIST, icon: null, description: 'Manage frequently asked questions' },
@@ -16,6 +17,7 @@ export const adminMenuNav = [
 export const adminSideMenuNav = [
     { id: '1', label: 'Dashboard', key: 'dashboard', path: PATHS.ADMIN.ROOT, icon: null, description: 'Main administrative overview' },
     { id: '2', label: 'Analytics', key: 'analytics', path: PATHS.ADMIN.ANALYTICS, icon: null, description: 'Overview metrics, KPIs and site analytics' },
+    { id: '10', label: 'Activity Log', key: 'activity_log', path: PATHS.ADMIN.ACTIVITY_LOG, icon: null, description: 'Audit trail of system events' },
 
     { id: '3', label: 'Users & Activity', key: 'users', path: PATHS.ADMIN.USERS, icon: null, description: 'View and manage user accounts, roles and activity logs' },
 

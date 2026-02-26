@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import { ServiceCardList } from "@components/layout/Services"
+import ServiceCardList from "@components/layout/Services"
 import { PCTALink } from "@components/ui/CTA"
 import { SectionHeader } from "@components/ui/SectionHeader"
-import { FAQList } from "@components/layout/FAQ"
+import FAQList from "@components/layout/FAQ"
 import { PATHS } from "@/routers/Paths"
 import { AdminService } from "@/services/admin.service"
 

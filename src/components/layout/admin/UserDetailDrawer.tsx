@@ -13,7 +13,7 @@ interface UserDetailDrawerProps {
 }
 
 export default function UserDetailDrawer({ user, isOpen, onClose, onUserUpdate, onRequestClick }: UserDetailDrawerProps) {
-    const { user: currentUser } = useAuth();
+    const { user: currentUser, isSuperAdmin } = useAuth();
     const [activeTab, setActiveTab] = useState<'profile' | 'history' | 'actions'>('profile');
     const [requests, setRequests] = useState<(ServiceRequest & { service_types: { display_name_en: string } | null })[]>([]);
     const [isLoadingRequests, setIsLoadingRequests] = useState(false);
@@ -99,7 +99,7 @@ export default function UserDetailDrawer({ user, isOpen, onClose, onUserUpdate, 
         }
     };
 
-    const handleRoleChange = async (newRole: 'admin' | 'customer') => {
+    const handleRoleChange = async (newRole: 'super_admin' | 'admin' | 'customer') => {
         if (!user) return;
         if (currentUser?.id === user.id) {
             alert("You cannot change your own role.");
@@ -109,7 +109,7 @@ export default function UserDetailDrawer({ user, isOpen, onClose, onUserUpdate, 
         if (!confirm) return;
 
         try {
-            await AdminService.updateUserProfile(user.id, { role: newRole });
+            await AdminService.updateUserProfile(user.id, { role: newRole as any });
             setFormData(prev => ({ ...prev, role: newRole }));
             onUserUpdate();
         } catch (error) {
@@ -146,8 +146,11 @@ export default function UserDetailDrawer({ user, isOpen, onClose, onUserUpdate, 
                                     {user.full_name?.[0] || 'U'}
                                 </div>
                                 <div>
-                                    <div className="flex items-center gap-2">
+                                        <div className="flex items-center gap-2">
                                         <h2 className="text-xl font-bold text-heading">{user.full_name || 'Unknown User'}</h2>
+                                        {formData.role === 'super_admin' && (
+                                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-600 uppercase border border-amber-500/20">Super Admin</span>
+                                        )}
                                         {formData.role === 'admin' && (
                                             <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/10 text-purple-600 uppercase">Admin</span>
                                         )}
@@ -327,45 +330,69 @@ export default function UserDetailDrawer({ user, isOpen, onClose, onUserUpdate, 
                         {/* Tab: Actions */}
                         {activeTab === 'actions' && (
                             <div className="space-y-6">
-                                <div className="p-4 rounded-xl bg-red-500/5 border border-red-500/10 space-y-4">
-                                    <h3 className="text-sm font-bold text-red-600 uppercase tracking-wide flex items-center gap-2">
-                                        <ExclamationTriangle className="size-4" />
-                                        Danger Zone
-                                    </h3>
-
-                                    <div className="space-y-4">
-                                        <div className="flex items-center justify-between p-3 bg-surface rounded-lg">
-                                            <div>
-                                                <p className="text-sm font-medium text-heading">Change Role</p>
-                                                <p className="text-xs text-muted">Current: {formData.role?.toUpperCase()}</p>
-                                            </div>
-                                            <select
-                                                value={formData.role || 'customer'}
-                                                onChange={(e) => handleRoleChange(e.target.value as any)}
-                                                className="text-xs font-semibold bg-surface-tertiary border-none rounded-md py-1.5 focus:ring-0"
-                                            >
-                                                <option value="customer">Customer</option>
-                                                <option value="admin">Admin</option>
-                                            </select>
-                                        </div>
-
-                                        <div className="flex items-center justify-between p-3 bg-surface rounded-lg">
-                                            <div>
-                                                <p className="text-sm font-medium text-heading">{formData.is_active ? 'Deactivate Account' : 'Reactivate Account'}</p>
-                                                <p className="text-xs text-muted">{formData.is_active ? 'Prevents login' : 'Restores access'}</p>
-                                            </div>
-                                            <button
-                                                onClick={handleToggleBan}
-                                                className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors ${formData.is_active
-                                                    ? 'bg-red-500/10 text-red-600 hover:bg-red-500 hover:text-white'
-                                                    : 'bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500 hover:text-white'
-                                                    }`}
-                                            >
-                                                {formData.is_active ? 'Deactivate' : 'Activate'}
-                                            </button>
+                                {/* Super admin rows are fully locked — no one can touch them */}
+                                {formData.role === 'super_admin' ? (
+                                    <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/20 flex items-start gap-3">
+                                        <ExclamationTriangle className="size-5 text-amber-500 mt-0.5 shrink-0" />
+                                        <div>
+                                            <p className="text-sm font-bold text-amber-600">Super Admin — Protected Account</p>
+                                            <p className="text-xs text-muted mt-1">This account has the highest privilege level and cannot be modified from this panel.</p>
                                         </div>
                                     </div>
-                                </div>
+                                ) : (
+                                    <div className="p-4 rounded-xl bg-red-500/5 border border-red-500/10 space-y-4">
+                                        <h3 className="text-sm font-bold text-red-600 uppercase tracking-wide flex items-center gap-2">
+                                            <ExclamationTriangle className="size-4" />
+                                            Danger Zone
+                                        </h3>
+
+                                        <div className="space-y-4">
+                                            {/* Role change — only super_admin can do this */}
+                                            {isSuperAdmin ? (
+                                                <div className="flex items-center justify-between p-3 bg-surface rounded-lg">
+                                                    <div>
+                                                        <p className="text-sm font-medium text-heading">Change Role</p>
+                                                        <p className="text-xs text-muted">Current: {formData.role?.toUpperCase()}</p>
+                                                    </div>
+                                                    <select
+                                                        value={formData.role || 'customer'}
+                                                        onChange={(e) => handleRoleChange(e.target.value as any)}
+                                                        className="text-xs font-semibold bg-surface-tertiary border-none rounded-md py-1.5 focus:ring-0"
+                                                    >
+                                                        <option value="customer">Customer</option>
+                                                        <option value="admin">Admin</option>
+                                                    </select>
+                                                </div>
+                                            ) : (
+                                                <div className="flex items-center justify-between p-3 bg-surface rounded-lg opacity-50">
+                                                    <div>
+                                                        <p className="text-sm font-medium text-heading">Change Role</p>
+                                                        <p className="text-xs text-muted">Only Super Admin can change roles</p>
+                                                    </div>
+                                                    <span className="text-xs font-semibold text-muted bg-surface-tertiary px-3 py-1.5 rounded-md">
+                                                        {formData.role?.toUpperCase()}
+                                                    </span>
+                                                </div>
+                                            )}
+
+                                            <div className="flex items-center justify-between p-3 bg-surface rounded-lg">
+                                                <div>
+                                                    <p className="text-sm font-medium text-heading">{formData.is_active ? 'Deactivate Account' : 'Reactivate Account'}</p>
+                                                    <p className="text-xs text-muted">{formData.is_active ? 'Prevents login' : 'Restores access'}</p>
+                                                </div>
+                                                <button
+                                                    onClick={handleToggleBan}
+                                                    className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors ${formData.is_active
+                                                        ? 'bg-red-500/10 text-red-600 hover:bg-red-500 hover:text-white'
+                                                        : 'bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500 hover:text-white'
+                                                        }`}
+                                                >
+                                                    {formData.is_active ? 'Deactivate' : 'Activate'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>

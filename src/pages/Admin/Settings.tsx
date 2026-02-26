@@ -31,7 +31,7 @@ export default function Settings() {
         loadSettings();
     }, []);
 
-    const handleSubmit = async (e: React.SubmitEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
         try {

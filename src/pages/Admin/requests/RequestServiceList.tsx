@@ -1,7 +1,7 @@
 import RequestServiceTable from "@components/layout/admin/RequestServiceTable";
 import { useState, useEffect } from 'react';
 import { AdminService } from "@/services/admin.service";
-import { ArrowPath, Cog } from "@/icons";
+import { Cog } from "@/icons";
 
 export default function RequestServiceList() {
     const [requests, setRequests] = useState<any[]>([]);

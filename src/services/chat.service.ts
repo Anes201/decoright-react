@@ -33,7 +33,7 @@ export const ChatService = {
         const roomsWithMeta = await Promise.all((data as any[]).map(async (room) => {
             const { data: lastMsg } = await supabase
                 .from('messages')
-                .select('*')
+                .select('*, profiles:sender_id(id, full_name, role)')
                 .eq('chat_room_id', room.id)
                 .order('created_at', { ascending: false })
                 .limit(1)
@@ -58,7 +58,7 @@ export const ChatService = {
     async getRoomMessages(roomId: string) {
         const { data, error } = await supabase
             .from('messages')
-            .select('*')
+            .select('*, profiles:sender_id(id, full_name, role)')
             .eq('chat_room_id', roomId)
             .order('created_at', { ascending: true });
 
@@ -71,7 +71,7 @@ export const ChatService = {
         // Try to fetch by chat_room_id
         const { data, error } = await supabase
             .from('messages')
-            .select('*')
+            .select('*, profiles:sender_id(id, full_name, role)')
             .eq('chat_room_id', targetId)
             .order('created_at', { ascending: true });
 
