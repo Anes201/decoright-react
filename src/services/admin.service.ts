@@ -169,6 +169,25 @@ export const AdminService = {
             .slice(0, 5)
     },
 
+    async getPendingRequests(limit: number = 3) {
+        const { data, error } = await supabase
+            .from('service_requests')
+            .select(`
+                id,
+                request_code,
+                created_at,
+                profiles:user_id (
+                    full_name
+                )
+            `)
+            .eq('status', 'Submitted')
+            .order('created_at', { ascending: false })
+            .limit(limit)
+
+        if (error) throw error
+        return data || []
+    },
+
     async getUsersActivity() {
         const { data, error } = await supabase
             .from('admin_activities')
