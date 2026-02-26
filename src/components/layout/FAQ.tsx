@@ -1,4 +1,4 @@
-import Spinner from "@/components/common/Spinner";
+
 import { useState, useEffect, useRef } from "react";
 import { AdminService, type FAQ } from "@/services/admin.service";
 import { useTranslation } from "react-i18next";
@@ -138,9 +138,17 @@ export default function FAQList() {
 
     if (loading) {
         return (
-            <div className="flex justify-center p-10">
-                <Spinner status={true} size="md" />
-            </div>
+          <div className="flex flex-col gap-4 w-full animate-pulse">
+              <hr className="absolute top-0 start-8 h-full border-0 border-s border-muted/25 -z-10 pointer-events-none" />
+              <hr className="absolute top-0 end-8 h-full border-0 border-e border-muted/25 -z-10 pointer-events-none" />
+              {[...Array(5)].map((_, i) => (
+                  <>
+                      <div key={i} className="relative flex items-center justify-end p-5 bg-surface rounded-lg ring-1 ring-muted/15">
+                          <ChevronDown className="size-6 text-muted/75" />
+                      </div>
+                  </>
+              ))}
+          </div>
         );
     }
 

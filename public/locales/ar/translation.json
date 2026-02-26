@@ -77,6 +77,14 @@
     "view_all_projects": "عرض جميع المشاريع",
     "exit": "خروج",
 
+    "upload": "رفع ملف",
+    "retry": "إعادة المحاولة",
+    "remove": "إزالة",
+    "add": "إضافة",
+    "select": "اختيار",
+    "complete": "إكمال",
+    "attachments": "المرفقات",
+
     "english": "الإنجليزية",
     "french": "الفرنسية",
     "arabic": "العربية",
@@ -85,8 +93,14 @@
     "views_label": "{{count}} مشاهدة",
     "views_label_plural": "{{count}} مشاهدة",
 
-    "location": "الموقع",
-    "floor_area": "المساحة"
+    "location": "العنوان",
+    "floor_area": "المساحة",
+
+    "upload_files_label": "رفع الملفات والصور والمستندات",
+    "uploaded_files_placeholder": "ستظهر الملفات المرفوعة هنا",
+    "uploading": "جارٍ الرفع",
+    "upload_failed": "فشل الرفع",
+    "upload_attach_files_label": "رفع الملفات المرفقة"
   },
 
   "confirm": {
@@ -271,15 +285,21 @@
     "space_type": "نوع المساحة",
     "service_type_placeholder": "اختر نوع الخدمة",
     "space_type_placeholder": "اختر نوع المساحة",
-    "completion_date": "متى تحتاج إلى اكتمال هذا؟",
-    "location": "الموقع",
+    "completion_date": "متى تحتاج أن يكون المشروع مكتملًا؟",
+    "location": "العنوان",
     "location_placeholder": "أدخل الموقع الفعلي",
     "area_dimensions": "أبعاد المساحة (م)",
     "width": "العرض",
     "height": "الارتفاع",
     "description": "الوصف",
     "description_placeholder": "اكتب وصفاً...",
-    "cancel": "إلغاء"
+    "cancel": "إلغاء",
+    "additional_details":"تفاصيل إضافية",
+    "completion_date_placeholder": "اختياري - اتركه فارغًا إذا كنت مرنًا بشأن التوقيت.",
+    "location_placeholder_label": "اختياري - اتركه فارغًا إذا لم يكن ذلك قابلاً للتطبيق.",
+    "location_and_timeline": "الموقع والجدول الزمني",
+    "service_and_space": "الخدمة والمساحة",
+    "required": "حقل مطلوب"
   },
   "phone_verification": {
     "title": "التحقق من الهاتف",

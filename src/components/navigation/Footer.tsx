@@ -3,6 +3,7 @@ import { publicMenuItems } from "@/constants/navigation";
 import { SocialMediaPhoneFields, SocialMediaUrlFields } from "@/constants";
 import { useTranslation } from "react-i18next";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { PATHS } from "@/routers/Paths";
 
 const Logo = "/Logo.PNG";
 
@@ -37,14 +38,14 @@ export function Footer() {
         .filter((link): link is NonNullable<typeof link> => link !== null);
 
     return (
-        <div className="content-container">
-            <div className="flex max-md:flex-col items-center md:justify-between gap-8">
+        <div className="content-container flex flex-col gap-4 w-full">
+            <div className="flex max-md:flex-col items-center md:justify-between gap-8 h-fit border border-muted/25 p-4 md:p-6 rounded-2xl bg-surface">
 
                 <div className="flex max-sm:flex-col max-sm:items-center gap-4 md:gap-8 mb-6 md:mb-0">
 
                     {/* Logo */}
                     <div className="w-14 md:w-12">
-                        <Link to={'/'}>
+                        <Link to={PATHS.ROOT}>
                             <img src={Logo} alt={`${companyName} Logo`} className="w-full h-full" />
                         </Link>
                     </div>
@@ -57,10 +58,9 @@ export function Footer() {
                     </div>
                 </div>
 
-                <div>
-
+                <div className="flex flex-col gap-6 md:gap-8 h-full">
                     {/* Social Media Link List */}
-                    <ul className="flex justify-center md:justify-end gap-4 mb-4">
+                    <ul className="flex justify-center md:justify-end gap-4">
                         {activeSocialLinks.map((link) => {
                             const Icon = link.icon;
                             return (
@@ -86,7 +86,7 @@ export function Footer() {
                 </div>
 
             </div>
-            <div className="flex max-md:justify-center text-xs text-muted/75 border-t border-muted/15 my-4 pt-4">
+            <div className="flex max-md:justify-center text-xs text-muted/75 h-full border-b-0 border border-muted/25 pb-8 p-4 rounded-t-2xl bg-surface">
                 <p>© {new Date().getFullYear()} {companyName}. {t('footer.rights')}</p>
             </div>
 

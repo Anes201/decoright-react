@@ -140,67 +140,48 @@ export default function ServiceTypeForm({ isOpen, serviceType, onClose, onSucces
                         </div>
                     )}
 
-                    {/* Name (Code) */}
+
+                    {/* English Display Name */}
                     <div>
                         <label className="block text-sm font-medium text-foreground mb-1">
-                            Code (Machine ID) <span className="text-red-500">*</span>
+                            Title (English) <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
-                            value={formData.name}
-                            onChange={(e) => {
-                                const val = e.target.value
-                                    .trimStart()
-                                    .replace(/[\s-]+/g, '_') // Replace spaces and hyphens with underscores
-                                    .toUpperCase()
-                                    .replace(/[^A-Z0-9_]/g, ''); // Remove other non-alphanumeric characters
-                                setFormData({ ...formData, name: val });
-                            }}
-                            placeholder="INTERIOR_DESIGN"
-                            disabled={!!serviceType}
+                            value={formData.display_name_en}
+                            onChange={(e) => setFormData({
+                                ...formData,
+                                display_name_en: e.target.value,
+                                name: e.target.value.toUpperCase().replace(/[\s-]/g, '_').replace(/[^A-Z_]/g, '')
+                            })}
+                            placeholder="Interior Design"
                             required
-                            className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:bg-surface/50 disabled:cursor-not-allowed font-mono"
+                            className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
                         />
                         <p className="text-xs text-muted mt-1">
-                            {serviceType ? 'Code cannot be changed after creation' : 'Use SCREAMING_SNAKE_CASE (e.g., INTERIOR_DESIGN)'}
+                            Note: This field must be unique and cannot be changed after creation!
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {/* English Display Name */}
-                        <div>
-                            <label className="block text-sm font-medium text-foreground mb-1">
-                                English Display Name <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.display_name_en}
-                                onChange={(e) => setFormData({ ...formData, display_name_en: e.target.value })}
-                                placeholder="Interior Design"
-                                required
-                                className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
-                            />
-                        </div>
 
-                        {/* French Display Name */}
-                        <div>
-                            <label className="block text-sm font-medium text-foreground mb-1">
-                                French Display Name
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.display_name_fr}
-                                onChange={(e) => setFormData({ ...formData, display_name_fr: e.target.value })}
-                                placeholder="Design d'Intérieur"
-                                className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
-                            />
-                        </div>
+                    {/* French Display Name */}
+                    <div>
+                        <label className="block text-sm font-medium text-foreground mb-1">
+                            Title (French)
+                        </label>
+                        <input
+                            type="text"
+                            value={formData.display_name_fr}
+                            onChange={(e) => setFormData({ ...formData, display_name_fr: e.target.value })}
+                            placeholder="Design d'Intérieur"
+                            className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        />
                     </div>
 
                     {/* Arabic Display Name */}
                     <div>
                         <label className="block text-sm font-medium text-foreground mb-1">
-                            Arabic Display Name
+                            Title (Arabic)
                         </label>
                         <input
                             type="text"
@@ -288,8 +269,7 @@ export default function ServiceTypeForm({ isOpen, serviceType, onClose, onSucces
                         disabled={loading}
                         className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
                     >
-                        {(loading || uploading) && <Cog className="size-4 animate-spin" />}
-                        {uploading ? 'Uploading...' : serviceType ? 'Update' : 'Create'}
+                        {uploading ? 'Uploading...' : serviceType ? 'Update' : loading || uploading ? <> <Cog className="size-4 animate-spin text-white" /> Creating </> : 'Create'}
                     </button>
                 </div>
             </div>

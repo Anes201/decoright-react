@@ -4,6 +4,7 @@ import type { StagedFile } from "@/types/upload";
 import FileIcon from "@/icons/files";
 import ProgressBar from "@components/ui/ProgressBar";
 import { Trash, ArrowPath } from "@/icons";
+import { useTranslation } from "react-i18next";
 
 export default function FileRow({
   file,
@@ -21,6 +22,8 @@ export default function FileRow({
     return `${n} B`;
   };
 
+  const { t } = useTranslation();
+
   return (
     <li className="flex gap-2 w-full h-full p-2 bg-surface rounded-lg" role="listitem" data-id={file.id}>
       <div className="flex items-center justify-center w-1/3 md:w-1/7 aspect-square border border-muted/15 rounded-lg">
@@ -36,10 +39,10 @@ export default function FileRow({
             <div className="text-xs after:content-['•'] after:mx-2">{niceSize(file.size)}</div>
 
             {/* status text */}
-            {file.status === "uploading" && <div className="text-2xs md:text-xs text-muted w-fit">Uploading…</div>}
-            {file.status === "complete" && <div className="text-2xs md:text-xs text-success w-fit">Complete</div>}
-            {file.status === "failed" && <div className="text-2xs md:text-xs text-danger w-fit">Uploading Failed</div>}
-            {file.status === "idle" && <div className="text-2xs md:text-xs text-warning w-fit">Ready</div>}
+            {file.status === "uploading" && <div className="text-2xs md:text-xs text-muted w-fit"> { t('common.uploading') }... </div>}
+            {file.status === "complete" && <div className="text-2xs md:text-xs text-success w-fit"> { t('common.complete') } </div>}
+            {file.status === "failed" && <div className="text-2xs md:text-xs text-danger w-fit"> { t('common.uploading_failed') } </div>}
+            {file.status === "idle" && <div className="text-2xs md:text-xs text-warning w-fit"> { t('common.ready') } </div>}
           </div>
         </div>
 

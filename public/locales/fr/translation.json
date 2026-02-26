@@ -75,7 +75,15 @@
     "go_back": "Retour",
     "view_all": "Voir tout",
     "view_all_projects": "Voir tous les projets",
-    "exit": "sortie",
+    "exit": "Sortie",
+
+    "upload": "Télécharger",
+    "retry": "Réessayer",
+    "remove": "Supprimer",
+    "add": "Ajouter",
+    "select": "Sélectionner",
+    "complete": "Terminer",
+    "attachments": "Pièces jointes",
 
     "english": "Anglaise",
     "french": "Français",
@@ -86,7 +94,13 @@
     "views_label_plural": "{{count}} vues",
 
     "location": "Emplacement",
-    "floor_area": "Surface"
+    "floor_area": "Surface",
+
+    "upload_files_label": "Télécharger des fichiers, images et documents",
+    "uploaded_files_placeholder": "Les fichiers téléchargés apparaîtront ici",
+    "uploading": "Téléchargement en cours",
+    "upload_failed": "Échec du téléchargement",
+    "upload_attach_files_label": "Télécharger des fichiers joints"
   },
 
   "confirm": {
@@ -279,7 +293,13 @@
     "height": "Hauteur",
     "description": "Description",
     "description_placeholder": "Écrivez une description...",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "additional_details":"Détails supplémentaires",
+    "completion_date_placeholder": "Optionnel — laissez vide si vous êtes flexible sur le timing.",
+    "location_placeholder_label": "Optionnel — laissez vide si non applicable.",
+    "location_and_timeline": "Emplacement et calendrier",
+    "service_and_space": "Service et espace",
+    "required": "Obligatoire"
   },
   "phone_verification": {
     "title": "Vérification du téléphone",

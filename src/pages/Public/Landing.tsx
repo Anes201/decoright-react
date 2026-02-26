@@ -106,11 +106,13 @@ export default function Landing() {
                 <LazySection
                     loader={() => import("@components/layout/FAQ")}
                     placeholder={
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-4 w-full animate-pulse">
+                            <hr className="absolute top-0 start-8 h-full border-0 border-s border-muted/25 -z-10 pointer-events-none" />
+                            <hr className="absolute top-0 end-8 h-full border-0 border-e border-muted/25 -z-10 pointer-events-none" />
                             {[...Array(5)].map((_, i) => (
                                 <>
-                                    <div key={i} className="relative h-14 bg-surface animate-pulse rounded-lg ring-1 ring-muted/15">
-                                        <ChevronDown className="size-6 absolute top-1/2 -translate-y-1/2 end-3 text-muted/75" />
+                                    <div key={i} className="relative flex items-center justify-end p-5 bg-surface rounded-lg ring-1 ring-muted/15">
+                                        <ChevronDown className="size-6 text-muted/75" />
                                     </div>
                                 </>
                             ))}

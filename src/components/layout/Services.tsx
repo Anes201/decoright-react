@@ -9,7 +9,7 @@ import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { PCTALink, SCTALink } from '../ui/CTA';
 import { PATHS } from '@/routers/Paths';
-import { Cog, Photo } from '@/icons';
+import { Photo } from '@/icons';
 import { useImageLoaded } from '@/hooks/useImageLoaded';
 
 const dummyCardImg = "/living-room.png";
@@ -45,7 +45,7 @@ export function ServiceCardItem({ service }: { service: ServiceType }) {
                             <ZoomImage src={service.image_url || ""} alt="Service Image" loading="lazy"
                                 className={
                                     `${loaded ? 'opacity-100' : 'absolute opacity-0'}
-                                    max-lg:pb-0 lg:pl-0 object-cover w-full h-full ring-1 ring-muted/15 max-lg:rounded-t-xl lg:rounded-s-xl transition-opacity duration-200 ease-out`
+                                    max-lg:pb-0 lg:pl-0 object-cover w-full h-full ring-1 ring-muted/15 transition-opacity duration-200 ease-out`
                                 }
                             />
                         </>
@@ -136,8 +136,10 @@ export default function ServiceCardList() {
 
     if (loading) {
         return (
-            <div className="w-full flex justify-center py-20 text-muted">
-                <Cog className="size-10 animate-spin" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[...Array(6)].map((_, i) => (
+                    <div key={i} className="h-75 bg-gray-100 animate-pulse rounded-lg" />
+                ))}
             </div>
         )
     }

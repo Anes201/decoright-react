@@ -32,12 +32,12 @@ export default function ServiceTypeTable({ serviceTypes, onEdit, onRefresh }: Se
     const handleDelete = async (serviceType: ServiceType) => {
         try {
             const usage = await ServiceTypesService.getUsageCount(serviceType.id)
-            
+
             if (usage.requests > 0 || usage.projects > 0) {
                 const parts: string[] = []
                 if (usage.requests > 0) parts.push(`${usage.requests} service request${usage.requests > 1 ? 's' : ''}`)
                 if (usage.projects > 0) parts.push(`${usage.projects} project${usage.projects > 1 ? 's' : ''}`)
-                
+
                 toast.error(`Cannot delete — this type is used by ${parts.join(' and ')}. Deactivate it instead.`)
                 return
             }
@@ -67,7 +67,7 @@ export default function ServiceTypeTable({ serviceTypes, onEdit, onRefresh }: Se
     };
 
     return (
-        <div className="h-full overflow-auto border-b-0 border border-muted/25 rounded-t-lg bg-surface">
+        <div className="h-full overflow-auto border-b-0 border border-muted/25 rounded-t-lg bg-surface overflow-y-auto min-scrollbar">
             <table className="w-full text-left border-collapse">
                 <thead className="bg-emphasis/75 sticky top-0 z-10">
                     <tr className="border-b border-muted/15">

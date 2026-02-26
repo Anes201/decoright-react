@@ -14,7 +14,7 @@ export default function PublicLayout () {
 
             <Outlet/>
 
-            <footer className="content-center">
+            <footer className="relative flex w-full h-full z-30 pt-12">
                 <Footer/>
             </footer>
 

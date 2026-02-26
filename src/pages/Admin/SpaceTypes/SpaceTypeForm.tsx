@@ -107,60 +107,49 @@ export default function SpaceTypeForm({ isOpen, spaceType, onClose, onSuccess }:
                         </div>
                     )}
 
-                    {/* Name (Code) */}
                     <div>
-                        <label className="block text-sm font-medium text-foreground mb-1">
-                            Code (Machine ID) <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value.toUpperCase().replace(/[\s-]/g, '_').replace(/[^A-Z_]/g, '') })}
-                            placeholder="KITCHEN_AND_BATH"
-                            disabled={!!spaceType}
-                            required
-                            className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:bg-surface/50 disabled:cursor-not-allowed font-mono"
-                        />
-                        <p className="text-xs text-muted mt-1">
-                            {spaceType ? 'Code cannot be changed after creation' : 'Use SCREAMING_SNAKE_CASE (e.g., KITCHEN_AND_BATH)'}
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {/* English Display Name */}
                         <div>
                             <label className="block text-sm font-medium text-foreground mb-1">
-                                English Display Name <span className="text-red-500">*</span>
+                                Title (English)  <span className="text-danger-500">*</span>
                             </label>
                             <input
                                 type="text"
                                 value={formData.display_name_en}
-                                onChange={(e) => setFormData({ ...formData, display_name_en: e.target.value })}
+                                onChange={(e) => setFormData({
+                                    ...formData,
+                                    display_name_en: e.target.value,
+                                    name: e.target.value.toUpperCase().replace(/[\s-]/g, '_').replace(/[^A-Z_]/g, '')
+                                })}
                                 placeholder="Kitchen and Bath"
                                 required
                                 className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
                             />
+                            <p className="text-xs text-muted mt-1">
+                                Note: This field must be unique and cannot be changed after creation!
+                            </p>
                         </div>
 
-                        {/* French Display Name */}
-                        <div>
-                            <label className="block text-sm font-medium text-foreground mb-1">
-                                French Display Name
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.display_name_fr}
-                                onChange={(e) => setFormData({ ...formData, display_name_fr: e.target.value })}
-                                placeholder="Cuisine et Salle de Bain"
-                                className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
-                            />
-                        </div>
+                    </div>
+
+                    {/* French Display Name */}
+                    <div>
+                        <label className="block text-sm font-medium text-foreground mb-1">
+                            Title (French)
+                        </label>
+                        <input
+                            type="text"
+                            value={formData.display_name_fr}
+                            onChange={(e) => setFormData({ ...formData, display_name_fr: e.target.value })}
+                            placeholder="Cuisine et Salle de Bain"
+                            className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        />
                     </div>
 
                     {/* Arabic Display Name */}
                     <div>
                         <label className="block text-sm font-medium text-foreground mb-1">
-                            Arabic Display Name
+                            Title (French)
                         </label>
                         <input
                             type="text"
@@ -217,8 +206,11 @@ export default function SpaceTypeForm({ isOpen, spaceType, onClose, onSuccess }:
                         disabled={loading}
                         className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
                     >
-                        {loading && <Cog className="size-4 animate-spin" />}
-                        {spaceType ? 'Update' : 'Create'}
+
+                        {spaceType
+                        ? 'Update'
+                        :  loading ? <> <Cog className="size-4 animate-spin text-white" /> Creating </> : 'Create'
+                        }
                     </button>
                 </div>
             </div>

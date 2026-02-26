@@ -81,6 +81,14 @@
     "view_all_projects": "View All Projects",
     "exit": "Exit",
 
+    "upload": "Upload",
+    "retry": "Retry",
+    "remove": "Remove",
+    "add": "Add",
+    "select": "Select",
+    "complete": "Complete",
+    "attachments": "Attachments",
+
     "english": "English",
     "french": "French",
     "arabic": "Arabic",
@@ -90,7 +98,13 @@
     "views_label_plural": "{{count}} views",
 
     "location": "Location",
-    "floor_area": "Floor Area"
+    "floor_area": "Floor Area",
+
+    "upload_files_label": "Upload Files, Images & Documents",
+    "uploaded_files_placeholder": "Uploaded files will appear here",
+    "uploading": "Uploading",
+    "uploading_failed": "Uploading Failed",
+    "upload_attach_files_label": "Attach Files"
   },
 
   "confirm": {
@@ -289,7 +303,14 @@
     "height": "Height",
     "description": "Description",
     "description_placeholder": "Write a description...",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "additional_details":"Additional Details",
+    "completion_date_placeholder": "Optional — leave blank if you're flexible on timing.",
+    "location_placeholder_label": "Optional — leave blank if not applicable.",
+    "location_and_timeline": "Location & Timeline",
+    "service_and_space": "Service & Space",
+    "required": "Required"
+
   },
   "phone_verification": {
     "title": "Phone Verification",

@@ -1,6 +1,7 @@
 
 import type { StagedFile } from "@/types/upload";
 import FileRow from "@components/ui/FileRow";
+import { useTranslation } from "react-i18next";
 
 export default function FileList({
   files,
@@ -11,7 +12,15 @@ export default function FileList({
   onRemove: (id: string) => void;
   onRetry: (id: string) => void;
 }) {
-  if (files.length === 0) return <div className="content-center font-medium text-xs md:text-sm text-muted/75 text-center w-full py-4 md:py-8"> Uploaded files appear here </div>;
+
+  const { t } = useTranslation();
+
+  if (files.length === 0)
+    return (
+      <div className="content-center font-medium text-xs md:text-sm text-muted/75 text-center w-full py-4 md:py-8">
+        {t("common.uploaded_files_placeholder")}
+      </div>
+  );
 
   return (
     <ul role="list" aria-label="Staged files" className="flex flex-col gap-2 w-full h-fit">
