@@ -92,6 +92,16 @@ export function NavActions() {
             {navMenuOpen &&
                 <MenuCard title={'Menu'} open={navMenuOpen} setOpen={setNavMenuOpen}>
                     <ul className="flex flex-col w-full h-full gap-2 border border-muted/15 p-2 rounded-lg overflow-auto">
+                        <li className="w-full">
+                            <Link
+                                to={PATHS.CLIENT.ROOT}
+                                onClick={() => setNavMenuOpen(false)}
+                                className="flex items-center gap-2 w-full p-2 border-b border-muted/15"
+                            >
+                                <Home className="size-4 text-muted" />
+                                <h3 className="font-medium text-sm">Go to Website</h3>
+                            </Link>
+                        </li>
                         <NavMenuItems />
                     </ul>
                 </MenuCard>
