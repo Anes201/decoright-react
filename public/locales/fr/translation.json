@@ -337,7 +337,10 @@
     "select_request": "Sélectionner une demande",
     "select_description": "Choisissez l'une de vos demandes de service dans la liste pour voir son historique de discussion et envoyer des messages.",
     "delete_title": "Supprimer ce message ?",
-    "delete_confirm": "Ce message sera définitivement supprimé pour tous les participants."
+    "delete_confirm": "Ce message sera définitivement supprimé pour tous les participants.",
+    "filter_all": "Tout",
+    "filter_unread": "Non lus",
+    "filter_awaiting": "En attente"
   },
   "services": {
     "service_list_title": "Services — Espaces conçus, design pensé",

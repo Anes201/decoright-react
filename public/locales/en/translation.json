@@ -347,7 +347,10 @@
     "select_request": "Select a Request",
     "select_description": "Choose one of your service requests from the list to view its chat history and send messages.",
     "delete_title": "Delete message?",
-    "delete_confirm": "This message will be permanently removed for everyone in this chat."
+    "delete_confirm": "This message will be permanently removed for everyone in this chat.",
+    "filter_all": "All",
+    "filter_unread": "Unread",
+    "filter_awaiting": "Awaiting"
   },
   "services": {
     "service_list_title": "Services — Crafted Spaces, Thoughtful Design",

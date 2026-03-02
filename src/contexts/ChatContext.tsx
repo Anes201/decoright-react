@@ -13,8 +13,9 @@ interface ChatContextType {
     setMessageText: (text: string) => void;
     loadingRooms: boolean;
     loadingMessages: boolean;
-    filter: 'all' | 'unread';
-    setFilter: (filter: 'all' | 'unread') => void;
+    allRooms: ChatRoom[];
+    filter: 'all' | 'unread' | 'awaiting';
+    setFilter: (filter: 'all' | 'unread' | 'awaiting') => void;
     sendMessage: (e?: React.FormEvent) => Promise<void>;
     sendMedia: (file: File | Blob, type: MessageType) => Promise<void>;
     deleteMessage: (messageId: string) => Promise<void>;
@@ -32,7 +33,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     const [selectedRoom, setSelectedRoom] = useState<ChatRoom | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
     const [messageText, setMessageText] = useState('');
-    const [filter, setFilter] = useState<'all' | 'unread'>('all');
+    const [filter, setFilter] = useState<'all' | 'unread' | 'awaiting'>('all');
     const [loadingRooms, setLoadingRooms] = useState(true);
     const [loadingMessages, setLoadingMessages] = useState(false);
 
@@ -399,6 +400,10 @@ export function ChatProvider({ children }: { children: ReactNode }) {
 
     const filteredRooms = rooms.filter(room => {
         if (filter === 'unread') return room.unread_count && room.unread_count > 0;
+        if (filter === 'awaiting') {
+            const role = room.last_message?.profiles?.role;
+            return role !== undefined && role !== 'admin' && role !== 'super_admin';
+        }
         return true;
     });
 
@@ -436,6 +441,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     return (
         <ChatContext.Provider value={{
             rooms: filteredRooms,
+            allRooms: rooms,
             selectedRoom,
             setSelectedRoom,
             messages,
