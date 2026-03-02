@@ -108,11 +108,9 @@ export default function Landing() {
                     placeholder={
                         <div className="flex flex-col gap-2">
                             {[...Array(5)].map((_, i) => (
-                                <>
-                                    <div key={i} className="relative h-14 bg-surface animate-pulse rounded-lg ring-1 ring-muted/15">
-                                        <ChevronDown className="size-6 absolute top-1/2 -translate-y-1/2 end-3 text-muted/75" />
-                                    </div>
-                                </>
+                                <div key={i} className="relative h-14 bg-surface animate-pulse rounded-lg ring-1 ring-muted/15">
+                                    <ChevronDown className="size-6 absolute top-1/2 -translate-y-1/2 end-3 text-muted/75" />
+                                </div>
                             ))}
                         </div>
                     }
