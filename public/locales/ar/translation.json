@@ -376,7 +376,7 @@
     "filter_all": "الكل",
     "filter_unread": "غير مقروء",
     "filter_awaiting": "تنتظر ردًا",
-    "you": "أنت",
+    "you_prefix": "أنت",
     "image": "صورة",
     "voice_message": "رسالة صوتية",
     "chat_room": "غرفة الدردشة",

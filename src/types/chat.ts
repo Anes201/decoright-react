@@ -35,6 +35,8 @@ export type ChatRoom = {
     service_types: {
       name: string;
       display_name_en: string;
+      display_name_ar?: string | null;
+      display_name_fr?: string | null;
     };
     profiles: {
       id: string;

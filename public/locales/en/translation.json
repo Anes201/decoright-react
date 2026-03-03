@@ -371,7 +371,7 @@
     "filter_all": "All",
     "filter_unread": "Unread",
     "filter_awaiting": "Needs Reply",
-    "you": "You",
+    "you_prefix": "You",
     "image": "Image",
     "voice_message": "Voice message",
     "chat_room": "Chat Room",

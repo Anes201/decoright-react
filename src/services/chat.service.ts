@@ -15,7 +15,9 @@ export const ChatService = {
                     status,
                     service_types (
                         name,
-                        display_name_en
+                        display_name_en,
+                        display_name_ar,
+                        display_name_fr
                     ),
                     profiles:user_id (
                         id,

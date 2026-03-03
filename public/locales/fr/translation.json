@@ -376,7 +376,7 @@
     "filter_all": "Tout",
     "filter_unread": "Non lus",
     "filter_awaiting": "Sans réponse",
-    "you": "Vous",
+    "you_prefix": "Vous",
     "image": "Image",
     "voice_message": "Message vocal",
     "chat_room": "Salle de discussion",

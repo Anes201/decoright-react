@@ -44,7 +44,7 @@ export default function ChatList({
 
     let prefix = '';
     if (lastMsg.sender_id === user?.id) {
-      prefix = `${t('chat.you')}: `;
+      prefix = `${t('chat.you_prefix')}: `;
     } else if (lastMsg.profiles?.full_name) {
       prefix = `${lastMsg.profiles.full_name.split(' ')[0]}: `;
     }
