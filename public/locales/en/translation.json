@@ -203,6 +203,10 @@
         "title": "Showcase Designs",
         "description": "A curated selection of our finest interior design projects, highlighting our commitment to quality, creativity, and client satisfaction."
       },
+      "space_types": {
+        "title": "Spaces We Design",
+        "description": "From cozy homes to vibrant commercial spaces — explore the variety of environments we transform."
+      },
       "faq": {
         "title": "Most frequently asked questions by our users",
         "description": "Find answers to common questions about our design services, process, and pricing."

@@ -715,6 +715,38 @@ export type Database = {
                 }
                 Relationships: []
             }
+            space_type_images: {
+                Row: {
+                    id: string
+                    space_type_id: string
+                    image_url: string
+                    sort_order: number | null
+                    uploaded_at: string | null
+                }
+                Insert: {
+                    id?: string
+                    space_type_id: string
+                    image_url: string
+                    sort_order?: number | null
+                    uploaded_at?: string | null
+                }
+                Update: {
+                    id?: string
+                    space_type_id?: string
+                    image_url?: string
+                    sort_order?: number | null
+                    uploaded_at?: string | null
+                }
+                Relationships: [
+                    {
+                        foreignKeyName: "space_type_images_space_type_id_fkey"
+                        columns: ["space_type_id"]
+                        isOneToOne: false
+                        referencedRelation: "space_types"
+                        referencedColumns: ["id"]
+                    },
+                ]
+            }
             testimonials: {
                 Row: {
                     id: string

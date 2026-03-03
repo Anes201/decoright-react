@@ -26,6 +26,8 @@ export default function Landing() {
 
     const servicesTitle = settings[`home_services_section_title${lang}`] || settings.home_services_section_title || t('landing.sections.services.title');
     const servicesDescription = settings[`home_services_section_description${lang}`] || settings.home_services_section_description || t('landing.sections.services.description');
+    const spaceTypesTitle = settings[`home_space_types_section_title${lang}`] || settings.home_space_types_section_title || t('landing.sections.space_types.title');
+    const spaceTypesDescription = settings[`home_space_types_section_description${lang}`] || settings.home_space_types_section_description || t('landing.sections.space_types.description');
     const projectsTitle = settings[`home_projects_section_title${lang}`] || settings.home_projects_section_title || t('landing.sections.projects.title');
     const projectsDescription = settings[`home_projects_section_description${lang}`] || settings.home_projects_section_description || t('landing.sections.projects.description');
     const faqTitle = settings[`home_faq_title${lang}`] || settings.home_faq_title || t('landing.sections.faq.title');
@@ -64,6 +66,31 @@ export default function Landing() {
                 </div>
 
             </section>
+
+            <section className="content-container relative flex flex-col gap-6 w-full px-3 sm:px-6 md:px-8">
+
+                <div className="absolute top-0 left-0 w-full h-full border-x border-muted/25 pointer-events-none" />
+
+                {/* Section Header */}
+                <SectionHeader
+                    title={spaceTypesTitle}
+                    desc={spaceTypesDescription}
+                />
+
+                {/* Space Types Cards */}
+                <LazySection
+                    loader={() => import("@components/layout/SpaceTypesSection")}
+                    placeholder={
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+                            {[...Array(6)].map((_, i) => (
+                                <div key={i} className="aspect-[4/3] bg-surface animate-pulse rounded-xl ring-1 ring-muted/15" />
+                            ))}
+                        </div>
+                    }
+                />
+
+            </section>
+
             <section className="content-container relative flex flex-col gap-6 w-full px-3 sm:px-6 md:px-8">
 
                 <div className="absolute top-0 left-0 w-full h-full border-x border-muted/25 pointer-events-none" />

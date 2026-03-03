@@ -193,6 +193,10 @@
         "title": "Modèles de conception",
         "description": "Une sélection raffinée de nos meilleurs projets de design d'intérieur, soulignant notre engagement envers la qualité, la créativité et la satisfaction du client."
       },
+      "space_types": {
+        "title": "Les espaces que nous concevons",
+        "description": "Des maisons chaleureuses aux espaces commerciaux — découvrez la diversité des environnements que nous transformons."
+      },
       "faq": {
         "title": "Questions les plus fréquemment posées par nos utilisateurs",
         "description": "Trouvez des réponses aux questions courantes sur nos services de design, notre processus et nos tarifs."
