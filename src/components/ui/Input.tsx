@@ -4,6 +4,7 @@ import { Envelope, Key, LockClosed, Phone, User, Eye, EyeSlash } from "@/icons";
 import { useTranslation } from "react-i18next";
 
 export function Input({ className, children, ...props }: any) {
+  const { t } = useTranslation();
 
   return (
 
@@ -21,7 +22,7 @@ export function Input({ className, children, ...props }: any) {
         {children}
       </div>
       {props.readOnly &&
-        <span title="Locked for viewing only" aria-label="error" className="absolute content-center end-2 h-full">
+        <span title={t('common.locked_view_only')} aria-label="error" className="absolute content-center end-2 h-full">
           <LockClosed className="size-5 text-muted" />
         </span>}
 

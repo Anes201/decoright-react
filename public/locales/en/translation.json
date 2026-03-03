@@ -82,19 +82,9 @@
     "edit": "Edit",
     "go_back": "Go back",
     "view_all": "View All",
-    "view_all_projects": "View All Projects",
-    "exit": "Exit",
-
-    "english": "English",
-    "french": "French",
-    "arabic": "Arabic",
-
-    "views_compact": "{{value, compact}} Views",
-    "views_label": "{{count}} view",
-    "views_label_plural": "{{count}} views",
-
-    "location": "Location",
-    "floor_area": "Floor Area"
+    "required": "Required",
+    "optional": "Optional",
+    "locked_view_only": "Locked for viewing only"
   },
 
   "confirm": {
@@ -277,27 +267,44 @@
   "request_form": {
     "form_title": "Request Service Form",
     "form_description": "Submit your details to create a private conversation. Admins will evaluate the request in the chat and respond with next steps.",
-    "submit": "Submit Request",
-    "submit_hint": "Verify your phone to enable submission",
-    "verification_required": "Phone verification required",
-    "verification_description": "Verify your phone to access this service request. We’ll send a code when you tap the button.",
-    "get_verified": "Get Verified",
-    "error_fields": "Please fill in all required fields (Space Type, Service Type, Location)",
-    "error_uploading": "Please wait for all attachments to finish uploading.",
-    "error_submit": "Failed to submit request",
+    "service_details": "Service Details",
+    "required": "Required",
     "service_type": "Service Type",
     "space_type": "Space Type",
     "service_type_placeholder": "Select a Service Type",
     "space_type_placeholder": "Select a Space Type",
-    "completion_date": "When do you need this completed?",
+    "location_timeline": "Location & Timeline",
     "location": "Location",
     "location_placeholder": "Enter physical location",
+    "location_hint": "Optional — leave blank if not applicable.",
+    "completion_date": "When do you need this completed?",
+    "date_hint": "Optional — leave blank if you're flexible on timing.",
     "area_dimensions": "Area Dimensions (m)",
     "width": "Width",
     "height": "Height",
+    "additional_details": "Additional Details",
     "description": "Description",
     "description_placeholder": "Write a description...",
-    "cancel": "Cancel"
+    "attachments": "Attachments",
+    "submit": "Submit Request",
+    "cancel": "Cancel",
+    "error_fields": "Please fill in all required fields (Space Type, Service Type, Location)",
+    "error_uploading": "Please wait for all attachments to finish uploading.",
+    "error_submit": "Failed to submit request",
+    "error_width_negative": "Width cannot be negative.",
+    "error_height_negative": "Height cannot be negative."
+  },
+  "upload": {
+    "attach_files": "Attach Files",
+    "upload_hint": "Upload Files, Images & Documents",
+    "upload_button": "Upload",
+    "empty_state": "Uploaded files appear here",
+    "uploading": "Uploading...",
+    "complete": "Complete",
+    "failed": "Uploading Failed",
+    "ready": "Ready",
+    "remove_title": "Remove Uploaded File",
+    "retry_title": "Retry upload"
   },
   "phone_verification": {
     "title": "Phone Verification",
