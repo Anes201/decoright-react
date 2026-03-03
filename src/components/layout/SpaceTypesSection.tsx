@@ -1,9 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import { SpaceTypesService } from '@/services/space-types.service'
 import type { SpaceTypeWithImages } from '@/services/space-types.service'
+import { useTranslation } from 'react-i18next'
+import { getLocalizedContent } from '@/utils/i18n'
 
 // Auto-cycling image card — cycles through images every 3s
 function SpaceTypeCard({ spaceType }: { spaceType: SpaceTypeWithImages }) {
+    const { i18n } = useTranslation()
+    const name = getLocalizedContent(spaceType, 'display_name', i18n.language)
+
     const images = spaceType.space_type_images
         .slice()
         .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
@@ -74,7 +79,7 @@ function SpaceTypeCard({ spaceType }: { spaceType: SpaceTypeWithImages }) {
             {/* Space type name */}
             <div className="absolute bottom-0 inset-x-0 p-4">
                 <p className="text-white font-semibold text-sm md:text-base drop-shadow-sm">
-                    {spaceType.name}
+                    {name}
                 </p>
             </div>
         </div>

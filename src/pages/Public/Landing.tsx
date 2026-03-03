@@ -26,8 +26,8 @@ export default function Landing() {
 
     const servicesTitle = settings[`home_services_section_title${lang}`] || settings.home_services_section_title || t('landing.sections.services.title');
     const servicesDescription = settings[`home_services_section_description${lang}`] || settings.home_services_section_description || t('landing.sections.services.description');
-    const spaceTypesTitle = settings[`home_space_types_section_title${lang}`] || settings.home_space_types_section_title || t('landing.sections.space_types.title');
-    const spaceTypesDescription = settings[`home_space_types_section_description${lang}`] || settings.home_space_types_section_description || t('landing.sections.space_types.description');
+    const spaceTypesTitle = settings[`home_space_types_section_title${lang}`] || settings.home_space_types_section_title || t('landing.sections.space_types.title', 'Spaces We Design');
+    const spaceTypesDescription = settings[`home_space_types_section_description${lang}`] || settings.home_space_types_section_description || t('landing.sections.space_types.description', 'From cozy homes to vibrant commercial spaces — explore the variety of environments we transform.');
     const projectsTitle = settings[`home_projects_section_title${lang}`] || settings.home_projects_section_title || t('landing.sections.projects.title');
     const projectsDescription = settings[`home_projects_section_description${lang}`] || settings.home_projects_section_description || t('landing.sections.projects.description');
     const faqTitle = settings[`home_faq_title${lang}`] || settings.home_faq_title || t('landing.sections.faq.title');
