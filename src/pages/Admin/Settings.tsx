@@ -6,16 +6,23 @@ import { EmailInput, Input, PhoneInput } from "@/components/ui/Input";
 import { SocialMediaPhoneFields, SocialMediaUrlFields } from "@/constants";
 import { Folder } from "@/icons";
 import { SiteSettingsService } from "@/services/site-settings.service";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
+const STATIC_LOGO = "/Logo.PNG";
 
 export default function Settings() {
     const [loading, setLoading] = useState(false);
     const [settings, setSettings] = useState<Record<string, string>>({});
     const [initializing, setInitializing] = useState(true);
     const navigate = useNavigate();
+
+    // Logo upload state
+    const [logoPreview, setLogoPreview] = useState<string | null>(null);
+    const [logoFile, setLogoFile] = useState<File | null>(null);
+    const [logoUploading, setLogoUploading] = useState(false);
+    const logoInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         async function loadSettings() {
@@ -39,7 +46,6 @@ export default function Settings() {
                 SiteSettingsService.update(key, value)
             );
             await Promise.all(savePromises);
-            // Optionally show a success message
             toast.success("Settings saved successfully!");
         } catch (error) {
             console.error("Failed to save settings:", error);
@@ -56,6 +62,30 @@ export default function Settings() {
         navigate(-1);
     };
 
+    const handleLogoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setLogoFile(file);
+        setLogoPreview(URL.createObjectURL(file));
+    };
+
+    const handleLogoUpload = async () => {
+        if (!logoFile) return;
+        setLogoUploading(true);
+        try {
+            const url = await SiteSettingsService.uploadLogo(logoFile);
+            setSettings(prev => ({ ...prev, logo_url: url }));
+            setLogoFile(null);
+            toast.success("Logo updated successfully!");
+        } catch (err: any) {
+            toast.error(err.message || "Failed to upload logo");
+        } finally {
+            setLogoUploading(false);
+        }
+    };
+
+    const currentLogoSrc = logoPreview ?? (settings['logo_url'] || STATIC_LOGO);
+
     if (initializing) {
         return <div className="p-10 text-center text-muted">Loading settings...</div>;
     }
@@ -65,6 +95,50 @@ export default function Settings() {
             <section className="relative flex flex-col w-full px-4 md:px-8 py-6 space-y-6 mb-20">
                 <div className="flex max-md:flex-col md:justify-between md:items-end gap-2 w-full h-fit">
                     <h1 className="font-semibold text-lg md:text-2xl"> Settings & Contacts </h1>
+                </div>
+
+                {/* Logo Upload */}
+                <div className="flex flex-col gap-3">
+                    <label className="font-medium text-xs text-muted mx-1"> Site Logo </label>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                        {/* Preview */}
+                        <div className="flex-shrink-0 w-20 h-20 rounded-xl border border-muted/20 bg-surface overflow-hidden flex items-center justify-center">
+                            <img
+                                src={currentLogoSrc}
+                                alt="Site logo preview"
+                                className="w-full h-full object-contain p-1"
+                            />
+                        </div>
+
+                        {/* Controls */}
+                        <div className="flex flex-col gap-2">
+                            <input
+                                ref={logoInputRef}
+                                type="file"
+                                accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                                className="hidden"
+                                onChange={handleLogoFileChange}
+                            />
+                            <PButton
+                                type="button"
+                                onClick={() => logoInputRef.current?.click()}
+                                className="min-w-[140px] text-sm"
+                            >
+                                Choose Image
+                            </PButton>
+                            {logoFile && (
+                                <PButton
+                                    type="button"
+                                    disabled={logoUploading}
+                                    onClick={handleLogoUpload}
+                                    className="min-w-[140px] text-sm"
+                                >
+                                    <Spinner status={logoUploading} size="sm"> Upload Logo </Spinner>
+                                </PButton>
+                            )}
+                            <p className="text-2xs text-muted">PNG, JPG, WebP or SVG — max 2 MB</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="flex max-md:flex-col gap-4 w-full">

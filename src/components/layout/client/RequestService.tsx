@@ -14,7 +14,6 @@ import { SpaceTypesService, type SpaceType } from '@/services/space-types.servic
 import { useNavigate } from 'react-router-dom'
 import { PATHS } from '@/routers/Paths'
 import { useTranslation } from "react-i18next";
-import { CheckCircle } from "@/icons";
 
 
 export default function RequestServiceLayout() {
@@ -99,12 +98,12 @@ export default function RequestServiceLayout() {
             const parsedHeight = height ? parseFloat(height) : null;
 
             if (parsedWidth !== null && parsedWidth < 0) {
-                setError('Width cannot be negative.');
+                setError(t('request_form.error_width_negative'));
                 setLoading(false);
                 return;
             }
             if (parsedHeight !== null && parsedHeight < 0) {
-                setError('Height cannot be negative.');
+                setError(t('request_form.error_height_negative'));
                 setLoading(false);
                 return;
             }
@@ -166,12 +165,14 @@ export default function RequestServiceLayout() {
 
                         {/* Service & Space */}
                         <div className="flex flex-col gap-6 p-6 bg-surface border border-muted/15 rounded-2xl">
-                            <p className="text-xs font-bold text-muted tracking-widest uppercase">Service Details</p>
+                            <p className="text-xs font-bold text-muted tracking-widest uppercase"> {t('request_form.service_and_space')} </p>
+
 
                             <div className="flex flex-col gap-2">
                                 <label htmlFor="select-service-service-type" className="flex items-center justify-between text-xs text-muted font-medium px-0.5">
                                     <span>{t('request_form.service_type')}</span>
-                                    <span className="text-[10px] text-danger/60 font-bold uppercase tracking-tighter">Required</span>
+                                    <span className="text-[10px] text-danger/60 font-bold uppercase tracking-tighter"> {t('request_form.required')} </span>
+
                                 </label>
                                 <SelectMenu
                                     options={serviceTypes.map(s => ({ label: s[`display_name${langSuffix}`] || s.display_name_en, value: s.id }))}
@@ -185,7 +186,8 @@ export default function RequestServiceLayout() {
                             <div className="flex flex-col gap-2">
                                 <label htmlFor="select-service-space-type" className="flex items-center justify-between text-xs text-muted font-medium px-0.5">
                                     <span>{t('request_form.space_type')}</span>
-                                    <span className="text-[10px] text-danger/60 font-bold uppercase tracking-tighter">Required</span>
+                                    <span className="text-[10px] text-danger/60 font-bold uppercase tracking-tighter"> {t('request_form.required')} </span>
+
                                 </label>
                                 <SelectMenu
                                     options={spaceTypes.map(s => ({ label: s[`display_name${langSuffix}`] || s.display_name_en, value: s.id }))}
@@ -200,7 +202,8 @@ export default function RequestServiceLayout() {
 
                         {/* Location & Date */}
                         <div className="flex flex-col gap-6 p-6 bg-surface border border-muted/15 rounded-2xl">
-                            <p className="text-xs font-bold text-muted tracking-widest uppercase">Location & Timeline</p>
+                            <p className="text-xs font-bold text-muted tracking-widest uppercase"> {t('request_form.location_and_timeline')} </p>
+
 
                             <div className="flex flex-col gap-2">
                                 <label htmlFor="request-location" className="text-xs text-muted font-medium px-0.5">
@@ -212,7 +215,8 @@ export default function RequestServiceLayout() {
                                     value={location}
                                     onChange={(e: any) => setLocation(e.target.value)}
                                 />
-                                <p className="text-[11px] text-muted/60 px-0.5">Optional — leave blank if not applicable.</p>
+                                <p className="text-[11px] text-muted/60 px-0.5"> { t('request_form.location_placeholder_label') } </p>
+
                             </div>
 
                             <div className="flex flex-col gap-2">
@@ -224,7 +228,8 @@ export default function RequestServiceLayout() {
                                     id="service-request-date"
                                     className="h-12 w-full px-3 text-sm text-muted bg-emphasis/75 border border-muted/15 rounded-lg outline-0 focus:outline-1 focus:outline-primary/45 hover:border-muted/30 transition-colors cursor-pointer"
                                 />
-                                <p className="text-[11px] text-muted/60 px-0.5">Optional — leave blank if you're flexible on timing.</p>
+                                <p className="text-[11px] text-muted/60 px-0.5"> { t('request_form.completion_date_placeholder') } </p>
+
                             </div>
 
                             {/* Dimensions */}
@@ -262,7 +267,8 @@ export default function RequestServiceLayout() {
 
                         {/* Description */}
                         <div className="flex flex-col gap-6 p-6 bg-surface border border-muted/15 rounded-2xl">
-                            <p className="text-xs font-bold text-muted tracking-widest uppercase">Additional Details</p>
+                            <p className="text-xs font-bold text-muted tracking-widest uppercase"> { t('request_form.additional_details') } </p>
+
                             <div className="flex flex-col gap-2">
                                 <label htmlFor="request-service-description" className="text-xs text-muted font-medium px-0.5">
                                     {t('request_form.description')}
@@ -281,7 +287,8 @@ export default function RequestServiceLayout() {
 
                         {/* Attachments */}
                         <div className="flex flex-col gap-6 p-6 bg-surface border border-muted/15 rounded-2xl">
-                            <p className="text-xs font-bold text-muted tracking-widest uppercase">Attachments</p>
+                            <p className="text-xs font-bold text-muted tracking-widest uppercase"> { t('common.attachments') } </p>
+
                             <FileUploadPanel stagedFiles={stagedFiles} />
                         </div>
 
@@ -296,10 +303,9 @@ export default function RequestServiceLayout() {
                         loading={loading}
                         className="w-full sm:w-auto px-10"
                     >
-                        <div className="flex items-center justify-center gap-2">
-                            <CheckCircle className="size-4" />
-                            {t('request_form.submit')}
-                        </div>
+
+                        <Spinner status={loading} size="sm"> {t('request_form.submit')} </Spinner>
+
                     </PButton>
                     <SCTALink to={-1} className="w-full sm:w-auto">{t('request_form.cancel')}</SCTALink>
                 </div>

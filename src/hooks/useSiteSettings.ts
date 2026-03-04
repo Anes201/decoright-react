@@ -7,6 +7,8 @@ import {
     googleMapLocationUrl
 } from '@/constants/company';
 
+const STATIC_LOGO = '/Logo.PNG';
+
 export function useSiteSettings() {
     const [settings, setSettings] = useState<Record<string, string>>({});
     const [loading, setLoading] = useState(true);
@@ -46,5 +48,7 @@ export function useSiteSettings() {
         pinterest: getSetting('pinterest', ''),
         xtwitter: getSetting('xtwitter', ''),
         telegram: getSetting('telegram', ''),
+        // Logo: falls back to the static public asset when no upload exists
+        logoUrl: getSetting('logo_url', STATIC_LOGO) || STATIC_LOGO,
     };
 }

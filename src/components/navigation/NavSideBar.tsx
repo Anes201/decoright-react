@@ -1,11 +1,11 @@
 
-const Logo = "/Logo.PNG"
 import type { SideNavItem } from "@/types/nav"
 import { LogoutButton } from "@components/common/Confirm"
 import { adminSideMenuNav } from "@/constants/navigation"
 import { NavLink, useLocation } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { ArrowRightStartOnRectangle, CaretDown } from "@/icons";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 // Helper: return array of parent ids whose subtree matches the current path.
 // Uses startsWith so parent items containing path prefixes open automatically.
@@ -26,10 +26,11 @@ function findParentIdsForPath(items: SideNavItem[], target: string): string[] | 
 
 
 function NavLogo() {
+  const { logoUrl } = useSiteSettings();
   return (
     <div className="flex items-center gap-2 md:gap-4 min-w-max w-full h-fit py-2 px-4">
       <div className="w-8 md:w-10 aspect-square">
-        <img src={Logo} alt="logo" height="40" width="40" className="w-full object-cover rounded-lg" loading="lazy" />
+        <img src={logoUrl} alt="logo" height="40" width="40" className="w-full object-cover rounded-lg" loading="lazy" />
       </div>
       <div className="flex flex-col">
         <h3 className="text-sm md:text-base font-medium"> Deco Right </h3>

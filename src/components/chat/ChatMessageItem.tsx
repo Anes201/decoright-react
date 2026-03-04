@@ -7,12 +7,14 @@ import useAuth from '@/hooks/useAuth';
 import useConfirm from '@components/confirm/useConfirm';
 import { Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { DocumentText } from '@/icons';
 
 
 // src/utils/formatMessageTime.ts
 export type FormatOptions = {
     locale?: string;    // e.g. 'en-GB' or undefined to use user locale
     hour12?: boolean;   // true = 12h (AM/PM), false = 24h, undefined = browser default
+    t?: (key: string) => string;
 };
 
 /**
@@ -26,7 +28,7 @@ export function formatMessageTime(
     dateInput: string | number | Date,
     opts: FormatOptions = {}
 ): string {
-    const { locale, hour12 } = opts;
+    const { locale, hour12, t } = opts;
     const d = new Date(dateInput);
     if (isNaN(d.getTime())) return '';
 
@@ -47,9 +49,7 @@ export function formatMessageTime(
 
     if (diffDays === 1) {
         // yesterday -> localized "Yesterday" fallback
-        // Many locales don't have a built-in "Yesterday" label, so keep English default.
-        // If you want localized "yesterday", integrate with your i18n library.
-        return `Yesterday, ${timePart}`;
+        return `${t ? t('chat.yesterday') : 'Yesterday'}, ${timePart}`;
     }
 
     // same year? omit year
@@ -64,7 +64,7 @@ export function formatMessageTime(
 
 export default memo(function MessageItem({ message, currentUserId }:
     { message: Message; currentUserId?: string }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { isAdmin } = useAuth();
     const { deleteMessage } = useChat();
     const confirm = useConfirm();
@@ -110,7 +110,7 @@ export default memo(function MessageItem({ message, currentUserId }:
                                 ? 'bg-amber-400/10 text-amber-600 border-amber-400/20' 
                                 : 'bg-primary/10 text-primary border-primary/20'
                             }`}>
-                            {message.profiles.role.replace('_', ' ')}
+                            {t(`common.${message.profiles.role}`, message.profiles.role.replace('_', ' '))}
                         </span>
                     )}
                 </div>
@@ -148,6 +148,43 @@ export default memo(function MessageItem({ message, currentUserId }:
                                 {message.content && <p className="text-sm px-1">{message.content}</p>}
                             </div>
                         )}
+
+                        {message.message_type === 'VIDEO' && (
+                            <div className="flex flex-col gap-2 p-2">
+                                {message.media_url && (
+                                    <div className="rounded-lg overflow-hidden border border-white/10 bg-black/5 max-w-full">
+                                        <video
+                                            src={message.media_url}
+                                            controls
+                                            className="block w-full h-auto max-h-[400px] object-contain outline-none"
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {message.message_type === 'FILE' && (
+                            <div className="p-2">
+                                <a
+                                    href={message.media_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-3 p-3 rounded-lg bg-emphasis/50 hover:bg-emphasis border border-muted/15 transition-colors group/file"
+                                >
+                                    <div className="p-2 rounded-md bg-primary/10 text-primary">
+                                        <DocumentText className="size-6" />
+                                    </div>
+                                    <div className="flex flex-col min-w-0">
+                                        <span className="text-sm font-medium truncate max-w-48 sm:max-w-64">
+                                            {message.content || t('chat.file')}
+                                        </span>
+                                        <span className="text-3xs text-muted uppercase tracking-tighter">
+                                            {message.media_url?.split('.').pop()?.toUpperCase() || 'FILE'}
+                                        </span>
+                                    </div>
+                                </a>
+                            </div>
+                        )}
                     </>
                 )}
 
@@ -160,7 +197,7 @@ export default memo(function MessageItem({ message, currentUserId }:
                             text-muted opacity-0 group-hover:opacity-100 
                             hover:text-destructive hover:border-destructive/30 hover:bg-destructive/5
                             transition-all duration-200 z-10`}
-                        title={t('chat.delete_message')}
+                        title={t('chat.delete_message') as string}
                     >
                         <Trash2 size={18} />
                     </button>
@@ -168,7 +205,7 @@ export default memo(function MessageItem({ message, currentUserId }:
 
             </div>
             <div className={`text-3xs text-muted px-1.5 mt-2 ${isMe ? 'text-right' : 'text-muted text-left'} hover:text-foreground cursor-default`}>
-                <span>{formatMessageTime(message.created_at)}</span>
+                <span>{formatMessageTime(message.created_at, { locale: i18n.language, t })}</span>
             </div>
         </div>
     );

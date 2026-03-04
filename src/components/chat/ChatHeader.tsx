@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { PATHS } from '@/routers/Paths';
 import { useChat } from '@/hooks/useChat';
 import { ArrowLeft, Eye } from '@/icons';
+import { useTranslation } from 'react-i18next';
+import { getLocalizedContent } from '@/utils/i18n';
 
 export default function ChatHeader({ selected, rightActions }: { selected?: any, rightActions?: React.ReactNode } = {}) {
-
+    const { t, i18n } = useTranslation();
     const { selectedRoom: hookContact } = useChat();
     const contact = selected || hookContact;
 
@@ -16,6 +18,10 @@ export default function ChatHeader({ selected, rightActions }: { selected?: any,
         ? PATHS.ADMIN.requestServiceDetail(contact.service_requests.id)
         : null;
 
+    const serviceName = contact?.service_requests?.service_types
+        ? getLocalizedContent(contact.service_requests.service_types, 'display_name', i18n.language)
+        : contact?.service_requests?.service_type_id?.replace(/_/g, ' ') || t('chat.unknown_service');
+
     return (
         <div className="flex items-center gap-3 w-full p-2 pb-4 border-b border-muted/15 shrink-0">
             <nav className="w-fit h-fit">
@@ -25,12 +31,12 @@ export default function ChatHeader({ selected, rightActions }: { selected?: any,
             </nav>
 
             <div className="flex flex-col w-full h-fit min-w-0">
-                <h3 className="font-medium text-sm truncate"> {contact?.service_requests?.request_code || 'Chat Room'} </h3>
+                <h3 className="font-medium text-sm truncate"> {contact?.service_requests?.request_code || t('chat.chat_room')} </h3>
                 <p className="text-2xs text-muted truncate">
-                    {contact?.service_requests?.service_types?.display_name_en || contact?.service_requests?.service_type_id?.replace(/_/g, ' ') || 'Unknown Service'}
+                    {serviceName}
                 </p>
                 {contact?.service_requests?.profiles?.full_name && (
-                    <span className="text-3xs text-muted">Client: {contact.service_requests.profiles.full_name}</span>
+                    <span className="text-3xs text-muted">{t('chat.client_prefix')} {contact.service_requests.profiles.full_name}</span>
                 )}
             </div>
 
@@ -44,16 +50,16 @@ export default function ChatHeader({ selected, rightActions }: { selected?: any,
                                 contact?.service_requests?.status === 'Cancelled' ? 'bg-muted/10 text-muted border border-muted/25' :
                                 'bg-sky-400/10 text-sky-800 border border-sky-400/25'
                             }`}>
-                            {contact?.service_requests?.status}
+                            {contact?.service_requests?.status ? (t(`requests.status.${contact.service_requests.status.toLowerCase().replace(/ /g, '_')}`, contact.service_requests.status) as string) : ''}
                         </span>
                         {requestDetailsPath && (
                             <Link
                                 to={requestDetailsPath}
                                 className="flex items-center gap-1.5 px-2.5 p-1 md:py-1.5 text-xs font-medium border border-muted/25 rounded-full hover:bg-emphasis transition-colors"
-                                title="View Request Details"
+                                title={t('chat.view_request_details') as any}
                             >
                                 <Eye className="size-4" />
-                                <span className="hidden sm:inline">View Request</span>
+                                <span className="hidden sm:inline">{t('chat.view_request') as any}</span>
                             </Link>
                         )}
                     </>

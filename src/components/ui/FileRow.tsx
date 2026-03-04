@@ -4,6 +4,7 @@ import type { StagedFile } from "@/types/upload";
 import FileIcon from "@/icons/files";
 import ProgressBar from "@components/ui/ProgressBar";
 import { Trash, ArrowPath } from "@/icons";
+import { useTranslation } from "react-i18next";
 
 export default function FileRow({
   file,
@@ -14,6 +15,7 @@ export default function FileRow({
   onRemove: (id: string) => void;
   onRetry: (id: string) => void;
 }) {
+  const { t } = useTranslation();
   // small helper for human file size
   const niceSize = (n: number) => {
     if (n > 1_000_000) return `${Math.round(n / 1_000_000)} MB`;
@@ -36,10 +38,11 @@ export default function FileRow({
             <div className="text-xs after:content-['•'] after:mx-2">{niceSize(file.size)}</div>
 
             {/* status text */}
-            {file.status === "uploading" && <div className="text-2xs md:text-xs text-muted w-fit">Uploading…</div>}
-            {file.status === "complete" && <div className="text-2xs md:text-xs text-success w-fit">Complete</div>}
-            {file.status === "failed" && <div className="text-2xs md:text-xs text-danger w-fit">Uploading Failed</div>}
-            {file.status === "idle" && <div className="text-2xs md:text-xs text-warning w-fit">Ready</div>}
+            {file.status === "uploading" && <div className="text-2xs md:text-xs text-muted w-fit"> { t('common.uploading') }... </div>}
+            {file.status === "complete" && <div className="text-2xs md:text-xs text-success w-fit"> { t('common.complete') } </div>}
+            {file.status === "failed" && <div className="text-2xs md:text-xs text-danger w-fit"> { t('common.uploading_failed') } </div>}
+            {file.status === "idle" && <div className="text-2xs md:text-xs text-warning w-fit"> { t('common.ready') } </div>}
+
           </div>
         </div>
 
@@ -52,15 +55,15 @@ export default function FileRow({
       </div>
 
       <div className="flex flex-col justify-between w-fit">
-        <button type="button" title="Remove Uploaded File"
+        <button type="button" title={t('upload.remove_title')}
         className="group/trash p-2 rounded-full hover:bg-danger/25 active:bg-danger/25"
-        onClick={() => onRemove(file.id)} aria-label={`Remove ${file.name}`}>
+        onClick={() => onRemove(file.id)} aria-label={`${t('upload.remove_title')} ${file.name}`}>
           <Trash className="size-5 text-muted group-hover/trash:text-danger group-active/trash:text-danger"/>
         </button>
 
         {/* failed hint + retry */}
         {file.status === "failed" && (
-          <button type="button" onClick={() => onRetry(file.id)} aria-label={`Retry ${file.name}`}>
+          <button type="button" onClick={() => onRetry(file.id)} title={t('upload.retry_title')} aria-label={`${t('upload.retry_title')} ${file.name}`}>
             <ArrowPath className="size-5 text-muted" />
           </button>
         )}

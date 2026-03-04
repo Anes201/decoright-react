@@ -4,9 +4,11 @@ import useAuth from '@/hooks/useAuth';
 import { useChat } from '@/hooks/useChat';
 import { useCallback, useEffect, useRef } from 'react';
 import Spinner from '../common/Spinner';
+import { useTranslation } from 'react-i18next';
 
 export default function ChatBody({ messages: propsMessages, messagesEndRef: propsRef, currentUserId }: { messages?: any[], messagesEndRef?: React.RefObject<HTMLDivElement>, currentUserId?: string } = {}) {
 
+    const { t } = useTranslation();
     const { user } = useAuth();
     const { messages: hookMessages, loadingMessages } = useChat();
 
@@ -24,7 +26,7 @@ export default function ChatBody({ messages: propsMessages, messagesEndRef: prop
     if (loadingMessages) return (
         <div className="flex flex-col items-center justify-center gap-2 w-full h-full ">
             <Spinner status={loadingMessages} />
-            <span className="text-xs"> Getting Ready... </span>
+            <span className="text-xs"> {t('chat.getting_ready')} </span>
         </div>
     )
 
@@ -37,9 +39,9 @@ export default function ChatBody({ messages: propsMessages, messagesEndRef: prop
                     </div>
                 ))
             ) : (
-                <div className="relative flex flex-col items-center justify-center w-full h-full">
-                    <h4 className="font-semibold text-2xl mb-1">Chat Room</h4>
-                    <p className="text-sm">Send a message to start a chat</p>
+                <div className="relative flex flex-col items-center justify-center w-full h-full text-center">
+                    <h4 className="font-semibold text-2xl mb-1">{t('chat.chat_room')}</h4>
+                    <p className="text-sm text-muted">{t('chat.start_chat_hint')}</p>
                 </div>
             )}
 

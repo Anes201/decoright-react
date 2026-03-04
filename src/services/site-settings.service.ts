@@ -32,5 +32,28 @@ export const SiteSettingsService = {
 
         if (error) throw error
         return data
+    },
+
+    async uploadLogo(file: File): Promise<string> {
+        const ext = file.name.split('.').pop()
+        const path = `logo/logo.${ext}`
+
+        // Upsert: overwrite any existing logo file
+        const { error: uploadError } = await supabase.storage
+            .from('site-assets')
+            .upload(path, file, { upsert: true, contentType: file.type })
+
+        if (uploadError) throw uploadError
+
+        const { data: urlData } = supabase.storage
+            .from('site-assets')
+            .getPublicUrl(path)
+
+        const publicUrl = urlData.publicUrl
+
+        // Persist the URL in site_settings so all clients pick it up
+        await SiteSettingsService.update('logo_url', publicUrl)
+
+        return publicUrl
     }
 }

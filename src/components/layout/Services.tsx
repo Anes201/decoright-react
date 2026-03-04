@@ -9,7 +9,7 @@ import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { PCTALink, SCTALink } from '../ui/CTA';
 import { PATHS } from '@/routers/Paths';
-import { Cog, Photo } from '@/icons';
+import { Photo } from '@/icons';
 import { useImageLoaded } from '@/hooks/useImageLoaded';
 
 const dummyCardImg = "/living-room.png";
@@ -30,46 +30,55 @@ export function ServiceCardItem({ service }: { service: ServiceType }) {
     }
 
     return (
-        <li key={service.id} className="relative flex flex-col w-full h-full">
-
-            <div className="flex flex-col gap-3 px-3 ring-1 ring-muted/25 rounded-xl bg-surface overflow-hidden">
-                <div className="w-full aspect-4/3 border-t-0 border border-muted/25 rounded-b-lg overflow-clip">
-                    {service.image_url ?
+        <li key={service.id} className="relative flex flex-col w-full h-full group">
+            <div className="flex flex-col h-full ring-1 ring-muted/25 rounded-xl bg-surface overflow-hidden transition-all duration-300 hover:shadow-lg hover:ring-primary/25">
+                {/* Image Area */}
+                <div className="w-full aspect-4/3 overflow-hidden bg-muted/5">
+                    {service.image_url ? (
                         <>
-                            {!loaded &&
-                                <div className="flex w-full h-full items-center justify-center animate-[pulse_2s_ease-in-out_infinite]">
-                                    <Photo className="size-16" />
+                            {!loaded && (
+                                <div className="flex w-full h-full items-center justify-center animate-pulse">
+                                    <Photo className="size-12 text-muted/30" />
                                 </div>
-                            }
+                            )}
+                            <ZoomImage
+                                src={service.image_url || ""}
+                                alt={getLocalizedLabel(service)}
+                                loading="lazy"
+                                className={`w-full h-full object-cover ring-1 ring-muted/15 transition-all duration-500 ease-out group-hover:scale-105 ${
+                                    loaded ? 'opacity-100' : 'absolute opacity-0'
+                                } max-lg:pb-0 lg:pl-0`}
 
-                            <ZoomImage src={service.image_url || ""} alt="Service Image" loading="lazy"
-                                className={
-                                    `${loaded ? 'opacity-100' : 'absolute opacity-0'}
-                                    max-lg:pb-0 lg:pl-0 object-cover w-full h-full ring-1 ring-muted/15 max-lg:rounded-t-xl lg:rounded-s-xl transition-opacity duration-200 ease-out`
-                                }
                             />
                         </>
-                    :
-                        <div className="w-full h-full flex items-center justify-center opacity-10">
+                    ) : (
+                        <div className="w-full h-full flex items-center justify-center opacity-20">
                             <Photo className="size-12" />
                         </div>
-                    }
+                    )}
                 </div>
 
-                <div className="flex flex-col p-2 border-b-0 border border-muted/25 rounded-t-lg">
-                    <h3 className="text-lg font-medium mb-0.5"> {getLocalizedLabel(service)} </h3>
-                    <p className="text-2xs md:text-xs text-muted/75 pb-2"> {service.description} </p>
+                {/* Content Area */}
+                <div className="flex flex-col flex-1 p-5 gap-2">
+                    <h3 className="text-lg font-semibold text-foreground line-clamp-1">
+                        {getLocalizedLabel(service)}
+                    </h3>
+                    <p className="text-sm text-muted/75 line-clamp-2 min-h-[2.5rem]">
+                        {service.description}
+                    </p>
                 </div>
-            </div>
-            <div className="relative flex justify-center mx-3 max-md:mb-8">
-                <div className="relative top-0 flex p-3 w-full border-t-0 border border-muted/25 rounded-tl-none rounded-tr-none rounded-b-lg mt-auto">
-                    <SCTALink to={`${PATHS.CLIENT.REQUEST_SERVICE}?type=${service.id}`} className="w-full">
+
+                {/* Button Area */}
+                <div className="p-4 pt-0 mt-auto">
+                    <SCTALink
+                        to={`${PATHS.CLIENT.REQUEST_SERVICE}?type=${service.id}`}
+                        className="w-full justify-center py-2.5"
+                    >
                         {t("services.service_card_cta")}
                     </SCTALink>
                 </div>
             </div>
         </li>
-
     )
 }
 
@@ -136,8 +145,10 @@ export default function ServiceCardList() {
 
     if (loading) {
         return (
-            <div className="w-full flex justify-center py-20 text-muted">
-                <Cog className="size-10 animate-spin" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[...Array(6)].map((_, i) => (
+                    <div key={i} className="h-75 bg-gray-100 animate-pulse rounded-lg" />
+                ))}
             </div>
         )
     }
@@ -160,7 +171,7 @@ export default function ServiceCardList() {
 
     return (
         <>
-            <ul className="max-md:hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full h-full">
+            <ul className="max-md:hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full h-full">
                 {services.map((service) => (
                     <ServiceCardItem key={service.id} service={service} />
                 ))}

@@ -715,6 +715,38 @@ export type Database = {
                 }
                 Relationships: []
             }
+            space_type_images: {
+                Row: {
+                    id: string
+                    space_type_id: string
+                    image_url: string
+                    sort_order: number | null
+                    uploaded_at: string | null
+                }
+                Insert: {
+                    id?: string
+                    space_type_id: string
+                    image_url: string
+                    sort_order?: number | null
+                    uploaded_at?: string | null
+                }
+                Update: {
+                    id?: string
+                    space_type_id?: string
+                    image_url?: string
+                    sort_order?: number | null
+                    uploaded_at?: string | null
+                }
+                Relationships: [
+                    {
+                        foreignKeyName: "space_type_images_space_type_id_fkey"
+                        columns: ["space_type_id"]
+                        isOneToOne: false
+                        referencedRelation: "space_types"
+                        referencedColumns: ["id"]
+                    },
+                ]
+            }
             testimonials: {
                 Row: {
                     id: string
@@ -782,7 +814,7 @@ export type Database = {
             admin_action: "STATUS_CHANGE" | "PROJECT_PUBLISH" | "SETTINGS_UPDATE"
             contact_status: "NEW" | "READ" | "ARCHIVED"
             file_type_enum: "IMAGE" | "PDF" | "DOCUMENT" | "CAD" | "3D_MODEL"
-            message_type_enum: "TEXT" | "IMAGE" | "AUDIO" | "SYSTEM"
+            message_type_enum: "TEXT" | "IMAGE" | "AUDIO" | "VIDEO" | "FILE" | "SYSTEM"
             project_visibility: "PUBLIC" | "AUTHENTICATED_ONLY" | "HIDDEN"
             request_status:
                 | "Submitted"

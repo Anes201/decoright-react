@@ -5,16 +5,17 @@ import { adminMenuNav } from "@/constants/navigation"
 import { MenuCard } from "@components/ui/MenuCard"
 import { PATHS } from "@/routers/Paths"
 import { Chat, Home, Menu, Folder } from "@/icons";
+import { useUnreadCount } from "@/hooks/useUnreadCount";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
-
-const Logo = "/Logo.PNG";
 
 export function NavLogo() {
+    const { logoUrl } = useSiteSettings();
     return (
         <div className="md:hidden max-md:flex items-center gap-2 md:gap-4 min-w-max">
 
             <div className="content-center w-8 md:w-10 aspect-square">
-                <img src={Logo} alt="logo" height="40" width="40" className="w-full object-cover rounded-lg" loading="lazy" />
+                <img src={logoUrl} alt="logo" height="40" width="40" className="w-full object-cover rounded-lg" loading="lazy" />
             </div>
 
             <div className="flex flex-col">
@@ -56,6 +57,7 @@ export function NavMenuItems() {
 export function NavActions() {
 
     const [navMenuOpen, setNavMenuOpen] = useState(false);
+    const hasUnread = useUnreadCount();
 
     return (
 
@@ -71,10 +73,12 @@ export function NavActions() {
                 <Link to={PATHS.ADMIN.CHAT} title="Chat" className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface rounded-full">
                     <Chat className="size-5 md:size-6" />
 
-                    <span className="absolute flex size-3 top-0 left-0">
-                        <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
-                        <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
-                    </span>
+                    {hasUnread && (
+                        <span className="absolute flex size-3 top-0 left-0">
+                            <span className="absolute inline-flex h-full w-full animate-[ping_1.5s_infinite] rounded-full bg-primary/75"></span>
+                            <span className="relative inline-flex size-3 rounded-full bg-primary"></span>
+                        </span>
+                    )}
                 </Link>
 
                 {/* User Profile Nav Page */}

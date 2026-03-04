@@ -140,75 +140,48 @@ export default function ServiceTypeForm({ isOpen, serviceType, onClose, onSucces
                         </div>
                     )}
 
-                    {/* Name (Code) - Only visible in Edit mode */}
-                    {serviceType && (
-                        <div>
-                            <label className="block text-sm font-medium text-foreground mb-1">
-                                Code (Machine ID)
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.name}
-                                disabled
-                                className="w-full px-4 py-2 border border-muted/30 rounded-lg bg-surface/50 cursor-not-allowed font-mono text-muted"
-                            />
-                            <p className="text-xs text-muted mt-1">
-                                Code cannot be changed after creation
-                            </p>
-                        </div>
-                    )}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {/* English Display Name */}
-                        <div>
-                            <label className="block text-sm font-medium text-foreground mb-1">
-                                English Display Name <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.display_name_en}
-                                onChange={(e) => {
-                                    const val = e.target.value;
-                                    const updates: any = { display_name_en: val };
-                                    if (!serviceType) {
-                                        updates.name = val
-                                            .trimStart()
-                                            .replace(/[\s-]+/g, '_')
-                                            .toUpperCase()
-                                            .replace(/[^A-Z0-9_]/g, '');
-                                    }
-                                    setFormData({ ...formData, ...updates });
-                                }}
-                                placeholder="Interior Design"
-                                required
-                                className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
-                            />
-                            {!serviceType && formData.name && (
-                                <p className="text-xs text-muted mt-1.5 font-mono">
-                                    Generated Code: <span className="text-primary font-bold">{formData.name}</span>
-                                </p>
-                            )}
-                        </div>
+                    {/* English Display Name */}
+                    <div>
+                        <label className="block text-sm font-medium text-foreground mb-1">
+                            Title (English) <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            value={formData.display_name_en}
+                            onChange={(e) => setFormData({
+                                ...formData,
+                                display_name_en: e.target.value,
+                                name: e.target.value.toUpperCase().replace(/[\s-]/g, '_').replace(/[^A-Z_]/g, '')
+                            })}
+                            placeholder="Interior Design"
+                            required
+                            className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        />
+                        <p className="text-xs text-muted mt-1">
+                            Note: This field must be unique and cannot be changed after creation!
+                        </p>
+                    </div>
 
-                        {/* French Display Name */}
-                        <div>
-                            <label className="block text-sm font-medium text-foreground mb-1">
-                                French Display Name
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.display_name_fr}
-                                onChange={(e) => setFormData({ ...formData, display_name_fr: e.target.value })}
-                                placeholder="Design d'Intérieur"
-                                className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
-                            />
-                        </div>
+
+                    {/* French Display Name */}
+                    <div>
+                        <label className="block text-sm font-medium text-foreground mb-1">
+                            Title (French)
+                        </label>
+                        <input
+                            type="text"
+                            value={formData.display_name_fr}
+                            onChange={(e) => setFormData({ ...formData, display_name_fr: e.target.value })}
+                            placeholder="Design d'Intérieur"
+                            className="w-full px-4 py-2 border border-muted/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        />
                     </div>
 
                     {/* Arabic Display Name */}
                     <div>
                         <label className="block text-sm font-medium text-foreground mb-1">
-                            Arabic Display Name
+                            Title (Arabic)
                         </label>
                         <input
                             type="text"
@@ -296,8 +269,7 @@ export default function ServiceTypeForm({ isOpen, serviceType, onClose, onSucces
                         disabled={loading}
                         className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
                     >
-                        {(loading || uploading) && <Cog className="size-4 animate-spin" />}
-                        {uploading ? 'Uploading...' : serviceType ? 'Update' : 'Create'}
+                        {uploading ? 'Uploading...' : serviceType ? 'Update' : loading || uploading ? <> <Cog className="size-4 animate-spin text-white" /> Creating </> : 'Create'}
                     </button>
                 </div>
             </div>

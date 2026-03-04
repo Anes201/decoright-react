@@ -1,6 +1,6 @@
 
 /** ---- Types ---- */
-export type MessageType = 'TEXT' | 'IMAGE' | 'AUDIO' | 'SYSTEM';
+export type MessageType = 'TEXT' | 'IMAGE' | 'AUDIO' | 'VIDEO' | 'FILE' | 'SYSTEM';
 
 export type Message = {
   id: string;
@@ -35,6 +35,8 @@ export type ChatRoom = {
     service_types: {
       name: string;
       display_name_en: string;
+      display_name_ar?: string | null;
+      display_name_fr?: string | null;
     };
     profiles: {
       id: string;

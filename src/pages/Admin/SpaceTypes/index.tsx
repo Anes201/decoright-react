@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { SpaceTypesService, type SpaceType } from '@/services/space-types.service';
+import { SpaceTypesService, type SpaceTypeWithImages } from '@/services/space-types.service';
 import SpaceTypeTable from './SpaceTypeTable';
 import SpaceTypeForm from './SpaceTypeForm';
 import { ArrowPath, Cog, MagnifyingGlass, Plus } from '@/icons';
 
 export default function SpaceTypes() {
-    const [spaceTypes, setSpaceTypes] = useState<SpaceType[]>([]);
+    const [spaceTypes, setSpaceTypes] = useState<SpaceTypeWithImages[]>([]);
     const [loading, setLoading] = useState(true);
     const [isFormOpen, setIsFormOpen] = useState(false);
-    const [selectedSpaceType, setSelectedSpaceType] = useState<SpaceType | null>(null);
+    const [selectedSpaceType, setSelectedSpaceType] = useState<SpaceTypeWithImages | null>(null);
     const [search, setSearch] = useState('');
 
     const loadSpaceTypes = async () => {
@@ -38,7 +38,7 @@ export default function SpaceTypes() {
         setIsFormOpen(true);
     };
 
-    const handleEdit = (spaceType: SpaceType) => {
+    const handleEdit = (spaceType: SpaceTypeWithImages) => {
         setSelectedSpaceType(spaceType);
         setIsFormOpen(true);
     };
