@@ -8,11 +8,13 @@ import { Folder } from "@/icons";
 import { SiteSettingsService } from "@/services/site-settings.service";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 const STATIC_LOGO = "/Logo.PNG";
 
 export default function Settings() {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [settings, setSettings] = useState<Record<string, string>>({});
     const [initializing, setInitializing] = useState(true);
@@ -46,7 +48,7 @@ export default function Settings() {
                 SiteSettingsService.update(key, value)
             );
             await Promise.all(savePromises);
-            toast.success("Settings saved successfully!");
+            toast.success(t('admin.settings.saved_success'));
         } catch (error) {
             console.error("Failed to save settings:", error);
         } finally {
@@ -76,9 +78,9 @@ export default function Settings() {
             const url = await SiteSettingsService.uploadLogo(logoFile);
             setSettings(prev => ({ ...prev, logo_url: url }));
             setLogoFile(null);
-            toast.success("Logo updated successfully!");
+            toast.success(t('admin.settings.logo_updated'));
         } catch (err: any) {
-            toast.error(err.message || "Failed to upload logo");
+            toast.error(err.message || t('admin.settings.logo_upload_failed'));
         } finally {
             setLogoUploading(false);
         }
@@ -87,19 +89,19 @@ export default function Settings() {
     const currentLogoSrc = logoPreview ?? (settings['logo_url'] || STATIC_LOGO);
 
     if (initializing) {
-        return <div className="p-10 text-center text-muted">Loading settings...</div>;
+        return <div className="p-10 text-center text-muted">{t('admin.settings.loading')}</div>;
     }
 
     return (
         <main className="w-full">
             <section className="relative flex flex-col w-full px-4 md:px-8 py-6 space-y-6 mb-20">
                 <div className="flex max-md:flex-col md:justify-between md:items-end gap-2 w-full h-fit">
-                    <h1 className="font-semibold text-lg md:text-2xl"> Settings & Contacts </h1>
+                    <h1 className="font-semibold text-lg md:text-2xl"> {t('admin.settings.title')} </h1>
                 </div>
 
                 {/* Logo Upload */}
                 <div className="flex flex-col gap-3">
-                    <label className="font-medium text-xs text-muted mx-1"> Site Logo </label>
+                    <label className="font-medium text-xs text-muted mx-1"> {t('admin.settings.site_logo')} </label>
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                         {/* Preview */}
                         <div className="flex-shrink-0 w-20 h-20 rounded-xl border border-muted/20 bg-surface overflow-hidden flex items-center justify-center">
@@ -124,7 +126,7 @@ export default function Settings() {
                                 onClick={() => logoInputRef.current?.click()}
                                 className="min-w-[140px] text-sm"
                             >
-                                Choose Image
+                                {t('admin.settings.choose_image')}
                             </PButton>
                             {logoFile && (
                                 <PButton
@@ -133,10 +135,10 @@ export default function Settings() {
                                     onClick={handleLogoUpload}
                                     className="min-w-[140px] text-sm"
                                 >
-                                    <Spinner status={logoUploading} size="sm"> Upload Logo </Spinner>
+                                    <Spinner status={logoUploading} size="sm"> {t('admin.settings.upload_logo')} </Spinner>
                                 </PButton>
                             )}
-                            <p className="text-2xs text-muted">PNG, JPG, WebP or SVG — max 2 MB</p>
+                            <p className="text-2xs text-muted">{t('admin.settings.logo_hint')}</p>
                         </div>
                     </div>
                 </div>
@@ -147,7 +149,7 @@ export default function Settings() {
 
                             <div className="flex flex-col gap-4 h-full">
                                 <div className="flex flex-col gap-2">
-                                    <label className="font-medium text-xs text-muted mx-1"> Email Addresses </label>
+                                    <label className="font-medium text-xs text-muted mx-1"> {t('admin.settings.email_addresses')} </label>
                                     <div className="flex flex-col gap-2">
                                         <EmailInput
                                             id="primary_email"
@@ -165,7 +167,7 @@ export default function Settings() {
                                 </div>
 
                                 <div className="flex flex-col gap-2">
-                                    <label className="font-medium text-xs text-muted mx-1"> Phone numbers </label>
+                                    <label className="font-medium text-xs text-muted mx-1"> {t('admin.settings.phone_numbers')} </label>
                                     <div className="flex flex-col gap-2">
                                         <PhoneInput
                                             id="primary_phone"
@@ -177,7 +179,7 @@ export default function Settings() {
                                 </div>
 
                                 <div className="flex flex-col gap-2">
-                                    <label className="font-medium text-xs text-muted mx-1"> Location </label>
+                                    <label className="font-medium text-xs text-muted mx-1"> {t('admin.settings.location')} </label>
                                     <div className="flex flex-col gap-2">
                                         <Input
                                             id="google_maps_url"
@@ -194,7 +196,7 @@ export default function Settings() {
                 </div>
 
                 <div className="flex flex-col gap-2 md:gap-4 w-full">
-                    <h2 className="font-medium text-sm"> Social Media </h2>
+                    <h2 className="font-medium text-sm"> {t('admin.settings.social_media')} </h2>
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
                             {SocialMediaUrlFields.map((social: any) => (
@@ -233,10 +235,10 @@ export default function Settings() {
                 <div className="flex gap-4">
                     <PButton type="button" disabled={loading} className="min-w-[120px]"
                     onClick={handleSubmit}>
-                        <Spinner status={loading} size="sm"> Save Changes </Spinner>
+                        <Spinner status={loading} size="sm"> {t('admin.settings.save_changes')} </Spinner>
                     </PButton>
 
-                    <SCTALink to={handleGoBack}> Cancel </SCTALink>
+                    <SCTALink to={handleGoBack}> {t('admin.settings.cancel')} </SCTALink>
                 </div>
             </section>
         </main >

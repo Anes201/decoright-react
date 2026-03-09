@@ -142,11 +142,9 @@ export default function FAQList() {
               <hr className="absolute top-0 start-8 h-full border-0 border-s border-muted/25 -z-10 pointer-events-none" />
               <hr className="absolute top-0 end-8 h-full border-0 border-e border-muted/25 -z-10 pointer-events-none" />
               {[...Array(5)].map((_, i) => (
-                  <>
-                      <div key={i} className="relative flex items-center justify-end p-5 bg-surface rounded-lg ring-1 ring-muted/15">
-                          <ChevronDown className="size-6 text-muted/75" />
-                      </div>
-                  </>
+                  <div key={i} className="relative flex items-center justify-end p-5 bg-surface rounded-lg ring-1 ring-muted/15">
+                      <ChevronDown className="size-6 text-muted/75" />
+                  </div>
               ))}
           </div>
         );

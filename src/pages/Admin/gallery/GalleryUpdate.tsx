@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import Spinner from "@/components/common/Spinner";
 import GalleryForm from "@/components/layout/admin/gallery/GalleryForm";
 import toast from "react-hot-toast";
@@ -10,15 +11,16 @@ import { Trash, ChevronRight } from "@/icons";
 
 
 function DeleteButton({ id }: { id: string }) {
+    const { t } = useTranslation();
     const confirm = useConfirm();
     const navigate = useNavigate();
     const [deleting, setDeleting] = useState(false);
 
     const handleDelete = async () => {
         const isConfirmed = await confirm({
-            title: "Delete Gallery Item",
-            description: "Are you sure you want to delete this showcase item? This action cannot be undone.",
-            confirmText: "Delete Item",
+            title: t('admin.gallery.confirm_delete_title'),
+            description: t('admin.gallery.confirm_delete_desc'),
+            confirmText: t('admin.gallery.confirm_delete_btn'),
             variant: "destructive"
         });
 
@@ -27,11 +29,11 @@ function DeleteButton({ id }: { id: string }) {
         setDeleting(true);
         try {
             await AdminService.deleteGalleryItem(id);
-            toast.success("Gallery item deleted successfully");
+            toast.success(t('admin.gallery.delete_success'));
             navigate(PATHS.ADMIN.GALLERY_LIST);
         } catch (error) {
             console.error("Delete failed:", error);
-            toast.error("Failed to delete item");
+            toast.error(t('admin.gallery.delete_failed'));
         } finally {
             setDeleting(false);
         }
@@ -45,12 +47,13 @@ function DeleteButton({ id }: { id: string }) {
             className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-50 rounded-lg transition-colors border border-red-200"
         >
             {deleting ? <Spinner status={true} size="sm" /> : <Trash className="size-4" />}
-            Delete
+            {t('admin.gallery.delete_btn')}
         </button>
     );
 }
 
 export default function GalleryUpdatePage() {
+    const { t } = useTranslation();
     const { id } = useParams();
     const [item, setItem] = useState<GalleryItem | null>(null);
     const [loading, setLoading] = useState(true);
@@ -63,14 +66,14 @@ export default function GalleryUpdatePage() {
                 setItem(data);
             } catch (error) {
                 console.error("Failed to fetch gallery item:", error);
-                toast.error("Failed to load gallery item.");
+                toast.error(t('admin.gallery.load_failed'));
             } finally {
                 setLoading(false);
             }
         };
 
         fetchItem();
-    }, [id]);
+    }, [id, t]);
 
     if (loading) {
         return (
@@ -83,8 +86,8 @@ export default function GalleryUpdatePage() {
     if (!item) {
         return (
             <div className="flex flex-col items-center justify-center p-20 text-center">
-                <h3 className="font-semibold text-lg">Item Not Found</h3>
-                <p className="text-sm text-muted">The gallery item you are looking for does not exist.</p>
+                <h3 className="font-semibold text-lg">{t('admin.gallery.not_found_title')}</h3>
+                <p className="text-sm text-muted">{t('admin.gallery.not_found_sub')}</p>
             </div>
         );
     }
@@ -97,12 +100,12 @@ export default function GalleryUpdatePage() {
                         <div className="flex items-center justify-between gap-4">
                             <div className="flex flex-col gap-1">
                                 <div className="flex items-center gap-2 text-muted mb-2">
-                                    <Link to={PATHS.ADMIN.GALLERY_LIST} className="hover:text-primary transition-colors">Gallery</Link>
+                                    <Link to={PATHS.ADMIN.GALLERY_LIST} className="hover:text-primary transition-colors">{t('admin.gallery.breadcrumb_gallery')}</Link>
                                     <ChevronRight className="size-3" />
-                                    <span>Edit</span>
+                                    <span>{t('admin.gallery.breadcrumb_edit')}</span>
                                 </div>
-                                <h1 className="font-bold text-2xl tracking-tight">Edit Gallery Item</h1>
-                                <p className="text-sm text-muted">Update your marketing showcase item details and imagery.</p>
+                                <h1 className="font-bold text-2xl tracking-tight">{t('admin.gallery.edit_title')}</h1>
+                                <p className="text-sm text-muted">{t('admin.gallery.edit_subtitle')}</p>
                             </div>
 
                             <DeleteButton id={item.id} />

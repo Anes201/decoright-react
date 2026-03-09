@@ -1,4 +1,5 @@
 
+import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import { adminMenuNav } from "@/constants/navigation"
@@ -10,6 +11,7 @@ import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 
 export function NavLogo() {
+    const { t } = useTranslation();
     const { logoUrl } = useSiteSettings();
     return (
         <div className="md:hidden max-md:flex items-center gap-2 md:gap-4 min-w-max">
@@ -19,9 +21,9 @@ export function NavLogo() {
             </div>
 
             <div className="flex flex-col">
-                <h3 className="text-sm md:text-base font-medium"> Deco Right </h3>
-                <span className="text-3xs md:text-2xs text-muted hover:text-foreground" title="Decor agency">
-                    Decor agency
+                <h3 className="text-sm md:text-base font-medium">{t('admin.nav.brand_name')}</h3>
+                <span className="text-3xs md:text-2xs text-muted hover:text-foreground" title={t('admin.nav.decor_agency')}>
+                    {t('admin.nav.decor_agency')}
                 </span>
             </div>
         </div>
@@ -55,7 +57,7 @@ export function NavMenuItems() {
 }
 
 export function NavActions() {
-
+    const { t } = useTranslation();
     const [navMenuOpen, setNavMenuOpen] = useState(false);
     const hasUnread = useUnreadCount();
 
@@ -65,12 +67,12 @@ export function NavActions() {
             <div className="flex items-center gap-2 md:gap-4">
 
                 {/* Request Project */}
-                <Link to={PATHS.ADMIN.PROJECT_CREATE} title="Create a Project" className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface rounded-full">
-                    Create a Project
+                <Link to={PATHS.ADMIN.PROJECT_CREATE} title={t('admin.nav.create_project')} className="max-md:hidden content-center p-2.5 min-w-max font-medium text-sm border border-muted/15 bg-surface rounded-full">
+                    {t('admin.nav.create_project')}
                 </Link>
 
                 {/* Chat Link */}
-                <Link to={PATHS.ADMIN.CHAT} title="Chat" className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface rounded-full">
+                <Link to={PATHS.ADMIN.CHAT} title={t('nav.chats')} className="relative content-center p-2 border border-primary/45 border-muted/15 bg-surface rounded-full">
                     <Chat className="size-5 md:size-6" />
 
                     {hasUnread && (
@@ -82,19 +84,19 @@ export function NavActions() {
                 </Link>
 
                 {/* User Profile Nav Page */}
-                <Link to={PATHS.CLIENT.ROOT} title="Client Home Page" className="max-md:hidden content-center p-2 border border-muted/15 bg-surface rounded-full">
+                <Link to={PATHS.CLIENT.ROOT} title={t('admin.nav.go_to_website')} className="max-md:hidden content-center p-2 border border-muted/15 bg-surface rounded-full">
                     <Home className="size-5 md:size-6" />
                 </Link>
 
                 {/* Menu Trigger */}
-                <button type="button" title="Menu" className="md:hidden content-center p-2 border border-muted/15 bg-surface rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>
+                <button type="button" title={t('admin.nav.menu')} className="md:hidden content-center p-2 border border-muted/15 bg-surface rounded-full" onClick={() => setNavMenuOpen(!navMenuOpen)}>
                     <Menu className="size-5 md:size-6" />
                 </button>
             </div>
 
             {/* Mobile Nav Menu Card Overlay */}
             {navMenuOpen &&
-                <MenuCard title={'Menu'} open={navMenuOpen} setOpen={setNavMenuOpen}>
+                <MenuCard title={t('admin.nav.menu')} open={navMenuOpen} setOpen={setNavMenuOpen}>
                     <ul className="flex flex-col w-full h-full gap-2 border border-muted/15 p-2 rounded-lg overflow-auto">
                         <li className="w-full">
                             <Link
@@ -103,7 +105,7 @@ export function NavActions() {
                                 className="flex items-center gap-2 w-full p-2 border-b border-muted/15"
                             >
                                 <Home className="size-4 text-muted" />
-                                <h3 className="font-medium text-sm">Go to Website</h3>
+                                <h3 className="font-medium text-sm">{t('admin.nav.go_to_website')}</h3>
                             </Link>
                         </li>
                         <NavMenuItems />
@@ -129,7 +131,6 @@ export default function DashboardNavBar() {
 
     )
 }
-
 
 
 

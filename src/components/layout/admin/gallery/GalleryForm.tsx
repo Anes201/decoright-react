@@ -3,6 +3,7 @@ import Spinner from "@/components/common/Spinner";
 import ProgressBar from "@/components/ui/ProgressBar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { PButton } from "@/components/ui/Button";
 import { SelectMenu } from "@/components/ui/Select";
 import { projectVisibilityStags } from "@/constants";
@@ -18,6 +19,7 @@ interface GalleryFormProps {
 
 export default function GalleryForm({ initialData, isEdit = false }: GalleryFormProps) {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         title: initialData?.title || "",
@@ -63,12 +65,12 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
             (afterUpload.files.length > 0 && afterStatus === 'idle');
 
         if (isUploading || isIdle) {
-            toast.error("Please wait for images to finish uploading.");
+            toast.error(t('admin.gallery.form_images_uploading'));
             return;
         }
 
         if (isFailed) {
-            toast.error("Some images failed to upload. Please retry or re-select them.");
+            toast.error(t('admin.gallery.form_images_failed'));
             return;
         }
 
@@ -76,7 +78,7 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
         const after_url = afterUpload.files[0]?.url || initialAfterUrl;
 
         if (!before_url || !after_url) {
-            toast.error("Both 'Before' and 'After' images are required.");
+            toast.error(t('admin.gallery.form_both_required'));
             return;
         }
 
@@ -92,16 +94,16 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
 
             if (isEdit && initialData) {
                 await AdminService.updateGalleryItem(initialData.id, payload);
-                toast.success("Gallery item updated successfully!");
+                toast.success(t('admin.gallery.form_save_success_update'));
             } else {
                 await AdminService.createGalleryItem(payload);
-                toast.success("Gallery item created successfully!");
+                toast.success(t('admin.gallery.form_save_success_create'));
             }
 
             navigate(PATHS.ADMIN.GALLERY_LIST);
         } catch (error: any) {
             console.error("Failed to save gallery item:", error);
-            toast.error(error?.message || "Failed to save gallery item.");
+            toast.error(error?.message || t('admin.gallery.form_save_failed'));
         } finally {
             setLoading(false);
         }
@@ -111,7 +113,7 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
         <form onSubmit={handleSubmit} className="flex flex-col gap-10">
             <div className="flex flex-col gap-8">
                 <div className="flex flex-col gap-2">
-                    <label className="font-medium text-xs text-muted px-1"> Title </label>
+                    <label className="font-medium text-xs text-muted px-1"> {t('admin.gallery.form_title')} </label>
                     <input
                         type="text"
                         value={formData.title}
@@ -123,29 +125,29 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
                 </div>
 
                 <div className="flex flex-col gap-2">
-                    <label className="font-medium text-xs text-muted px-1"> Title (Arabic) </label>
+                    <label className="font-medium text-xs text-muted px-1"> {t('admin.gallery.form_title_ar')} </label>
                     <input
                         type="text"
                         value={(formData as any).title_ar}
                         onChange={(e) => setFormData({ ...formData, title_ar: e.target.value } as any)}
-                        placeholder="العنوان بالعربية"
+                        placeholder="\u0627\u0644\u0639\u0646\u0648\u0627\u0646 \u0628\u0627\u0644\u0639\u0631\u0628\u064a\u0629"
                         className="w-full p-2.5 text-sm text-muted bg-emphasis/75 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 text-right"
                         dir="rtl"
                     />
                 </div>
                 <div className="flex flex-col gap-2">
-                    <label className="font-medium text-xs text-muted px-1"> Title (French) </label>
+                    <label className="font-medium text-xs text-muted px-1"> {t('admin.gallery.form_title_fr')} </label>
                     <input
                         type="text"
                         value={(formData as any).title_fr}
                         onChange={(e) => setFormData({ ...formData, title_fr: e.target.value } as any)}
-                        placeholder="Titre en français"
+                        placeholder="Titre en fran\u00e7ais"
                         className="w-full p-2.5 text-sm text-muted bg-emphasis/75 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45"
                     />
                 </div>
 
                 <div className="flex flex-col gap-2">
-                    <label className="font-medium text-xs text-muted px-1"> Description </label>
+                    <label className="font-medium text-xs text-muted px-1"> {t('admin.gallery.form_description')} </label>
                     <textarea
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -156,29 +158,29 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
                 </div>
 
                 <div className="flex flex-col gap-2">
-                    <label className="font-medium text-xs text-muted px-1"> Description (Arabic) </label>
+                    <label className="font-medium text-xs text-muted px-1"> {t('admin.gallery.form_description_ar')} </label>
                     <textarea
                         value={(formData as any).description_ar}
                         onChange={(e) => setFormData({ ...formData, description_ar: e.target.value } as any)}
                         rows={4}
-                        placeholder="الوصف بالعربية..."
+                        placeholder="\u0627\u0644\u0648\u0635\u0641 \u0628\u0627\u0644\u0639\u0631\u0628\u064a\u0629..."
                         className="w-full p-2.5 text-sm bg-emphasis/75 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 text-right"
                         dir="rtl"
                     />
                 </div>
                 <div className="flex flex-col gap-2">
-                    <label className="font-medium text-xs text-muted px-1"> Description (French) </label>
+                    <label className="font-medium text-xs text-muted px-1"> {t('admin.gallery.form_description_fr')} </label>
                     <textarea
                         value={(formData as any).description_fr}
                         onChange={(e) => setFormData({ ...formData, description_fr: e.target.value } as any)}
                         rows={4}
-                        placeholder="Description en français..."
+                        placeholder="Description en fran\u00e7ais..."
                         className="w-full p-2.5 text-sm bg-emphasis/75 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45"
                     />
                 </div>
 
                 <div className="flex flex-col gap-2">
-                    <label className="font-medium text-xs text-muted px-1"> Visibility </label>
+                    <label className="font-medium text-xs text-muted px-1"> {t('admin.gallery.form_visibility')} </label>
                     <SelectMenu
                         options={projectVisibilityStags}
                         value={projectVisibilityStags.find((v: any) => v.value === formData.visibility)}
@@ -192,9 +194,9 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
                     {/* Before Image */}
                     <div className="flex flex-col gap-2 border border-muted/15 bg-surface rounded-lg p-4">
                         <div className="flex justify-between items-center mb-4">
-                            <span className="text-sm font-medium">Before Image</span>
+                            <span className="text-sm font-medium">{t('admin.gallery.form_before_image')}</span>
                             <label className="cursor-pointer bg-emphasis px-3 py-1.5 rounded-md text-xs border border-muted/25 hover:bg-emphasis/80 transition-all">
-                                Upload
+                                {t('admin.gallery.form_upload')}
                                 <input type="file" className="hidden" accept="image/*" onChange={(e) => onFileChange(e, 'before')} />
                             </label>
                         </div>
@@ -227,7 +229,7 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
                         ) : (
                             <div className="aspect-video rounded-lg border-2 border-dashed border-muted/10 flex flex-col items-center justify-center text-muted">
                                 <Photo className="size-8 mb-2 opacity-20" />
-                                <span className="text-3xs uppercase tracking-widest font-bold">No Image selected</span>
+                                <span className="text-3xs uppercase tracking-widest font-bold">{t('admin.gallery.form_no_image')}</span>
                             </div>
                         )}
                     </div>
@@ -235,9 +237,9 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
                     {/* After Image */}
                     <div className="flex flex-col gap-2 border border-muted/15 bg-surface rounded-lg p-4">
                         <div className="flex justify-between items-center mb-4">
-                            <span className="text-sm font-medium">After Image</span>
+                            <span className="text-sm font-medium">{t('admin.gallery.form_after_image')}</span>
                             <label className="cursor-pointer bg-emphasis px-3 py-1.5 rounded-md text-xs border border-muted/25 hover:bg-emphasis/80 transition-all">
-                                Upload
+                                {t('admin.gallery.form_upload')}
                                 <input type="file" className="hidden" accept="image/*" onChange={(e) => onFileChange(e, 'after')} />
                             </label>
                         </div>
@@ -270,7 +272,7 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
                         ) : (
                             <div className="aspect-video rounded-lg border-2 border-dashed border-muted/10 flex flex-col items-center justify-center text-muted">
                                 <Photo className="size-8 mb-2 opacity-20" />
-                                <span className="text-3xs uppercase tracking-widest font-bold">No Image selected</span>
+                                <span className="text-3xs uppercase tracking-widest font-bold">{t('admin.gallery.form_no_image')}</span>
                             </div>
                         )}
                     </div>
@@ -279,14 +281,14 @@ export default function GalleryForm({ initialData, isEdit = false }: GalleryForm
 
             <div className="flex gap-4 border-t border-muted/10 pt-8 pb-32">
                 <PButton type="submit" disabled={loading} className="min-w-[150px]">
-                    <Spinner status={loading} size="sm"> {isEdit ? "Update Item" : "Create Item"} </Spinner>
+                    <Spinner status={loading} size="sm"> {isEdit ? t('admin.gallery.form_submit_update') : t('admin.gallery.form_submit_create')} </Spinner>
                 </PButton>
                 <button
                     type="button"
                     onClick={() => navigate(PATHS.ADMIN.GALLERY_LIST)}
                     className="p-button-ghost"
                 >
-                    Cancel
+                    {t('admin.gallery.form_cancel')}
                 </button>
             </div>
         </form>

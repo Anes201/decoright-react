@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { PButton, SButton } from "@/components/ui/Button";
 import FileUploadPanel from "@/components/ui/FileUploadPanel";
 import { DateInput } from "@/components/ui/Input";
@@ -23,6 +24,7 @@ interface ProjectFormProps {
 
 export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFormProps) {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [fetchingOptions, setFetchingOptions] = useState(true);
     const [serviceTypes, setServiceTypes] = useState<ServiceType[]>([]);
@@ -48,7 +50,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                 setSpaceTypes(spaces);
             } catch (error) {
                 console.error("Failed to fetch form options:", error);
-                toast.error("Failed to load form options.");
+                toast.error(t('admin.projects.form_options_failed'));
             } finally {
                 setFetchingOptions(false);
             }
@@ -96,13 +98,13 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             const failed = files.some(f => f.status === 'failed');
 
             if (uploading) {
-                toast.error("Please wait for all images to finish uploading.");
+                toast.error(t('admin.projects.form_images_uploading'));
                 setLoading(false);
                 return;
             }
 
             if (failed) {
-                toast.error("Some images failed to upload. Please retry or remove them.");
+                toast.error(t('admin.projects.form_images_failed'));
                 setLoading(false);
                 return;
             }
@@ -134,13 +136,13 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             if (project) {
                 await AdminService.updateProject(project.id, projectData);
                 await AdminService.addProjectImages(project.id, imageUrls, true);
-                toast.success("Project updated successfully!");
+                toast.success(t('admin.projects.form_save_success_update'));
             } else {
                 const newProject = await AdminService.createProject(projectData);
                 if (imageUrls.length > 0) {
                     await AdminService.addProjectImages(newProject.id, imageUrls);
                 }
-                toast.success("Project created successfully!");
+                toast.success(t('admin.projects.form_save_success_create'));
             }
 
             if (onSuccess) {
@@ -150,7 +152,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             }
         } catch (error) {
             console.error("Failed to save project:", error);
-            toast.error("Failed to save project.");
+            toast.error(t('admin.projects.form_save_failed'));
         } finally {
             setLoading(false);
         }
@@ -159,13 +161,14 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
     function DeleteButton({ id }: { id: string }) {
         const confirm = useConfirm();
         const navigate = useNavigate();
+        const { t } = useTranslation();
         const [deleting, setDeleting] = useState(false);
 
         const handleDelete = async () => {
             const isConfirmed = await confirm({
-                title: "Delete Project",
-                description: "Are you sure you want to delete this project? This action cannot be undone.",
-                confirmText: "Delete Project",
+                title: t('admin.projects.form_confirm_delete_title'),
+                description: t('admin.projects.form_confirm_delete_desc'),
+                confirmText: t('admin.projects.form_confirm_delete_btn'),
                 variant: "destructive"
             });
 
@@ -174,11 +177,11 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             setDeleting(true);
             try {
                 await AdminService.deleteProject(id);
-                toast.success("Project deleted successfully");
+                toast.success(t('admin.projects.form_delete_success'));
                 navigate(PATHS.ADMIN.PROJECT_LIST);
             } catch (error) {
                 console.error("Delete failed:", error);
-                toast.error("Failed to delete project");
+                toast.error(t('admin.projects.form_delete_failed'));
             } finally {
                 setDeleting(false);
             }
@@ -192,7 +195,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                 className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-danger rounded-lg transition-colors hover:bg-danger/80 disabled:cursor-not-allowed disabled:bg-danger/50"
             >
                 {deleting ? <Spinner status={true} size="sm" /> : <Trash className="size-4 text-white" />}
-                Delete
+                {t('admin.projects.form_confirm_delete_btn')}
             </button>
         );
     }
@@ -206,7 +209,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col gap-2">
-                        <label htmlFor="project-title" className="font-medium text-xs text-muted px-1"> Title </label>
+                        <label htmlFor="project-title" className="font-medium text-xs text-muted px-1"> {t('admin.projects.form_title')} </label>
                         <input
                             type="text"
                             name="project-title"
@@ -219,16 +222,16 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        <label htmlFor="title_ar" className="font-medium text-xs text-muted px-1"> Title (Arabic) </label>
-                        <input type="text" name="title_ar" id="title_ar" defaultValue={project?.title_ar} placeholder="العنوان بالعربية" className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 text-right" dir="rtl" />
+                        <label htmlFor="title_ar" className="font-medium text-xs text-muted px-1"> {t('admin.projects.form_title_ar')} </label>
+                        <input type="text" name="title_ar" id="title_ar" defaultValue={project?.title_ar} placeholder="\u0627\u0644\u0639\u0646\u0648\u0627\u0646 \u0628\u0627\u0644\u0639\u0631\u0628\u064a\u0629" className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 text-right" dir="rtl" />
                     </div>
                     <div className="flex flex-col gap-2">
-                        <label htmlFor="title_fr" className="font-medium text-xs text-muted px-1"> Title (French) </label>
-                        <input type="text" name="title_fr" id="title_fr" defaultValue={project?.title_fr} placeholder="Titre en français" className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45" />
+                        <label htmlFor="title_fr" className="font-medium text-xs text-muted px-1"> {t('admin.projects.form_title_fr')} </label>
+                        <input type="text" name="title_fr" id="title_fr" defaultValue={project?.title_fr} placeholder="Titre en fran\u00e7ais" className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45" />
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        <label htmlFor="project-location" className="font-medium text-xs text-muted px-1"> Location </label>
+                        <label htmlFor="project-location" className="font-medium text-xs text-muted px-1"> {t('admin.projects.form_location')} </label>
                         <input
                             type="text"
                             name="project-location"
@@ -241,16 +244,16 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        <label htmlFor="location_ar" className="font-medium text-xs text-muted px-1"> Location (Arabic) </label>
-                        <input type="text" name="location_ar" id="location_ar" defaultValue={project?.location_ar} placeholder="الموقع بالعربية" className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 text-right" dir="rtl" />
+                        <label htmlFor="location_ar" className="font-medium text-xs text-muted px-1"> {t('admin.projects.form_location_ar')} </label>
+                        <input type="text" name="location_ar" id="location_ar" defaultValue={project?.location_ar} placeholder="\u0627\u0644\u0645\u0648\u0642\u0639 \u0628\u0627\u0644\u0639\u0631\u0628\u064a\u0629" className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 text-right" dir="rtl" />
                     </div>
                     <div className="flex flex-col gap-2">
-                        <label htmlFor="location_fr" className="font-medium text-xs text-muted px-1"> Location (French) </label>
-                        <input type="text" name="location_fr" id="location_fr" defaultValue={project?.location_fr} placeholder="Lieu en français" className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45" />
+                        <label htmlFor="location_fr" className="font-medium text-xs text-muted px-1"> {t('admin.projects.form_location_fr')} </label>
+                        <input type="text" name="location_fr" id="location_fr" defaultValue={project?.location_fr} placeholder="Lieu en fran\u00e7ais" className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45" />
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        <label htmlFor="project-description" className="font-medium text-xs text-muted px-1"> Description </label>
+                        <label htmlFor="project-description" className="font-medium text-xs text-muted px-1"> {t('admin.projects.form_description')} </label>
                         <textarea
                             name="description"
                             id="project-description"
@@ -263,17 +266,17 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        <label htmlFor="description_ar" className="font-medium text-xs text-muted px-1"> Description (Arabic) </label>
-                        <textarea name="description_ar" id="description_ar" rows={4} defaultValue={project?.description_ar} placeholder="الوصف بالعربية..." className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 resize-none text-right" dir="rtl" />
+                        <label htmlFor="description_ar" className="font-medium text-xs text-muted px-1"> {t('admin.projects.form_description_ar')} </label>
+                        <textarea name="description_ar" id="description_ar" rows={4} defaultValue={project?.description_ar} placeholder="\u0627\u0644\u0648\u0635\u0641 \u0628\u0627\u0644\u0639\u0631\u0628\u064a\u0629..." className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 resize-none text-right" dir="rtl" />
                     </div>
                     <div className="flex flex-col gap-2">
-                        <label htmlFor="description_fr" className="font-medium text-xs text-muted px-1"> Description (French) </label>
-                        <textarea name="description_fr" id="description_fr" rows={4} defaultValue={project?.description_fr} placeholder="Description en français..." className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 resize-none" />
+                        <label htmlFor="description_fr" className="font-medium text-xs text-muted px-1"> {t('admin.projects.form_description_fr')} </label>
+                        <textarea name="description_fr" id="description_fr" rows={4} defaultValue={project?.description_fr} placeholder="Description en fran\u00e7ais..." className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45 resize-none" />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col gap-2">
-                            <label className="font-medium text-xs text-muted px-1"> Service Type </label>
+                            <label className="font-medium text-xs text-muted px-1"> {t('admin.projects.form_service_type')} </label>
                             <SelectMenu
                                 options={serviceTypes.map(s => ({ label: s.display_name_en, value: s.id }))}
                                 defaultValue={project ? { label: project.service_types?.display_name_en, value: project.service_type_id } : undefined}
@@ -284,7 +287,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <label className="font-medium text-xs text-muted px-1"> Space Category </label>
+                            <label className="font-medium text-xs text-muted px-1"> {t('admin.projects.form_space_category')} </label>
                             <SelectMenu
                                 options={spaceTypes.map(s => ({ label: s.display_name_en, value: s.id }))}
                                 defaultValue={project ? { label: project.space_types?.display_name_en, value: project.space_type_id } : undefined}
@@ -298,7 +301,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
 
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col gap-2">
-                        <label className="font-medium text-xs text-muted px-1"> Visibility </label>
+                        <label className="font-medium text-xs text-muted px-1"> {t('admin.projects.form_visibility')} </label>
                         <SelectMenu
                             options={projectVisibilityStags}
                             defaultValue={projectVisibilityStags.find((v: any) => v.value.toUpperCase() === (project?.visibility || 'public').toUpperCase())}
@@ -309,19 +312,19 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        <label className="font-medium text-xs text-muted px-1"> Area Dimensions (m) </label>
+                        <label className="font-medium text-xs text-muted px-1"> {t('admin.projects.form_dimensions')} </label>
                         <div className="flex gap-4">
                             <input
                                 type="number"
                                 name="project-area-width"
-                                placeholder="Width"
+                                placeholder={t('admin.projects.form_width')}
                                 defaultValue={project?.width}
                                 className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45"
                             />
                             <input
                                 type="number"
                                 name="project-area-height"
-                                placeholder="Height"
+                                placeholder={t('admin.projects.form_height')}
                                 defaultValue={project?.height}
                                 className="w-full p-2.5 text-sm text-heading bg-emphasis/50 rounded-lg outline-1 outline-muted/15 focus:outline-primary/45"
                             />
@@ -330,7 +333,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col gap-2">
-                            <label className="font-medium text-xs text-muted px-1"> Start Date </label>
+                            <label className="font-medium text-xs text-muted px-1"> {t('admin.projects.form_start_date')} </label>
                             <DateInput
                                 name="project-construction-start-date"
                                 defaultValue={project?.construction_start_date}
@@ -338,7 +341,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                             />
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label className="font-medium text-xs text-muted px-1"> Finish Date </label>
+                            <label className="font-medium text-xs text-muted px-1"> {t('admin.projects.form_finish_date')} </label>
                             <DateInput
                                 name="project-construction-end-date"
                                 defaultValue={project?.construction_end_date}
@@ -354,13 +357,13 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             <div className="flex gap-4 border-t border-muted/10 pt-8">
                 <div className="flex gap-4">
                     <PButton type="submit" disabled={loading} className="min-w-[150px]">
-                        <Spinner status={loading} size="sm"> {project ? "Update Project" : "Create Project"} </Spinner>
+                        <Spinner status={loading} size="sm"> {project ? t('admin.projects.form_submit_update') : t('admin.projects.form_submit_create')} </Spinner>
                     </PButton>
                     <SButton
                         type="button"
                         onClick={() => onCancel ? onCancel() : navigate(PATHS.ADMIN.PROJECT_LIST)}
                     >
-                        Cancel
+                        {t('admin.projects.form_cancel')}
                     </SButton>
                 </div>
                 {project &&

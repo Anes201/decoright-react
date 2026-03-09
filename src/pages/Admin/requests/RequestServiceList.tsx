@@ -2,8 +2,10 @@ import RequestServiceTable from "@components/layout/admin/RequestServiceTable";
 import { useState, useEffect } from 'react';
 import { AdminService } from "@/services/admin.service";
 import { Cog } from "@/icons";
+import { useTranslation } from "react-i18next";
 
 export default function RequestServiceList() {
+    const { t } = useTranslation();
     const [requests, setRequests] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -37,17 +39,17 @@ export default function RequestServiceList() {
             <section className="flex flex-col pt-4 md:pt-6 w-full h-full mb-40">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                     <div>
-                        <h1 className="font-medium text-xl md:text-2xl text-heading tracking-tight"> Request Management </h1>
-                        <p className="text-sm text-muted mt-1">Manage and track service requests through their lifecycle.</p>
+                        <h1 className="font-medium text-xl md:text-2xl text-heading tracking-tight">{t('admin.requests.title')}</h1>
+                        <p className="text-sm text-muted mt-1">{t('admin.requests.subtitle')}</p>
                     </div>
                 </div>
 
                 {/* Main Content Area */}
-                <div >
+                <div>
                     {loading && requests.length === 0 ? (
                         <div className="h-full flex flex-col items-center justify-center text-muted animate-pulse">
                             <Cog className="size-12 animate-spin mb-4" />
-                            <p className="font-medium">Initializing workspace...</p>
+                            <p className="font-medium">{t('admin.requests.initializing')}</p>
                         </div>
                     ) : (
                         <RequestServiceTable

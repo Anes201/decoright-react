@@ -3,12 +3,14 @@ import toast from "react-hot-toast";
 import Spinner from "@/components/common/Spinner";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { PATHS } from "@/routers/Paths";
 import { AdminService, type GalleryItem } from "@/services/admin.service";
 import { useConfirm } from "@/components/confirm";
 import { Photo, Plus, PencilSquare, Trash } from "@/icons";
 
 export function GalleryItemRow({ item, onDelete }: { item: GalleryItem, onDelete: (id: string) => void }) {
+    const { t } = useTranslation();
     return (
         <li className="flex flex-col gap-3 p-4 border border-muted/15 bg-surface rounded-xl hover:border-primary/30 transition-all group">
             <div className="flex gap-1 w-full aspect-video rounded-lg overflow-hidden border border-muted/10">
@@ -34,14 +36,14 @@ export function GalleryItemRow({ item, onDelete }: { item: GalleryItem, onDelete
                     <Link
                         to={PATHS.ADMIN.galleryUpdate(item.id)}
                         className="p-1.5 text-muted hover:text-primary hover:bg-primary/10 rounded-md transition-colors"
-                        title="Edit Item"
+                        title={t('admin.gallery.list_confirm_delete_title')}
                     >
                         <PencilSquare className="size-4" />
                     </Link>
                     <button
                         onClick={() => onDelete(item.id)}
                         className="p-1.5 text-muted hover:text-red-500 hover:bg-red-500/10 rounded-md transition-colors"
-                        title="Delete Item"
+                        title={t('admin.gallery.list_confirm_delete_title')}
                     >
                         <Trash className="size-4" />
                     </button>
@@ -55,6 +57,7 @@ export default function GalleryListLayout() {
     const [items, setItems] = useState<GalleryItem[]>([]);
     const [loading, setLoading] = useState(true);
     const confirm = useConfirm();
+    const { t } = useTranslation();
 
     const fetchItems = async () => {
         try {
@@ -63,7 +66,7 @@ export default function GalleryListLayout() {
             setItems(data);
         } catch (error) {
             console.error("Failed to fetch gallery items:", error);
-            toast.error("Failed to load gallery items.");
+            toast.error(t('admin.gallery.list_load_failed'));
         } finally {
             setLoading(false);
         }
@@ -75,9 +78,9 @@ export default function GalleryListLayout() {
 
     const handleDelete = async (id: string) => {
         const isConfirmed = await confirm({
-            title: "Delete Gallery Item",
-            description: "Are you sure you want to delete this gallery item? This action cannot be undone.",
-            confirmText: "Delete",
+            title: t('admin.gallery.list_confirm_delete_title'),
+            description: t('admin.gallery.list_confirm_delete_desc'),
+            confirmText: t('admin.gallery.list_confirm_delete_btn'),
             variant: "destructive"
         });
 
@@ -85,11 +88,11 @@ export default function GalleryListLayout() {
 
         try {
             await AdminService.deleteGalleryItem(id);
-            toast.success("Gallery item deleted successfully.");
+            toast.success(t('admin.gallery.list_delete_success'));
             setItems(items.filter(i => i.id !== id));
         } catch (error) {
             console.error("Failed to delete item:", error);
-            toast.error("Failed to delete item.");
+            toast.error(t('admin.gallery.list_delete_failed'));
         }
     };
 
@@ -107,13 +110,13 @@ export default function GalleryListLayout() {
                 <div className="p-4 bg-primary/10 rounded-full mb-4">
                     <Photo className="size-10 text-primary" />
                 </div>
-                <h3 className="font-semibold text-lg mb-1">No Gallery Items Yet</h3>
+                <h3 className="font-semibold text-lg mb-1">{t('admin.gallery.list_empty_title')}</h3>
                 <p className="text-sm text-muted max-w-[300px] mb-6">
-                    Start by creating your first marketing showcase item.
+                    {t('admin.gallery.list_empty_sub')}
                 </p>
                 <Link to={PATHS.ADMIN.GALLERY_CREATE} className="p-button">
                     <Plus className="size-4 mr-2" />
-                    Create Gallery Item
+                    {t('admin.gallery.list_create_btn')}
                 </Link>
             </div>
         );

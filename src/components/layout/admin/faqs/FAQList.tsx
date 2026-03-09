@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { PATHS } from "@/routers/Paths";
 import { AdminService, type FAQ } from "@/services/admin.service";
 import { InformationCircle, Plus, PencilSquare, Trash } from "@/icons";
@@ -8,6 +9,7 @@ import toast from "react-hot-toast";
 import { useConfirm } from "@/components/confirm";
 
 export function FAQRow({ faq, onDelete }: { faq: FAQ, onDelete: (id: string) => void }) {
+    const { t } = useTranslation();
     return (
         <li className="flex flex-col gap-3 p-4 border border-muted/15 bg-surface rounded-xl hover:border-primary/30 transition-all group">
             <div className="flex justify-between items-start gap-4">
@@ -17,7 +19,7 @@ export function FAQRow({ faq, onDelete }: { faq: FAQ, onDelete: (id: string) => 
                             Order: {faq.display_order}
                         </span>
                         <span className={`text-3xs font-bold px-2 py-0.5 rounded-full uppercase tracking-tighter ${faq.is_active ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
-                            {faq.is_active ? 'Active' : 'Inactive'}
+                            {faq.is_active ? t('admin.faqs.list_active') : t('admin.faqs.list_inactive')}
                         </span>
                     </div>
                     <h3 className="font-semibold text-sm">{faq.question_en}</h3>
@@ -56,6 +58,7 @@ export default function FAQList() {
     const [faqs, setFaqs] = useState<FAQ[]>([]);
     const [loading, setLoading] = useState(true);
     const confirm = useConfirm();
+    const { t } = useTranslation();
 
     const fetchFaqs = async () => {
         try {
@@ -64,7 +67,6 @@ export default function FAQList() {
             setFaqs(data);
         } catch (error) {
             console.error("Failed to fetch FAQs:", error);
-            // toast.error("Failed to load FAQs.");
         } finally {
             setLoading(false);
         }
@@ -76,9 +78,9 @@ export default function FAQList() {
 
     const handleDelete = async (id: string) => {
         const isConfirmed = await confirm({
-            title: "Delete FAQ",
-            description: "Are you sure you want to delete this FAQ? This action cannot be undone.",
-            confirmText: "Delete",
+            title: t('admin.faqs.list_confirm_delete_title'),
+            description: t('admin.faqs.list_confirm_delete_desc'),
+            confirmText: t('admin.faqs.list_confirm_delete_btn'),
             variant: "destructive"
         });
 
@@ -86,11 +88,11 @@ export default function FAQList() {
 
         try {
             await AdminService.deleteFAQ(id);
-            toast.success("FAQ deleted successfully.");
+            toast.success(t('admin.faqs.list_delete_success'));
             setFaqs(faqs.filter(f => f.id !== id));
         } catch (error) {
             console.error("Failed to delete FAQ:", error);
-            toast.error("Failed to delete FAQ.");
+            toast.error(t('admin.faqs.list_delete_failed'));
         }
     };
 
@@ -108,13 +110,13 @@ export default function FAQList() {
                 <div className="p-4 bg-primary/10 rounded-full mb-4">
                     <InformationCircle className="size-10 text-primary" />
                 </div>
-                <h3 className="font-semibold text-lg mb-1">No FAQs Found</h3>
+                <h3 className="font-semibold text-lg mb-1">{t('admin.faqs.list_empty_title')}</h3>
                 <p className="text-sm text-muted max-w-[300px] mb-6">
-                    Add frequently asked questions to help your customers understand your services better.
+                    {t('admin.faqs.list_empty_sub')}
                 </p>
                 <Link to={PATHS.ADMIN.FAQ_CREATE} className="p-button">
                     <Plus className="size-4 mr-2" />
-                    Add Your First FAQ
+                    {t('admin.faqs.list_add_first')}
                 </Link>
             </div>
         );

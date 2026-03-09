@@ -1,4 +1,5 @@
 
+import { useTranslation } from "react-i18next";
 import { Bell, Check, ChevronRight, Eye, PencilSquare, RectangleStack, Star, Tag } from "@/icons";
 
 interface KanbanBoardProps {
@@ -6,15 +7,17 @@ interface KanbanBoardProps {
     onCardClick: (request: any) => void;
 }
 
-const COLUMNS = [
-    { key: 'Submitted', label: 'New / Pending', icon: Bell, color: 'text-blue-500 bg-blue-500/10' },
-    { key: 'Under Review', label: 'Under Review', icon: Eye, color: 'text-amber-500 bg-amber-500/10' },
-    { key: 'Approved', label: 'Approved', icon: Check, color: 'text-emerald-500 bg-emerald-500/10' },
-    { key: 'In Progress', label: 'In Progress', icon: PencilSquare, color: 'text-indigo-500 bg-indigo-500/10' },
-    { key: 'Completed', label: 'Completed', icon: Star, color: 'text-purple-500 bg-purple-500/10' },
-];
-
 export default function KanbanBoard({ requests, onCardClick }: KanbanBoardProps) {
+    const { t } = useTranslation();
+
+    const COLUMNS = [
+        { key: 'Submitted', label: t('admin.projects.kanban_col_new'), icon: Bell, color: 'text-blue-500 bg-blue-500/10' },
+        { key: 'Under Review', label: t('admin.projects.kanban_col_under_review'), icon: Eye, color: 'text-amber-500 bg-amber-500/10' },
+        { key: 'Approved', label: t('admin.projects.kanban_col_approved'), icon: Check, color: 'text-emerald-500 bg-emerald-500/10' },
+        { key: 'In Progress', label: t('admin.projects.kanban_col_in_progress'), icon: PencilSquare, color: 'text-indigo-500 bg-indigo-500/10' },
+        { key: 'Completed', label: t('admin.projects.kanban_col_completed'), icon: Star, color: 'text-purple-500 bg-purple-500/10' },
+    ];
+
     // Filter out rejected/cancelled by default as per user request
     const visibleRequests = requests.filter(r => !['Rejected', 'Cancelled'].includes(r.status));
 
@@ -73,7 +76,7 @@ export default function KanbanBoard({ requests, onCardClick }: KanbanBoardProps)
                                     <div className="mt-4 pt-3 border-t border-muted/5 flex items-center justify-between text-[10px]">
                                         <span className="text-muted italic">{new Date(request.created_at).toLocaleDateString()}</span>
                                         <button className="text-primary font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                                            Manage <ChevronRight className="size-3" />
+                                            {t('admin.projects.kanban_manage')} <ChevronRight className="size-3" />
                                         </button>
                                     </div>
                                 </div>
@@ -82,7 +85,7 @@ export default function KanbanBoard({ requests, onCardClick }: KanbanBoardProps)
                             {columnRequests.length === 0 && (
                                 <div className="h-24 border-2 border-dashed border-muted/10 rounded-xl flex items-center justify-center p-4 text-center">
                                     <p className="text-3xs text-muted font-medium uppercase tracking-widest leading-relaxed">
-                                        Empty Stage
+                                        {t('admin.projects.kanban_empty_stage')}
                                     </p>
                                 </div>
                             )}

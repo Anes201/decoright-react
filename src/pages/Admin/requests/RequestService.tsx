@@ -6,9 +6,11 @@ import { RequestService } from "@/services/request.service";
 import { PATHS } from "@/routers/Paths";
 import { supabase } from "@/lib/supabase";
 import { ExclamationTriangle, ArrowLeft, DocumentText, MapPin, PaperClip, Photo, User, ChatBubbleOvalLeftEllipsis, ArrowDownTray } from "@/icons";
+import { useTranslation } from "react-i18next";
 
 export default function RequestOverview() {
     const { id } = useParams<{ id: string }>();
+    const { t } = useTranslation();
     const [request, setRequest] = useState<any>(null);
     const [attachments, setAttachments] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -33,7 +35,7 @@ export default function RequestOverview() {
                     setAttachments(attachmentsData);
                 }
             } catch (err: any) {
-                setError(err.message || "Failed to load request");
+                setError(err.message || t('admin.request_detail.not_found'));
                 console.error("Failed to load request:", err);
             } finally {
                 setLoading(false);
@@ -56,10 +58,10 @@ export default function RequestOverview() {
             <main className="flex flex-col items-center justify-center min-h-hero gap-4">
                 <div className="text-danger text-center">
                     <ExclamationTriangle className="size-12 mx-auto mb-2" />
-                    <p className="text-lg font-medium">{error || "Request not found"}</p>
+                    <p className="text-lg font-medium">{error || t('admin.request_detail.not_found')}</p>
                 </div>
                 <Link to={PATHS.ADMIN.REQUEST_SERVICE_LIST} className="text-primary hover:underline">
-                    ← Back to Requests
+                    {t('admin.request_detail.back_link')}
                 </Link>
             </main>
         );
@@ -83,7 +85,7 @@ export default function RequestOverview() {
                     {/* Header */}
                     <div className="flex items-center justify-between gap-4 pb-4 border-b border-muted/15">
                         <div className="space-y-1">
-                            <h1 className="font-semibold text-lg md:text-2xl">Request Overview</h1>
+                            <h1 className="font-semibold text-lg md:text-2xl">{t('admin.request_detail.title')}</h1>
                             <p className="text-xs text-muted">Request #{request.request_code}</p>
                         </div>
                         <Link
@@ -91,7 +93,7 @@ export default function RequestOverview() {
                             className="flex items-center gap-2 px-3 py-2 text-sm text-muted hover:text-primary border border-muted/15 rounded-lg hover:bg-emphasis/50 transition-colors"
                         >
                             <ArrowLeft className="size-4" />
-                            Back to List
+                            {t('admin.request_detail.back_to_list')}
                         </Link>
                     </div>
 
@@ -104,24 +106,24 @@ export default function RequestOverview() {
                             <div className="p-6 bg-surface border border-muted/15 rounded-xl space-y-4">
                                 <h2 className="font-semibold text-base flex items-center gap-2">
                                     <DocumentText className="size-5 text-primary" />
-                                    Request Details
+                                    {t('admin.request_detail.section_details')}
                                 </h2>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label className="text-xs text-muted font-medium">Service Type</label>
+                                        <label className="text-xs text-muted font-medium">{t('admin.request_detail.field_service_type')}</label>
                                         <p className="text-sm font-medium mt-1">
                                             {request.service_types?.display_name_en || 'N/A'}
                                         </p>
                                     </div>
                                     <div>
-                                        <label className="text-xs text-muted font-medium">Space Type</label>
+                                        <label className="text-xs text-muted font-medium">{t('admin.request_detail.field_space_type')}</label>
                                         <p className="text-sm font-medium mt-1">
                                             {request.space_types?.display_name_en || 'N/A'}
                                         </p>
                                     </div>
                                     <div>
-                                        <label className="text-xs text-muted font-medium">Location</label>
+                                        <label className="text-xs text-muted font-medium">{t('admin.request_detail.field_location')}</label>
                                         <p className="text-sm font-medium mt-1 flex items-center gap-1">
                                             <MapPin className="size-4 text-muted" />
                                             {request.location || 'N/A'}
@@ -129,7 +131,7 @@ export default function RequestOverview() {
                                     </div>
                                     {(request.width || request.height) && (
                                         <div>
-                                            <label className="text-xs text-muted font-medium">Dimensions</label>
+                                            <label className="text-xs text-muted font-medium">{t('admin.request_detail.field_dimensions')}</label>
                                             <p className="text-sm font-medium mt-1">
                                                 {request.width && request.height
                                                     ? `${request.width}m × ${request.height}m`
@@ -141,7 +143,7 @@ export default function RequestOverview() {
                                         </div>
                                     )}
                                     <div>
-                                        <label className="text-xs text-muted font-medium">Created</label>
+                                        <label className="text-xs text-muted font-medium">{t('admin.request_detail.field_created')}</label>
                                         <p className="text-sm font-medium mt-1">
                                             {new Date(request.created_at).toLocaleDateString('en-US', {
                                                 year: 'numeric',
@@ -154,7 +156,7 @@ export default function RequestOverview() {
 
                                 {request.description && (
                                     <div className="pt-4 border-t border-muted/10">
-                                        <label className="text-xs text-muted font-medium">Description</label>
+                                        <label className="text-xs text-muted font-medium">{t('admin.request_detail.field_description')}</label>
                                         <p className="text-sm mt-2 leading-relaxed">{request.description}</p>
                                     </div>
                                 )}
@@ -165,7 +167,7 @@ export default function RequestOverview() {
                                 <div className="p-6 bg-surface border border-muted/15 rounded-xl space-y-4">
                                     <h2 className="font-semibold text-base flex items-center gap-2">
                                         <PaperClip className="size-5 text-primary" />
-                                        Attachments ({attachments.length})
+                                        {t('admin.request_detail.section_attachments', { count: attachments.length })}
                                     </h2>
                                     <div className="space-y-2">
                                         {attachments.map((attachment) => (
@@ -179,8 +181,6 @@ export default function RequestOverview() {
                                                 <div className="flex items-center justify-center size-10 bg-primary/10 rounded-lg shrink-0">
                                                     {attachment.file_type === 'IMAGE' ? (
                                                         <Photo className="size-5 text-primary" />
-                                                    ) : attachment.file_type === 'PDF' ? (
-                                                        <DocumentText className="size-5 text-primary" />
                                                     ) : (
                                                         <DocumentText className="size-5 text-primary" />
                                                     )}
@@ -204,7 +204,7 @@ export default function RequestOverview() {
 
                             {/* Status Card */}
                             <div className="p-6 bg-surface border border-muted/15 rounded-xl space-y-4">
-                                <h2 className="font-semibold text-base">Status</h2>
+                                <h2 className="font-semibold text-base">{t('admin.request_detail.section_status')}</h2>
                                 <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium border ${statusColors[request.status] || 'bg-zinc-500/10 text-zinc-600 border-zinc-500/20'}`}>
                                     <span className="size-2 rounded-full bg-current"></span>
                                     {request.status}
@@ -215,17 +215,17 @@ export default function RequestOverview() {
                             <div className="p-6 bg-surface border border-muted/15 rounded-xl space-y-4">
                                 <h2 className="font-semibold text-base flex items-center gap-2">
                                     <User className="size-5 text-primary" />
-                                    Customer
+                                    {t('admin.request_detail.section_customer')}
                                 </h2>
                                 <div className="space-y-3">
                                     <div>
-                                        <label className="text-xs text-muted font-medium">Name</label>
+                                        <label className="text-xs text-muted font-medium">{t('admin.request_detail.field_name')}</label>
                                         <p className="text-sm font-medium mt-1">
                                             {request.profiles?.full_name || 'N/A'}
                                         </p>
                                     </div>
                                     <div>
-                                        <label className="text-xs text-muted font-medium">Role</label>
+                                        <label className="text-xs text-muted font-medium">{t('admin.request_detail.field_role')}</label>
                                         <p className="text-sm font-medium mt-1 capitalize">
                                             {request.profiles?.role || 'Customer'}
                                         </p>
@@ -235,13 +235,13 @@ export default function RequestOverview() {
 
                             {/* Quick Actions */}
                             <div className="p-6 bg-surface border border-muted/15 rounded-xl space-y-3">
-                                <h2 className="font-semibold text-base">Quick Actions</h2>
+                                <h2 className="font-semibold text-base">{t('admin.request_detail.section_quick_actions')}</h2>
                                 <Link
                                     to={PATHS.ADMIN.chatRoom(id!)}
                                     className="flex items-center justify-center gap-2 w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
                                 >
                                     <ChatBubbleOvalLeftEllipsis className="size-5" />
-                                    Open Chat
+                                    {t('admin.request_detail.open_chat')}
                                 </Link>
                             </div>
                         </div>

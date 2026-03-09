@@ -1,6 +1,5 @@
-
 import Spinner from "@/components/common/Spinner";
-import ProjectCardList, { type ProjectAction }  from "@/components/layout/admin/projects/ProjectList";
+import ProjectCardList, { type ProjectAction } from "@/components/layout/admin/projects/ProjectList";
 import toast from "react-hot-toast";
 import { useConfirm } from "@/components/confirm";
 import { PATHS } from "@/routers/Paths";
@@ -12,20 +11,20 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Folder, Plus } from "@/icons";
 
-export default function ProjectList () {
+export default function ProjectList() {
 
     const [projects, setProjects] = useState<any[]>([]);
     const [serviceTypes, setServiceTypes] = useState<ServiceType[]>([]);
     const [spaceTypes, setSpaceTypes] = useState<SpaceType[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const { t } = useTranslation(['common'])
+    const { t } = useTranslation();
 
     const visibilityStages = [
-        {"PUBLIC": t('common:public')},
-        {"AUTHENTICATED_ONLY": t('common:clients_only')},
-        {"HIDDEN": t('common:hidden')}
-    ]
+        { key: "PUBLIC", value: t('admin.projects.visibility_public') },
+        { key: "AUTHENTICATED_ONLY", value: t('admin.projects.visibility_clients_only') },
+        { key: "HIDDEN", value: t('admin.projects.visibility_hidden') },
+    ];
 
     const confirm = useConfirm();
 
@@ -43,23 +42,23 @@ export default function ProjectList () {
 
             } catch (error) {
                 console.error("Failed to fetch projects:", error);
-                toast.error("Failed to load projects.");
+                toast.error(t('admin.projects.load_failed'));
             } finally {
                 setLoading(false);
             }
         };
 
         fetchData();
-    }, []);
+    }, [t]);
 
-    const handleAction = async (id: string, action:ProjectAction) => {
+    const handleAction = async (id: string, action: ProjectAction) => {
 
         if (action === "delete") {
 
             const isConfirmed = await confirm({
-                title: "Delete Project",
-                description: "Are you sure you want to delete this project? All associated data and images will be removed.",
-                confirmText: "Delete",
+                title: t('admin.projects.confirm_delete_title'),
+                description: t('admin.projects.confirm_delete_desc'),
+                confirmText: t('admin.projects.confirm_delete_btn'),
                 variant: "destructive"
             });
 
@@ -67,19 +66,19 @@ export default function ProjectList () {
 
             try {
                 await AdminService.deleteProject(id);
-                toast.success("Project deleted successfully.");
+                toast.success(t('admin.projects.delete_success'));
                 setProjects(projects.filter(p => p.id !== id));
             } catch (error) {
                 console.error("Failed to delete project:", error);
-                toast.error("Failed to delete project.");
+                toast.error(t('admin.projects.delete_failed'));
             }
 
-            return
+            return;
         }
     };
 
     if (loading) {
-        return <div className="flex justify-center h-full w-full"><Spinner status={loading}/></div>;
+        return <div className="flex justify-center h-full w-full"><Spinner status={loading} /></div>;
     }
 
     if (projects.length === 0) {
@@ -88,23 +87,23 @@ export default function ProjectList () {
                 <div className="p-4 bg-primary/10 rounded-full mb-4">
                     <Folder className="size-10 text-primary" />
                 </div>
-                <h3 className="font-semibold text-lg mb-1">No Projects Found</h3>
+                <h3 className="font-semibold text-lg mb-1">{t('admin.projects.empty_title')}</h3>
                 <p className="text-sm text-muted max-w-100 mb-6">
-                    You haven't added any real-world projects yet.
+                    {t('admin.projects.empty_sub')}
                 </p>
                 <Link to={PATHS.ADMIN.PROJECT_CREATE} className="p-button">
                     <Plus className="size-4 mr-2" />
-                    Create Your First Project
+                    {t('admin.projects.create_first')}
                 </Link>
             </div>
         );
     }
-    return (
 
+    return (
         <main className="w-full">
             <section className="flex flex-col pt-4 md:pt-6 w-full h-full mb-40">
                 <div className="relative flex flex-col gap-8 h-full">
-                    <h1 className="font-semibold text-lg md:text-2xl w-fit"> Project List </h1>
+                    <h1 className="font-semibold text-lg md:text-2xl w-fit">{t('admin.projects.page_title')}</h1>
                     <div className="w-full">
                         <ProjectCardList
                             projects={projects}
@@ -117,5 +116,5 @@ export default function ProjectList () {
                 </div>
             </section>
         </main>
-    )
+    );
 }

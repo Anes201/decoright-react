@@ -5,6 +5,7 @@ import type { SpaceType } from "@/services/space-types.service";
 import type { ServiceType } from "@/services/service-types.service";
 import { Link } from "react-router-dom"
 import { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { PATHS } from "@/routers/Paths";
 import { AdminService } from "@/services/admin.service";
 import { useConfirm } from "@components/confirm";
@@ -22,23 +23,22 @@ type Props = {
 };
 
 export default function ProjectCardListLayout({ projects, onAction, serviceTypes, serviceSpaceTypes, visibilityStags }: Props) {
-
+    const { t } = useTranslation();
     const [openId, setOpenId] = useState<string | null>(null);
     const rootRef = useRef<HTMLDivElement | null>(null);
     const triggerRef = useRef<HTMLButtonElement | null>(null);
     const [placement, setPlacement] = useState<"bottom" | "top">("bottom");
 
     // search + filters
-    const [filtersOpen, setFiltersOpen] = useState<boolean>(false); // Display search filters or not for small screen sizes
+    const [filtersOpen, setFiltersOpen] = useState<boolean>(false);
     const [query, setQuery] = useState("");
     const [serviceTypeFilter, setServiceTypeFilter] = useState<string | "all">("all");
     const [serviceSpaceTypeFilter, setServiceSpaceTypeFilter] = useState<string | "all">("all");
     const [visibilityStagFilter, setVisibilityStagFilter] = useState<string | "all">("all");
     const [sortBy, setSortBy] = useState<"likes" | "views" | "newest">("newest");
-    const [sortDir, setSortDir] = useState<"desc" | "asc">("desc"); // desc is usually what you want
+    const [sortDir, setSortDir] = useState<"desc" | "asc">("desc");
 
 
-    // Close on outside click
     useEffect(() => {
 
         function handleDocClick(e: MouseEvent) {
@@ -75,26 +75,21 @@ export default function ProjectCardListLayout({ projects, onAction, serviceTypes
     const serviceSpaceTypeOptions = serviceSpaceTypes && serviceSpaceTypes.length ? serviceSpaceTypes : derivedServiceSpaceTypes;
     const visibilityStageOptions = visibilityStags && visibilityStags.length ? visibilityStags : derivedStages;
 
-    // filtering logic
     const filtered = projects.filter((project) => {
-        // query match against title/description
         const q = query.trim().toLowerCase();
         if (q) {
             const hay = `${project.title} ${project.description || ""}`.toLowerCase();
             if (!hay.includes(q)) return false;
         }
 
-        // service type
         if (serviceTypeFilter !== "all") {
             if (project.service_type !== serviceTypeFilter) return false;
         }
 
-        // service space type
         if (serviceSpaceTypeFilter !== "all") {
             if (project.service_space_type !== serviceSpaceTypeFilter) return false;
         }
 
-        // service space type
         if (visibilityStagFilter !== "all") {
             if (project.stage.value !== visibilityStagFilter) return false;
         }
@@ -121,7 +116,6 @@ export default function ProjectCardListLayout({ projects, onAction, serviceTypes
         onAction?.(id, action);
     };
 
-    // when toggling the menu, compute available space:
     function toggleMenu(id: string) {
         if (openId === id) {
             setOpenId(null);
@@ -138,11 +132,8 @@ export default function ProjectCardListLayout({ projects, onAction, serviceTypes
         const rect = btn.getBoundingClientRect();
         const spaceBelow = window.innerHeight - rect.bottom;
         const spaceAbove = rect.top;
-
-        // quick estimate of menu height
         const estimatedMenuHeight = 220;
 
-        // prefer bottom unless not enough space and there's more space above
         if (spaceBelow < estimatedMenuHeight && spaceAbove > spaceBelow) {
             setPlacement("bottom");
         } else {
@@ -164,7 +155,6 @@ export default function ProjectCardListLayout({ projects, onAction, serviceTypes
 
     return (
         <div ref={rootRef} className="w-full h-full">
-            {/* Search + filters */}
             <div className="flex max-xl:flex-col items-center gap-2 mb-2 sm:mb-4 w-full h-fit">
                 <div className="flex gap-2 w-full">
                     <div className="flex items-center min-w-40 w-full rounded-full border border-muted/15 bg-surface">
@@ -172,10 +162,9 @@ export default function ProjectCardListLayout({ projects, onAction, serviceTypes
                         <input
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            placeholder="Search portfolios..."
+                            placeholder={t('admin.projects.list_search_placeholder')}
                             className="flex-1 w-full py-2 text-sm focus:outline-none"
                         />
-
                     </div>
                     <button type="button"
                         onClick={() => { setFiltersOpen(!filtersOpen) }}
@@ -194,7 +183,7 @@ export default function ProjectCardListLayout({ projects, onAction, serviceTypes
                             onChange={(e) => setServiceTypeFilter((e.target.value as string) || "all")}
                             className="flex appearance-none text-xs md:text-sm py-2 pl-2 pr-12 min-w-max w-full cursor-pointer focus:outline-none"
                         >
-                            <option value="all"> All Services </option>
+                            <option value="all"> {t('admin.projects.list_filter_all_services')} </option>
                             {serviceTypeOptions.map((s: any) => (
                                 <option key={s?.id} value={s?.display_name_en}>{s?.display_name_en}</option>
                             ))}
@@ -207,7 +196,7 @@ export default function ProjectCardListLayout({ projects, onAction, serviceTypes
                             onChange={(e) => setServiceSpaceTypeFilter((e.target.value as string) || "all")}
                             className="flex appearance-none text-xs md:text-sm py-2 pl-2 pr-12 min-w-max w-full cursor-pointer focus:outline-none"
                         >
-                            <option value="all"> All Space Services </option>
+                            <option value="all"> {t('admin.projects.list_filter_all_spaces')} </option>
                             {serviceSpaceTypeOptions.map((s: any) => (
                                 <option key={s?.id} value={s?.display_name_en}>{s?.display_name_en}</option>
                             ))}
@@ -220,11 +209,10 @@ export default function ProjectCardListLayout({ projects, onAction, serviceTypes
                             onChange={(e) => setVisibilityStagFilter((e.target.value as string) || "all")}
                             className="flex appearance-none text-xs md:text-sm py-2 pl-2 pr-12 min-w-max w-full cursor-pointer focus:outline-none"
                         >
-                            <option value="all"> All Status </option>
+                            <option value="all"> {t('admin.projects.list_filter_all_status')} </option>
                             {visibilityStageOptions.map((s: any) => (
                                 <option key={s?.key} value={s?.key}>{s?.value}</option>
                             ))}
-
                         </select>
                         <span className="absolute flex items-center px-2 pointer-events-none inset-y-0 right-0"> <CaretDown className="size-4" /> </span>
                     </div>
@@ -237,9 +225,9 @@ export default function ProjectCardListLayout({ projects, onAction, serviceTypes
                         <div className="relative flex items-center w-full">
                             <select value={sortBy} onChange={e => setSortBy(e.target.value as any)}
                                 className="flex appearance-none text-xs md:text-sm py-2 pl-2 pr-12 min-w-max w-full cursor-pointer focus:outline-0">
-                                <option value="newest">Newest</option>
-                                <option value="likes">Most liked</option>
-                                <option value="views">Most viewed</option>
+                                <option value="newest">{t('admin.projects.list_sort_newest')}</option>
+                                <option value="likes">{t('admin.projects.list_sort_most_liked')}</option>
+                                <option value="views">{t('admin.projects.list_sort_most_viewed')}</option>
                             </select>
                             <span className="absolute flex items-center px-2 pointer-events-none inset-y-0 right-0"> <CaretDown className="size-4" /> </span>
                         </div>
@@ -250,7 +238,6 @@ export default function ProjectCardListLayout({ projects, onAction, serviceTypes
             {sorted.length > 0
                 ?
                 <ul className="relative flex flex-col gap-4 pt-4 w-full border-y border-y-muted/15">
-
                     {sorted.map((project) => (
                         <>
                             <li key={project.id} className="flex gap-2">
@@ -258,25 +245,19 @@ export default function ProjectCardListLayout({ projects, onAction, serviceTypes
                                     <div className="xs:min-w-max xs:h-28 aspect-video overflow-hidden">
                                         <ZoomImage src={project.thumbnail_url || project.main_image_url} alt="Project Image" className="object-cover h-full w-full rounded-lg" />
                                     </div>
-
                                     <div className="flex gap-2 w-full">
                                         <div className="flex flex-col gap-2 w-full">
-
                                             <h4 className="text-ellipsis-2line md:text-ellipsis-1line font-medium text-sm md:text-lg text-muted"> {project.title} </h4>
-
                                             <div className="hidden sm:flex flex-wrap gap-1 sm:gap-2 w-fit">
                                                 <span className="text-ellipsis-1line text-2xs px-2 py-1 border border-muted/15 rounded-full bg-surface">{project.service_types?.display_name_en}</span>
                                                 <span className="text-ellipsis-1line text-2xs px-2 py-1 border border-muted/15 rounded-full bg-surface">{project.space_types?.display_name_en}</span>
                                             </div>
-
                                             <div className="flex flex-wrap">
                                                 <span className="text-2xs min-w-max after:content-['•'] after:mx-1 last:after:content-none">{project.visibility} </span>
                                                 <span className="text-2xs min-w-max after:content-['•'] after:mx-1 last:after:content-none">{project.views} Views</span>
                                                 <span className="text-2xs min-w-max after:content-['•'] after:mx-1 last:after:content-none">{project.likes} Likes</span>
                                             </div>
-
                                             <p className="text-2xs min-w-max">{project.date}</p>
-
                                         </div>
                                         <div className="w-fit">
                                             <button
@@ -291,31 +272,25 @@ export default function ProjectCardListLayout({ projects, onAction, serviceTypes
                                                     <div role="menu" aria-label={`Actions for ${project.title}`}
                                                         className={"absolute right-0 w-45 rounded-md border border-muted/25 bg-surface shadow-xs z-20 overflow-hidden " + (placement === "bottom" ? "top-full mt-2" : "bottom-full mb-2")}
                                                         onClick={(e) => e.stopPropagation()}
-
-                                                    >   <button role="menuitem" onClick={() => handleAction(project.id, "edit")} className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50"> Edit </button>
-
+                                                    >   <button role="menuitem" onClick={() => handleAction(project.id, "edit")} className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50"> {t('admin.projects.list_action_edit')} </button>
                                                         <div className="border-t border-y-muted" />
-
-                                                        <button role="menuitem" onClick={() => handleAction(project.id, "delete")} className="w-full text-left px-3 py-2 text-sm hover:text-white hover:bg-danger"> Delete </button>
+                                                        <button role="menuitem" onClick={() => handleAction(project.id, "delete")} className="w-full text-left px-3 py-2 text-sm hover:text-white hover:bg-danger"> {t('admin.projects.list_action_delete')} </button>
                                                     </div>
                                                 )}
                                             </button>
                                         </div>
                                     </div>
-
                                 </Link>
-
                             </li>
                             <div className="w-full h-full border-b border-muted/15 last:border-0 mask-r-to-transparent mask-r-from-100%" />
                         </>
                     ))}
-
                 </ul>
                 :
                 <div className="flex items-center justify-center gap-2 w-full h-full border border-red-400">
                     <InformationCircle className="size-6" />
-                    <p> No projects match your current search or filters. </p>
-                    <button type="button" onClick={handleResetFilters} className="font-medium underline"> Reset filters </button>
+                    <p> {t('admin.projects.list_no_match')} </p>
+                    <button type="button" onClick={handleResetFilters} className="font-medium underline"> {t('admin.projects.list_reset_filters')} </button>
                 </div>
             }
         </div>
@@ -329,13 +304,11 @@ export function ProjectCard({ project, onDelete }: { project: any, onDelete: (id
                 <Link to={PATHS.ADMIN.projectUpdate(project.id)} className="xs:min-w-[180px] xs:h-28 aspect-video overflow-hidden rounded-lg shrink-0">
                     <ZoomImage src={project.thumbnail_url || project.main_image_url} alt="" className="object-cover h-full w-full" />
                 </Link>
-
                 <div className="flex flex-col gap-2 w-full">
                     <div className="flex justify-between items-start gap-4">
                         <Link to={PATHS.ADMIN.projectUpdate(project.id)} className="hover:text-primary transition-colors">
                             <h4 className="font-semibold text-sm md:text-base text-foreground"> {project.title} </h4>
                         </Link>
-
                         <div className="flex items-center gap-1 shrink-0">
                             <Link
                                 to={PATHS.ADMIN.projectUpdate(project.id)}
@@ -353,12 +326,10 @@ export function ProjectCard({ project, onDelete }: { project: any, onDelete: (id
                             </button>
                         </div>
                     </div>
-
                     <div className="flex flex-wrap gap-2">
                         {project.service_types && <span className="text-2xs px-1.5 py-0.5 border border-muted/15 rounded-md text-muted">{project.service_types.display_name_en}</span>}
                         {project.space_types && <span className="text-2xs px-1.5 py-0.5 border border-muted/15 rounded-md text-muted">{project.space_types.display_name_en}</span>}
                         {project.location && <span className="text-2xs px-1.5 py-0.5 border border-muted/15 rounded-md text-muted">{project.location}</span>}
-
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-tighter ${project.visibility === 'PUBLIC' ? 'bg-green-500/10 text-green-500' :
                             project.visibility === 'AUTHENTICATED_ONLY' ? 'bg-blue-500/10 text-blue-500' :
                                 'bg-red-500/10 text-red-500'
@@ -366,7 +337,6 @@ export function ProjectCard({ project, onDelete }: { project: any, onDelete: (id
                             {project.visibility?.replace('_', ' ')}
                         </span>
                     </div>
-
                     <div className="flex flex-wrap items-center mt-auto">
                         <span className="text-2xs text-muted/60">{new Date(project.created_at).toLocaleDateString()}</span>
                         {(project.width || project.height) && <span className="text-2xs text-muted/60 before:content-['•'] before:mx-2">{project.width || 0}m × {project.height || 0}m</span>}
@@ -381,6 +351,7 @@ export function ProjectCardList() {
     const [projects, setProjects] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const confirm = useConfirm();
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -389,20 +360,19 @@ export function ProjectCardList() {
                 setProjects(data);
             } catch (error) {
                 console.error("Failed to fetch projects:", error);
-                toast.error("Failed to load projects.");
+                toast.error(t('admin.projects.load_failed'));
             } finally {
                 setLoading(false);
             }
         };
-
         fetchProjects();
     }, []);
 
     const handleDelete = async (id: string) => {
         const isConfirmed = await confirm({
-            title: "Delete Project",
-            description: "Are you sure you want to delete this project? All associated data and images will be removed.",
-            confirmText: "Delete",
+            title: t('admin.projects.confirm_delete_title'),
+            description: t('admin.projects.confirm_delete_desc'),
+            confirmText: t('admin.projects.confirm_delete_btn'),
             variant: "destructive"
         });
 
@@ -410,11 +380,11 @@ export function ProjectCardList() {
 
         try {
             await AdminService.deleteProject(id);
-            toast.success("Project deleted successfully.");
+            toast.success(t('admin.projects.delete_success'));
             setProjects(projects.filter(p => p.id !== id));
         } catch (error) {
             console.error("Failed to delete project:", error);
-            toast.error("Failed to delete project.");
+            toast.error(t('admin.projects.delete_failed'));
         }
     };
 
@@ -428,13 +398,13 @@ export function ProjectCardList() {
                 <div className="p-4 bg-primary/10 rounded-full mb-4">
                     <Folder className="size-10 text-primary" />
                 </div>
-                <h3 className="font-semibold text-lg mb-1">No Projects Found</h3>
+                <h3 className="font-semibold text-lg mb-1">{t('admin.projects.empty_title')}</h3>
                 <p className="text-sm text-muted max-w-[300px] mb-6">
-                    You haven't added any real-world projects yet.
+                    {t('admin.projects.empty_sub')}
                 </p>
                 <Link to={PATHS.ADMIN.PROJECT_CREATE} className="p-button">
                     <Plus className="size-4 mr-2" />
-                    Create Your First Project
+                    {t('admin.projects.create_first')}
                 </Link>
             </div>
         );

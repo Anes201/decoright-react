@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import Spinner from "@/components/common/Spinner";
 import FAQForm from "@/components/layout/admin/faqs/FAQForm";
 import { useState, useEffect } from "react";
@@ -7,6 +8,7 @@ import { AdminService, type FAQ } from "@/services/admin.service";
 import { ChevronRight } from "@/icons";
 
 export default function FAQUpdatePage() {
+    const { t } = useTranslation();
     const { id } = useParams();
     const [faq, setFaq] = useState<FAQ | null>(null);
     const [loading, setLoading] = useState(true);
@@ -33,12 +35,12 @@ export default function FAQUpdatePage() {
                 <div className="flex flex-col gap-8 w-full max-w-3xl mx-auto">
                     <div className="flex flex-col gap-1 border-b border-muted/10 pb-6">
                         <div className="flex items-center gap-2 text-muted mb-2">
-                            <Link to={PATHS.ADMIN.FAQ_LIST} className="hover:text-primary transition-colors text-sm">FAQ Management</Link>
+                            <Link to={PATHS.ADMIN.FAQ_LIST} className="hover:text-primary transition-colors text-sm">{t('admin.faqs.breadcrumb_faqs')}</Link>
                             <ChevronRight className="size-3" />
-                            <span className="text-sm">Edit</span>
+                            <span className="text-sm">{t('admin.faqs.breadcrumb_edit')}</span>
                         </div>
-                        <h1 className="font-bold text-2xl tracking-tight">Update FAQ Item</h1>
-                        <p className="text-sm text-muted">Modify the existing question, answers, or display settings.</p>
+                        <h1 className="font-bold text-2xl tracking-tight">{t('admin.faqs.edit_title')}</h1>
+                        <p className="text-sm text-muted">{t('admin.faqs.edit_subtitle')}</p>
                     </div>
 
                     <div className="w-full">
@@ -50,7 +52,7 @@ export default function FAQUpdatePage() {
                             <FAQForm initialData={faq} isUpdate={true} />
                         ) : (
                             <div className="p-10 text-center bg-surface border border-muted/10 rounded-2xl">
-                                <p className="text-muted">FAQ not found.</p>
+                                <p className="text-muted">{t('admin.faqs.not_found')}</p>
                             </div>
                         )}
                     </div>

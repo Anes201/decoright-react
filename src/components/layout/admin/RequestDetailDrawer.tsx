@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AdminService } from '@/services/admin.service';
 import { XMark, User, Phone, MapPin, Tag, RectangleStack } from '@/icons';
 
@@ -11,8 +12,8 @@ interface RequestDetailDrawerProps {
 
 export default function RequestDetailDrawer({ request, isOpen, onClose, onStatusUpdate }: RequestDetailDrawerProps) {
     const [isUpdating, setIsUpdating] = useState(false);
+    const { t } = useTranslation();
 
-    // Prevent scrolling when drawer is open
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -63,7 +64,7 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
                     {/* Header */}
                     <div className="flex items-center justify-between p-6 border-b border-muted/10">
                         <div>
-                            <span className="text-3xs uppercase tracking-wider text-muted font-bold">Request Details</span>
+                            <span className="text-3xs uppercase tracking-wider text-muted font-bold">{t('admin.request_drawer.header')}</span>
                             <h2 className="text-xl font-semibold mt-1 uppercase">{request.request_code}</h2>
                         </div>
                         <button
@@ -78,14 +79,14 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
                     <div className="flex-1 overflow-y-auto p-6 space-y-8">
                         {/* Client Info Section */}
                         <section>
-                            <h3 className="text-sm font-semibold text-muted uppercase tracking-tight mb-4">Client Information</h3>
+                            <h3 className="text-sm font-semibold text-muted uppercase tracking-tight mb-4">{t('admin.request_drawer.section_client')}</h3>
                             <div className="space-y-4">
                                 <div className="flex items-center gap-4">
                                     <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                                         <User className="size-5" />
                                     </div>
                                     <div>
-                                        <p className="text-xs text-muted">Full Name</p>
+                                        <p className="text-xs text-muted">{t('admin.request_drawer.field_full_name')}</p>
                                         <p className="font-medium">{request.profiles?.full_name || 'Anonymous'}</p>
                                     </div>
                                 </div>
@@ -95,8 +96,8 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
                                         <Phone className="size-5" />
                                     </div>
                                     <div>
-                                        <p className="text-xs text-muted">Phone Number</p>
-                                        <p className="font-medium">{request.profiles?.phone || 'Not provided'}</p>
+                                        <p className="text-xs text-muted">{t('admin.request_drawer.field_phone')}</p>
+                                        <p className="font-medium">{request.profiles?.phone || t('admin.request_drawer.field_not_provided')}</p>
                                     </div>
                                 </div>
 
@@ -105,8 +106,8 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
                                         <MapPin className="size-5" />
                                     </div>
                                     <div>
-                                        <p className="text-xs text-muted">Location</p>
-                                        <p className="font-medium">{request.location || 'Not provided'}</p>
+                                        <p className="text-xs text-muted">{t('admin.request_drawer.field_location')}</p>
+                                        <p className="font-medium">{request.location || t('admin.request_drawer.field_not_provided')}</p>
                                     </div>
                                 </div>
                             </div>
@@ -114,12 +115,12 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
 
                         {/* Request Details Section */}
                         <section>
-                            <h3 className="text-sm font-semibold text-muted uppercase tracking-tight mb-4">Service Details</h3>
+                            <h3 className="text-sm font-semibold text-muted uppercase tracking-tight mb-4">{t('admin.request_drawer.section_service')}</h3>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="p-4 rounded-xl bg-emphasis/30 border border-muted/10">
                                     <div className="flex items-center gap-2 text-primary mb-1">
                                         <Tag className="size-4" />
-                                        <span className="text-3xs uppercase font-bold">Service</span>
+                                        <span className="text-3xs uppercase font-bold">{t('admin.request_drawer.field_service')}</span>
                                     </div>
                                     <p className="text-sm font-medium">{request.service_types?.display_name_en || 'Unknown'}</p>
                                 </div>
@@ -127,18 +128,18 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
                                 <div className="p-4 rounded-xl bg-emphasis/30 border border-muted/10">
                                     <div className="flex items-center gap-2 text-indigo-500 mb-1">
                                         <RectangleStack className="size-4" />
-                                        <span className="text-3xs uppercase font-bold">Space</span>
+                                        <span className="text-3xs uppercase font-bold">{t('admin.request_drawer.field_space')}</span>
                                     </div>
                                     <p className="text-sm font-medium">{request.space_types?.display_name_en || request.space_type || 'Unknown'}</p>
                                 </div>
 
                                 <div className="p-4 rounded-xl bg-emphasis/30 border border-muted/10">
-                                    <span className="text-3xs uppercase font-bold text-muted mb-1 block">Dimensions</span>
+                                    <span className="text-3xs uppercase font-bold text-muted mb-1 block">{t('admin.request_drawer.field_dimensions')}</span>
                                     <p className="text-sm font-medium">{request.width || 0}m × {request.height || 0}m</p>
                                 </div>
 
                                 <div className="p-4 rounded-xl bg-emphasis/30 border border-muted/10">
-                                    <span className="text-3xs uppercase font-bold text-muted mb-1 block">Status</span>
+                                    <span className="text-3xs uppercase font-bold text-muted mb-1 block">{t('admin.request_drawer.field_status')}</span>
                                     <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${statusColors[request.status] || 'bg-muted/10'}`}>
                                         {request.status}
                                     </span>
@@ -146,10 +147,9 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
                             </div>
                         </section>
 
-                        {/* Description */}
                         {request.description && (
                             <section>
-                                <h3 className="text-sm font-semibold text-muted uppercase tracking-tight mb-2">Description</h3>
+                                <h3 className="text-sm font-semibold text-muted uppercase tracking-tight mb-2">{t('admin.request_drawer.field_description')}</h3>
                                 <p className="text-sm text-body leading-relaxed bg-emphasis/20 p-4 rounded-xl italic">
                                     "{request.description}"
                                 </p>
@@ -159,7 +159,7 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
 
                     {/* Actions Footer */}
                     <div className="p-6 border-t border-muted/10 bg-emphasis/10">
-                        <h3 className="text-xs font-bold text-muted uppercase tracking-widest mb-4 px-1">Update Workflow</h3>
+                        <h3 className="text-xs font-bold text-muted uppercase tracking-widest mb-4 px-1">{t('admin.request_drawer.workflow_title')}</h3>
                         <div className="flex flex-wrap gap-2">
                             {request.status === 'Submitted' && (
                                 <>
@@ -168,14 +168,14 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
                                         onClick={() => handleStatusChange('Under Review')}
                                         className="flex-1 min-w-[140px] py-2.5 bg-amber-500 text-white rounded-lg text-sm font-semibold hover:bg-amber-600 transition-colors disabled:opacity-50"
                                     >
-                                        Start Review
+                                        {t('admin.request_drawer.btn_start_review')}
                                     </button>
                                     <button
                                         disabled={isUpdating}
                                         onClick={() => handleStatusChange('Rejected')}
                                         className="flex-1 min-w-[140px] py-2.5 bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg text-sm font-semibold hover:bg-red-500 hover:text-white transition-all disabled:opacity-50"
                                     >
-                                        Reject
+                                        {t('admin.request_drawer.btn_reject')}
                                     </button>
                                 </>
                             )}
@@ -187,14 +187,14 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
                                         onClick={() => handleStatusChange('Approved')}
                                         className="flex-1 min-w-[140px] py-2.5 bg-emerald-500 text-white rounded-lg text-sm font-semibold hover:bg-emerald-600 transition-colors disabled:opacity-50"
                                     >
-                                        Approve
+                                        {t('admin.request_drawer.btn_approve')}
                                     </button>
                                     <button
                                         disabled={isUpdating}
                                         onClick={() => handleStatusChange('Rejected')}
                                         className="flex-1 min-w-[140px] py-2.5 bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg text-sm font-semibold hover:bg-red-500 hover:text-white transition-all disabled:opacity-50"
                                     >
-                                        Reject
+                                        {t('admin.request_drawer.btn_reject')}
                                     </button>
                                 </>
                             )}
@@ -205,7 +205,7 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
                                     onClick={() => handleStatusChange('In Progress')}
                                     className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
                                 >
-                                    Move to In Progress
+                                    {t('admin.request_drawer.btn_in_progress')}
                                 </button>
                             )}
 
@@ -215,13 +215,13 @@ export default function RequestDetailDrawer({ request, isOpen, onClose, onStatus
                                     onClick={() => handleStatusChange('Completed')}
                                     className="w-full py-2.5 bg-purple-500 text-white rounded-lg text-sm font-semibold hover:bg-purple-600 transition-colors disabled:opacity-50"
                                 >
-                                    Mark as Completed
+                                    {t('admin.request_drawer.btn_complete')}
                                 </button>
                             )}
 
                             {['Completed', 'Rejected', 'Cancelled'].includes(request.status) && (
                                 <div className="w-full py-3 text-center text-muted text-sm font-medium border border-dashed border-muted/30 rounded-lg">
-                                    No further actions available for {request.status} requests.
+                                    {t('admin.request_drawer.no_actions', { status: request.status })}
                                 </div>
                             )}
                         </div>

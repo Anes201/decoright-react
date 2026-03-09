@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { AdminService, type FAQ } from "@/services/admin.service";
 import { PButton } from "@/components/ui/Button";
 import Spinner from "@/components/common/Spinner";
@@ -12,6 +13,7 @@ interface FAQFormProps {
 
 export default function FAQForm({ initialData, isUpdate = false }: FAQFormProps) {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         question_en: "",
@@ -46,15 +48,15 @@ export default function FAQForm({ initialData, isUpdate = false }: FAQFormProps)
         try {
             if (isUpdate && initialData?.id) {
                 await AdminService.updateFAQ(initialData.id, formData);
-                toast.success("FAQ updated successfully.");
+                toast.success(t('admin.faqs.form_success_update'));
             } else {
                 await AdminService.createFAQ(formData);
-                toast.success("FAQ created successfully.");
+                toast.success(t('admin.faqs.form_success_create'));
             }
             navigate(-1);
         } catch (error) {
             console.error("FAQ operation failed:", error);
-            toast.error("An error occurred. Please try again.");
+            toast.error(t('admin.faqs.form_error'));
         } finally {
             setLoading(false);
         }
@@ -71,9 +73,9 @@ export default function FAQForm({ initialData, isUpdate = false }: FAQFormProps)
             <div className="grid grid-cols-1 gap-6">
                 {/* English Section (Primary) */}
                 <div className="space-y-4">
-                    <h3 className="font-semibold text-sm text-primary uppercase tracking-wider">English (Primary)</h3>
+                    <h3 className="font-semibold text-sm text-primary uppercase tracking-wider">{t('admin.faqs.form_section_en')}</h3>
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-medium text-muted ml-1">Question (EN)</label>
+                        <label className="text-xs font-medium text-muted ml-1">{t('admin.faqs.form_question_en')}</label>
                         <input
                             required
                             name="question_en"
@@ -84,7 +86,7 @@ export default function FAQForm({ initialData, isUpdate = false }: FAQFormProps)
                         />
                     </div>
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-medium text-muted ml-1">Answer (EN)</label>
+                        <label className="text-xs font-medium text-muted ml-1">{t('admin.faqs.form_answer_en')}</label>
                         <textarea
                             required
                             name="answer_en"
@@ -99,9 +101,9 @@ export default function FAQForm({ initialData, isUpdate = false }: FAQFormProps)
 
                 {/* Arabic Section */}
                 <div className="space-y-4 pt-4 border-t border-muted/10" dir="rtl">
-                    <h3 className="font-semibold text-sm text-primary uppercase tracking-wider text-right">Arabic</h3>
+                    <h3 className="font-semibold text-sm text-primary uppercase tracking-wider text-right">{t('admin.faqs.form_section_ar')}</h3>
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-medium text-muted mr-1 text-right">السؤال (AR)</label>
+                        <label className="text-xs font-medium text-muted mr-1 text-right">{t('admin.faqs.form_question_ar')}</label>
                         <input
                             name="question_ar"
                             value={formData.question_ar}
@@ -111,7 +113,7 @@ export default function FAQForm({ initialData, isUpdate = false }: FAQFormProps)
                         />
                     </div>
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-medium text-muted mr-1 text-right">الإجابة (AR)</label>
+                        <label className="text-xs font-medium text-muted mr-1 text-right">{t('admin.faqs.form_answer_ar')}</label>
                         <textarea
                             name="answer_ar"
                             rows={4}
@@ -125,9 +127,9 @@ export default function FAQForm({ initialData, isUpdate = false }: FAQFormProps)
 
                 {/* French Section */}
                 <div className="space-y-4 pt-4 border-t border-muted/10">
-                    <h3 className="font-semibold text-sm text-primary uppercase tracking-wider">French</h3>
+                    <h3 className="font-semibold text-sm text-primary uppercase tracking-wider">{t('admin.faqs.form_section_fr')}</h3>
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-medium text-muted ml-1">Question (FR)</label>
+                        <label className="text-xs font-medium text-muted ml-1">{t('admin.faqs.form_question_fr')}</label>
                         <input
                             name="question_fr"
                             value={formData.question_fr}
@@ -137,7 +139,7 @@ export default function FAQForm({ initialData, isUpdate = false }: FAQFormProps)
                         />
                     </div>
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-medium text-muted ml-1">Answer (FR)</label>
+                        <label className="text-xs font-medium text-muted ml-1">{t('admin.faqs.form_answer_fr')}</label>
                         <textarea
                             name="answer_fr"
                             rows={4}
@@ -152,7 +154,7 @@ export default function FAQForm({ initialData, isUpdate = false }: FAQFormProps)
                 {/* Settings Section */}
                 <div className="grid grid-cols-2 gap-4 pt-4 border-t border-muted/10">
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-medium text-muted ml-1">Display Order</label>
+                        <label className="text-xs font-medium text-muted ml-1">{t('admin.faqs.form_display_order')}</label>
                         <input
                             type="number"
                             name="display_order"
@@ -170,7 +172,7 @@ export default function FAQForm({ initialData, isUpdate = false }: FAQFormProps)
                             onChange={handleChange}
                             className="size-4 accent-primary"
                         />
-                        <label htmlFor="is_active" className="text-sm font-medium text-foreground cursor-pointer underline underline-offset-4 decoration-primary/30">Active & Visible</label>
+                        <label htmlFor="is_active" className="text-sm font-medium text-foreground cursor-pointer underline underline-offset-4 decoration-primary/30">{t('admin.faqs.form_is_active')}</label>
                     </div>
                 </div>
             </div>
@@ -181,11 +183,11 @@ export default function FAQForm({ initialData, isUpdate = false }: FAQFormProps)
                     onClick={() => navigate(-1)}
                     className="px-6 py-2.5 text-sm font-medium text-muted hover:text-foreground transition-colors"
                 >
-                    Cancel
+                    {t('admin.faqs.form_cancel')}
                 </button>
                 <PButton type="submit" disabled={loading} className="px-8 py-2.5 h-auto">
                     <Spinner status={false} size="sm">
-                        {isUpdate ? 'Update FAQ' : 'Create FAQ'}
+                        {isUpdate ? t('admin.faqs.form_submit_update') : t('admin.faqs.form_submit_create')}
                     </Spinner>
                 </PButton>
             </div>

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import ProjectForm from "@/components/layout/admin/projects/ProjectForm";
 import Spinner from "@/components/common/Spinner";
@@ -8,6 +9,7 @@ import { PATHS } from "@/routers/Paths";
 import { ChevronRight } from "@/icons";
 
 export default function ProjectUpdatePage() {
+    const { t } = useTranslation();
     const { id } = useParams();
     const [project, setProject] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -16,20 +18,19 @@ export default function ProjectUpdatePage() {
         const fetchProject = async () => {
             if (!id) return;
             try {
-                // Fetch projects and find by id
                 const projects = await AdminService.getProjects();
                 const found = projects?.find((p: any) => p.id === id);
                 setProject(found);
             } catch (error) {
                 console.error("Failed to fetch project:", error);
-                toast.error("Failed to load project details.");
+                toast.error(t('admin.projects.load_detail_failed'));
             } finally {
                 setLoading(false);
             }
         };
 
         fetchProject();
-    }, [id]);
+    }, [id, t]);
 
     if (loading) {
         return (
@@ -42,9 +43,9 @@ export default function ProjectUpdatePage() {
     if (!project) {
         return (
             <div className="flex flex-col items-center justify-center p-20 text-center">
-                <h3 className="font-semibold text-lg">Project Not Found</h3>
-                <p className="text-sm text-muted">The project you are looking for does not exist.</p>
-                <Link to={PATHS.ADMIN.PROJECT_LIST} className="mt-4 p-button">Back to Projects</Link>
+                <h3 className="font-semibold text-lg">{t('admin.projects.not_found_title')}</h3>
+                <p className="text-sm text-muted">{t('admin.projects.not_found_sub')}</p>
+                <Link to={PATHS.ADMIN.PROJECT_LIST} className="mt-4 p-button">{t('admin.projects.back_to_projects')}</Link>
             </div>
         );
     }
@@ -57,14 +58,13 @@ export default function ProjectUpdatePage() {
                         <div className="flex items-center justify-between gap-4">
                             <div className="flex flex-col gap-1">
                                 <div className="flex items-center gap-2 text-muted mb-2">
-                                    <Link to={PATHS.ADMIN.PROJECT_LIST} className="hover:text-primary transition-colors">Projects</Link>
+                                    <Link to={PATHS.ADMIN.PROJECT_LIST} className="hover:text-primary transition-colors">{t('admin.projects.breadcrumb_projects')}</Link>
                                     <ChevronRight className="size-3" />
-                                    <span>Edit</span>
+                                    <span>{t('admin.projects.breadcrumb_edit')}</span>
                                 </div>
-                                <h1 className="font-bold text-2xl tracking-tight">Edit Project</h1>
-                                <p className="text-sm text-muted">Update technical details and imagery for this project.</p>
+                                <h1 className="font-bold text-2xl tracking-tight">{t('admin.projects.edit_title')}</h1>
+                                <p className="text-sm text-muted">{t('admin.projects.edit_subtitle')}</p>
                             </div>
-
                         </div>
                     </div>
 
