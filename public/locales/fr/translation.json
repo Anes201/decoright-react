@@ -258,6 +258,7 @@
   },
   "requests": {
     "title": "Mes demandes de service",
+    "service_request": "Demande de service",
     "description": "Demandes de service récentes et état actuel des demandes.",
     "open_chat": "Ouvrir le chat",
     "no_requests": "Aucune demande de service trouvée.",

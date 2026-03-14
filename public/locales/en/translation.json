@@ -266,6 +266,7 @@
   },
   "requests": {
     "title": "My Service Requests",
+    "service_request": "Service Request",
     "description": "Recent service requests and current request status.",
     "open_chat": "Open Chat",
     "no_requests": "No service requests found.",
